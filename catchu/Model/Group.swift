@@ -12,6 +12,8 @@ class Group {
     
     public static var shared = Group()
     
+    
+    
     private var _groupID : String
     private var _adminUserID : String
     private var _groupName : String

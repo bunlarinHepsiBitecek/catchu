@@ -86,6 +86,7 @@ extension GroupInformationView {
 //            exitView.frame.size.height = tableViewSize - calculated
             exitView.frame.size.height = necessarySize - calculated
 
+            print("merge")
 
         }
         
