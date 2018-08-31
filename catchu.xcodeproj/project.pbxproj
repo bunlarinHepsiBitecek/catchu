@@ -431,13 +431,13 @@
 		451E9F092139366300185925 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				451E9F102139366300185925 /* FeedView.swift */,
 				451E9F0A2139366300185925 /* FeedViewCell.swift */,
+				451E9F0D2139366300185925 /* SwipingView.swift */,
 				451E9F0B2139366300185925 /* SwipingViewCell.swift */,
 				451E9F0C2139366300185925 /* SwipingViewModel.swift */,
-				451E9F0D2139366300185925 /* SwipingView.swift */,
 				451E9F0E2139366300185925 /* CachedImageView.swift */,
 				451E9F0F2139366300185925 /* DiscardableImageCacheItem.swift */,
-				451E9F102139366300185925 /* FeedView.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
