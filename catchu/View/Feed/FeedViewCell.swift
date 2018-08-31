@@ -283,7 +283,7 @@ extension FeedViewCell: UITextViewDelegate {
         case SchemeType.mention.rawValue :
             print("mention basildi")
         default:
-            print("just a regular url")
+            print("just a regular url click")
         }
 
         return true
