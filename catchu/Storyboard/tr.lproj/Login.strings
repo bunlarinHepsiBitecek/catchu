@@ -1,0 +1,24 @@
+
+/* Class = "UIButton"; normalTitle = "Twitter"; ObjectID = "CbE-zl-li0"; */
+"CbE-zl-li0.normalTitle" = "Twitter";
+
+/* Class = "UITextField"; placeholder = "Emai"; ObjectID = "QSM-Zk-PWj"; */
+"QSM-Zk-PWj.placeholder" = "Emai";
+
+/* Class = "UIButton"; normalTitle = "Forgot your password?"; ObjectID = "dgi-qJ-eBw"; */
+"dgi-qJ-eBw.normalTitle" = "Forgot your password?";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "glb-17-lOF"; */
+"glb-17-lOF.normalTitle" = "Login";
+
+/* Class = "UILabel"; text = "Don't have an account?"; ObjectID = "hyr-Ct-7MD"; */
+"hyr-Ct-7MD.text" = "Don't have an account?";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "jZQ-cV-3oL"; */
+"jZQ-cV-3oL.placeholder" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Register"; ObjectID = "kuC-6y-kuC"; */
+"kuC-6y-kuC.normalTitle" = "Register";
+
+/* Class = "UIButton"; normalTitle = "Facebook"; ObjectID = "tLY-lB-UCh"; */
+"tLY-lB-UCh.normalTitle" = "Facebook";

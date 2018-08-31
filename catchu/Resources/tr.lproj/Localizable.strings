@@ -1,0 +1,86 @@
+/* 
+  Localizable.strings
+  catchu
+
+  Created by Remzi YILDIRIM on 5/26/18.
+  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
+*/
+"OK"              = "Tamam";
+"Error"           = "Hata";
+"Warning"         = "Uyari";
+
+"UserName"        = "Kullanıcı adı";
+"Email"           = "Email";
+"Password"        = "Şifre";
+"Login"           = "Giriş";
+"ForgotPassword"  = "Şifremi unuttum?";
+"DontHaveAccount" = "Hesabın yok mu?";
+"Register"        = "Kaydol";
+
+// Error Message
+"UnknownError"    = "Bilinmeyen hata oluştu";
+"InvalidEmail"    = "Geçersiz email";
+"InvalidPassword" = "Geçersiz şifre";
+"EmptyEmail"      = "Email boş olamaz";
+"EmptyPassword"   = "Şifre boş olamaz";
+"PasswordResetMailSend" = "Şifre resetleme linki mailinize gönderildi";
+"DefaultError" = "Uppsss, lutfen yeniden deneyiniz 😜";
+
+// Error explanation retrieved from Firebase.AuthErrorCode
+"accountExistsWithDifferentCredential" = "Kullanıcı hesabı farklı kimlik bilgileri ile kayıtlı";
+"credentialAlreadyInUse" = "Kullanıcı sistemde zaten kayıtlı";
+"emailAlreadyInUse" = "Email farklı bir hesap üzerinde tanımlı";
+"invalidCredential" = "Yanlış kullanıcı kodu veya şifre";
+"invalidEmail" = "Hatalı email formatı";
+"userNotFound" = "Kullanıcı bulunamadı";
+"unknownError" = "Bilinmeyen hata";
+
+// Button or Label promt values
+"addParticipantOrGroup" = "Kişi veya Grup Ekle";
+"addParticipant" = "Kişi Ekle";
+"cancel" = "Vazgeç";
+"next" = "Ekle";
+"Friends" = "Arkadaşlar";
+"Groups" = "Gruplar";
+"New Group" = "Yeni Grup";
+"Search Result" = "Arama Sonuçları";
+"add" = "Add";
+"makeGroupAdmin" = "Grup Admini Yap";
+"RemoveFromGroup" = "Gruptan Çıkar";
+"gotoInfo" = "Bilgi";
+
+// notification variables
+"CatchSomething" = "Bir şey yakaladınız :)";
+
+// AWS Error explanations
+"confirmationCodeRequired" = "Lütfen doğrulama kodunu giriniz!";
+"confirmationFailed" = "Doğrulama başarız!";
+
+//Search
+"searching" = "Aranıyor...";
+"searchingFor" = "Araniyor ";
+
+// Contact
+"addFriend" = "Arkadaş Ekle";
+"friends" = "Arkadaşın";
+"requested" = "İstek Gönderildi";
+
+// picker controller strings
+"chooseProfilePicture" = "Profile Resmi Seçiniz";
+"takePhoto" = "Resim Seç";
+"chooseFromLibrary" = "Galeriden Seç";
+
+// Editable profile view
+"Name" = "İsim";
+"Username" = "Kullanıcı Adı";
+"Website" = "Website";
+"Bio" = "Biyografi";
+"Birthday" = "Doğum Tarihi";
+"Email" = "Email";
+"Phone" = "Telefon";
+"Gender" = "Cinsiyet";
+
+
+
+
+

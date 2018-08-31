@@ -1,0 +1,162 @@
+PODS:
+  - AWSAPIGateway (2.6.23):
+    - AWSCore (= 2.6.23)
+  - AWSAuthCore (2.6.23):
+    - AWSCore (= 2.6.23)
+  - AWSAuthUI (2.6.23):
+    - AWSAuthCore (= 2.6.23)
+    - AWSCore (= 2.6.23)
+  - AWSCognitoIdentityProvider (2.6.23):
+    - AWSCognitoIdentityProviderASF (= 1.0.1)
+    - AWSCore (= 2.6.23)
+  - AWSCognitoIdentityProviderASF (1.0.1)
+  - AWSCore (2.6.23)
+  - AWSFacebookSignIn (2.6.23):
+    - AWSAuthCore (= 2.6.23)
+    - FBSDKCoreKit (~> 4.0)
+    - FBSDKLoginKit (~> 4.0)
+  - AWSGoogleSignIn (2.6.23):
+    - AWSAuthCore (= 2.6.23)
+  - AWSMobileClient (2.6.23):
+    - AWSAuthCore (= 2.6.23)
+  - AWSPinpoint (2.6.23):
+    - AWSCore (= 2.6.23)
+  - AWSS3 (2.6.23):
+    - AWSCore (= 2.6.23)
+  - AWSUserPoolsSignIn (2.6.23):
+    - AWSAuthCore (= 2.6.23)
+    - AWSCognitoIdentityProvider (= 2.6.23)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - FBSDKCoreKit (4.34.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.34.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.34.0):
+    - FBSDKCoreKit (~> 4.34.0)
+  - Firebase/Auth (5.3.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (= 5.0.1)
+  - Firebase/Core (5.3.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.0.1)
+  - Firebase/CoreOnly (5.3.0):
+    - FirebaseCore (= 5.0.4)
+  - Firebase/Database (5.3.0):
+    - Firebase/CoreOnly
+    - FirebaseDatabase (= 5.0.1)
+  - Firebase/Functions (5.3.0):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (= 2.0.0)
+  - Firebase/Storage (5.3.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (= 3.0.0)
+  - FirebaseAnalytics (5.0.1):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseAuth (5.0.1):
+    - FirebaseCore (~> 5.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseCore (5.0.4):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseDatabase (5.0.1):
+    - FirebaseCore (~> 5.0)
+    - leveldb-library (~> 1.18)
+  - FirebaseFunctions (2.0.0):
+    - FirebaseCore (~> 5.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseInstanceID (3.1.1):
+    - FirebaseCore (~> 5.0)
+  - FirebaseStorage (3.0.0):
+    - FirebaseCore (~> 5.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GeoFire (3.0.0):
+    - Firebase/Database (~> 5.0)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/NSData+zlib (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GTMSessionFetcher/Core (1.1.15)
+  - IQKeyboardManagerSwift (6.0.4)
+  - leveldb-library (1.20)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
+  - TwitterCore (3.1.0)
+  - TwitterKit (3.3.0):
+    - TwitterCore (>= 3.1.0)
+
+DEPENDENCIES:
+  - AWSAPIGateway
+  - AWSAuthUI (~> 2.6.13)
+  - AWSFacebookSignIn (~> 2.6.13)
+  - AWSGoogleSignIn (~> 2.6.13)
+  - AWSMobileClient (~> 2.6.13)
+  - AWSPinpoint
+  - AWSS3
+  - AWSUserPoolsSignIn (~> 2.6.13)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
+  - Firebase/Auth
+  - Firebase/Core
+  - Firebase/Database
+  - Firebase/Functions
+  - Firebase/Storage
+  - GeoFire (from `https://github.com/firebase/geofire-objc.git`)
+  - IQKeyboardManagerSwift
+  - TwitterKit
+
+EXTERNAL SOURCES:
+  GeoFire:
+    :git: https://github.com/firebase/geofire-objc.git
+
+CHECKOUT OPTIONS:
+  GeoFire:
+    :commit: 7bc124db5d7c428bffe7ee4bd10ea9ad55f54523
+    :git: https://github.com/firebase/geofire-objc.git
+
+SPEC CHECKSUMS:
+  AWSAPIGateway: d37c2c069e8821c11f8e1cf50cd35e4de8c0d568
+  AWSAuthCore: 2db4c4f3db70e5789193b602e0392d25da6aca4e
+  AWSAuthUI: 0ac83168ce36d55367b3755acf8af7d29a533b3f
+  AWSCognitoIdentityProvider: 605ea825077825717418e37fba27d5cd23958ea2
+  AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
+  AWSCore: d56f69d7312e652e51c70f3b25e1687a5c2d06ca
+  AWSFacebookSignIn: a6c0b1f211a31404fa74a15b90937b8e200b19c8
+  AWSGoogleSignIn: 1856e4f747222217c7639b674862907acb1458e6
+  AWSMobileClient: c94ca9856f99e99a4813ebc7f4c19cecce7f06c8
+  AWSPinpoint: 198ece283bc4b5b7dc8e08dfb3415b6225203e7f
+  AWSS3: 198942f234628f1ad1c373725d65c33ebfe87af6
+  AWSUserPoolsSignIn: a101355358dec050f2ee2e81302e6011e2a95093
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FBSDKCoreKit: 0ff57f093b85c8c9d5aba697d3edf68a8960ce78
+  FBSDKLoginKit: 8c78f57a145afb756e4755e69195ebe08a42466e
+  FBSDKShareKit: 511d1dfc71204c0a8d69e6c5e3c964dcf0d4f3d9
+  Firebase: 68afeeb05461db02d7c9e3215cda28068670f4aa
+  FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
+  FirebaseAuth: 463b8ce33bd5d05f706dcd4615499e3212b4132b
+  FirebaseCore: 62f1b792a49bb9e8b4073f24606d2c93ffc352f0
+  FirebaseDatabase: 482bad9c2abd422bb2321194fb8c937e67426a89
+  FirebaseFunctions: 141da172b7491276d9da8715b8ca88f9e439ffb6
+  FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
+  FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
+  GeoFire: e3ae6f4be3f2466c3467ef6c1c203db3af935c59
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
+  IQKeyboardManagerSwift: 36dbe324b4f9793f5f41ba5227f3e7c76dfefd50
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  TwitterCore: 644d59e75abccb26cf0a9050d2c4dea0e5412241
+  TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
+
+PODFILE CHECKSUM: f5f835bb662f632373e452148eec31f1d20bc135
+
+COCOAPODS: 1.4.0

@@ -1,0 +1,104 @@
+/* 
+  Localizable.strings
+  catchu
+
+  Created by Remzi YILDIRIM on 5/26/18.
+  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
+*/
+
+// Internet connectin
+"NoInternetConnection"        = "No Internet Connection";
+"NoInternetConnectionMessage" = "Make sure your device is connected to the internet.";
+
+"OK"              = "OK";
+"Error"           = "Error";
+"Warning"         = "Warning";
+
+"UserName"        = "User name";
+"Email"           = "Email";
+"Password"        = "Password";
+"Login"           = "Login";
+"ForgotPassword"  = "Forgot your password?";
+"DontHaveAccount" = "Don't have an account?";
+"Register"        = "Register";
+
+// Error Message
+"UnknownError"    = "Unknown error occured";
+"InvalidEmail"    = "Invalid email";
+"InvalidPassword" = "Invalid password";
+"EmptyEmail"      = "Email cann't be empty";
+"EmptyPassword"   = "Password cann't be empty";
+"EmptyUserName"   = "Username cann't be empty";
+"PasswordResetMailSend" = "Password reset link has been send to your email";
+"DefaultError" = "Something went wrong, please try again 😜";
+
+// Error explanation retrieved from Firebase.AuthErrorCode
+"accountExistsWithDifferentCredential" = "Account exists with different credentials";
+"credentialAlreadyInUse" = "Credential is already in use";
+"emailAlreadyInUse" = "Email is already in use";
+"invalidCredential" = "Wrong password or username information";
+"invalidEmail" = "Wrong password or username information";
+"userNotFound" = "User not found";
+"unknownError" = "Unknown Error";
+
+// Button or Label promt values
+"addParticipantOrGroup" = "Add Participant or Group";
+"addParticipant" = "Add Participant";
+"cancel" = "Cancel";
+"next" = "Next";
+"Friends" = "Friends";
+"Groups" = "Groups";
+"New Group" = "New Group";
+"Search Result" = "Search Result";
+"add" = "Add";
+"makeGroupAdmin" = "Make Group Admin";
+"RemoveFromGroup" = "Remove From Group";
+"gotoInfo" = "Info";
+
+// Location Services
+"LocationServiceDisableTitle" = "Location Service Disable";
+"LocationServiceDisable"      = "Please enable Location Services in Settings";
+"Settings"                    = "Settings";
+"AccessLibraryDisableTitle"   = "Access Library Disable";
+"AccessLibraryDisable"        = "Please enable access photos in Settings";
+"CameraNotAvaliableTitle"     = "Camera Access Error";
+"CameraNotAvaliable"          = "Camera not avaliable";
+
+// Share
+"MissingData"                 = "Missing Data";
+"NoShareData"                 = "No share data found";
+
+// notification variables
+"CatchSomething" = "You caught something :)";
+
+// AWS Error explanations
+"confirmationCodeRequired" = "Please enter confirmation code";
+"confirmationFailed" = "Confirmation if failed!";
+
+//Search
+"searching" = "Searching...";
+"searchingFor" = "Searching for ";
+
+// Contact
+"addFriend" = "Add Friend";
+"friends" = "Friends";
+"requested" = "Requested";
+
+// picker controller strings
+"chooseProfilePicture" = "Choose Profile Picture";
+"takePhoto" = "Take a Photo";
+"chooseFromLibrary" = "Choose from library";
+
+// Editable profile view 
+"Name" = "Name";
+"Username" = "Username";
+"Website" = "Website";
+"Bio" = "Bio";
+"Birthday" = "Birthday";
+"Email" = "Email";
+"Phone" = "Phone";
+"Gender" = "Gender";
+
+//Feed
+"Loading" = "Loading...";
+

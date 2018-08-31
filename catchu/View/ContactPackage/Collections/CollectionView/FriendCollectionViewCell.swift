@@ -1,0 +1,23 @@
+//
+//  FriendCollectionViewCell.swift
+//  catchu
+//
+//  Created by Erkut Baş on 6/4/18.
+//  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
+//
+
+import UIKit
+
+class FriendCollectionViewCell: UICollectionViewCell {
+    
+    @IBOutlet var selectedFriendImage: UIImageViewDesign!
+    @IBOutlet var selectedFriendName: UILabel!
+    
+    var selectedUser = User()
+    
+    override func awakeFromNib() {
+        
+        super.awakeFromNib()
+        
+    }
+}
