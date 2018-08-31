@@ -535,7 +535,7 @@
 				4564E44920B9676F003B0D16 /* Storyboard */,
 				4564E41220B95574003B0D16 /* AppDelegate.swift */,
 				4564E41920B95576003B0D16 /* Assets.xcassets */,
-				4564E41B20B95576003B0D16 /* LaunchScreen.storyboard */,
+				4564E41E20B95576003B0D16 /* Info.plist */,
 				4564E44020B958A2003B0D16 /* Resources */,
 			);
 			path = catchu;
@@ -563,7 +563,6 @@
 			isa = PBXGroup;
 			children = (
 				A79A766A20C5BDB600FCE198 /* MediaFiles */,
-				4564E41E20B95576003B0D16 /* Info.plist */,
 				4564E44120B958C7003B0D16 /* GoogleService-Info.plist */,
 				A7276D22210E12F700CAC67C /* awsconfiguration.json */,
 				4564E46520B978F9003B0D16 /* Localizable.strings */,
@@ -574,6 +573,7 @@
 		4564E44920B9676F003B0D16 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				4564E41B20B95576003B0D16 /* LaunchScreen.storyboard */,
 				4564E41620B95574003B0D16 /* Login.storyboard */,
 				45356B2620C2F96E00E0733F /* Main.storyboard */,
 				A79A765E20C36BE400FCE198 /* Contact.storyboard */,
@@ -1683,7 +1683,7 @@
 				CODE_SIGN_ENTITLEMENTS = catchu/catchu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZVL2SV8VV7;
-				INFOPLIST_FILE = catchu/Resources/Info.plist;
+				INFOPLIST_FILE = catchu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1705,7 +1705,7 @@
 				CODE_SIGN_ENTITLEMENTS = catchu/catchu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZVL2SV8VV7;
-				INFOPLIST_FILE = catchu/Resources/Info.plist;
+				INFOPLIST_FILE = catchu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
