@@ -153,6 +153,7 @@
 		A79A768020C5CB1B00FCE198 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A767F20C5CB1B00FCE198 /* FriendsTableViewCell.swift */; };
 		A79A768220C6564900FCE198 /* ContainerFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A768120C6564900FCE198 /* ContainerFriendViewController.swift */; };
 		A79A768420C656E100FCE198 /* ExtensionContainerFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A768320C656E100FCE198 /* ExtensionContainerFriendController.swift */; };
+		A7C4F1C8213BD27E00C76EEF /* PhotoSpecialScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C4F1C7213BD27B00C76EEF /* PhotoSpecialScrollView.swift */; };
 		A7E2F847211131CC00214066 /* UIButtonCustomDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2F846211131CC00214066 /* UIButtonCustomDesign.swift */; };
 		A7E2F84B2111EFD600214066 /* RESearchResult_resultArray_item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2F8482111EFD600214066 /* RESearchResult_resultArray_item.swift */; };
 		A7E2F84C2111EFD600214066 /* RESearchResult_error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2F8492111EFD600214066 /* RESearchResult_error.swift */; };
@@ -357,6 +358,7 @@
 		A79A767F20C5CB1B00FCE198 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		A79A768120C6564900FCE198 /* ContainerFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerFriendViewController.swift; sourceTree = "<group>"; };
 		A79A768320C656E100FCE198 /* ExtensionContainerFriendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionContainerFriendController.swift; sourceTree = "<group>"; };
+		A7C4F1C7213BD27B00C76EEF /* PhotoSpecialScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSpecialScrollView.swift; sourceTree = "<group>"; };
 		A7E2F846211131CC00214066 /* UIButtonCustomDesign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonCustomDesign.swift; sourceTree = "<group>"; };
 		A7E2F8482111EFD600214066 /* RESearchResult_resultArray_item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESearchResult_resultArray_item.swift; sourceTree = "<group>"; };
 		A7E2F8492111EFD600214066 /* RESearchResult_error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESearchResult_error.swift; sourceTree = "<group>"; };
@@ -431,13 +433,13 @@
 		451E9F092139366300185925 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				451E9F102139366300185925 /* FeedView.swift */,
 				451E9F0A2139366300185925 /* FeedViewCell.swift */,
-				451E9F0D2139366300185925 /* SwipingView.swift */,
 				451E9F0B2139366300185925 /* SwipingViewCell.swift */,
 				451E9F0C2139366300185925 /* SwipingViewModel.swift */,
+				451E9F0D2139366300185925 /* SwipingView.swift */,
 				451E9F0E2139366300185925 /* CachedImageView.swift */,
 				451E9F0F2139366300185925 /* DiscardableImageCacheItem.swift */,
+				451E9F102139366300185925 /* FeedView.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -882,6 +884,7 @@
 		A77D3FD12131822500D016D6 /* GroupInformation */ = {
 			isa = PBXGroup;
 			children = (
+				A7C4F1C7213BD27B00C76EEF /* PhotoSpecialScrollView.swift */,
 				A77D3FD22131824B00D016D6 /* GroupInformationView.swift */,
 				A774AC9D2131D80900848B79 /* Group2InformationView.swift */,
 				A774ACA32132077300848B79 /* GroupInformationHeaderView.swift */,
@@ -1387,6 +1390,7 @@
 				4564E47A20BBBF4E003B0D16 /* LoaderControl.swift in Sources */,
 				A774AC98213189EF00848B79 /* ExtensionGroupInformationViewController.swift in Sources */,
 				451E9F052139349000185925 /* Reachability.swift in Sources */,
+				A7C4F1C8213BD27E00C76EEF /* PhotoSpecialScrollView.swift in Sources */,
 				45356B2420BDF34D00E0733F /* ExtensionRegisterController.swift in Sources */,
 				451E9EFE2139318E00185925 /* REShare.swift in Sources */,
 				4564E41320B95574003B0D16 /* AppDelegate.swift in Sources */,

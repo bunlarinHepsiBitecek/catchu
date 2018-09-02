@@ -13,8 +13,8 @@ extension ContainerFriendViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        print("VIEWWILLDISAPPEAR STARTS")
-        print("friendUsernameInitialBasedDictionary count : \(SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.count)")
+//        print("VIEWWILLDISAPPEAR STARTS")
+//        print("friendUsernameInitialBasedDictionary count : \(SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.count)")
         
         // container lar arasında geçiş yaparken view resetlemek için kullanılır
 //        SectionBasedFriend.shared.emptySectionBasedDictioanry()

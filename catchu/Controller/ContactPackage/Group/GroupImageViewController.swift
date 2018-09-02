@@ -10,6 +10,7 @@ import UIKit
 
 class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
 
+    @IBOutlet var selectedPhotoScrollview: UIScrollView!
     @IBOutlet var mainView: UIView!
     @IBOutlet var closeView: UIView!
     @IBOutlet var imageView: UIImageView!
@@ -27,6 +28,11 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
         setConstraints()
         setupImage()
         
+        DispatchQueue.main.async {
+            self.selectedPhotoScrollview
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,31 +41,27 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setupImage() {
-        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
+//        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
         
     }
     
     func setConstraints() {
         
         print("setConstraints starts")
-        print("mainView.frame.width : \(mainView.frame.width)")
-        print("view.bounds.size.width : \(view.bounds.size.width)")
-        print("mainView.bounds.size.width : \(mainView.bounds.size.width)")
+
+        let deviceViewHeight = UIScreen.main.bounds.height
+        let deviceViewWidth = UIScreen.main.bounds.width
+        
+        print("deviceViewHeight : \(deviceViewHeight)")
+        print("deviceViewHeight : \(deviceViewHeight)")
+        
+        let dynamicSize = deviceViewHeight - deviceViewWidth
+        
+        let halfValue = dynamicSize / 2
+        print("halfValue : \(halfValue)")
+        
+        topConstraints.constant = halfValue - UIApplication.shared.statusBarFrame.height
         heigthConstraint.constant = view.bounds.size.width
-        
-        print("heigthConstraint.constant : \(heigthConstraint.constant)")
-        
-        let x = mainView.bounds.size.height - containerImageView.frame.height
-        
-        print("x : \(x)")
-        
-        let topLine = x / 3
-        
-        print("topLine : \(topLine)")
-        
-        topConstraints.constant = topLine
-            
-        
         
     }
     
@@ -74,9 +76,10 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imagePickerStart(_:)))
         tapGestureRecognizer.delegate = self
-        self.imageView.isUserInteractionEnabled = true
-        self.imageView.addGestureRecognizer(tapGestureRecognizer)
+//        self.imageView.isUserInteractionEnabled = true
+//        self.imageView.addGestureRecognizer(tapGestureRecognizer)
 
+        
         let closeTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.exitFromViewControllerByTapGesture(_:)))
         closeTapGesture.delegate = self
         self.closeView.isUserInteractionEnabled = true

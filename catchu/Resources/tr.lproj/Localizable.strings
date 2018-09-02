@@ -48,6 +48,7 @@
 "makeGroupAdmin" = "Grup Admini Yap";
 "RemoveFromGroup" = "Gruptan Çıkar";
 "gotoInfo" = "Bilgi";
+"groupInformation" = "Group Bilgileri";
 
 // notification variables
 "CatchSomething" = "Bir şey yakaladınız :)";

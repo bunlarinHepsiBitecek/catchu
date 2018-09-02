@@ -54,6 +54,7 @@
 "makeGroupAdmin" = "Make Group Admin";
 "RemoveFromGroup" = "Remove From Group";
 "gotoInfo" = "Info";
+"groupInformation" = "Group Information";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";

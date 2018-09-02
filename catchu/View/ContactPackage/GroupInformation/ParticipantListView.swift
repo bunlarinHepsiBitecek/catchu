@@ -321,7 +321,7 @@ extension ParticipantListView {
                     
                     self.stopSpinning()
                     self.emptyNecessaryObjects()
-                    //self.referenceOfParticipantListViewController.referenceOfGroupInformationView.setFooterViewHeight()
+                    self.referenceOfParticipantListViewController.referenceOfGroupInformationView.setupExitViewFrameHeight()
                     self.referenceOfParticipantListViewController.referenceOfGroupInformationView.setParticipantCount()
                     self.referenceOfParticipantListViewController.referenceOfGroupInformationView.tableView.reloadData()
                     self.referenceOfParticipantListViewController.dismiss(animated: true, completion: nil)

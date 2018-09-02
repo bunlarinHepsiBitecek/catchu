@@ -57,13 +57,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ContactPackage/GroupInformation/GroupInformationView.swift"
-            timestampString = "557393607.415753"
+            filePath = "catchu/Controller/ContactPackage/Group/GroupImageViewController.swift"
+            timestampString = "557566435.320981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "setFooterViewHeight()"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "setConstraints()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ContactPackage/GroupInformation/GroupInformationView.swift"
+            timestampString = "557566435.321048"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "setupExitViewFrameHeight()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

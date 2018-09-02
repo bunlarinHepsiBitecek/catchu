@@ -232,14 +232,14 @@ class SwipingViewVideoCell: BaseCollectionCell {
     }
     
     private func formatTimeText(duration: CMTime) -> String {
-        let durationSeconds = CMTimeGetSeconds(duration)
+//        let durationSeconds = CMTimeGetSeconds(duration)
+//        
+//        let seconds = Int(durationSeconds) % 60
+//        let minutes = Int(durationSeconds) / 60
+//        
+//        let remainingText = "\(String(format: "%02d", minutes)):\(String(format: "%02d", seconds))"
         
-        let seconds = Int(durationSeconds) % 60
-        let minutes = Int(durationSeconds) / 60
-        
-        let remainingText = "\(String(format: "%02d", minutes)):\(String(format: "%02d", seconds))"
-        
-        return remainingText
+        return "remainingText"
     }
     
 }

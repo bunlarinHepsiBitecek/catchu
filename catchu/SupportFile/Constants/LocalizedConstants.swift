@@ -92,6 +92,7 @@ struct LocalizedConstants {
 
             static let addParticipantOrGroup = NSLocalizedString("addParticipantOrGroup", comment: "")
             static let addParticipant = NSLocalizedString("addParticipant", comment: "")
+            static let groupInformation = NSLocalizedString("groupInformation", comment: "")
             
         }
     }

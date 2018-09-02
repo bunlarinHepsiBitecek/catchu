@@ -31,9 +31,26 @@ class GroupInformationView: UIView {
     var participantArray = [User]()
     var authenticatedUserAdmin : Bool?
     
+    var tempView = UIView()
     let imageView = UIImageView()
     let imageChangeView = UIViewDesign()
+    var coverView = UIView()
     var groupInfoView = UIView()
+    var groupNameView = UIView()
+    var groupNameLabel = UILabel()
+    
+    var staticColor = #colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1)
+    
+    // static variables
+    static var contentOffsetForimageViewFrameMaxHeight : CGFloat = -300
+    static var imageViewFrameMaxHeight : CGFloat = 300
+    static var imageViewFrameHeight : CGFloat = 250
+    static var imageViewFrameVisiblePartHeight : CGFloat = 50
+    static var exitViewFrameMinimumVisiblePartHeight : CGFloat = 70
+    static var tableViewInsetsRigthEdge : CGFloat = 5
+    static var tableViewInsetsTopEdge : CGFloat = 250
+    static var labelWidthSize : CGFloat = 200
+    static var borderHeight : CGFloat = 0.3
     
     var referenceViewController = GroupInformationViewController()
     
@@ -41,13 +58,14 @@ class GroupInformationView: UIView {
     
     func initialize() {
         
-        setupImageViewSettings()
+        setupViewTitles()
+        setupImageViewFrames()
         setupTableViewSettings()
         checkAuthenticatedUserIsAdmin()
         viewArrangements()
         setParticipantCount()
         
-        setFooterViewHeight()
+        setupExitViewFrameHeight()
     }
 
     @IBAction func backBarButtonClicked(_ sender: Any) {
@@ -63,71 +81,145 @@ class GroupInformationView: UIView {
 // MARK: - Major Functions
 extension GroupInformationView {
     
-    func setFooterViewHeight() {
+    func setupExitViewFrameHeight() {
         
-        let viewDeviceHeight = self.bounds.size.height
-        print("viewDeviceHeight : \(viewDeviceHeight)")
+        print("UIApplication.shared.statusBarFrame.height :\(UIApplication.shared.statusBarFrame.height)")
         
-        let viewDeviceHeight2 = UIScreen.main.bounds.height
-        print("viewDeviceHeight2 : \(viewDeviceHeight2)")
+        let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top
+        let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom
         
-        let tableViewSize = viewDeviceHeight2 - topView.frame.height - imageView.frame.height
-        let necessarySize = viewDeviceHeight2 - topView.frame.height - 60
+        print("topPadding ? \(topPadding)")
+        print("bottomPadding ? \(bottomPadding)")
         
-        print("tableViewSize : \(tableViewSize)")
+        print("statusbar Heigth : \(UIApplication.shared.statusBarFrame.height)")
         
-        let calculated = headerViewInsideTableView.frame.height + exitView.frame.height + CGFloat((Participant.shared.participantDictionary[group.groupID]?.count)!) * Constants.NumericValues.rowHeight50
-        
-        print("(Participant.shared.participantDictionary[group.groupID]?.count)!) : \((Participant.shared.participantDictionary[group.groupID]?.count)!)")
-        print("calculated : \(calculated)")
-        
-        if calculated < necessarySize {
+//        let safeAreaHeight :CGFloat = UIScreen.main.bounds.height - (topPadding! + bottomPadding!)
+        let safeAreaHeight :CGFloat = UIScreen.main.bounds.height - (UIApplication.shared.statusBarFrame.height + bottomPadding!)
+        print("safeAreaHeight : \(safeAreaHeight)")
 
-//            exitView.frame.size.height = tableViewSize - calculated
-            exitView.frame.size.height = necessarySize - calculated
-
-            print("merge")
-
+        let maxTableViewContainerSize = safeAreaHeight - topView.frame.height - GroupInformationView.imageViewFrameVisiblePartHeight
+        
+        let tableViewContentSize = returnTableViewContentSize()
+        print("tableViewContentSize : \(tableViewContentSize)")
+        
+        let difference = maxTableViewContainerSize - tableViewContentSize
+        
+        if tableViewContentSize < maxTableViewContainerSize && difference > GroupInformationView.exitViewFrameMinimumVisiblePartHeight {
+            
+            exitView.frame.size.height = maxTableViewContainerSize - tableViewContentSize
+            print("exitView.frame.size.height : \(exitView.frame.size.height)")
+            
         }
+        
+    }
+    
+    func setupViewTitles() {
+        
+        viewTopicLabel.text = LocalizedConstants.TitleValues.LabelTitle.groupInformation
+        
+    }
+    
+    func returnTableViewContentSize() -> CGFloat {
+        
+        return CGFloat(returnParticipantCount()) * Constants.NumericValues.rowHeight50 + headerViewInsideTableView.frame.height
+        
+    }
+    
+    
+    func returnParticipantCount() -> Int {
+        
+        var participantCount = 0
+        if let userArray = Participant.shared.participantDictionary[group.groupID] {
+            participantCount = userArray.count
+        }
+        
+        return participantCount
         
     }
     
     func setupTableViewSettings() {
         
-        tableView.contentInset = UIEdgeInsetsMake(200, 0, 0, 0)
+        tableView.contentInset = UIEdgeInsetsMake(GroupInformationView.tableViewInsetsTopEdge, 0, 0, 0)
         tableView.delegate = self
         tableView.dataSource = self
         
     }
     
-    func setupImageViewSettings() {
+    func setupImageViewFrames() {
         
-        groupInfoView = UIView(frame: CGRect(x: 0, y: 0, width: 375, height: 50))
+        tempView = UIView(frame: CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: GroupInformationView.imageViewFrameHeight))
+        tempView.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         
-        groupInfoView.backgroundColor = UIColor.white
-        groupInfoView.alpha = 0
+        tempView.layer.shadowOffset = CGSize(width: 0, height: 3)
+        tempView.layer.shadowOpacity = 0.6
+        tempView.layer.shadowRadius = 5.0
+        tempView.layer.shadowColor = UIColor.black.cgColor
         
-        imageView.frame = CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: 200)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.frame = CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: GroupInformationView.imageViewFrameHeight)
         imageView.image = UIImage.init(named: "8771.jpg")
+//        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
-        groupInfoView.translatesAutoresizingMaskIntoConstraints = false
+        coverView = UIView(frame: CGRect(x: 0, y: 0, width: 375, height: tempView.frame.height))
+        coverView.translatesAutoresizingMaskIntoConstraints = false
+        coverView.backgroundColor = staticColor.withAlphaComponent(0)
         
-        imageView.addSubview(groupInfoView)
+        groupNameView = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: GroupInformationView.imageViewFrameVisiblePartHeight))
+        let gradient = CAGradientLayer()
+        gradient.frame = groupNameView.bounds
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        groupNameView.layer.insertSublayer(gradient, at: 0)
+        groupNameView.backgroundColor = UIColor.clear
         
-        let safe = imageView.safeAreaLayoutGuide
+        groupNameView.translatesAutoresizingMaskIntoConstraints = false
         
-//        groupInfoView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor).isActive = true
-        groupInfoView.bottomAnchor.constraint(equalTo: safe.bottomAnchor).isActive = true
-        groupInfoView.leadingAnchor.constraint(equalTo: safe.leadingAnchor).isActive = true
-        groupInfoView.trailingAnchor.constraint(equalTo: safe.trailingAnchor).isActive = true
+        groupNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: GroupInformationView.labelWidthSize, height: GroupInformationView.imageViewFrameVisiblePartHeight))
+        groupNameLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        groupNameLabel.text = group.groupName
         
-        addSubview(imageView)
+        groupNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        groupNameView.addSubview(groupNameLabel)
+        
+        let safeForGroupNameLabel = groupNameView.safeAreaLayoutGuide
+        
+        groupNameLabel.topAnchor.constraint(equalTo: safeForGroupNameLabel.topAnchor).isActive = true
+        groupNameLabel.bottomAnchor.constraint(equalTo: safeForGroupNameLabel.bottomAnchor).isActive = true
+        groupNameLabel.leadingAnchor.constraint(equalTo: safeForGroupNameLabel.leadingAnchor, constant: 10).isActive = true
+        groupNameLabel.trailingAnchor.constraint(equalTo: safeForGroupNameLabel.trailingAnchor).isActive = true
+        
+        coverView.addSubview(groupNameView)
+
+        let safeAreaForGroupNameView = coverView.safeAreaLayoutGuide
+        
+        groupNameView.heightAnchor.constraint(equalToConstant: GroupInformationView.imageViewFrameVisiblePartHeight).isActive = true
+        groupNameView.bottomAnchor.constraint(equalTo: safeAreaForGroupNameView.bottomAnchor).isActive = true
+        groupNameView.leadingAnchor.constraint(equalTo: safeAreaForGroupNameView.leadingAnchor).isActive = true
+        groupNameView.trailingAnchor.constraint(equalTo: safeAreaForGroupNameView.trailingAnchor).isActive = true
+        
+        imageView.addSubview(coverView)
+        
+        let safeAreaForCoverView = imageView.safeAreaLayoutGuide
+        
+        coverView.topAnchor.constraint(equalTo: safeAreaForCoverView.topAnchor).isActive = true
+        coverView.bottomAnchor.constraint(equalTo: safeAreaForCoverView.bottomAnchor).isActive = true
+        coverView.leadingAnchor.constraint(equalTo: safeAreaForCoverView.leadingAnchor).isActive = true
+        coverView.trailingAnchor.constraint(equalTo: safeAreaForCoverView.trailingAnchor).isActive = true
         
         
-        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
+        tempView.addSubview(imageView)
+        
+        let safeAreaForImageView = tempView.safeAreaLayoutGuide
+        
+        imageView.topAnchor.constraint(equalTo: safeAreaForImageView.topAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: safeAreaForImageView.bottomAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: safeAreaForImageView.leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: safeAreaForImageView.trailingAnchor).isActive = true
+        
+        self.addSubview(tempView)
         
     }
     
@@ -157,8 +249,6 @@ extension GroupInformationView {
         exitLabel.text = "Exit Group"
         exitLabel.textColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         
-        viewTopicLabel.text = group.groupName
-        
         //groupName.text = group.groupName
         
         addBorders()
@@ -183,19 +273,19 @@ extension GroupInformationView {
         let bottomBorder1 = CALayer()
         //bottomBorder1.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         bottomBorder1.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        bottomBorder1.frame = CGRect(x: 0, y: 50 - 0.3, width: 375, height: 0.3)
+        bottomBorder1.frame = CGRect(x: 0, y: 50 - 0.3, width: frame.width, height: GroupInformationView.borderHeight)
         
 //        groupNameUpdateView.layer.addSublayer(bottomBorder1)
         
         let bottomBorder2 = CALayer()
         //bottomBorder2.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         bottomBorder2.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        bottomBorder2.frame = CGRect(x: 0, y: 50 - 0.3, width: 375, height: 0.3)
+        bottomBorder2.frame = CGRect(x: 0, y: 50 - 0.3, width: frame.width, height: GroupInformationView.borderHeight)
         
         let bottomBorder3 = CALayer()
         //bottomBorder2.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         bottomBorder3.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        bottomBorder3.frame = CGRect(x: 0, y: 0.3, width: 375, height: 0.3)
+        bottomBorder3.frame = CGRect(x: 0, y: 0.3, width: frame.width, height: GroupInformationView.borderHeight)
         
         addParticipantView.layer.addSublayer(bottomBorder2)
         addParticipantView.layer.addSublayer(bottomBorder3)
@@ -203,36 +293,15 @@ extension GroupInformationView {
         let bottomBorder4 = CALayer()
         //bottomBorder2.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         bottomBorder4.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        bottomBorder4.frame = CGRect(x: 0, y: 50 - 0.3, width: 375, height: 0.3)
+        bottomBorder4.frame = CGRect(x: 0, y: 50 - 0.3, width: frame.width, height: GroupInformationView.borderHeight)
         
         let bottomBorder5 = CALayer()
         //bottomBorder2.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         bottomBorder5.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        bottomBorder5.frame = CGRect(x: 0, y: 0.3, width: 375, height: 0.3)
+        bottomBorder5.frame = CGRect(x: 0, y: 0.3, width: frame.width, height: GroupInformationView.borderHeight)
 
 //        exitView.layer.addSublayer(bottomBorder4)
 //        exitView.layer.addSublayer(bottomBorder5)
-        
-    }
-    
-    func setupImageChangeView() {
-        
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageChangeView.translatesAutoresizingMaskIntoConstraints = false
-        
-        imageChangeView.frame = CGRect(x: 325, y: 250, width: 40, height: 40)
-        imageChangeView.cornerRadius = 20.0
-        imageChangeView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
-        imageView.addSubview(imageChangeView)
-        
-        let safeLayoutGuide = self.imageView.safeAreaLayoutGuide
-
-        print("safe : \(safeLayoutGuide)")
-        
-//        imageChangeView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: <#T##CGFloat#>)
-        imageChangeView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        imageChangeView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
     }
     
@@ -357,9 +426,6 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        print("(Participant.shared.participantDictionary[group.groupID]?.count)! : \((Participant.shared.participantDictionary[group.groupID]?.count)!)")
-        print("authenticatedUserAdmin : \(authenticatedUserAdmin)")
-        
         return (Participant.shared.participantDictionary[group.groupID]?.count)!
         
     }
@@ -397,50 +463,34 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    // scroll process
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-//        print("scrollView.contentOffset.y : \(scrollView.contentOffset.y)")
+        let y = GroupInformationView.imageViewFrameHeight - (scrollView.contentOffset.y + GroupInformationView.imageViewFrameHeight)
+        let height = min(max(y, GroupInformationView.imageViewFrameVisiblePartHeight), GroupInformationView.imageViewFrameMaxHeight + topView.frame.height)
         
-        let y = 200 - (scrollView.contentOffset.y + 200)
-        //let height = min(max(y, 60), 250 + topView.frame.height)
-        let height = min(max(y, 50), 250 + topView.frame.height)
+        coverView.backgroundColor = staticColor.withAlphaComponent(GroupInformationView.imageViewFrameHeight / height)
         
-        print("heigth : \(height)")
-        
-        groupInfoView.alpha = 50 / height
-//        imageView.alpha = 44 / height
-        
-        if height >= 200 {
+        if height >= GroupInformationView.imageViewFrameHeight {
             
-            groupInfoView.alpha = 0
-//            imageView.alpha = 0
+            coverView.backgroundColor = staticColor.withAlphaComponent(0)
+        
+        } else if height <= GroupInformationView.imageViewFrameVisiblePartHeight {
+            
+            coverView.backgroundColor = staticColor.withAlphaComponent(1)
+            
         }
         
-        imageView.frame = CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: height)
-//
-//        print("height : \(height)")
-//        print("imageView.frame.height : \(imageView.frame.height)")
-//        print("tableView.contentInset.bottom : \(tableView.contentInset.bottom)")
-//        print("tableView.contentInset.top : \(tableView.contentInset.top)")
-//
-//        let  x = scrollView.frame.size.height
-//        let contentYoffset = scrollView.contentOffset.y
-//        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-//        if distanceFromBottom < x {
-//            print(" you reached end of the table")
-//        }
+        tempView.frame = CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: height)
         
-        if scrollView.contentOffset.y < -300 {
-                        print(" you reached top of the table")
+        if scrollView.contentOffset.y < GroupInformationView.contentOffsetForimageViewFrameMaxHeight {
             
-            
-            if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: "GroupImageViewController") as? GroupImageViewController {
-                
-                destinationController.group = group
-                self.referenceViewController.present(destinationController, animated: true, completion: nil)
-                
-            }
-            
+//            if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: "GroupImageViewController") as? GroupImageViewController {
+//
+//                destinationController.group = group
+//                self.referenceViewController.present(destinationController, animated: true, completion: nil)
+//
+//            }
             
         }
         
@@ -473,6 +523,7 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 let actionRemoveFromGroup = UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.RemoveFromGroup, style: .destructive) { (alertAction) in
+                    
                     
                     self.removeFromGroup(inputCell: inputCell, indexPath: indexPath)
                     
@@ -515,14 +566,18 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
                     Participant.shared.participantDictionary[self.group.groupID]?.remove(at: indexFound)
                     
                 }
-                
           
                 DispatchQueue.main.async {
                     
                     self.setParticipantCount()
+                    
+                    self.tableView.beginUpdates()
+                    
                     self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.middle)
-                    self.setFooterViewHeight()
-
+                    self.setupExitViewFrameHeight()
+                    
+                    self.tableView.endUpdates()
+                    //self.tableView.reloadData()
                     
                 }
                 
