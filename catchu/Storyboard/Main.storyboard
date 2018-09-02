@@ -72,23 +72,9 @@
                                     <action selector="searchBtnClicked:" destination="rGg-cJ-mDB" eventType="touchUpInside" id="2N3-5G-YdD"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZzF-S2-5ty">
-                                <rect key="frame" x="166" y="213" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="bk:" destination="rGg-cJ-mDB" eventType="touchUpInside" id="9vw-EF-DBJ"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FIG-LP-I5J">
-                                <rect key="frame" x="228" y="218" width="131" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="FIG-LP-I5J" firstAttribute="leading" secondItem="ZzF-S2-5ty" secondAttribute="trailing" constant="16" id="oE4-jC-HI4"/>
                             <constraint firstItem="Nku-HH-V9Y" firstAttribute="top" secondItem="TyL-94-Uhk" secondAttribute="top" constant="10" id="oow-cQ-zDV"/>
                             <constraint firstItem="TyL-94-Uhk" firstAttribute="trailing" secondItem="Nku-HH-V9Y" secondAttribute="trailing" constant="10" id="ovg-Zb-Feg"/>
                         </constraints>
@@ -96,7 +82,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" image="baseline_person_black_48pt" id="2CS-pJ-tQd"/>
                     <connections>
-                        <outlet property="fiki" destination="FIG-LP-I5J" id="lw1-6Y-SAp"/>
                         <outlet property="testImage" destination="K39-gg-cXS" id="BLB-cR-Bg6"/>
                     </connections>
                 </viewController>

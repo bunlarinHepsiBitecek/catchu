@@ -38,10 +38,17 @@ class GroupInformationView: UIView {
     var groupInfoView = UIView()
     var groupNameView = UIView()
     var groupNameLabel = UILabel()
+    var groupNameEditButton = UIImageView()
+    var editButtonContainer = UIView()
+    var editButtonImageView = UIImageView()
+    var cameraContainer = UIView()
+    var cameraImageView = UIImageView()
     
     var staticColor = #colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1)
     
     // static variables
+    static var editButtonLeadingAnchor : CGFloat = 30.0
+    static var editButtonContainerFrameBounds : CGFloat = 40.0
     static var contentOffsetForimageViewFrameMaxHeight : CGFloat = -300
     static var imageViewFrameMaxHeight : CGFloat = 300
     static var imageViewFrameHeight : CGFloat = 250
@@ -145,6 +152,20 @@ extension GroupInformationView {
         
     }
     
+    @objc func directToGroupNameLabelChangeViewController(_ sender : UITapGestureRecognizer) {
+        
+        if sender.state == .ended {
+            
+            if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.SubjectChangeViewController) as? SubjectChangeViewController {
+                
+                destinationController.group = group
+                destinationController.referenceGroupInfoView = self
+                referenceViewController.present(destinationController, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
     func setupImageViewFrames() {
         
         tempView = UIView(frame: CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: GroupInformationView.imageViewFrameHeight))
@@ -179,6 +200,8 @@ extension GroupInformationView {
         groupNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: GroupInformationView.labelWidthSize, height: GroupInformationView.imageViewFrameVisiblePartHeight))
         groupNameLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         groupNameLabel.text = group.groupName
+        groupNameLabel.isUserInteractionEnabled = true
+        groupNameLabel.tag = 1
         
         groupNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -186,10 +209,43 @@ extension GroupInformationView {
         
         let safeForGroupNameLabel = groupNameView.safeAreaLayoutGuide
         
-        groupNameLabel.topAnchor.constraint(equalTo: safeForGroupNameLabel.topAnchor).isActive = true
+//        groupNameLabel.topAnchor.constraint(equalTo: safeForGroupNameLabel.topAnchor).isActive = true
+        groupNameLabel.heightAnchor.constraint(equalToConstant: GroupInformationView.imageViewFrameVisiblePartHeight).isActive = true
+//        groupNameLabel.widthAnchor.constraint(equalToConstant: GroupInformationView.labelWidthSize).isActive = true
         groupNameLabel.bottomAnchor.constraint(equalTo: safeForGroupNameLabel.bottomAnchor).isActive = true
         groupNameLabel.leadingAnchor.constraint(equalTo: safeForGroupNameLabel.leadingAnchor, constant: 10).isActive = true
-        groupNameLabel.trailingAnchor.constraint(equalTo: safeForGroupNameLabel.trailingAnchor).isActive = true
+//        groupNameLabel.trailingAnchor.constraint(equalTo: safeForGroupNameLabel.trailingAnchor).isActive = true
+        
+        let tapGestureRecognizerForGroupNameLabel = UITapGestureRecognizer(target: self, action: #selector(GroupInformationView.directToGroupNameLabelChangeViewController(_:)))
+        
+        tapGestureRecognizerForGroupNameLabel.delegate = self
+//        tapGestureRecognizerForGroupNameLabel.numberOfTapsRequired = 1
+        groupNameLabel.addGestureRecognizer(tapGestureRecognizerForGroupNameLabel)
+//        groupNameView.addGestureRecognizer(tapGestureRecognizerForGroupNameLabel)
+        
+        // edit button view
+        editButtonContainer = UIView(frame: CGRect(x: 0, y: 0, width: GroupInformationView.editButtonContainerFrameBounds, height: GroupInformationView.editButtonContainerFrameBounds))
+        editButtonContainer.backgroundColor = UIColor.clear
+        editButtonContainer.layer.cornerRadius = 20
+        
+        groupNameView.addSubview(editButtonContainer)
+        
+        
+        
+        
+        
+        
+        
+        
+        // edit button image
+        editButtonImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: GroupInformationView.editButtonContainerFrameBounds, height: GroupInformationView.editButtonContainerFrameBounds))
+        editButtonImageView.image = #imageLiteral(resourceName: "outline_edit_white_36pt_1x.png")
+        editButtonImageView.clipsToBounds = true
+        editButtonImageView.isUserInteractionEnabled = true
+        
+        editButtonImageView.addGestureRecognizer(tapGestureRecognizerForGroupNameLabel)
+
+        editButtonContainer.addSubview(editButtonImageView)
         
         coverView.addSubview(groupNameView)
 
@@ -200,6 +256,57 @@ extension GroupInformationView {
         groupNameView.leadingAnchor.constraint(equalTo: safeAreaForGroupNameView.leadingAnchor).isActive = true
         groupNameView.trailingAnchor.constraint(equalTo: safeAreaForGroupNameView.trailingAnchor).isActive = true
         
+        
+        
+        editButtonContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safeAreaForEditButtonContainer = groupNameLabel.safeAreaLayoutGuide
+        let forBottom = groupNameView.safeAreaLayoutGuide
+        
+        // camera icon container
+        cameraContainer = UIView(frame: CGRect(x: 0, y: 0, width: GroupInformationView.editButtonContainerFrameBounds, height: GroupInformationView.editButtonContainerFrameBounds))
+        cameraContainer.backgroundColor = UIColor.clear
+        cameraContainer.layer.cornerRadius = 20
+        
+        groupNameView.addSubview(cameraContainer)
+        
+        cameraContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        // camera image
+        cameraImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: GroupInformationView.editButtonContainerFrameBounds, height: GroupInformationView.editButtonContainerFrameBounds))
+        cameraImageView.image = #imageLiteral(resourceName: "outline_photo_camera_white_36pt_1x.png")
+        cameraImageView.clipsToBounds = true
+        cameraImageView.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizerForCamereImage = UITapGestureRecognizer(target: self, action: #selector(GroupInformationView.triggerPictureChoiseProcess(_:)))
+        tapGestureRecognizerForCamereImage.delegate = self
+        tapGestureRecognizerForCamereImage.numberOfTapsRequired = 1
+        cameraImageView.addGestureRecognizer(tapGestureRecognizerForCamereImage)
+        
+        cameraContainer.addSubview(cameraImageView)
+        
+        cameraContainer.translatesAutoresizingMaskIntoConstraints = false
+        editButtonContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constraintsForCameraButton = groupNameView.safeAreaLayoutGuide
+        
+        cameraContainer.trailingAnchor.constraint(equalTo: constraintsForCameraButton.trailingAnchor, constant: -30).isActive = true
+        cameraContainer.bottomAnchor.constraint(equalTo: safeAreaForGroupNameView.bottomAnchor, constant: -5).isActive = true
+        cameraContainer.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        cameraContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        let constraintsForEditButton = cameraContainer.safeAreaLayoutGuide
+        let relationWithGroupNameLabel = groupNameLabel.safeAreaLayoutGuide
+        
+        editButtonContainer.trailingAnchor.constraint(equalTo: constraintsForEditButton.leadingAnchor, constant: -30).isActive = true
+        editButtonContainer.bottomAnchor.constraint(equalTo: safeAreaForGroupNameView.bottomAnchor, constant: -5).isActive = true
+        editButtonContainer.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        editButtonContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        editButtonContainer.leadingAnchor.constraint(equalTo: relationWithGroupNameLabel.trailingAnchor, constant: 30).isActive = true
+        
+        
+        
         imageView.addSubview(coverView)
         
         let safeAreaForCoverView = imageView.safeAreaLayoutGuide
@@ -208,7 +315,6 @@ extension GroupInformationView {
         coverView.bottomAnchor.constraint(equalTo: safeAreaForCoverView.bottomAnchor).isActive = true
         coverView.leadingAnchor.constraint(equalTo: safeAreaForCoverView.leadingAnchor).isActive = true
         coverView.trailingAnchor.constraint(equalTo: safeAreaForCoverView.trailingAnchor).isActive = true
-        
         
         tempView.addSubview(imageView)
         
@@ -220,6 +326,20 @@ extension GroupInformationView {
         imageView.trailingAnchor.constraint(equalTo: safeAreaForImageView.trailingAnchor).isActive = true
         
         self.addSubview(tempView)
+        
+    }
+    
+    @objc func triggerPictureChoiseProcess(_ sender : UITapGestureRecognizer) {
+        
+        print("triggerPictureChoiseProcess starts")
+        
+        if let senderView = sender.view {
+            
+            print("senderView : \(senderView)")
+            
+        }
+        
+        ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
         
     }
     
@@ -311,6 +431,12 @@ extension GroupInformationView {
 // MARK: - Gesture_Process
 extension GroupInformationView: UIGestureRecognizerDelegate {
     
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//
+//        return true
+//
+//    }
+    
     func setupGestureRecognizerForGroupNameView() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(GroupInformationView.openGroupSubjectViewController(_:)))
@@ -333,7 +459,7 @@ extension GroupInformationView: UIGestureRecognizerDelegate {
 
         if sender.state == .ended {
             
-            if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: "SubjectChangeViewController") as? SubjectChangeViewController {
+            if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.SubjectChangeViewController) as? SubjectChangeViewController {
 
                 destinationController.group = group
                 destinationController.referenceGroupInfoView = self
@@ -415,7 +541,33 @@ extension GroupInformationView: UIGestureRecognizerDelegate {
     
     @objc func imagePickerActions(_ sender : UITapGestureRecognizer) {
         
-        ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
+        print("imagePickerActions starts")
+        
+        if let senderView = sender.view {
+            
+            print("senderView.tag : \(senderView.tag)")
+
+            if senderView.tag == 1 {
+                
+                if sender.state == .ended {
+                    
+                    if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.SubjectChangeViewController) as? SubjectChangeViewController {
+                        
+                        destinationController.group = group
+                        destinationController.referenceGroupInfoView = self
+                        referenceViewController.present(destinationController, animated: true, completion: nil)
+                    }
+                }
+                
+                
+            } else {
+                
+                ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
+                
+            }
+            
+        }
+        
         
     }
     
@@ -485,12 +637,18 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
         
         if scrollView.contentOffset.y < GroupInformationView.contentOffsetForimageViewFrameMaxHeight {
             
-//            if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: "GroupImageViewController") as? GroupImageViewController {
-//
-//                destinationController.group = group
-//                self.referenceViewController.present(destinationController, animated: true, completion: nil)
-//
-//            }
+            gotoGroupImageViewController()
+            
+        }
+        
+    }
+    
+    func gotoGroupImageViewController() {
+        
+        if let destinationController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupImageViewController) as? GroupImageViewController {
+            
+            destinationController.group = group
+            self.referenceViewController.present(destinationController, animated: true, completion: nil)
             
         }
         

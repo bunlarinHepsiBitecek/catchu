@@ -164,6 +164,8 @@ struct Constants {
         static let FeedViewController: String = "FeedViewController"
         static let SearchViewController: String = "SearchViewController"
         static let GroupInformationViewController: String = "GroupInformationViewController"
+        static let GroupImageViewController: String = "GroupImageViewController"
+        static let SubjectChangeViewController: String = "SubjectChangeViewController"
         
     }
     

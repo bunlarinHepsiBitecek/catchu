@@ -10,7 +10,7 @@ import UIKit
 
 class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
 
-    @IBOutlet var selectedPhotoScrollview: UIScrollView!
+    @IBOutlet var selectedPhotoScrollview: PhotoSpecialScrollView!
     @IBOutlet var mainView: UIView!
     @IBOutlet var closeView: UIView!
     @IBOutlet var imageView: UIImageView!
@@ -25,11 +25,15 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
         setGestureRecognizer()
-        setConstraints()
+//        setConstraints()
         setupImage()
         
         DispatchQueue.main.async {
-            self.selectedPhotoScrollview
+           
+            let temp = UIImageView()
+            temp.setImagesFromCacheOrFirebaseForFriend(self.group.groupPictureUrl)
+            
+            self.selectedPhotoScrollview.imageToDisplay = temp.image
         }
         
         
@@ -76,8 +80,8 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imagePickerStart(_:)))
         tapGestureRecognizer.delegate = self
-//        self.imageView.isUserInteractionEnabled = true
-//        self.imageView.addGestureRecognizer(tapGestureRecognizer)
+        self.selectedPhotoScrollview.isUserInteractionEnabled = true
+        self.selectedPhotoScrollview.addGestureRecognizer(tapGestureRecognizer)
 
         
         let closeTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.exitFromViewControllerByTapGesture(_:)))
@@ -97,8 +101,6 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
             
         }
         
-        
-        
     }
     
     @objc func exitFromViewControllerByTapGesture(_ sender : UITapGestureRecognizer) {
@@ -110,8 +112,6 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
             self.dismiss(animated: true, completion: nil)
             
         }
-        
-        
         
     }
     
@@ -125,7 +125,11 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
             
         }
         
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
+        return true
         
     }
 

@@ -1205,19 +1205,10 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uWs-wo-eiu" customClass="UIViewDesign" customModule="catchu" customModuleProvider="target">
                                                 <rect key="frame" x="15" y="15" width="20" height="20"/>
-                                                <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cancel_gray.png" translatesAutoresizingMaskIntoConstraints="NO" id="JNH-gv-ZZk">
-                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                                    </imageView>
-                                                </subviews>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstItem="JNH-gv-ZZk" firstAttribute="leading" secondItem="uWs-wo-eiu" secondAttribute="leading" id="Fdv-NV-1wL"/>
                                                     <constraint firstAttribute="width" constant="20" id="G63-Es-gk5"/>
                                                     <constraint firstAttribute="height" constant="20" id="Ycb-Nb-5F2"/>
-                                                    <constraint firstAttribute="bottom" secondItem="JNH-gv-ZZk" secondAttribute="bottom" id="c6v-nF-OCV"/>
-                                                    <constraint firstAttribute="trailing" secondItem="JNH-gv-ZZk" secondAttribute="trailing" id="uI2-mz-00p"/>
-                                                    <constraint firstItem="JNH-gv-ZZk" firstAttribute="top" secondItem="uWs-wo-eiu" secondAttribute="top" id="zZl-96-Xja"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1239,47 +1230,53 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="navigateUp" translatesAutoresizingMaskIntoConstraints="NO" id="wuR-Nx-0z5">
-                                        <rect key="frame" x="157" y="686" width="60" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="jar-54-3Cn"/>
-                                            <constraint firstAttribute="width" constant="60" id="t5x-ym-Q5g"/>
-                                        </constraints>
-                                    </imageView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hom-8G-fsu">
-                                        <rect key="frame" x="0.0" y="180" width="375" height="375"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="734"/>
                                         <subviews>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v14-cF-5GS">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v14-cF-5GS" customClass="PhotoSpecialScrollView" customModule="catchu" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="734"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cancel_gray.png" translatesAutoresizingMaskIntoConstraints="NO" id="JNH-gv-ZZk">
+                                                        <rect key="frame" x="334" y="61" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="20" id="cQg-14-3Ys"/>
+                                                            <constraint firstAttribute="height" constant="20" id="hz9-mF-ubz"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="navigateUp" translatesAutoresizingMaskIntoConstraints="NO" id="wuR-Nx-0z5">
+                                                        <rect key="frame" x="157" y="730" width="60" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="e8a-1f-W5I"/>
+                                                            <constraint firstAttribute="width" constant="60" id="go7-Pg-fc1"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
                                             </scrollView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstItem="v14-cF-5GS" firstAttribute="top" secondItem="hom-8G-fsu" secondAttribute="top" id="NTv-Vv-zQI"/>
-                                            <constraint firstAttribute="trailing" secondItem="v14-cF-5GS" secondAttribute="trailing" id="TVq-3R-XPB"/>
-                                            <constraint firstAttribute="bottom" secondItem="v14-cF-5GS" secondAttribute="bottom" id="tNW-5V-rN7"/>
-                                            <constraint firstItem="v14-cF-5GS" firstAttribute="leading" secondItem="hom-8G-fsu" secondAttribute="leading" id="wbe-CN-Hdm"/>
-                                            <constraint firstAttribute="height" constant="375" id="wsW-mD-9QN"/>
-                                        </constraints>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="wuR-Nx-0z5" secondAttribute="bottom" constant="8" id="7PK-60-Qj4"/>
+                                    <constraint firstItem="hom-8G-fsu" firstAttribute="top" secondItem="Cam-WL-YpJ" secondAttribute="top" id="9J1-C0-11o"/>
+                                    <constraint firstAttribute="bottom" secondItem="hom-8G-fsu" secondAttribute="bottom" id="9KJ-OE-R6Y"/>
                                     <constraint firstAttribute="trailing" secondItem="9I0-id-hye" secondAttribute="trailing" constant="8" id="Owx-tc-oQp"/>
                                     <constraint firstItem="9I0-id-hye" firstAttribute="top" secondItem="Cam-WL-YpJ" secondAttribute="top" id="PEz-6k-yx9"/>
-                                    <constraint firstItem="wuR-Nx-0z5" firstAttribute="centerX" secondItem="Cam-WL-YpJ" secondAttribute="centerX" id="V0h-pa-hkO"/>
-                                    <constraint firstItem="hom-8G-fsu" firstAttribute="leading" secondItem="Cam-WL-YpJ" secondAttribute="leading" id="bRh-Xh-17q"/>
-                                    <constraint firstAttribute="trailing" secondItem="hom-8G-fsu" secondAttribute="trailing" id="r2x-4u-6af"/>
-                                    <constraint firstItem="hom-8G-fsu" firstAttribute="top" secondItem="Cam-WL-YpJ" secondAttribute="top" constant="180" id="wY9-3i-yPQ"/>
+                                    <constraint firstItem="hom-8G-fsu" firstAttribute="leading" secondItem="Cam-WL-YpJ" secondAttribute="leading" id="fYf-uC-QwG"/>
+                                    <constraint firstAttribute="trailing" secondItem="hom-8G-fsu" secondAttribute="trailing" id="mbJ-D0-L1R"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="wuR-Nx-0z5" firstAttribute="leading" secondItem="3Rk-TY-EQ7" secondAttribute="leading" constant="157" id="2Mu-tT-eT1"/>
+                            <constraint firstItem="3Rk-TY-EQ7" firstAttribute="trailing" secondItem="JNH-gv-ZZk" secondAttribute="trailing" constant="21" id="347-F7-T3a"/>
                             <constraint firstItem="Cam-WL-YpJ" firstAttribute="trailing" secondItem="3Rk-TY-EQ7" secondAttribute="trailing" id="4Ah-Lv-T7P"/>
+                            <constraint firstItem="3Rk-TY-EQ7" firstAttribute="bottom" secondItem="wuR-Nx-0z5" secondAttribute="bottom" constant="8" id="IaV-xL-RiX"/>
                             <constraint firstItem="Cam-WL-YpJ" firstAttribute="leading" secondItem="3Rk-TY-EQ7" secondAttribute="leading" id="Zpc-ri-cwI"/>
                             <constraint firstItem="3Rk-TY-EQ7" firstAttribute="bottom" secondItem="Cam-WL-YpJ" secondAttribute="bottom" id="m8K-YQ-DFe"/>
+                            <constraint firstItem="JNH-gv-ZZk" firstAttribute="top" secondItem="3Rk-TY-EQ7" secondAttribute="top" constant="17" id="mxM-9i-vAX"/>
                             <constraint firstItem="Cam-WL-YpJ" firstAttribute="top" secondItem="3Rk-TY-EQ7" secondAttribute="top" id="t8s-fC-USG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3Rk-TY-EQ7"/>
@@ -1287,15 +1284,41 @@
                     <connections>
                         <outlet property="closeView" destination="JNH-gv-ZZk" id="H8P-ue-l2Q"/>
                         <outlet property="containerImageView" destination="hom-8G-fsu" id="nln-Rt-Pb4"/>
-                        <outlet property="heigthConstraint" destination="wsW-mD-9QN" id="u1G-LS-dPN"/>
                         <outlet property="mainView" destination="Cam-WL-YpJ" id="LwK-RL-EPJ"/>
                         <outlet property="selectedPhotoScrollview" destination="v14-cF-5GS" id="lXf-5C-XU3"/>
-                        <outlet property="topConstraints" destination="wY9-3i-yPQ" id="4dq-Xb-kIF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UGA-wS-vZr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6634.3999999999996" y="-401.23152709359607"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Cwu-kY-0Of">
+            <objects>
+                <viewController id="mQ6-uQ-Tnv" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8ui-Me-Vm0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z3y-ol-9qG">
+                                <rect key="frame" x="167" y="457" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="quill.png" translatesAutoresizingMaskIntoConstraints="NO" id="yqF-ur-lGf">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="k5Z-M0-tlz"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WQv-zO-mq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7408.8000000000002" y="-402.70935960591135"/>
         </scene>
         <!--Container Group View Controller-->
         <scene sceneID="gY2-64-H0x">
@@ -1433,6 +1456,7 @@
         <image name="back_right.png" width="16" height="16"/>
         <image name="cancel_gray.png" width="512" height="512"/>
         <image name="navigateUp" width="64" height="64"/>
+        <image name="quill.png" width="128" height="128"/>
         <image name="user.png" width="512" height="512"/>
     </resources>
 </document>

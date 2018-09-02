@@ -39,7 +39,7 @@ class PhotoSpecialScrollView : UIScrollView {
             
         }
     }
-    var gridView:UIView = Bundle.main.loadNibNamed("GridView", owner: nil, options: nil)?.first as! UIView
+//    var gridView:UIView = Bundle.main.loadNibNamed("GridView", owner: nil, options: nil)?.first as! UIView
     
     //var gridView = GridViewStructure()
     
@@ -93,10 +93,10 @@ class PhotoSpecialScrollView : UIScrollView {
         maximumZoomScale = 5.0
         addSubview(imageView)
         
-        gridView.frame = frame
-        gridView.isHidden = true
-        gridView.isUserInteractionEnabled = false
-        addSubview(gridView)
+//        gridView.frame = frame
+//        gridView.isHidden = true
+//        gridView.isUserInteractionEnabled = false
+//        addSubview(gridView)
     }
     
     
@@ -145,32 +145,32 @@ extension PhotoSpecialScrollView : UIScrollViewDelegate {
         updateLayout()
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        gridView.isHidden = false
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        gridView.isHidden = true
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        var frame:CGRect = gridView.frame;
-        frame.origin.x = scrollView.contentOffset.x
-        frame.origin.y = scrollView.contentOffset.y
-        gridView.frame = frame
-        
-        switch scrollView.pinchGestureRecognizer!.state {
-        case .changed:
-            gridView.isHidden = false
-            break
-        case .ended:
-            gridView.isHidden = true
-            break
-        default: break
-        }
-        
-    }
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        gridView.isHidden = false
+//    }
+//    
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        gridView.isHidden = true
+//    }
+//    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        
+//        var frame:CGRect = gridView.frame;
+//        frame.origin.x = scrollView.contentOffset.x
+//        frame.origin.y = scrollView.contentOffset.y
+//        gridView.frame = frame
+//        
+//        switch scrollView.pinchGestureRecognizer!.state {
+//        case .changed:
+//            gridView.isHidden = false
+//            break
+//        case .ended:
+//            gridView.isHidden = true
+//            break
+//        default: break
+//        }
+//        
+//    }
     
 }
 

@@ -126,7 +126,8 @@ extension SubjectChangeViewController {
                 
                 DispatchQueue.main.async {
                     self.doneButton.isEnabled = false
-                    self.referenceGroupInfoView.groupName.text = self.group.groupName
+                    self.referenceGroupInfoView.groupNameLabel.text = self.group.groupName
+//                    self.referenceGroupInfoView.groupName.text = self.group.groupName
                     self.dismiss(animated: true, completion: nil)
                 }
                 

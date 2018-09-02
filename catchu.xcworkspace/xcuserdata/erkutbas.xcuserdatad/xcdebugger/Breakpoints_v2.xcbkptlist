@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Controller/ContactPackage/Group/GroupImageViewController.swift"
-            timestampString = "557566435.320981"
+            timestampString = "557573808.246987"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "setConstraints()"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/View/ContactPackage/GroupInformation/GroupInformationView.swift"
-            timestampString = "557566435.321048"
+            timestampString = "557588798.648163"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "setupExitViewFrameHeight()"
             landmarkType = "7">
          </BreakpointContent>
