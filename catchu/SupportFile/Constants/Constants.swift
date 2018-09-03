@@ -166,6 +166,7 @@ struct Constants {
         static let GroupInformationViewController: String = "GroupInformationViewController"
         static let GroupImageViewController: String = "GroupImageViewController"
         static let SubjectChangeViewController: String = "SubjectChangeViewController"
+        static let GroupCreateViewController: String = "GroupCreateViewController"
         
     }
     
@@ -184,6 +185,7 @@ struct Constants {
             static let collectionViewDataItemCell2: String = "itemCell2"
             static let collectionViewDataItemCell3: String = "itemCell3"
             static let collectionViewDataItemCell4: String = "itemCell4"
+            static let groupCreateSelectedParticipantCell: String = "groupCreateSelectedParticipantCell"
             
         }
         
@@ -197,6 +199,8 @@ struct Constants {
             static let tableViewCellProfileViewChoise: String = "tableViewCellProfileViewChoise"
             static let participantListCell: String = "participantListCell"
             static let groupInfoCell: String = "groupInfoCell"
+            static let groupCreateCell: String = "groupCreateCell"
+            static let groupCreateHeaderCell: String = "groupCreateHeaderCell"
             
             
         }

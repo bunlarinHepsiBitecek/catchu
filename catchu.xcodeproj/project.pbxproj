@@ -118,6 +118,14 @@
 		A75F07F221354755001065AA /* SectionBasedParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75F07F121354755001065AA /* SectionBasedParticipant.swift */; };
 		A75F08182136526B001065AA /* check_mark_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = A75F08172136526A001065AA /* check_mark_grey.png */; };
 		A75F081A213752B8001065AA /* GroupImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75F0819213752B8001065AA /* GroupImageViewController.swift */; };
+		A765A96D213C88A100881F1B /* GroupCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A96C213C88A100881F1B /* GroupCreateView.swift */; };
+		A765A96F213C88F900881F1B /* GroupCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A96E213C88F900881F1B /* GroupCreateViewController.swift */; };
+		A765A971213C89DA00881F1B /* GroupCreateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A970213C89DA00881F1B /* GroupCreateTableViewCell.swift */; };
+		A765A979213C98CF00881F1B /* camera_group.png in Resources */ = {isa = PBXBuildFile; fileRef = A765A978213C98CE00881F1B /* camera_group.png */; };
+		A765A97B213C993D00881F1B /* photo-camera-outline-2.png in Resources */ = {isa = PBXBuildFile; fileRef = A765A97A213C993C00881F1B /* photo-camera-outline-2.png */; };
+		A765A97D213CBD9100881F1B /* GroupCreateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A97C213CBD9100881F1B /* GroupCreateCollectionViewCell.swift */; };
+		A765A97F213CBF5000881F1B /* GroupCreateHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A97E213CBF5000881F1B /* GroupCreateHeaderTableViewCell.swift */; };
+		A765A981213CC3C000881F1B /* CollectionViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A980213CC3C000881F1B /* CollectionViewConstants.swift */; };
 		A76DF54E20CC308A00B98A09 /* EnumFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76DF54D20CC308A00B98A09 /* EnumFiles.swift */; };
 		A774AC98213189EF00848B79 /* ExtensionGroupInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A774AC97213189EF00848B79 /* ExtensionGroupInformationViewController.swift */; };
 		A774AC9A21319B3700848B79 /* GroupBridgeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A774AC9921319B3700848B79 /* GroupBridgeNavigationController.swift */; };
@@ -324,6 +332,14 @@
 		A75F07F121354755001065AA /* SectionBasedParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionBasedParticipant.swift; sourceTree = "<group>"; };
 		A75F08172136526A001065AA /* check_mark_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_mark_grey.png; sourceTree = "<group>"; };
 		A75F0819213752B8001065AA /* GroupImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageViewController.swift; sourceTree = "<group>"; };
+		A765A96C213C88A100881F1B /* GroupCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateView.swift; sourceTree = "<group>"; };
+		A765A96E213C88F900881F1B /* GroupCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateViewController.swift; sourceTree = "<group>"; };
+		A765A970213C89DA00881F1B /* GroupCreateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateTableViewCell.swift; sourceTree = "<group>"; };
+		A765A978213C98CE00881F1B /* camera_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_group.png; sourceTree = "<group>"; };
+		A765A97A213C993C00881F1B /* photo-camera-outline-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-camera-outline-2.png"; sourceTree = "<group>"; };
+		A765A97C213CBD9100881F1B /* GroupCreateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateCollectionViewCell.swift; sourceTree = "<group>"; };
+		A765A97E213CBF5000881F1B /* GroupCreateHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		A765A980213CC3C000881F1B /* CollectionViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewConstants.swift; sourceTree = "<group>"; };
 		A76DF54D20CC308A00B98A09 /* EnumFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumFiles.swift; sourceTree = "<group>"; };
 		A774AC97213189EF00848B79 /* ExtensionGroupInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionGroupInformationViewController.swift; sourceTree = "<group>"; };
 		A774AC9921319B3700848B79 /* GroupBridgeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBridgeNavigationController.swift; sourceTree = "<group>"; };
@@ -875,6 +891,18 @@
 			path = Contact;
 			sourceTree = "<group>";
 		};
+		A765A96B213C887700881F1B /* GroupCreation */ = {
+			isa = PBXGroup;
+			children = (
+				A765A96C213C88A100881F1B /* GroupCreateView.swift */,
+				A765A970213C89DA00881F1B /* GroupCreateTableViewCell.swift */,
+				A765A97C213CBD9100881F1B /* GroupCreateCollectionViewCell.swift */,
+				A765A97E213CBF5000881F1B /* GroupCreateHeaderTableViewCell.swift */,
+				A765A980213CC3C000881F1B /* CollectionViewConstants.swift */,
+			);
+			path = GroupCreation;
+			sourceTree = "<group>";
+		};
 		A76DF54C20CC304F00B98A09 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
@@ -906,6 +934,7 @@
 				A75B45992133F691009D2701 /* SubjectChangeViewController.swift */,
 				A7817ABF2134AE1B00ECCF8C /* ParticipantListViewController.swift */,
 				A75F0819213752B8001065AA /* GroupImageViewController.swift */,
+				A765A96E213C88F900881F1B /* GroupCreateViewController.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -923,6 +952,7 @@
 		A79A766420C4B43F00FCE198 /* ContactPackage */ = {
 			isa = PBXGroup;
 			children = (
+				A765A96B213C887700881F1B /* GroupCreation */,
 				A77D3FD12131822500D016D6 /* GroupInformation */,
 				A7276D37211078EF00CAC67C /* Search */,
 				A79A767A20C5C77E00FCE198 /* Collections */,
@@ -960,6 +990,8 @@
 				A774AC9B2131A1C500848B79 /* back.png */,
 				A774ACA52132087000848B79 /* back_right.png */,
 				A7C4F1C9213BE94300C76EEF /* quill.png */,
+				A765A978213C98CE00881F1B /* camera_group.png */,
+				A765A97A213C993C00881F1B /* photo-camera-outline-2.png */,
 				A79A766C20C5BDC800FCE198 /* ContactIcons */,
 			);
 			path = Images;
@@ -1208,6 +1240,7 @@
 				A7F35D9C21169A94005DA851 /* alarm_x.png in Resources */,
 				A79A767620C5BF6600FCE198 /* cancel_gray.png in Resources */,
 				4564E46320B978F9003B0D16 /* Localizable.strings in Resources */,
+				A765A97B213C993D00881F1B /* photo-camera-outline-2.png in Resources */,
 				4564E41D20B95576003B0D16 /* LaunchScreen.storyboard in Resources */,
 				A79A766E20C5BDE800FCE198 /* user.png in Resources */,
 				4564E44220B958C7003B0D16 /* GoogleService-Info.plist in Resources */,
@@ -1227,6 +1260,7 @@
 				A75E80A9212ED07400EA0D03 /* jakob-owens-168413-unsplash.jpg in Resources */,
 				A7369B0020C86A5C001692F4 /* check-mark.png in Resources */,
 				A75E80A1212DE91100EA0D03 /* jon-tyson-762647-unsplash.jpg in Resources */,
+				A765A979213C98CF00881F1B /* camera_group.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1399,6 +1433,7 @@
 				451E9EFE2139318E00185925 /* REShare.swift in Sources */,
 				4564E41320B95574003B0D16 /* AppDelegate.swift in Sources */,
 				A79A766320C36C7E00FCE198 /* ContactViewController.swift in Sources */,
+				A765A971213C89DA00881F1B /* GroupCreateTableViewCell.swift in Sources */,
 				45356B2920C43C3C00E0733F /* LocationManager.swift in Sources */,
 				A774ACA02131FF4300848B79 /* GroupInfoTableViewCell.swift in Sources */,
 				4564E46F20B999AD003B0D16 /* DesignableUITextField.swift in Sources */,
@@ -1410,8 +1445,10 @@
 				A774ACA2213204FB00848B79 /* GroupInfoHeaderTableViewCell.swift in Sources */,
 				A75E80A5212EA08F00EA0D03 /* MediaPermissionUnAuthorizedViewController.swift in Sources */,
 				A7276D482110A5D000CAC67C /* SearchProcessTableViewCell.swift in Sources */,
+				A765A981213CC3C000881F1B /* CollectionViewConstants.swift in Sources */,
 				A7EC57D1211B31EC0078F631 /* REError.swift in Sources */,
 				45DEEA9920E16D1400FE484E /* User.swift in Sources */,
+				A765A96D213C88A100881F1B /* GroupCreateView.swift in Sources */,
 				A72173B820E778D600F73B9C /* GeoFireData.swift in Sources */,
 				4564E45E20B975C4003B0D16 /* LocalizedConstants.swift in Sources */,
 				A7276D542110C5F400CAC67C /* Empty.swift in Sources */,
@@ -1428,6 +1465,7 @@
 				A774ACA821321A5C00848B79 /* Participant.swift in Sources */,
 				451E9EFF2139318E00185925 /* REShareListResponse.swift in Sources */,
 				A7E2F85221128CCC00214066 /* REResponse_error.swift in Sources */,
+				A765A97F213CBF5000881F1B /* GroupCreateHeaderTableViewCell.swift in Sources */,
 				A7E2F84D2111EFD600214066 /* RESearchResult.swift in Sources */,
 				A709F68B21009E65003FF2C5 /* ConfirmationViewController.swift in Sources */,
 				A7EC57CD211947490078F631 /* REGroupRequestResult_resultArrayParticipantList_item.swift in Sources */,
@@ -1435,6 +1473,7 @@
 				451E9F162139366300185925 /* DiscardableImageCacheItem.swift in Sources */,
 				4527E05520C8605800ECB3D1 /* MainTabBarViewController.swift in Sources */,
 				451E9F012139318E00185925 /* REAWSManager.swift in Sources */,
+				A765A96F213C88F900881F1B /* GroupCreateViewController.swift in Sources */,
 				A7EC57C42118BC7B0078F631 /* REGroupRequestResult.swift in Sources */,
 				A75B4594213228C7009D2701 /* HeaderInfoTableViewCell.swift in Sources */,
 				A774ACA42132077300848B79 /* GroupInformationHeaderView.swift in Sources */,
@@ -1492,6 +1531,7 @@
 				A7276D25210E1E8A00CAC67C /* AWSManager.swift in Sources */,
 				A7E2F85321128CCC00214066 /* REResponse.swift in Sources */,
 				A77D3FD32131824B00D016D6 /* GroupInformationView.swift in Sources */,
+				A765A97D213CBD9100881F1B /* GroupCreateCollectionViewCell.swift in Sources */,
 				A7812EAF21247FED00460117 /* MenuBar4CollectionViewCell.swift in Sources */,
 				A79A765D20C368B700FCE198 /* TemporaryViewController.swift in Sources */,
 				452001D220CC439C00C1ED22 /* ShareCollectionViewCell.swift in Sources */,

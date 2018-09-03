@@ -346,6 +346,44 @@ class APIGatewayManager {
         
     }
     
+    func createNewGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
+        
+        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
+            
+            if task.error != nil {
+                
+                print("Remove from group failed")
+                
+            } else {
+                
+                if let result = task.result {
+                    
+                    if let error = result.error {
+                        
+                        if error.code != 1 {
+                            
+                            print("Error code : \(error.code)")
+                            print("Error message : \(error.message)")
+                            
+                        } else {
+                            
+                            print("Remove from group is ok!")
+                            completion(result, true)
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            return nil
+            
+        }
+        
+    }
+        
     
     
     /// To get friendList fron neo4j

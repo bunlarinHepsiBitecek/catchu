@@ -44,7 +44,7 @@ class GroupInformationView: UIView {
     var cameraContainer = UIView()
     var cameraImageView = UIImageView()
     
-    var staticColor = #colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1)
+    var staticColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
     
     // static variables
     static var editButtonLeadingAnchor : CGFloat = 30.0
@@ -199,6 +199,7 @@ extension GroupInformationView {
         
         groupNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: GroupInformationView.labelWidthSize, height: GroupInformationView.imageViewFrameVisiblePartHeight))
         groupNameLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        groupNameLabel.font = UIFont(name: "System", size: 20)
         groupNameLabel.text = group.groupName
         groupNameLabel.isUserInteractionEnabled = true
         groupNameLabel.tag = 1
@@ -291,7 +292,7 @@ extension GroupInformationView {
         
         let constraintsForCameraButton = groupNameView.safeAreaLayoutGuide
         
-        cameraContainer.trailingAnchor.constraint(equalTo: constraintsForCameraButton.trailingAnchor, constant: -30).isActive = true
+        cameraContainer.trailingAnchor.constraint(equalTo: constraintsForCameraButton.trailingAnchor, constant: -10).isActive = true
         cameraContainer.bottomAnchor.constraint(equalTo: safeAreaForGroupNameView.bottomAnchor, constant: -5).isActive = true
         cameraContainer.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cameraContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
@@ -299,7 +300,7 @@ extension GroupInformationView {
         let constraintsForEditButton = cameraContainer.safeAreaLayoutGuide
         let relationWithGroupNameLabel = groupNameLabel.safeAreaLayoutGuide
         
-        editButtonContainer.trailingAnchor.constraint(equalTo: constraintsForEditButton.leadingAnchor, constant: -30).isActive = true
+        editButtonContainer.trailingAnchor.constraint(equalTo: constraintsForEditButton.leadingAnchor, constant: -10).isActive = true
         editButtonContainer.bottomAnchor.constraint(equalTo: safeAreaForGroupNameView.bottomAnchor, constant: -5).isActive = true
         editButtonContainer.heightAnchor.constraint(equalToConstant: 40).isActive = true
         editButtonContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
@@ -621,15 +622,19 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
         let y = GroupInformationView.imageViewFrameHeight - (scrollView.contentOffset.y + GroupInformationView.imageViewFrameHeight)
         let height = min(max(y, GroupInformationView.imageViewFrameVisiblePartHeight), GroupInformationView.imageViewFrameMaxHeight + topView.frame.height)
         
-        coverView.backgroundColor = staticColor.withAlphaComponent(GroupInformationView.imageViewFrameHeight / height)
+        coverView.backgroundColor = staticColor.withAlphaComponent(50 / height)
+//        topView.backgroundColor = staticColor.withAlphaComponent(50 / height)
         
-        if height >= GroupInformationView.imageViewFrameHeight {
+        if height >= 250 {
             
             coverView.backgroundColor = staticColor.withAlphaComponent(0)
+//            topView.backgroundColor = staticColor.withAlphaComponent(0)
+            
         
-        } else if height <= GroupInformationView.imageViewFrameVisiblePartHeight {
+        } else if height <= 50 {
             
             coverView.backgroundColor = staticColor.withAlphaComponent(1)
+//            topView.backgroundColor = staticColor.withAlphaComponent(1)
             
         }
         

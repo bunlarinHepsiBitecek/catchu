@@ -49,6 +49,8 @@
 "RemoveFromGroup" = "Gruptan Çıkar";
 "gotoInfo" = "Bilgi";
 "groupInformation" = "Group Bilgileri";
+"createGroup" = "Grup Oluştur";
+"createGroupName" = "Grubunun için bir isim belirleyebilirsiniz.";
 
 // notification variables
 "CatchSomething" = "Bir şey yakaladınız :)";

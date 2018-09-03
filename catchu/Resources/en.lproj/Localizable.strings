@@ -55,6 +55,8 @@
 "RemoveFromGroup" = "Remove From Group";
 "gotoInfo" = "Info";
 "groupInformation" = "Group Information";
+"createGroup" = "Create Group";
+"createGroupName" = "You can set a specific name for your group.";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";

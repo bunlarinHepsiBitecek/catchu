@@ -41,4 +41,12 @@ public class REGroupRequestResult : AWSModel {
     class func resultArrayParticipantListJSONTransformer() -> ValueTransformer{
         return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: REUserProfileProperties.self);
     }
+    
+    func display() {
+        for item in resultArray! {
+            
+            item.displayDetails()
+            
+        }
+    }
 }

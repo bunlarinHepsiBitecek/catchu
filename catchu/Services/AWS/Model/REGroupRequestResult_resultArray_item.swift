@@ -35,6 +35,16 @@ public class REGroupRequestResult_resultArray_item : AWSModel {
         params["groupAdmin"] = "groupAdmin"
         
         return params
-    }    
+    }
+    
+    func displayDetails() {
+        
+        print("groupid : \(groupid)")
+        print("name : \(name)")
+        print("groupPhotoUrl : \(groupPhotoUrl)")
+        print("createAt : \(createAt)")
+        print("groupAdmin : \(groupAdmin)")
+        
+    }
     
 }

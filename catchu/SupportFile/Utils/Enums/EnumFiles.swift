@@ -68,6 +68,7 @@ enum RequestType : String {
     case update_group_info = "UPDATE_GROUP_INFO"
     case add_participant_into_group = "ADD_PARTICIPANT_INTO_GROUP"
     case exit_group = "EXIT_GROUP"
+    case create_group = "CREATE_GROUP"
     
  
 }

@@ -92,6 +92,10 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
             
             print("groups")
             
+        case .groupCreation:
+            
+            startGroupCreationProcess()
+            
         default:
             print("nothing")
         }
@@ -100,6 +104,7 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
     
     @IBAction func segmentedButtonChanged(_ sender: Any) {
         
+        changeButtonTitleAccordingToSegments()
         setInitialSegmentPropertiesForContainerViewPresentations()
         
     }
@@ -108,6 +113,17 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
 
 // view functions
 extension ContactView {
+    
+    func startGroupCreationProcess() {
+        
+        if let destinationViewController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupCreateViewController) as? GroupCreateViewController {
+            
+            destinationViewController.referenceOfContactViewController = self.referenceMasterViewController
+            referenceMasterViewController.present(destinationViewController, animated: true, completion: nil)
+            
+        }
+        
+    }
     
     func requestPermissionWithCompletionhandler(completion: ((Bool) -> (Void))? ) {
         
@@ -296,6 +312,39 @@ extension ContactView {
 
 // segmented button functions
 extension ContactView {
+    
+    func changeButtonTitleAccordingToSegments() {
+        
+        var titleForButton = ""
+        var fontSize = 0
+        
+        switch returnSegment() {
+        case .friends, .groups:
+            
+            titleForButton = LocalizedConstants.TitleValues.ButtonTitle.add
+            fontSize = 15
+
+        case .groupCreation:
+            
+            titleForButton = LocalizedConstants.TitleValues.ButtonTitle.createGroup
+            fontSize = 4
+            
+        default:
+            print("do nothing")
+        }
+        
+        DispatchQueue.main.async {
+            
+            UIView.transition(with: self.confirmationButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                
+                self.confirmationButton.setTitle(titleForButton, for: .normal)
+                self.confirmationButton.titleLabel?.font = UIFont(name: "System", size: CGFloat(fontSize))
+                
+            })
+            
+        }
+        
+    }
     
     func setInitialSegmentPropertiesForContainerViewPresentations() {
         
