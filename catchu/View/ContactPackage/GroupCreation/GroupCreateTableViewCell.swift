@@ -68,6 +68,8 @@ extension GroupCreateTableViewCell: UICollectionViewDelegate, UICollectionViewDa
         
         collectionView.deleteItems(at: [indexPath])
         
+//        collectionView.layoutIfNeeded()
+//        
 //        self.referenceOfGroupCreateView.tableView.reloadData()
         self.referenceOfGroupCreateView.referenceOfGroupCreateViewController.referenceOfContactViewController.childReferenceFriendContainerFriendController?.tableView.reloadData()
         self.referenceOfGroupCreateView.referenceOfGroupCreateViewController.referenceOfContactViewController.childReferenceFriendContainerFriendController?.collectionView.reloadData()

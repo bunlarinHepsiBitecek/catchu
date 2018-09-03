@@ -14,9 +14,18 @@ enum ImageProcessPickerType {
     case profilePicture
 }
 
+protocol ImageHandlerProtocol: class {
+    
+    func returnImage(inputImage : UIImage)
+    
+}
+
 class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     public static var shared = ImageVideoPickerHandler()
+    public var returnedImage = UIImage()
+    
+    weak var delegate: ImageHandlerProtocol!
     
     // func createActionSheetForImageChoiceProcess(inputRequest : ImageProcessPickerType, inputCallerViewController : CallerViewController) {
     func createActionSheetForImageChoiceProcess(inputRequest : ImageProcessPickerType) {
@@ -195,7 +204,12 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         
         if let selectedImage = selectedImageFromPicker {
 
-            returnSelectedImageForSpecificPurposes(inputImage: selectedImage)
+//            returnedImage = selectedImage
+            
+            delegate.returnImage(inputImage: selectedImage)
+            
+//            returnSelectedImageForSpecificPurposes(inputImage: selectedImage)
+            
             
         }
         
@@ -203,7 +217,11 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         
     }
     
-    /// The function below feeds image to profile4 view user profile image view
+    /// The function below must be maintained for picker view's imageview settings
+    ///
+    ///     Profile4ViewController
+    ///     EditProfileViewController
+    ///     GroupInformationViewController
     ///
     /// - Parameter inputImage: selected image from image picker
     func returnSelectedImageForSpecificPurposes(inputImage : UIImage) {
@@ -229,6 +247,14 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         } else if let destinationController = UIApplication.topViewController()?.presentingViewController as? EditProfileViewController {
             
             destinationController.editProfile4View.profileImage.image = inputImage
+            
+        } else if let destinationController = UIApplication.topViewController()?.presentingViewController as? GroupInformationViewController {
+            
+            destinationController.groupInformationView.imageView.image = inputImage
+            
+        } else if let destinationController = UIApplication.topViewController()?.presentingViewController as? GroupImageViewController {
+            
+            destinationController.selectedPhotoScrollview.imageToDisplay = inputImage
             
         }
         

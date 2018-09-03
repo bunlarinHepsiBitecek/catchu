@@ -31,6 +31,7 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
         DispatchQueue.main.async {
            
             let temp = UIImageView()
+            
             temp.setImagesFromCacheOrFirebaseForFriend(self.group.groupPictureUrl)
             
             self.selectedPhotoScrollview.imageToDisplay = temp.image
@@ -121,7 +122,9 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
         
         if sender.state == .ended {
 
+            ImageVideoPickerHandler.shared.delegate = self
             ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
+            
             
         }
         
@@ -133,4 +136,12 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
         
     }
 
+}
+
+extension GroupImageViewController: ImageHandlerProtocol {
+    func returnImage(inputImage: UIImage) {
+        selectedPhotoScrollview.imageToDisplay = inputImage
+    }
+    
+    
 }

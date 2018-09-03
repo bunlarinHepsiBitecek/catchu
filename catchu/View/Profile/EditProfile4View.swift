@@ -127,10 +127,18 @@ class EditProfile4View: UIView {
     
     @IBAction func changeProfilePhotoButtonTapped(_ sender: Any) {
         
+        ImageVideoPickerHandler.shared.delegate = self
         ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
         
     }
     
+    
+}
+
+extension EditProfile4View: ImageHandlerProtocol {
+    func returnImage(inputImage: UIImage) {
+        profileImage.image = inputImage
+    }
     
 }
 

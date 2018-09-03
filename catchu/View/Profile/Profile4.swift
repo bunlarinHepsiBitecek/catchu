@@ -55,6 +55,13 @@ class Profile4: UIView {
  
 }
 
+extension Profile4: ImageHandlerProtocol {
+    func returnImage(inputImage: UIImage) {
+        profileImage.image = inputImage
+    }
+    
+}
+
 extension Profile4: UIGestureRecognizerDelegate {
     
     func initialize() {
@@ -91,6 +98,7 @@ extension Profile4: UIGestureRecognizerDelegate {
     @objc func startImagePickerProcess(_ inputTapGestureRecognizer : UITapGestureRecognizer) {
         
         //ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
+        ImageVideoPickerHandler.shared.delegate = self
         ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
         
     }

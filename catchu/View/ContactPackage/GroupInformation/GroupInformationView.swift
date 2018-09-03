@@ -88,6 +88,12 @@ class GroupInformationView: UIView {
 // MARK: - Major Functions
 extension GroupInformationView {
     
+    func updateGroupImageProcess(inputImage : UIImage) {
+        
+        print("UpdateImageProcess starts")
+        
+    }
+    
     func setupExitViewFrameHeight() {
         
         print("UIApplication.shared.statusBarFrame.height :\(UIApplication.shared.statusBarFrame.height)")
@@ -179,8 +185,8 @@ extension GroupInformationView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         imageView.frame = CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: GroupInformationView.imageViewFrameHeight)
-        imageView.image = UIImage.init(named: "8771.jpg")
-//        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
+//        imageView.image = UIImage.init(named: "8771.jpg")
+        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
@@ -230,12 +236,6 @@ extension GroupInformationView {
         editButtonContainer.layer.cornerRadius = 20
         
         groupNameView.addSubview(editButtonContainer)
-        
-        
-        
-        
-        
-        
         
         
         // edit button image
@@ -340,6 +340,7 @@ extension GroupInformationView {
             
         }
         
+        ImageVideoPickerHandler.shared.delegate = self
         ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
         
     }
@@ -424,6 +425,13 @@ extension GroupInformationView {
 //        exitView.layer.addSublayer(bottomBorder4)
 //        exitView.layer.addSublayer(bottomBorder5)
         
+    }
+    
+}
+
+extension GroupInformationView: ImageHandlerProtocol {
+    func returnImage(inputImage: UIImage) {
+        imageView.image = inputImage
     }
     
 }
@@ -563,12 +571,12 @@ extension GroupInformationView: UIGestureRecognizerDelegate {
                 
             } else {
                 
+                ImageVideoPickerHandler.shared.delegate = self
                 ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
                 
             }
             
         }
-        
         
     }
     

@@ -12,7 +12,7 @@ import Firebase
 extension UIImageView {
     
     func setImagesFromCacheOrFirebaseForFriend(_ urlString: String) {
-        
+        print("setImagesFromCacheOrFirebaseForFriend starts")
         self.image = nil
         
         if let tempImage = SectionBasedFriend.shared.cachedFriendProfileImages.object(forKey: urlString as NSString) {
@@ -23,36 +23,41 @@ extension UIImageView {
             
             if !urlString.isEmpty {
                 
-                let url = URL(string: urlString)
-                
-                let request = URLRequest(url: url!)
-                
-                let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
+//                let url = URL(string: urlString)
+                if let url = URL(string: urlString) {
                     
-                    if error != nil {
+                    print("url : \(url)")
+                    
+                    let request = URLRequest(url: url)
+                    
+                    let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
                         
-                        if let errorMessage = error as NSError? {
+                        if error != nil {
                             
-                            print("errorMessage : \(errorMessage.localizedDescription)")
+                            if let errorMessage = error as NSError? {
+                                
+                                print("errorMessage : \(errorMessage.localizedDescription)")
+                                
+                            }
                             
+                        } else {
+                            
+                            if let image = UIImage(data: data!) {
+                                
+                                DispatchQueue.main.async(execute: {
+                                    
+                                    SectionBasedFriend.shared.cachedFriendProfileImages.setObject(image, forKey: urlString as NSString)
+                                    
+                                    self.image = image
+                                    
+                                })
+                            }
                         }
-                        
-                    } else {
-                        
-                        if let image = UIImage(data: data!) {
-                            
-                            DispatchQueue.main.async(execute: {
-
-                                SectionBasedFriend.shared.cachedFriendProfileImages.setObject(image, forKey: urlString as NSString)
-
-                                self.image = image
-
-                            })
-                        }
-                    }
-                })
-                
-                task.resume()
+                    })
+                    
+                    task.resume()
+                    
+                }
             }
         }
     }

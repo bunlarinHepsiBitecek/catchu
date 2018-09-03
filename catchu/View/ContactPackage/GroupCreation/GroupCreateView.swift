@@ -10,7 +10,7 @@ import UIKit
 
 class GroupCreateView: UIView {
 
-    @IBOutlet var groupName: UITableView!
+    @IBOutlet var groupName: UITextField!
     @IBOutlet var cancelButton: UILabel!
     @IBOutlet var topicLabel: UILabel!
     @IBOutlet var doneButton: UIButton!
@@ -73,18 +73,24 @@ extension GroupCreateView {
     
     func setupViewSettings() {
         
+        print("self.groupName.frame.origin.x : \(self.groupName.frame.origin.x)")
+        print("self.groupName.frame.origin.y : \(self.groupName.frame.origin.y)")
+        print("self.groupName.frame.height : \(self.groupName.frame.height)")
+        print("self.groupName.frame.width : \(self.groupName.frame.width)")
+        
         let topLayer = CALayer()
-        topLayer.frame = CGRect(x: self.groupName.frame.origin.x, y: self.groupName.frame.origin.y + 0.3, width: self.groupName.frame.width, height: 0.3)
+        topLayer.frame = CGRect(x: 0, y: 0.3, width: self.groupName.frame.width, height: 0.3)
         topLayer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
-        
         let bottomLayer = CALayer()
-        bottomLayer.frame = CGRect(x: self.groupName.frame.origin.x, y: self.groupName.frame.height - 0.3, width: self.groupName.frame.width, height: 0.3)
-        bottomLayer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        
+        bottomLayer.frame = CGRect(x: 0, y: self.groupName.frame.height - 0.3, width: self.groupName.frame.width, height: 0.3)
+        bottomLayer.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+
         groupName.layer.addSublayer(topLayer)
         groupName.layer.addSublayer(bottomLayer)
         
+//        groupName.layer.masksToBounds = true
+
         detailLabel.text = LocalizedConstants.TitleValues.LabelTitle.createGroupName
         
     }
@@ -105,8 +111,16 @@ extension GroupCreateView: UIGestureRecognizerDelegate {
     
     @objc func triggerPictureChoiseProcess(_ sender : UITapGestureRecognizer) {
         
+        ImageVideoPickerHandler.shared.delegate = self
         ImageVideoPickerHandler.shared.createActionSheetForImageChoiceProcess(inputRequest: .profilePicture)
         
+    }
+    
+}
+
+extension GroupCreateView: ImageHandlerProtocol {
+    func returnImage(inputImage: UIImage) {
+        imageView.image = inputImage
     }
     
 }

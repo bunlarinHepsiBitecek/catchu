@@ -93,7 +93,7 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
             print("groups")
             
         case .groupCreation:
-            
+
             startGroupCreationProcess()
             
         default:
@@ -115,6 +115,12 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
 extension ContactView {
     
     func startGroupCreationProcess() {
+        
+        if SectionBasedFriend.shared.selectedUserArray.count <= 0 {
+            
+            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: "Please select one participant at least", preferredStyle: .alert, actionTitle: "OK", actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+            
+        }
         
         if let destinationViewController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupCreateViewController) as? GroupCreateViewController {
             
