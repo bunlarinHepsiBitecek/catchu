@@ -22,6 +22,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var currentLocation: CLLocation!
     weak var delegete: LocationManagerDelegate!
     
+    var externalViewInitialize : Bool = false
+    
     override init() {
         super.init()
         self.locationManager = CLLocationManager()
@@ -96,7 +98,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         if let currentLocation = currentLocation {
             if (location.coordinate.longitude == currentLocation.coordinate.longitude &&
-                location.coordinate.latitude == currentLocation.coordinate.latitude) {
+                location.coordinate.latitude == currentLocation.coordinate.latitude) && !externalViewInitialize {
                 return
             }
         }

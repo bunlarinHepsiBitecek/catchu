@@ -187,6 +187,8 @@ struct Constants {
             static let collectionViewDataItemCell3: String = "itemCell3"
             static let collectionViewDataItemCell4: String = "itemCell4"
             static let groupCreateSelectedParticipantCell: String = "groupCreateSelectedParticipantCell"
+            static let sliderShareTypeCell : String = "sliderShareTypeCell"
+            static let shareFunctionCell : String = "shareFunctionCell"
             
         }
         

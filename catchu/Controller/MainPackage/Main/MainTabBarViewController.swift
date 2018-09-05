@@ -10,6 +10,8 @@ import UIKit
 
 class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
+    var selectedIndexInfo : Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,9 +51,14 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             
             if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ShareDataViewController) as? ShareDataViewController {
                 
+                destinationController.priorActiveTab = selectedIndexInfo
                 self.present(destinationController, animated: true, completion: nil)
                 
             }
+            
+        } else {
+            
+            selectedIndexInfo = tabBarController.selectedIndex
             
         }
         
