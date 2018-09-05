@@ -62,13 +62,11 @@ class TakasiViewController: UIViewController, UITableViewDelegate, UITableViewDa
         inputBody?.requestedUserid = User.shared.userID
         
         client.requestProcessPost(body: inputBody!).continueWith { (task) -> Any? in
-            print("task : \(task.result)")
-            
             
             if task.error != nil {
-                print("error : \(task.error)")
+                print("error : \(String(describing: task.error))")
             }else {
-                print("task result :\(task.result)")
+                print("task result :\(String(describing: task.result))")
             }
             
             return nil

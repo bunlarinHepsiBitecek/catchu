@@ -247,7 +247,16 @@ extension ParticipantListView {
                 
             }
             
-            title = title + " and " + "\(SectionBasedParticipant.sharedParticipant.selectedUserArray.count - Constants.NumericConstants.INTEGER_FOUR)" + " to " +  "\"" + group.groupName + "\"" + " group."
+            let countValue = "\(SectionBasedParticipant.sharedParticipant.selectedUserArray.count - Constants.NumericConstants.INTEGER_FOUR)"
+            let part1 = " and " + countValue
+            var part2 = ""
+            if let groupName = group.groupName {
+                part2 = " to \"" + groupName
+            }
+            let part3 = "\" group."
+            let part4 = part1 + part2 + part3
+            
+            title = title + part4
             
             
         } else {
@@ -269,7 +278,9 @@ extension ParticipantListView {
 
             }
             
-            title =  title + " to " + "\"" + group.groupName + "\"" + " group."
+            if let groupName = group.groupName {
+                title =  title + " to \"" + groupName + "\" group."
+            }
             
         }
         
@@ -313,7 +324,9 @@ extension ParticipantListView {
                 
                 for item in SectionBasedParticipant.sharedParticipant.selectedUserArray {
                     
-                    Participant.shared.participantDictionary[self.group.groupID]?.append(item)
+                    if let groupid = self.group.groupID {
+                        Participant.shared.participantDictionary[groupid]?.append(item)
+                    }
                     
                 }
                 
@@ -715,21 +728,20 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
             
         }
         
-        if let userList = Participant.shared.participantDictionary[group.groupID] {
-            
-            for item in userList {
+        if let groupid = group.groupID {
+            if let userList = Participant.shared.participantDictionary[groupid] {
                 
-                if item.userID == cell.participant.userID {
+                for item in userList {
                     
-                    cell.setParticipantAlreadyInGroup()
+                    if item.userID == cell.participant.userID {
+                        
+                        cell.setParticipantAlreadyInGroup()
+                        
+                    }
                     
                 }
-                
             }
-            
         }
-        
-        print("ZALIM ZALIM 3")
         
         return cell
         

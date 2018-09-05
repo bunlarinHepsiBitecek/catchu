@@ -61,7 +61,12 @@ class GroupInformationView: UIView {
     
     var referenceViewController = GroupInformationViewController()
     
+    var activityIndicator: UIActivityIndicatorView!
+    var activityIndicatorContainerView : UIView!
+    
     @IBOutlet var tableView: UITableView!
+    
+    weak var delegate : GroupInformationUpdateProtocol!
     
     func initialize() {
         
@@ -77,20 +82,71 @@ class GroupInformationView: UIView {
 
     @IBAction func backBarButtonClicked(_ sender: Any) {
 
-        referenceViewController.referenceOfContainerGroupViewController.tableView.reloadData()
+        //referenceViewController.referenceOfContainerGroupViewController.tableView.reloadData()
+        
+        updateContainerGroupViewControllerTableView()
         referenceViewController.dismiss(animated: true, completion: nil)
         
     }
     
 }
 
-
 // MARK: - Major Functions
 extension GroupInformationView {
     
-    func updateGroupImageProcess(inputImage : UIImage) {
+    func updateContainerGroupViewControllerTableView() {
         
-        print("UpdateImageProcess starts")
+        Group.shared.updateGroupInfoInGroupListWithGroupObject(updatedGroup: group)
+        
+        self.delegate.syncGroupInfoWithClient(inputGroup: group, completion: { (result) in
+            
+            if result {
+                
+                
+            }
+            
+        })
+        
+    }
+    
+    func showSpinning() {
+        
+        activityIndicatorContainerView = UIView()
+        
+        activityIndicatorContainerView.frame = CGRect(x: 0, y: 0, width: imageView.frame.width, height: imageView.frame.height)
+        
+        activityIndicatorContainerView.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1).withAlphaComponent(0.5)
+        imageView.addSubview(activityIndicatorContainerView)
+        
+        activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        
+        print("center x : \(String(describing: imageView.center.x))")
+        print("center y : \(String(describing: imageView.center.y))")
+        
+        activityIndicator.center = CGPoint(x: imageView.center.x, y: imageView.center.y)
+        
+        activityIndicator.startAnimating()
+        
+        activityIndicatorContainerView.addSubview(activityIndicator)
+        
+    }
+    
+    func stopSpinning() {
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+            //            self.doneButton.willRemoveSubview(self.tempView)
+            self.activityIndicatorContainerView.removeFromSuperview()
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                self.activityIndicatorContainerView.layoutIfNeeded()
+                
+            })
+        }
+        
         
     }
     
@@ -101,26 +157,14 @@ extension GroupInformationView {
         let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top
         let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom
         
-        print("topPadding ? \(topPadding)")
-        print("bottomPadding ? \(bottomPadding)")
-        
-        print("statusbar Heigth : \(UIApplication.shared.statusBarFrame.height)")
-        
-//        let safeAreaHeight :CGFloat = UIScreen.main.bounds.height - (topPadding! + bottomPadding!)
         let safeAreaHeight :CGFloat = UIScreen.main.bounds.height - (UIApplication.shared.statusBarFrame.height + bottomPadding!)
-        print("safeAreaHeight : \(safeAreaHeight)")
-
         let maxTableViewContainerSize = safeAreaHeight - topView.frame.height - GroupInformationView.imageViewFrameVisiblePartHeight
-        
         let tableViewContentSize = returnTableViewContentSize()
-        print("tableViewContentSize : \(tableViewContentSize)")
-        
         let difference = maxTableViewContainerSize - tableViewContentSize
         
         if tableViewContentSize < maxTableViewContainerSize && difference > GroupInformationView.exitViewFrameMinimumVisiblePartHeight {
             
             exitView.frame.size.height = maxTableViewContainerSize - tableViewContentSize
-            print("exitView.frame.size.height : \(exitView.frame.size.height)")
             
         }
         
@@ -142,8 +186,11 @@ extension GroupInformationView {
     func returnParticipantCount() -> Int {
         
         var participantCount = 0
-        if let userArray = Participant.shared.participantDictionary[group.groupID] {
-            participantCount = userArray.count
+        
+        if let groupid = group.groupID {
+            if let userArray = Participant.shared.participantDictionary[groupid] {
+                participantCount = userArray.count
+            }
         }
         
         return participantCount
@@ -186,7 +233,9 @@ extension GroupInformationView {
         
         imageView.frame = CGRect(x: 0, y: topView.frame.height, width: UIScreen.main.bounds.size.width, height: GroupInformationView.imageViewFrameHeight)
 //        imageView.image = UIImage.init(named: "8771.jpg")
-        imageView.setImagesFromCacheOrFirebaseForFriend(group.groupPictureUrl)
+        if let url = group.groupPictureUrl {
+            imageView.setImagesFromCacheOrFirebaseForGroup(url)
+        }
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
@@ -383,9 +432,11 @@ extension GroupInformationView {
     
     func setParticipantCount() {
         
-        if let count = Participant.shared.participantDictionary[group.groupID]?.count {
-            participantTag.text = "\(count)" + " Participant(s)"
-            
+        if let groupid = group.groupID {
+            if let count = Participant.shared.participantDictionary[groupid]?.count {
+                participantTag.text = "\(count)" + " Participant(s)"
+                
+            }
         }
         
     }
@@ -429,13 +480,49 @@ extension GroupInformationView {
     
 }
 
+
+// MARK: - ImageHandlerProtocol
 extension GroupInformationView: ImageHandlerProtocol {
     func returnImage(inputImage: UIImage) {
         imageView.image = inputImage
+        
+        startAWSGroupInfoUpdateProcess(inputImage: inputImage)
+        
+    }
+    
+    func startAWSGroupInfoUpdateProcess(inputImage : UIImage) {
+        
+        group.displayGroupProperties()
+
+        showSpinning()
+
+        APIGatewayManager.shared.startImageUploadProcess(inputImage: inputImage, inputGroup: group) { (requestSuccess, s3BucketResult, updatedGroup) in
+            
+            if requestSuccess {
+                
+                DispatchQueue.main.async {
+                    
+                    // remove old url from cache and set new image
+                    if let url = self.group.groupPictureUrl {
+                        SectionBasedFriend.shared.cachedFriendProfileImages.removeObject(forKey: NSString(string: url))
+                        SectionBasedFriend.shared.cachedFriendProfileImages.setObject(inputImage, forKey: NSString(string: url))
+                    }
+                    
+                    // update view's group object
+                    updatedGroup.displayGroupProperties()
+                    self.group = updatedGroup
+                   
+                    self.group.displayGroupProperties()
+                    
+                    self.stopSpinning()
+                    
+                }
+            }
+        }
+        
     }
     
 }
-
 
 // MARK: - Gesture_Process
 extension GroupInformationView: UIGestureRecognizerDelegate {
@@ -586,8 +673,14 @@ extension GroupInformationView: UIGestureRecognizerDelegate {
 extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+        if let groupid = group.groupID {
+            if let userArray = Participant.shared.participantDictionary[groupid] {
+                return (userArray.count)
+            }
+        }
         
-        return (Participant.shared.participantDictionary[group.groupID]?.count)!
+        return 0
         
     }
     
@@ -609,7 +702,9 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
         
         cell.initializeProperties()
         
-        cell.participant = Participant.shared.participantDictionary[group.groupID]![indexPath.row]
+        if let groupid = group.groupID {
+            cell.participant = Participant.shared.participantDictionary[groupid]![indexPath.row]
+        }
         
         if cell.participant.userID == group.adminUserID {
             cell.adminLabel.text = "Admin"
@@ -732,10 +827,12 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
             
             if response {
                 
-                if let indexFound = Participant.shared.participantDictionary[self.group.groupID]?.index(where: { $0.userID == inputCell.participant.userID}) {
-                    
-                    Participant.shared.participantDictionary[self.group.groupID]?.remove(at: indexFound)
-                    
+                if let groupid = self.group.groupID {
+                    if let indexFound = Participant.shared.participantDictionary[groupid]?.index(where: { $0.userID == inputCell.participant.userID}) {
+                        
+                        Participant.shared.participantDictionary[groupid]?.remove(at: indexFound)
+                        
+                    }
                 }
           
                 DispatchQueue.main.async {

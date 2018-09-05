@@ -61,12 +61,13 @@ extension SubjectChangeViewController {
     func initializeViewController() {
         
         subjectTextField.text = group.groupName
-        subjectLetterCount.text = String(describing: maxLetterCount - group.groupName.count)
+        
+        if let count = group.groupName?.count {
+            subjectLetterCount.text = String(describing: maxLetterCount - count)
+        }
         
         subjectTextField.delegate = self
-        
         setupForTextFieldDidChangeRecognize()
-        
         doneButton.isEnabled = false
         
     }
@@ -117,15 +118,16 @@ extension SubjectChangeViewController {
             if response {
                 
                 print("Update process is successfull")
-                print("result : \(groupRequestResult.error?.code)")
-                print("result : \(groupRequestResult.error?.message)")
+                print("result : \(String(describing: groupRequestResult.error?.code))")
+                print("result : \(String(describing: groupRequestResult.error?.message))")
             
                 self.stopSpinning()
                 
-                self.updateInitialBasedGroupData()
+                //self.updateInitialBasedGroupData()
                 
                 DispatchQueue.main.async {
                     self.doneButton.isEnabled = false
+                    self.referenceGroupInfoView.group = self.group
                     self.referenceGroupInfoView.groupNameLabel.text = self.group.groupName
 //                    self.referenceGroupInfoView.groupName.text = self.group.groupName
                     self.dismiss(animated: true, completion: nil)
@@ -141,7 +143,10 @@ extension SubjectChangeViewController {
     /// Asagidaki fonksiyonun amacı group tableview ına geri döndüğümüzde neo4j deki güncellemenin yansıtılabilmesi
     func updateInitialBasedGroupData() {
         
-        Group.shared.updateGroupInfoInGroupList(inputGroupID: self.group.groupID, inputGroupName: self.group.groupName)
+        if let groupid = self.group.groupID, let groupName = self.group.groupName {
+            Group.shared.updateGroupInfoInGroupList(inputGroupID: groupid, inputGroupName: groupName)
+        }
+        
         SectionBasedGroup.shared.emptySectionBasedGroupData()
         SectionBasedGroup.shared.createInitialLetterBasedGroupDictionary()
         

@@ -167,6 +167,7 @@ struct Constants {
         static let GroupImageViewController: String = "GroupImageViewController"
         static let SubjectChangeViewController: String = "SubjectChangeViewController"
         static let GroupCreateViewController: String = "GroupCreateViewController"
+        static let ShareDataViewController: String = "ShareDataViewController"
         
     }
     

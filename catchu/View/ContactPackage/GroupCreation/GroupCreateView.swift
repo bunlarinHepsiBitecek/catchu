@@ -57,7 +57,7 @@ class GroupCreateView: UIView {
             
             if response {
                 
-                print("groupRequestResult : \(groupRequestResult.display())")
+//                print("groupRequestResult : \(groupRequestResult.display())")
                 
                 
             }

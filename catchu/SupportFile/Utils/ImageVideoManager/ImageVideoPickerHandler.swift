@@ -14,17 +14,10 @@ enum ImageProcessPickerType {
     case profilePicture
 }
 
-protocol ImageHandlerProtocol: class {
-    
-    func returnImage(inputImage : UIImage)
-    
-}
-
 class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     public static var shared = ImageVideoPickerHandler()
-    public var returnedImage = UIImage()
-    
+
     weak var delegate: ImageHandlerProtocol!
     
     // func createActionSheetForImageChoiceProcess(inputRequest : ImageProcessPickerType, inputCallerViewController : CallerViewController) {
@@ -35,8 +28,6 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         switch inputRequest {
         case .profilePicture:
             title = LocalizedConstants.PickerControllerStrings.chooseProfilePicture
-        default:
-            return
         }
         
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
@@ -65,8 +56,6 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         alertController.addAction(cameraAction)
         alertController.addAction(galeryAction)
         alertController.addAction(cancelAction)
-        
-        print("UIApplication.topViewController() : \(UIApplication.topViewController())")
         
         UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
         
@@ -182,7 +171,6 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         
     }
     
-    
     /// Image picker controller, after selecting picture, media, video etc to be used
     ///
     /// - Parameters:
@@ -204,59 +192,11 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         
         if let selectedImage = selectedImageFromPicker {
 
-//            returnedImage = selectedImage
-            
             delegate.returnImage(inputImage: selectedImage)
-            
-//            returnSelectedImageForSpecificPurposes(inputImage: selectedImage)
-            
             
         }
         
         picker.dismiss(animated: true, completion: nil)
-        
-    }
-    
-    /// The function below must be maintained for picker view's imageview settings
-    ///
-    ///     Profile4ViewController
-    ///     EditProfileViewController
-    ///     GroupInformationViewController
-    ///
-    /// - Parameter inputImage: selected image from image picker
-    func returnSelectedImageForSpecificPurposes(inputImage : UIImage) {
-        
-        print("returnSelectedImageForSpecificPurposes starts")
-        print("UIApplication.topViewController() : \(UIApplication.topViewController())")
-        print("UIApplication.topViewController().presentingViewController : \(UIApplication.topViewController()?.presentingViewController)")
-        
-        if let tabBarController = UIApplication.topViewController()?.presentingViewController as? MainTabBarViewController  {
-            
-            if let currentNavigationController = tabBarController.selectedViewController as? UINavigationController {
-                
-                print("currentNavigationController.topViewController : \(currentNavigationController.topViewController)")
-                
-                if let currenctViewController = currentNavigationController.topViewController as? Profile4ViewController {
-                    
-                    currenctViewController.profile4.setProfileImageFromExternal(input: inputImage)
-                 
-                }
-                
-            }
-            
-        } else if let destinationController = UIApplication.topViewController()?.presentingViewController as? EditProfileViewController {
-            
-            destinationController.editProfile4View.profileImage.image = inputImage
-            
-        } else if let destinationController = UIApplication.topViewController()?.presentingViewController as? GroupInformationViewController {
-            
-            destinationController.groupInformationView.imageView.image = inputImage
-            
-        } else if let destinationController = UIApplication.topViewController()?.presentingViewController as? GroupImageViewController {
-            
-            destinationController.selectedPhotoScrollview.imageToDisplay = inputImage
-            
-        }
         
     }
     
@@ -287,81 +227,3 @@ extension UIApplication {
         return controller
     }
 }
-
-//        switch inputViewControllerChoice {
-//        case .Profile4ViewController:
-//
-//            if let currentController = LoaderController.shared.currentViewController() as? MainTabBarViewController {
-//
-//                print("currentController : \(currentController)")
-//
-//                if let navigationController = currentController.selectedViewController as? UINavigationController {
-//
-//                    for viewController in navigationController.viewControllers {
-//
-//                        if let destinationController = viewController as? Profile4ViewController {
-//
-//                            //destinationController.present(alertController, animated: true, completion: nil)
-//                            return destinationController
-//
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
-//
-//        case .EditProfile4View:
-//
-//
-//            if let currentController = LoaderController.shared.currentViewController() as? UIViewController {
-//
-//                if let destinationViewController = currentController.presentedViewController as? EditProfileViewController {
-//
-//                    //destinationViewController.present(alertController, animated: true, completion: nil)
-//                    return destinationViewController
-//
-//                }
-//
-//            }
-//
-//        }
-
-//        print("UIApplication.topViewController() : \(UIApplication.topViewController())")
-//        print("returnCurrentViewController : \(LoaderController.shared.returnCurrentViewController())")
-
-//        if let destinationViewController = UIApplication.topViewController() as? Profile4ViewController {
-//
-//            destinationViewController.profile4.setProfileImageFromExternal(input: inputImage)
-//
-//        } else if let destinationViewContoller = UIApplication.topViewController() as? EditProfileViewController {
-//
-//            destinationViewContoller.editProfile4View.profileImage.image = inputImage
-//
-//        }
-
-//UIApplication.topViewController()?.dismiss(animated: true, completion: nil)
-
-
-
-//        if let currentViewController = LoaderController.shared.currentViewController() as? MainTabBarViewController {
-//
-//            if let currentNavigationController = currentViewController.selectedViewController as? UINavigationController {
-//
-//                for viewController in currentNavigationController.viewControllers {
-//
-//                    if let vc = viewController as? Profile4ViewController {
-//
-//                        vc.profile4.setProfileImageFromExternal(input: inputImage)
-//
-//                    }
-//
-//                }
-//
-//            }
-//
-//            currentViewController.dismiss(animated: true, completion: nil)
-//
-//        }
-

@@ -20,11 +20,16 @@ class REAWSManager {
     /// - Parameter completion: A RECommonS3BucketResult
     /// - Returns:
     /// - Author: Remzi Yildirim
-    private func getSignedUpload(completion : @escaping (_ result : RECommonS3BucketResult) -> Void) {
+    public func getSignedUpload(completion : @escaping (_ result : RECommonS3BucketResult) -> Void) {
         let extention = "jpg"
         
         RECatchUMobileAPIClient.default().commonSignedurlGet(_extension: extention).continueWith { (task) -> Any? in
             print("Task: \(task)")
+            
+            /*
+            if task.error != nil {
+                print("server network something cort")
+            }*/
             
             if let result = task.result {
                 completion(result)
@@ -102,13 +107,42 @@ class REAWSManager {
 // private function
 extension REAWSManager {
     
-    private func uploadFileToS3(commonS3BucketResult: RECommonS3BucketResult, completion : @escaping (_ result : Bool) -> Void) -> Void {
+    public func uploadFileToS3(commonS3BucketResult: RECommonS3BucketResult, completion : @escaping (_ result : Bool) -> Void) -> Void {
         
         print("uploadFileToS3 started")
         
         guard let signedUrl = URL(string: commonS3BucketResult.signedUrl!) else {return}
         
         guard let imageData = UIImageJPEGRepresentation(Share.shared.image, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE)) else {return}
+        
+        UploadManager.shared.uploadFile(signedUploadUrl: signedUrl, data: imageData) { (result) in
+            Share.shared.imageUrl = commonS3BucketResult.downloadUrl!
+            completion(true)
+        }
+    }
+    
+    
+    /// upload image to S3Bucket via signedUrl
+    ///
+    /// - Parameters:
+    ///   - inputImage: input image
+    ///   - commonS3BucketResult: s3Bucket required property class
+    ///   - completion: to check function completed succesfully or not
+    public func uploadFileToS3WithImageInput(inputImage : UIImage, commonS3BucketResult: RECommonS3BucketResult, completion : @escaping (_ result : Bool) -> Void) -> Void {
+        
+        print("uploadFileToS3 started")
+        
+        
+        var imgData: NSData = NSData(data: UIImageJPEGRepresentation((inputImage), 1)!)
+        // var imgData: NSData = UIImagePNGRepresentation(image)
+        // you can also replace UIImageJPEGRepresentation with UIImagePNGRepresentation.
+        var imageSize: Int = imgData.length
+        
+        print("image size : \(String(describing: imageSize))")
+        
+        guard let signedUrl = URL(string: commonS3BucketResult.signedUrl!) else {return}
+        
+        guard let imageData = UIImageJPEGRepresentation(inputImage, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE)) else {return}
         
         UploadManager.shared.uploadFile(signedUploadUrl: signedUrl, data: imageData) { (result) in
             Share.shared.imageUrl = commonS3BucketResult.downloadUrl!

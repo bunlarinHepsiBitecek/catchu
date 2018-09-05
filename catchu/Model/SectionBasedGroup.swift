@@ -21,6 +21,16 @@ class SectionBasedGroup {
     private var _groupNameInitialBasedDictionary : Dictionary<String, [Group]>!
     private var _groupSectionKeyData : Array<String>!
     
+    private var _cachedGroupImages : NSCache<NSString, UIImage>!
+    
+    var cachedGroupImages: NSCache<NSString, UIImage> {
+        get {
+            return _cachedGroupImages
+        }
+        set {
+            _cachedGroupImages = newValue
+        }
+    }
     
     var user : User {
         get {
@@ -92,13 +102,24 @@ class SectionBasedGroup {
         
         _groupNameInitialBasedDictionary = Dictionary<String, [Group]>()
         _groupSectionKeyData = Array<String>()
+        _cachedGroupImages = NSCache<NSString, UIImage>()
         
     }
     
+    func resetSectionBasedGroupSingleton() {
+        
+        _userGroupList.removeAll()
+        _userGroupSortedList.removeAll()
+        _userGroupSortedDictionary.removeAll()
+        _keyData.removeAll()
+        _groupNameInitialBasedDictionary.removeAll()
+        _groupSectionKeyData.removeAll()
+        
+    }
     
     func sortUserGroupList() {
         
-        _userGroupSortedList = _userGroupList.sorted(by: { $0.groupName < $1.groupName })
+        _userGroupSortedList = _userGroupList.sorted(by: { $0.groupName! < $1.groupName! })
         
     }
     
@@ -106,7 +127,9 @@ class SectionBasedGroup {
         
         for item in _userGroupSortedList {
             
-            _userGroupSortedDictionary[item.groupID] = item
+            if let groupid = item.groupID {
+                _userGroupSortedDictionary[groupid] = item
+            }
             
         }
         
@@ -128,242 +151,199 @@ class SectionBasedGroup {
         
         for item in Group.shared.groupSortedList {
             
-            print("group : \(item.groupName)")
-            
-            if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.A) {
-                print("A var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.A] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.A] = [Group]()
+            if let groupName = item.groupName {
+                
+                if groupName.uppercased().hasPrefix(Constants.LetterConstants.A) {
+                    print("A var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.A] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.A] = [Group]()
+                    }
+                    
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.A]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.A]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.B){
-                print("B var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.B] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.B] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.B){
+                    print("B var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.B] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.B] = [Group]()
+                    }
+                    
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.B]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.B]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.C) {
-                print("B var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.C] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.C] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.C) {
+                    print("B var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.C] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.C] = [Group]()
+                    }
+                    
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.C]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.C]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.D){
-                print("D var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.D] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.D] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.D){
+                    print("D var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.D] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.D] = [Group]()
+                    }
+                    
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.D]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.D]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.E) {
-                print("E var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.E] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.E] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.E) {
+                    print("E var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.E] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.E] = [Group]()
+                    }
+                    
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.E]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.E]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.F){
-                print("F var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.F] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.F] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.F){
+                    print("F var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.F] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.F] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.F]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.F]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.G) {
-                print("G var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.G] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.G] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.G) {
+                    print("G var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.G] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.G] = [Group]()
+                    }
+                    
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.G]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.G]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.H){
-                print("H var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.H] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.H] = [Group]()
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.H){
+                    print("H var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.H] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.H] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.H]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.H]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.I) {
-                print("I var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.I] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.I] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.I) {
+                    print("I var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.I] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.I] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.I]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.I]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.J){
-                print("J var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.J] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.J] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.J){
+                    print("J var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.J] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.J] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.J]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.J]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.K) {
-                print("K var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.K] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.K] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.K) {
+                    print("K var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.K] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.K] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.K]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.K]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.L){
-                print("L var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.L] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.L] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.L){
+                    print("L var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.L] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.L] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.L]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.L]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.M) {
-                print("M var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.M] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.M] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.M) {
+                    print("M var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.M] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.M] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.M]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.M]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.N){
-                print("N var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.N] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.N] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.N){
+                    print("N var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.N] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.N] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.N]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.N]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.O) {
-                print("O var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.O] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.O] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.O) {
+                    print("O var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.O] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.O] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.O]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.O]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.P){
-                print("P var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.P] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.P] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.P){
+                    print("P var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.P] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.P] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.P]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.P]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.Q) {
-                print("Q var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Q] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Q] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.Q) {
+                    print("Q var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Q] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Q] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Q]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Q]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.R) {
-                print("R var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.R] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.R] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.R) {
+                    print("R var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.R] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.R] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.R]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.R]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.S){
-                print("S var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.S] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.S] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.S){
+                    print("S var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.S] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.S] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.S]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.S]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.T) {
-                print("T var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.T] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.T] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.T) {
+                    print("T var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.T] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.T] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.T]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.T]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.U){
-                print("U var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.U] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.U] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.U){
+                    print("U var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.U] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.U] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.U]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.U]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.V) {
-                print("V var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.V] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.V] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.V) {
+                    print("V var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.V] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.V] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.V]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.V]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.W){
-                print("W var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.W] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.W] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.W){
+                    print("W var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.W] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.W] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.W]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.W]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.X) {
-                print("X var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.X] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.X] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.X) {
+                    print("X var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.X] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.X] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.X]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.X]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.Y){
-                print("Y var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Y] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Y] = [Group]()
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.Y){
+                    print("Y var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Y] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Y] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Y]?.append(item)
-                } else {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Y]?.append(item)
-                }
-                
-            } else if item.groupName.uppercased().hasPrefix(Constants.LetterConstants.Z) {
-                print("Z var")
-                if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Z] == nil {
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Z] = [Group]()
-                    SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Z]?.append(item)
-                } else {
+                    
+                } else if groupName.uppercased().hasPrefix(Constants.LetterConstants.Z) {
+                    print("Z var")
+                    if SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Z] == nil {
+                        SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Z] = [Group]()
+                    }
                     SectionBasedGroup.shared._groupNameInitialBasedDictionary[Constants.LetterConstants.Z]?.append(item)
                 }
+                
             }
+            
+            
             
         }
         

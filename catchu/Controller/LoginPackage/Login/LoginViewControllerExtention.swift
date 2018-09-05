@@ -32,19 +32,9 @@ extension LoginViewController {
     
     func login() {
         guard validateRequiredField() else {return}
-        let user = User(userID: Constants.CharacterConstants.SPACE, userName: Constants.CharacterConstants.SPACE, name: Constants.CharacterConstants.SPACE, email: emailText.text!, password: passwordText.text!, provider: Constants.CharacterConstants.SPACE, providerID: Constants.CharacterConstants.SPACE)
-        FirebaseManager.shared.loginUser(user: user)
+        //let user = User(userID: Constants.CharacterConstants.SPACE, userName: Constants.CharacterConstants.SPACE, name: Constants.CharacterConstants.SPACE, email: emailText.text!, password: passwordText.text!, provider: Constants.CharacterConstants.SPACE, providerID: Constants.CharacterConstants.SPACE)
     }
     
-    func loginWithFaceebook() {
-        FirebaseManager.shared.loginWithFacebookAccount()
-        
-    }
-    
-    func loginWithTwitter() {
-        FirebaseManager.shared.loginWithTwitterAccount()
-        
-    }
     
     func validateRequiredField() -> Bool {
         let validateEmailResult = Validation.shared.isValidEmail(email: emailText.text!)

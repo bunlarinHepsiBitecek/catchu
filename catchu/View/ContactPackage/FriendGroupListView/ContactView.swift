@@ -33,6 +33,9 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
     
     func initializeView() {
         
+        print("ContactView initialize")
+        print("cacheCount : \(String(describing: SectionBasedFriend.shared.cachedFriendProfileImages))")
+        
         // initialize SectionBasedFriend
         SectionBasedFriend.shared.emptySearchResult()
         SectionBasedFriend.shared.emptySelectedUserArray()
@@ -70,7 +73,9 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
     
     @IBAction func cancelButtonClicked(_ sender: Any) {
         
-        SectionBasedFriend.shared = SectionBasedFriend()
+//        SectionBasedFriend.shared = SectionBasedFriend()
+        SectionBasedFriend.shared.resetSectionBasedFriendSingleton()
+        SectionBasedGroup.shared.resetSectionBasedGroupSingleton()
         referenceMasterViewController.dismiss(animated: true, completion: nil)
         
     }
@@ -91,6 +96,14 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
         case .groups:
             
             print("groups")
+            
+            var image = UIImage()
+            
+            image = SectionBasedGroup.shared.cachedGroupImages.object(forKey: NSString(string: "https://s3.amazonaws.com/catchumobilebucket/UserProfile/1.jpg"))!
+            
+            print("gectik")
+            
+            
             
         case .groupCreation:
 
@@ -361,7 +374,7 @@ extension ContactView {
             
         case .groups:
             
-            if SectionBasedGroup.shared.groupNameInitialBasedDictionary.count > 0 {
+            if Group.shared.groupList.count > 0 {
                 
                 print("group okumasına gerek yok :)")
                 startAnimationOfContainerViews(inputContainerViewChoise: .containerViewGroup)

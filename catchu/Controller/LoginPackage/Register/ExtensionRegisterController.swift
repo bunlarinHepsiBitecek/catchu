@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseFunctions
 
 extension RegisterViewController {
     
@@ -18,8 +16,6 @@ extension RegisterViewController {
             
             return
         }
-        
-        FirebaseManager.shared.registerFirebase(user: User.shared)
         
     }
     

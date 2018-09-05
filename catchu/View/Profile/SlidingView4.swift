@@ -74,8 +74,6 @@ extension SlidingView4: UICollectionViewDelegate, UICollectionViewDataSource, UI
             return UICollectionViewCell()
         }
         
-        return UICollectionViewCell()
-        
     }
     
     func startFirstCellProcess(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

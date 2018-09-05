@@ -34,7 +34,7 @@ class UploadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSe
         self.progress = Constants.NumericConstants.DOUBLE_ZERO
         if showProgress {
             LoaderController.shared.progressCounter = self.progress
-            LoaderController.shared.startProgressView(progressViewStyle: .bar)
+            LoaderController.shared.startProgressView(progressViewStyle: .default)
         }
     }
     

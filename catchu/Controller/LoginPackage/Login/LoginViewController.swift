@@ -24,9 +24,6 @@ class LoginViewController: UIViewController {
         self.customization()
         self.localized()
         
-        let navigationController = UINavigationController()
-        
-        
         //self.navigationController?.isNavigationBarHidden = true
     }
     
@@ -59,12 +56,10 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func facebookButtonClicked(_ sender: UIButton) {
-        self.loginWithFaceebook()
         
     }
     
     @IBAction func twitterButtonClicked(_ sender: UIButton) {
-        self.loginWithTwitter()
     }
     @IBAction func registerButtonClicked(_ sender: UIButton) {
         self.performSegueToRegisterView()

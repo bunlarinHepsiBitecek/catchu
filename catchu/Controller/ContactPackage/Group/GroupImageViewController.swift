@@ -32,7 +32,9 @@ class GroupImageViewController: UIViewController, UIGestureRecognizerDelegate {
            
             let temp = UIImageView()
             
-            temp.setImagesFromCacheOrFirebaseForFriend(self.group.groupPictureUrl)
+            if let url = self.group.groupPictureUrl {
+                temp.setImagesFromCacheOrFirebaseForGroup(url)
+            }
             
             self.selectedPhotoScrollview.imageToDisplay = temp.image
         }

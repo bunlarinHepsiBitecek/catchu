@@ -98,6 +98,31 @@ class SectionBasedFriend {
         }
     }
     
+    // erase all items in lists, dictionaries, arrays ...
+    func resetSectionBasedFriendSingleton() {
+    
+        _friendUsernameInitialBasedDictionary.removeAll()
+        _friendSectionKeyData.removeAll()
+        _selectedUserArray.removeAll()
+        _searchResult.removeAll()
+        _ifUserSelectedDictionary.removeAll()
+        _isSearchModeActivated = false
+
+        /*
+         private var _friendUsernameInitialBasedDictionary : Dictionary<String, [User]>!
+         private var _friendSectionKeyData : Array<String>!
+         private var _selectedUserArray : Array<User>!
+         private var _searchResult : Array<User>!
+         private var _ifUserSelectedDictionary : Dictionary<String, Bool>!
+         private var _isSearchModeActivated : Bool!
+         
+         private var _cachedFriendProfileImages : NSCache<NSString, UIImage>!
+         
+         */
+        
+        
+    }
+    
     func emptySectionBasedDictioanry() {
         
 //        SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.removeAll()

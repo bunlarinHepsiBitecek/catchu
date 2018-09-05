@@ -211,7 +211,7 @@ class APIGatewayManager {
     
         print("updateGroupInformation starts")
         
-        groupBody.displayGroupAttributes()
+//        groupBody.displayGroupAttributes()
         
         client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
             
@@ -383,7 +383,50 @@ class APIGatewayManager {
         }
         
     }
+    
+    
+    /// Function Below triggers a group of events in a row. Firstly get download and upload urls from server. Then update group image url in neo4j.
+    ///
+    /// - Parameter inputImage: images selected from gallery or taken already
+    func startImageUploadProcess(inputImage : UIImage, inputGroup: Group, completion : @escaping (_ response : Bool, _ s3result : RECommonS3BucketResult, _ updatedGroupObject : Group) -> Void) {
         
+        REAWSManager.shared.getSignedUpload { (s3BucketResult) in
+            
+            // check getting upload and download url request from lambda is ok or not
+            if let error = s3BucketResult.error {
+                if let errorCode = error.code {
+                    if errorCode.boolValue {
+                        
+                        // if everyting is all right, let's update group photo url with new one retrieved from s3 lambda service
+                        print("s3BucketResult : \(String(describing: s3BucketResult.downloadUrl))")
+                        print("s3BucketResult : \(String(describing: s3BucketResult.signedUrl))")
+                        
+                        // call upload image directly s3 from client
+                        REAWSManager.shared.uploadFileToS3WithImageInput(inputImage: inputImage, commonS3BucketResult: s3BucketResult, completion: { (response) in
+                            
+                            // upload process is ok, call apigateway to update group information
+                            if response {
+                                
+                                // update photoUrl of inputGroup
+                                inputGroup.groupPictureUrl = s3BucketResult.downloadUrl
+                                
+                                APIGatewayManager.shared.updateGroupInformation(groupBody: Group.shared.returnGroupRequestForUpdateProcess(inputGroup: inputGroup), completion: { (groupRequestResult, groupProcessResponse) in
+                                    
+                                    // group information update process in neo4j is ok
+                                    if groupProcessResponse {
+                                        
+                                        completion(true, s3BucketResult, inputGroup)
+                                        
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+        }
+        
+    }
     
     
     /// To get friendList fron neo4j

@@ -39,11 +39,11 @@ public class REGroupRequestResult_resultArray_item : AWSModel {
     
     func displayDetails() {
         
-        print("groupid : \(groupid)")
-        print("name : \(name)")
-        print("groupPhotoUrl : \(groupPhotoUrl)")
-        print("createAt : \(createAt)")
-        print("groupAdmin : \(groupAdmin)")
+        print("groupid : \(String(describing: groupid))")
+        print("name : \(String(describing: name))")
+        print("groupPhotoUrl : \(String(describing: groupPhotoUrl))")
+        print("createAt : \(String(describing: createAt))")
+        print("groupAdmin : \(String(describing: groupAdmin))")
         
     }
     

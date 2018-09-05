@@ -39,11 +39,11 @@ public class REFriendRequestList_resultArray_item : AWSModel {
     
     func displayProperties() {
         
-        print("name : \(self.name)")
-        print("userid :\(self.userid)")
-        print("username : \(self.username)")
-        print("profilePhotoUrl :\(self.profilePhotoUrl)")
-        print("isPrivateAccount :\(self.isPrivateAccount)")
+        print("name : \(String(describing: self.name))")
+        print("userid :\(String(describing: self.userid))")
+        print("username : \(String(describing: self.username))")
+        print("profilePhotoUrl :\(String(describing: self.profilePhotoUrl))")
+        print("isPrivateAccount :\(String(describing: self.isPrivateAccount))")
     }
     
     var _name: String {

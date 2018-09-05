@@ -115,66 +115,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         delegete.didUpdateLocation()
         
-        initiateGeoFireAndNotificationProtol(currentLocation: location)
-        
-    }
-    
-    func initiateGeoFireAndNotificationProtol(currentLocation : CLLocation) {
-        
-        // while location changed, call function below to get geofire data,
-        FirebaseManager.shared.getGeoFireData(currentLocation: currentLocation) { (result) in
-            
-            if result {
-                
-                print("GeoFireData count : \(GeoFireData.shared.geofireDictionary.count)")
-                
-                for item in GeoFireData.shared.geofireDictionary {
-                    
-                    print("item.key : \(item.key)")
-                    
-                    CloudFunctionsManager.shared.getSharedDataByUserNameAndShareId(inputKey: item.key, completion: { (result) in
-                        
-                        if result {
-                            
-                            for item in Share.shared.shareQueryResultDictionary {
-                                
-                                print("share item.key : \(item.key)")
-                                print("share item.value.imageUrl : \(item.value.imageUrl)")
-                                print("share item.value.imageUrlSmall : \(item.value.imageUrlSmall)")
-                                print("share item.value.text : \(item.value.text)")
-                                
-                                
-                            }
-                            
-                            print("Share.shared.shareQueryResultDictionary.count :\(Share.shared.shareQueryResultDictionary.count)")
-                            
-                            
-                            if Share.shared.shareQueryResultDictionary.count > 0 {
-                            
-                                Share.shared.tempImageView.getImageFromFirebaseStorage(url: (Share.shared.shareQueryResultDictionary.first?.value.imageUrlSmall)!, completion: { (result) in
-                                    
-                                    if result {
-                                    
-                                        Share.shared.text = (Share.shared.shareQueryResultDictionary.first?.value.text)!
-                                        
-                                        NotificationManager2.shared.registerForNotification()
-                                        
-                                    }
-                                    
-                                })
-                            
-                            }
-                            
-                        }
-                        
-                    })
-                    
-                }
-                
-            }
-            
-        }
-        
     }
     
 }

@@ -25,8 +25,6 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("viewControllerFlowType : \(viewControllerFlowType)")
-        
         setupObjects(inputPermissionFlow: viewControllerFlowType)
 
     }
@@ -45,7 +43,7 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
     
     @IBAction func giveAccessButtonTapped(_ sender: Any) {
         
-        if let type = viewControllerFlowType as? PermissionFLows {
+        if let type = viewControllerFlowType {
             
             switch type {
             case .camera:

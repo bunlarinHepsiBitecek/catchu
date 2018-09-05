@@ -21,9 +21,9 @@ class EditProfile4View: UIView {
     
     var originalButtonText: String?
     var activityIndicator: UIActivityIndicatorView!
+    var tempView : UIView!
     
     var referenceOfRootView : EditProfileViewController!
-    var tempView : UIView!
     
     func initialize() {
         

@@ -11,14 +11,16 @@ import UIKit
 class ContainerGroupViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
-    
+
     // parent view controller object to update value from container view controller to contact view on contact view controller
     var parentReferenceContactViewController : ContactViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("ContainerGroupViewController  viewDidLoad")
         print("ContainerGroupViewController starts")
+        
+        SectionBasedGroup.shared.createInitialLetterBasedGroupDictionary()
         
         // Do any additional setup after loading the view.
     }
@@ -28,10 +30,8 @@ class ContainerGroupViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        
-        //SectionBasedGroup.shared.emptySectionBasedGroupData()
-        
+    override func viewWillAppear(_ animated: Bool) {
+        print("ContainerGroupViewController viewWillAppear")
     }
     
     func deneme() {

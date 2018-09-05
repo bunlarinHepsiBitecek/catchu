@@ -33,8 +33,8 @@ public class RESearchResult_error : AWSModel {
     
     func displayProperties() {
         
-        print("code : \(self.code)")
-        print("message :\(self.message)")
+        print("code : \(String(describing: self.code))")
+        print("message :\(String(describing: self.message))")
         
     }
 }

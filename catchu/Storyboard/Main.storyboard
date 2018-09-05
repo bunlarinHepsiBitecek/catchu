@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B09-IP-3uf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B09-IP-3uf">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1727,6 +1727,76 @@
             </objects>
             <point key="canvasLocation" x="9688.7999999999993" y="-2193.1034482758623"/>
         </scene>
+        <!--Share Data View Controller-->
+        <scene sceneID="s4A-Oz-pO3">
+            <objects>
+                <viewController storyboardIdentifier="ShareDataViewController" id="JFL-sY-sVK" customClass="ShareDataViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Nt-3B-xjq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="UzR-Zo-zXA"/>
+                    </view>
+                    <connections>
+                        <outlet property="shareDataView" destination="Jbz-QK-1na" id="Z5L-Xh-HMj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CuG-nP-okP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Jbz-QK-1na" customClass="ShareDataView" customModule="catchu" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="734"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ShareDataView" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ae-i8-hFl">
+                            <rect key="frame" x="129" y="165" width="117" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CAu-VV-xee">
+                            <rect key="frame" x="5" y="5" width="365" height="40"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="efd-w9-Cg9">
+                                    <rect key="frame" x="8" y="5" width="46" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="qPv-Y4-yRy"/>
+                                    </constraints>
+                                    <state key="normal" title="Button">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="cancelButtonClicked:" destination="Jbz-QK-1na" eventType="touchUpInside" id="W3V-01-RPy"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="efd-w9-Cg9" firstAttribute="top" secondItem="CAu-VV-xee" secondAttribute="top" constant="5" id="6L9-sb-Owf"/>
+                                <constraint firstAttribute="height" constant="40" id="Lul-Iz-q2u"/>
+                                <constraint firstItem="efd-w9-Cg9" firstAttribute="leading" secondItem="CAu-VV-xee" secondAttribute="leading" constant="8" id="tXS-al-pbP"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hMk-zZ-ges">
+                            <rect key="frame" x="51" y="189" width="240" height="128"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="CAu-VV-xee" firstAttribute="top" secondItem="Jbz-QK-1na" secondAttribute="top" constant="5" id="0gs-NL-hjo"/>
+                        <constraint firstAttribute="trailing" secondItem="CAu-VV-xee" secondAttribute="trailing" constant="5" id="Vxh-T8-DoR"/>
+                        <constraint firstItem="CAu-VV-xee" firstAttribute="leading" secondItem="Jbz-QK-1na" secondAttribute="leading" constant="5" id="bBX-dZ-ylT"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="Oth-iy-MY2"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="efd-w9-Cg9" id="zYB-6t-Ccf"/>
+                        <outlet property="topBarView" destination="CAu-VV-xee" id="nev-uW-NCJ"/>
+                    </connections>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="-1634" y="-1126"/>
+        </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="2Dx-Yx-klv">
             <objects>
@@ -2112,13 +2182,13 @@
     </scenes>
     <resources>
         <image name="8771.jpg" width="2880" height="1620"/>
-        <image name="add_icon" width="137" height="137"/>
+        <image name="add_icon" width="137.33332824707031" height="137.33332824707031"/>
         <image name="baseline_person_black_48pt" width="48" height="48"/>
         <image name="baseline_pin_drop_black_48pt" width="48" height="48"/>
         <image name="gallery_request.png" width="128" height="128"/>
         <image name="jon-tyson-762647-unsplash.jpg" width="3418" height="2563"/>
         <image name="outline_check_circle_white_48pt" width="48" height="48"/>
-        <image name="searchSlim" width="31" height="31"/>
-        <image name="searchThick" width="35" height="35"/>
+        <image name="searchSlim" width="31.333333969116211" height="31.333333969116211"/>
+        <image name="searchThick" width="35.333332061767578" height="35.333332061767578"/>
     </resources>
 </document>

@@ -42,11 +42,4 @@ public class REGroupRequestResult : AWSModel {
         return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: REUserProfileProperties.self);
     }
     
-    func display() {
-        for item in resultArray! {
-            
-            item.displayDetails()
-            
-        }
-    }
 }

@@ -17,7 +17,10 @@ class LoaderController: NSObject {
     var progressCounter: Double = 0 {
         didSet {
             let progress = Float(progressCounter) / 100
-            progressView.setProgress(progress, animated: progressCounter != 0)
+            
+            DispatchQueue.main.async {
+                self.progressView.setProgress(progress, animated: self.progressCounter != 0)
+            }
         }
     }
     
@@ -56,10 +59,10 @@ class LoaderController: NSObject {
         removeProgressView()
         print("startProgressView")
         
-        self.progressView.progressViewStyle = progressViewStyle
         let currentView = self.currentView()
         
         DispatchQueue.main.async {
+            self.progressView.progressViewStyle = progressViewStyle
             self.progressView.frame = currentView.frame
             currentView.addSubview(self.progressView)
             self.progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +77,9 @@ class LoaderController: NSObject {
     }
     
     func removeProgressView() {
-        self.progressView.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.progressView.removeFromSuperview()
+        }
     }
     
     func appDelegate() -> AppDelegate {

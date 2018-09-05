@@ -188,15 +188,7 @@ extension ShareView {
             
             // MARK: for Small Image
             Share.shared.imageSmall = cell.originalImageSmall
-            FirebaseManager.shared.uploadImages(image: Share.shared.imageSmall) { (imageUrl) in
-                
-                // MARK: for orginal Image
-                Share.shared.image = cell.originalImage
-                FirebaseManager.shared.uploadImages(image: Share.shared.image) { (imageUrl) in
-                    Share.shared.imageUrl = imageUrl.absoluteString
-                    self.insertFirebase()
-                }
-            }
+
         } else {
             self.insertFirebase()
         }
@@ -205,8 +197,6 @@ extension ShareView {
     func insertFirebase() {
         User.shared.createSortedUserArray() // for selectedFriends
         let selectedFriends = User.shared.sortedFriendArray
-        CloudFunctionsManager.shared.createSharedModel()
-        FirebaseManager.shared.createGeofireData(selectedUserArray: selectedFriends)
     }
     
     

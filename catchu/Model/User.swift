@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseFunctions
 
 class User {
     public static var shared = User()
@@ -321,32 +320,6 @@ class User {
         
         self._userDataDictionary[key] = value
         
-    }
-    
-    func appendElementIntoFriendList(httpResult : HTTPSCallableResult) {
-        
-        let dataDictionary = httpResult.data as! Dictionary<String, Any>
-        
-        print("dataDictionary : \(dataDictionary)")
-        
-        for item in dataDictionary {
-            
-            let userData = item.value as! [String : AnyObject]
-            
-            let tempUser = User()
-            
-            tempUser.parseFriendDataToUser(dataDictionary: userData)
-            tempUser.userID = item.key
-            
-            User.shared._userFriendList[item.key] = tempUser
-            
-        }
-        
-        for item in User.shared.userFriendList {
-            
-            print("key ---> :\(item.key)")
-            print("val ---> :\(item.value)")
-        }
     }
     
     func appendElementIntoFriendListAWS(httpResult : REFriendList) {

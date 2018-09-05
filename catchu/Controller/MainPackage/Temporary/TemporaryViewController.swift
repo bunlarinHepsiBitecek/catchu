@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseFunctions
 import UserNotifications
 
 class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegate {
@@ -190,66 +189,38 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         
         NotificationManager2.shared.registerForNotification()
         
-        FirebaseManager.shared.getGeoFireData(currentLocation: GeoFireData.shared.currentLocation) { (result) in
-        
-            print("VVVVVVVVVVVVVVVVVVVVVVVVVV")
-            
-            if result {
-                
-                print("result : \(result)")
-                
-            }
-            
-        }
-        
-//        NotificationManager.shared.requestNotificationPermission(completion: { (granted) in
-//
-//            if granted {
-//
-//                NotificationManager.shared.initializeRegisterForRemoteNotification()
-//                NotificationManager.shared.sendLocalNotification()
-//
-//            } else {
-//
-//                print("nah alırsın")
-//
-//            }
-//
-//
-//        })
-        
     }
     
     @IBAction func sendImage(_ sender: Any) {
         
-        let function = Functions.functions()
-        
-        let uploadData = UIImagePNGRepresentation(testImage.image!)
-        
-        let data = ["yarro" : uploadData]
-        
-        function.httpsCallable("uploadImage").call(data) { (httpResult, error) in
-            
-            if error != nil {
-                
-                if let errorCode = error as NSError? {
-                    
-                    print("errorCode : \(errorCode.localizedDescription)")
-                    print("errorCode : \(errorCode.userInfo)")
-                    
-                }
-                
-            } else {
-                
-                if let data = httpResult?.data {
-                    
-                    print("data : \(data)")
-                    
-                }
-                
-            }
-            
-        }
+//        let function = Functions.functions()
+//        
+//        let uploadData = UIImagePNGRepresentation(testImage.image!)
+//        
+//        let data = ["yarro" : uploadData]
+//        
+//        function.httpsCallable("uploadImage").call(data) { (httpResult, error) in
+//            
+//            if error != nil {
+//                
+//                if let errorCode = error as NSError? {
+//                    
+//                    print("errorCode : \(errorCode.localizedDescription)")
+//                    print("errorCode : \(errorCode.userInfo)")
+//                    
+//                }
+//                
+//            } else {
+//                
+//                if let data = httpResult?.data {
+//                    
+//                    print("data : \(data)")
+//                    
+//                }
+//                
+//            }
+//            
+//        }
             
     }
     

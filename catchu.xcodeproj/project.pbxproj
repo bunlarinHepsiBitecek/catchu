@@ -54,7 +54,6 @@
 		4564E46F20B999AD003B0D16 /* DesignableUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564E46E20B999AD003B0D16 /* DesignableUITextField.swift */; };
 		4564E47320B9A7FD003B0D16 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564E47220B9A7FD003B0D16 /* Validation.swift */; };
 		4564E47620B9CBB2003B0D16 /* AlertViewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564E47520B9CBB2003B0D16 /* AlertViewSupport.swift */; };
-		4564E47820BB1F45003B0D16 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564E47720BB1F44003B0D16 /* FirebaseManager.swift */; };
 		4564E47A20BBBF4E003B0D16 /* LoaderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564E47920BBBF4E003B0D16 /* LoaderControl.swift */; };
 		45DEEA9920E16D1400FE484E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEEA9620E16D1400FE484E /* User.swift */; };
 		45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEEA9A20E16DAF00FE484E /* SectionBasedFriend.swift */; };
@@ -80,6 +79,9 @@
 		A709F64B20FEA6A4003FF2C5 /* CognitoConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709F64A20FEA6A4003FF2C5 /* CognitoConfig.swift */; };
 		A709F64D20FEA6D9003FF2C5 /* CognitoConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A709F64C20FEA6D9003FF2C5 /* CognitoConfig.plist */; };
 		A709F68B21009E65003FF2C5 /* ConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709F68A21009E65003FF2C5 /* ConfirmationViewController.swift */; };
+		A710F41B213E7D2E00ECC5DA /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F41A213E7D2E00ECC5DA /* Protocols.swift */; };
+		A710F41E213FCD6500ECC5DA /* ShareDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F41D213FCD6500ECC5DA /* ShareDataViewController.swift */; };
+		A710F421213FCD8100ECC5DA /* ShareDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F420213FCD8100ECC5DA /* ShareDataView.swift */; };
 		A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B520E5793300F73B9C /* NotificationManager2.swift */; };
 		A72173B820E778D600F73B9C /* GeoFireData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B720E778D600F73B9C /* GeoFireData.swift */; };
 		A72173BA20E7D32700F73B9C /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B920E7D32700F73B9C /* UIImageExtensions.swift */; };
@@ -147,7 +149,6 @@
 		A7817AC22134B3B300ECCF8C /* ParticipantListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7817AC12134B3B300ECCF8C /* ParticipantListView.swift */; };
 		A7817AC42134BF7F00ECCF8C /* ParticipantSelectedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7817AC32134BF7F00ECCF8C /* ParticipantSelectedCollectionViewCell.swift */; };
 		A7817AC62134BFCF00ECCF8C /* ParticipantListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7817AC52134BFCF00ECCF8C /* ParticipantListTableViewCell.swift */; };
-		A791E30A20C1B324005082C9 /* CloudFunctionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A791E30920C1B324005082C9 /* CloudFunctionsManager.swift */; };
 		A79A765D20C368B700FCE198 /* TemporaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A765C20C368B700FCE198 /* TemporaryViewController.swift */; };
 		A79A765F20C36BE400FCE198 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A79A765E20C36BE400FCE198 /* Contact.storyboard */; };
 		A79A766320C36C7E00FCE198 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A766220C36C7E00FCE198 /* ContactViewController.swift */; };
@@ -268,7 +269,6 @@
 		4564E46E20B999AD003B0D16 /* DesignableUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableUITextField.swift; sourceTree = "<group>"; };
 		4564E47220B9A7FD003B0D16 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		4564E47520B9CBB2003B0D16 /* AlertViewSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewSupport.swift; sourceTree = "<group>"; };
-		4564E47720BB1F44003B0D16 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		4564E47920BBBF4E003B0D16 /* LoaderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderControl.swift; sourceTree = "<group>"; };
 		45DEEA9620E16D1400FE484E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		45DEEA9A20E16DAF00FE484E /* SectionBasedFriend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionBasedFriend.swift; sourceTree = "<group>"; };
@@ -294,6 +294,9 @@
 		A709F64A20FEA6A4003FF2C5 /* CognitoConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CognitoConfig.swift; sourceTree = "<group>"; };
 		A709F64C20FEA6D9003FF2C5 /* CognitoConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = CognitoConfig.plist; sourceTree = "<group>"; };
 		A709F68A21009E65003FF2C5 /* ConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationViewController.swift; sourceTree = "<group>"; };
+		A710F41A213E7D2E00ECC5DA /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		A710F41D213FCD6500ECC5DA /* ShareDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataViewController.swift; sourceTree = "<group>"; };
+		A710F420213FCD8100ECC5DA /* ShareDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataView.swift; sourceTree = "<group>"; };
 		A72173B520E5793300F73B9C /* NotificationManager2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager2.swift; sourceTree = "<group>"; };
 		A72173B720E778D600F73B9C /* GeoFireData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFireData.swift; sourceTree = "<group>"; };
 		A72173B920E7D32700F73B9C /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
@@ -361,7 +364,6 @@
 		A7817AC12134B3B300ECCF8C /* ParticipantListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantListView.swift; sourceTree = "<group>"; };
 		A7817AC32134BF7F00ECCF8C /* ParticipantSelectedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantSelectedCollectionViewCell.swift; sourceTree = "<group>"; };
 		A7817AC52134BFCF00ECCF8C /* ParticipantListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantListTableViewCell.swift; sourceTree = "<group>"; };
-		A791E30920C1B324005082C9 /* CloudFunctionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudFunctionsManager.swift; sourceTree = "<group>"; };
 		A79A765C20C368B700FCE198 /* TemporaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryViewController.swift; sourceTree = "<group>"; };
 		A79A765E20C36BE400FCE198 /* Contact.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
 		A79A766220C36C7E00FCE198 /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 		4527E05120C85F2100ECB3D1 /* MainPackage */ = {
 			isa = PBXGroup;
 			children = (
+				A710F41C213FCD3900ECC5DA /* ShareData */,
 				A7F35D9321168408005DA851 /* Profile */,
 				A7276D3A2110795400CAC67C /* Search */,
 				A79A765B20C3681400FCE198 /* Temporary */,
@@ -621,6 +624,7 @@
 		4564E44B20B9678D003B0D16 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A710F41F213FCD6D00ECC5DA /* ShareData */,
 				451E9F092139366300185925 /* Feed */,
 				A7F35D9621168433005DA851 /* Profile */,
 				453C226B20DD60F1004896A1 /* MapShareView */,
@@ -644,7 +648,7 @@
 			children = (
 				A7276D36210F6CB000CAC67C /* Swift */,
 				A7276D35210F6C9F00CAC67C /* Location */,
-				A7276D34210F6C6900CAC67C /* Firebase */,
+				A7276D34210F6C6900CAC67C /* AWS_gateway */,
 				A7276D26210F68D900CAC67C /* AWS */,
 			);
 			path = Services;
@@ -766,6 +770,22 @@
 			path = Feed;
 			sourceTree = "<group>";
 		};
+		A710F41C213FCD3900ECC5DA /* ShareData */ = {
+			isa = PBXGroup;
+			children = (
+				A710F41D213FCD6500ECC5DA /* ShareDataViewController.swift */,
+			);
+			path = ShareData;
+			sourceTree = "<group>";
+		};
+		A710F41F213FCD6D00ECC5DA /* ShareData */ = {
+			isa = PBXGroup;
+			children = (
+				A710F420213FCD8100ECC5DA /* ShareDataView.swift */,
+			);
+			path = ShareData;
+			sourceTree = "<group>";
+		};
 		A7276D26210F68D900CAC67C /* AWS */ = {
 			isa = PBXGroup;
 			children = (
@@ -813,13 +833,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		A7276D34210F6C6900CAC67C /* Firebase */ = {
+		A7276D34210F6C6900CAC67C /* AWS_gateway */ = {
 			isa = PBXGroup;
 			children = (
-				4564E47720BB1F44003B0D16 /* FirebaseManager.swift */,
-				A791E30920C1B324005082C9 /* CloudFunctionsManager.swift */,
 				A7EC57DE211B4C460078F631 /* APIGatewayManager.swift */,
 			);
+			name = AWS_gateway;
 			path = Firebase;
 			sourceTree = "<group>";
 		};
@@ -836,6 +855,7 @@
 			children = (
 				452001CE20CC354F00C1ED22 /* MediaLibraryManager.swift */,
 				A72173B520E5793300F73B9C /* NotificationManager2.swift */,
+				A710F41A213E7D2E00ECC5DA /* Protocols.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -1128,7 +1148,6 @@
 				4564E40C20B95574003B0D16 /* Frameworks */,
 				4564E40D20B95574003B0D16 /* Resources */,
 				32FC355551C0EEA3376A9D26 /* [CP] Embed Pods Frameworks */,
-				83D9E5C336439C5B1E3FBB9C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1304,13 +1323,7 @@
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
-				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1330,13 +1343,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1359,26 +1366,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		83D9E5C336439C5B1E3FBB9C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-catchu/Pods-catchu-resources.sh",
-				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
-				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-catchu/Pods-catchu-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1405,6 +1392,7 @@
 				4564E46D20B998A8003B0D16 /* LoginViewControllerExtention.swift in Sources */,
 				A7E2F85D2114A6F700214066 /* REUserProfile.swift in Sources */,
 				A7276D402110935800CAC67C /* ContainerSearchResultViewController.swift in Sources */,
+				A710F41E213FCD6500ECC5DA /* ShareDataViewController.swift in Sources */,
 				A75B4598213307DE009D2701 /* ExitTableViewCell.swift in Sources */,
 				A7812EB12124981400460117 /* SlidingView4.swift in Sources */,
 				451E9F022139318E00185925 /* RELocation.swift in Sources */,
@@ -1424,7 +1412,6 @@
 				A7EC57C62118BC7B0078F631 /* REGroupRequestResult_error.swift in Sources */,
 				A708792521295C020012C7F6 /* REUserProfile_relationCountInfo.swift in Sources */,
 				A7EC57DF211B4C460078F631 /* APIGatewayManager.swift in Sources */,
-				4564E47820BB1F45003B0D16 /* FirebaseManager.swift in Sources */,
 				4564E47A20BBBF4E003B0D16 /* LoaderControl.swift in Sources */,
 				A774AC98213189EF00848B79 /* ExtensionGroupInformationViewController.swift in Sources */,
 				451E9F052139349000185925 /* Reachability.swift in Sources */,
@@ -1490,6 +1477,7 @@
 				A7E2F85B2114A6F700214066 /* REUserProfile_error.swift in Sources */,
 				A708792121276CF80012C7F6 /* Item3CollectionViewCell.swift in Sources */,
 				A7276D3E21107A9900CAC67C /* ExtensionSearchViewController.swift in Sources */,
+				A710F421213FCD8100ECC5DA /* ShareDataView.swift in Sources */,
 				451E9F1A213937E300185925 /* FeedDataSource.swift in Sources */,
 				451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */,
 				A7087932212B79960012C7F6 /* EditProfile4TableViewCell.swift in Sources */,
@@ -1524,6 +1512,7 @@
 				A7276D392110790100CAC67C /* SearchView.swift in Sources */,
 				A708792321276D080012C7F6 /* Item4CollectionViewCell.swift in Sources */,
 				A79A768220C6564900FCE198 /* ContainerFriendViewController.swift in Sources */,
+				A710F41B213E7D2E00ECC5DA /* Protocols.swift in Sources */,
 				A7087928212AB7360012C7F6 /* ImageVideoPickerHandler.swift in Sources */,
 				A7817AC22134B3B300ECCF8C /* ParticipantListView.swift in Sources */,
 				A77D3FD62131829A00D016D6 /* GroupInformationViewController.swift in Sources */,
@@ -1540,7 +1529,6 @@
 				451E9F132139366300185925 /* SwipingViewModel.swift in Sources */,
 				452001CA20CBB7AB00C1ED22 /* MapView.swift in Sources */,
 				A7276D5D2110C67900CAC67C /* REFriendList_resultArray_item.swift in Sources */,
-				A791E30A20C1B324005082C9 /* CloudFunctionsManager.swift in Sources */,
 				A79A768020C5CB1B00FCE198 /* FriendsTableViewCell.swift in Sources */,
 				4564E45A20B97387003B0D16 /* Constants.swift in Sources */,
 			);
@@ -1732,6 +1720,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZVL2SV8VV7;
 				INFOPLIST_FILE = catchu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1754,6 +1743,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZVL2SV8VV7;
 				INFOPLIST_FILE = catchu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

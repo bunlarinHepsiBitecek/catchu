@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseFunctions
 
 class ContactViewController: UIViewController {
 

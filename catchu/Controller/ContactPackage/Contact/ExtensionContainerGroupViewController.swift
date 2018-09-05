@@ -8,6 +8,26 @@
 
 import UIKit
 
+extension ContainerGroupViewController : GroupInformationUpdateProtocol {
+    
+    func syncGroupInfoWithClient(inputGroup: Group, completion: @escaping (Bool) -> Void) {
+        
+        print("syncGroupInfoWithClient triggered")
+
+        let cellIndexPath =  inputGroup.indexPath
+
+        print("cellIndexPath : \(String(describing: cellIndexPath))")
+        inputGroup.displayGroupProperties()
+
+        if let indexPath = cellIndexPath {
+            tableView.reloadRows(at: [indexPath], with: .fade)
+            completion(true)
+        }
+        
+    }
+    
+}
+
 // tableView functions
 extension ContainerGroupViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -39,14 +59,94 @@ extension ContainerGroupViewController: UITableViewDelegate, UITableViewDataSour
         let groupObject = SectionBasedGroup.shared.returnGroupFromSectionBasedDictionary(indexPath: indexPath)
         
         cell.group = groupObject
+        cell.group.indexPath = indexPath
         
-        cell.groupImage.setImagesFromCacheOrFirebaseForFriend(groupObject.groupPictureUrl)
+//        cell.groupImage.setImagesFromCacheOrFirebaseForGroup(cell.group.groupPictureUrl!) { (result) in
+//
+//            print("cccc")
+//
+//        }
+        
+        cell.groupImage.image = nil
+        
+        downloadImages(cell.group.groupPictureUrl!) { (result, resultImage) in
+            
+            if result {
+             
+                DispatchQueue.main.async {
+                    cell.groupImage.image = resultImage
+                }
+                
+            }
+            
+        }
+        
+//        cell.groupImage.loadImageUsingcell.group.groupPictureUrl!(cell.group.groupPictureUrl!: cell.group.groupPictureUrl!)
         cell.groupName.text = groupObject.groupName
+        
+        cell.group.displayGroupProperties()
         
         cell.accessoryType = .disclosureIndicator
         
         return cell
         
+    }
+    
+    func downloadImages(_ urlString: String, completion : @escaping (_ finish : Bool, _ resultImage : UIImage) -> Void) {
+        print("downloadImages starts")
+        print("urlString : \(urlString)")
+        
+        if let tempImage = SectionBasedGroup.shared.cachedGroupImages.object(forKey: urlString as NSString) {
+            
+            completion(true, tempImage)
+            
+            print("CACHE YES")
+            
+        } else {
+            
+            print("CACHE NO")
+            
+            if !urlString.isEmpty {
+                
+                //                let url = URL(string: urlString)
+                if let url = URL(string: urlString) {
+                    
+                    print("url : \(url)")
+                    
+                    let request = URLRequest(url: url)
+                    
+                    let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
+                        
+                        if error != nil {
+                            
+                            if let errorMessage = error as NSError? {
+                                
+                                print("errorMessage : \(errorMessage.localizedDescription)")
+                                
+                            }
+                            
+                        } else {
+                            
+                            if let data = data, let image = UIImage(data: data) {
+                             
+                                SectionBasedGroup.shared.cachedGroupImages.setObject(image, forKey: urlString as NSString)
+                                
+                                completion(true, image)
+                                
+                            } else {
+                             
+                                completion(false, UIImage())
+                                
+                            }
+                        }
+                            
+                    })
+                    
+                    task.resume()
+                    
+                }
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -96,8 +196,6 @@ extension ContainerGroupViewController {
         
         let infoFlowAction = UIAlertAction(title: Constants.AlertControllerConstants.Titles.titleGroupInfo, style: .default) { (alertAction) in
             
-            print("Info tapped")
-            
             //self.gotoGroupInformationViewController()
             self.startGroupInformationPresentation(group: group)
             
@@ -136,53 +234,56 @@ extension ContainerGroupViewController {
     func startGroupInformationPresentation(group: Group) {
         
         print("startGroupInformationPresentation starts")
-        print("groupId : \(group.groupID)")
         
-        print("Participant.shared.participantDictionary[group.groupID] : \(Participant.shared.participantDictionary[group.groupID])")
-        
-        if Participant.shared.participantDictionary[group.groupID] != nil {
+        if let groupid = group.groupID {
             
-            if let destinationViewController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupInformationViewController) as? GroupInformationViewController {
+            print("groupid : \(String(describing: groupid))")
+            
+            if Participant.shared.participantDictionary[groupid] != nil {
                 
-                destinationViewController.group = group
-                destinationViewController.referenceOfContainerGroupViewController = self
-                self.present(destinationViewController, animated: true, completion: nil)
+                if let destinationViewController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupInformationViewController) as? GroupInformationViewController {
+                    
+                    destinationViewController.group = group
+                    destinationViewController.groupInformationView.delegate = self
+                    destinationViewController.referenceOfContainerGroupViewController = self
+                    self.present(destinationViewController, animated: true, completion: nil)
+                    
+                }
                 
-            }
-            
-        } else {
-            
-            LoaderController.shared.showLoader()
-            
-            APIGatewayManager.shared.getGroupParticipantList(requestType: .get_group_participant_list, groupId: group.groupID) { (groupRequestResult, responseBool) in
+            } else {
                 
-                if responseBool {
+                LoaderController.shared.showLoader()
+                
+                APIGatewayManager.shared.getGroupParticipantList(requestType: .get_group_participant_list, groupId: groupid) { (groupRequestResult, responseBool) in
                     
-                    LoaderController.shared.removeLoader()
-                    
-                    for item in groupRequestResult.resultArrayParticipantList! {
+                    if responseBool {
                         
-                        let tempUser = User()
+                        LoaderController.shared.removeLoader()
                         
-                        tempUser.setUserProfileProperties(httpRequest: item)
-                        
-                        if Participant.shared.participantDictionary[group.groupID] == nil {
-                            Participant.shared.participantDictionary[group.groupID] = [User]()
-                        }
-
-                        Participant.shared.participantDictionary[group.groupID]?.append(tempUser)
-                        
-                    }
-                    
-                    print("***COUNT : \(Participant.shared.participantDictionary[group.groupID]?.count)")
-                    
-                    DispatchQueue.main.async {
-                        
-                        if let destinationViewController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupInformationViewController) as? GroupInformationViewController {
+                        for item in groupRequestResult.resultArrayParticipantList! {
                             
-                            destinationViewController.group = group
-                            destinationViewController.referenceOfContainerGroupViewController = self
-                            self.present(destinationViewController, animated: true, completion: nil)
+                            let tempUser = User()
+                            
+                            tempUser.setUserProfileProperties(httpRequest: item)
+                            
+                            if Participant.shared.participantDictionary[groupid] == nil {
+                                Participant.shared.participantDictionary[groupid] = [User]()
+                            }
+                            
+                            Participant.shared.participantDictionary[groupid]?.append(tempUser)
+                            
+                        }
+                        
+                        DispatchQueue.main.async {
+                            
+                            if let destinationViewController = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.GroupInformationViewController) as? GroupInformationViewController {
+                                
+                                destinationViewController.group = group
+                                destinationViewController.groupInformationView.delegate = self
+                                destinationViewController.referenceOfContainerGroupViewController = self
+                                self.present(destinationViewController, animated: true, completion: nil)
+                                
+                            }
                             
                         }
                         

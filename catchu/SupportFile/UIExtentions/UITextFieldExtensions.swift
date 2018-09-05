@@ -65,7 +65,8 @@ extension UITextView {
             guard let schemeMatch = scheme, Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                 else { continue }
             
-            let remainingRange = Range(bookmark..<text.endIndex)
+//            let remainingRange = Range(bookmark..<text.endIndex)
+            let remainingRange = bookmark..<text.endIndex
             
             // URL syntax is http://123abc
             
