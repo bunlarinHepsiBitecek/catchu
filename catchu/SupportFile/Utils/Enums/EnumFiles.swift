@@ -91,3 +91,13 @@ enum PermissionFLows {
     case photoLibraryUnAuthorized
 }
 
+enum CallerClass {
+    case ImageVideoPickerHandler
+    case MediaLibraryManager
+}
+
+enum CameraPosition {
+    case front
+    case rear
+}
+

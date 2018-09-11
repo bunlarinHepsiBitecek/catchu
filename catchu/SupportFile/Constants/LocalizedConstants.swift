@@ -149,6 +149,7 @@ struct LocalizedConstants {
         static let chooseProfilePicture = NSLocalizedString("chooseProfilePicture", comment: "")
         static let takePhoto = NSLocalizedString("takePhoto", comment: "")
         static let chooseFromLibrary = NSLocalizedString("chooseFromLibrary", comment: "")
+        static let helpCatchU = NSLocalizedString("helpCatchU", comment: "")
         
     }
     

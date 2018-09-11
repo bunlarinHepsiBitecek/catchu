@@ -145,29 +145,32 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
     ///
     /// - Parameter inputPermissionType: camera, photo library etc, it is embedded in EnumFiles
     func gotoRequestProcessViewControllers(inputPermissionType : PermissionFLows) {
+
+        PermissionHandler.shared.delegate = self
+        PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: inputPermissionType)
         
-        switch inputPermissionType {
-        case .camera, .photoLibrary:
-            
-            if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "PhotoLibraryPrePermissionViewController") as? PhotoLibraryPrePermissionViewController {
-                
-                destinationViewControler.viewControllerFlowType = inputPermissionType
-                
-                UIApplication.topViewController()?.present(destinationViewControler, animated: true, completion: nil)
-                
-            }
-            
-        case .cameraUnathorized, .photoLibraryUnAuthorized:
-            
-            if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "MediaPermissionUnAuthorizedViewController") as? MediaPermissionUnAuthorizedViewController {
-                
-                destinationViewControler.flowType = inputPermissionType
-                
-                UIApplication.topViewController()?.present(destinationViewControler, animated: true, completion: nil)
-                
-            }
-            
-        }
+//        switch inputPermissionType {
+//        case .camera, .photoLibrary:
+//
+//            if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "PhotoLibraryPrePermissionViewController") as? PhotoLibraryPrePermissionViewController {
+//
+//                destinationViewControler.viewControllerFlowType = inputPermissionType
+//                destinationViewControler.delegate = self
+//                UIApplication.topViewController()?.present(destinationViewControler, animated: true, completion: nil)
+//
+//            }
+//
+//        case .cameraUnathorized, .photoLibraryUnAuthorized:
+//
+//            if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "MediaPermissionUnAuthorizedViewController") as? MediaPermissionUnAuthorizedViewController {
+//
+//                destinationViewControler.flowType = inputPermissionType
+//
+//                UIApplication.topViewController()?.present(destinationViewControler, animated: true, completion: nil)
+//
+//            }
+//
+//        }
         
     }
     
@@ -226,4 +229,16 @@ extension UIApplication {
         
         return controller
     }
+}
+
+extension ImageVideoPickerHandler : PermissionProtocol {
+    func returnPermissionResult(status: PHAuthorizationStatus) {
+        
+        if status == .authorized {
+            self.initializeGalery()
+        }
+        
+    }
+    
+    
 }

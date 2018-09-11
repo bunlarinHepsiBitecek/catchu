@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 protocol ImageHandlerProtocol: class {
     
@@ -20,9 +21,50 @@ protocol GroupInformationUpdateProtocol: class {
     
 }
 
+protocol PermissionProtocol: class {
+    
+    func returnPermissionResult(status : PHAuthorizationStatus)
+    func returnPermissinResultBoolValue(result : Bool)
+    func initiateSpecificActions()
+    
+}
+
+extension PermissionProtocol {
+    
+    func returnPermissionResult(status : PHAuthorizationStatus) {}
+    func initiateSpecificActions() {}
+    func returnPermissinResultBoolValue(result : Bool) {}
+    
+}
+
 protocol ShareDataProtocols: class {
     
     func dismisViewController()
+    func resizeShareTypeSliderConstraint(input : CGFloat)
+    func selectSliderTypeCell(inputIndexPath : IndexPath)
+    func returnSliderWidth() -> CGFloat
+    func selectFunctionCell(inputIndex : Int)
+    func deliverDelegation() -> UIViewController
+    func initiateCustomCamera() 
     
 }
+
+extension ShareDataProtocols {
+    func dismisViewController() {}
+    
+    func resizeShareTypeSliderConstraint(input : CGFloat) {}
+    
+    func selectSliderTypeCell(inputIndexPath : IndexPath) {}
+    
+    func returnSliderWidth() -> CGFloat { return 0 }
+    
+    func selectFunctionCell(inputIndex : Int) {}
+    
+    func deliverDelegation() -> UIViewController { return UIViewController() }
+    
+    func initiateCustomCamera() {}
+    
+}
+
+
 

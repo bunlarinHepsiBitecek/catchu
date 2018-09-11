@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ContactPackage/GroupInformation/GroupInformationView.swift"
-            timestampString = "557835597.559633"
+            filePath = "catchu/View/ShareData/CustomScrollView.swift"
+            timestampString = "558364761.5019929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "showSpinning()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/SupportFile/ExistedLibraryExtensions/ExtensionUIImageView.swift"
-            timestampString = "557830538.798236"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "setImagesFromCacheOrFirebaseForFriend(_:)"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "setZoomScale()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/ContactPackage/Contact/ExtensionContainerFriendController.swift"
-            timestampString = "557826981.623172"
+            filePath = "catchu/View/ShareData/CustomScrollView2.swift"
+            timestampString = "558364761.502094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "cropImage(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/SupportFile/ExistedLibraryExtensions/ExtensionUIImageView.swift"
-            timestampString = "557830538.798635"
+            filePath = "catchu/View/ShareData/CustomScrollView2.swift"
+            timestampString = "558364761.502195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "setImagesFromCacheOrFirebaseForFriend(_:)"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "cropImage(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/SupportFile/ExistedLibraryExtensions/ExtensionUIImageView.swift"
-            timestampString = "557830538.798894"
+            filePath = "catchu/Controller/MainPackage/Profile/PermissionPackage/PhotoLibraryPrePermissionViewController.swift"
+            timestampString = "558364761.502287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "setImagesFromCacheOrFirebaseForFriend(_:)"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "startRequestProcessForCamera()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ContactPackage/FriendGroupListView/ContactView.swift"
-            timestampString = "557826981.624467"
+            filePath = "catchu/View/ShareData/CameraGalleryCollectionViewCell.swift"
+            timestampString = "558364761.502368"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
-            landmarkName = "nextButtonClicked(_:)"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "returnPermissinResultBoolValue(result:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ContactPackage/FriendGroupListView/ContactView.swift"
-            timestampString = "557826981.624707"
+            filePath = "catchu/View/ShareData/CameraGalleryCollectionViewCell.swift"
+            timestampString = "558364761.502455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "nextButtonClicked(_:)"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "returnPermissinResultBoolValue(result:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,46 +105,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ShareData/ShareTypeSliderView.swift"
-            timestampString = "557875107.0636131"
+            filePath = "catchu/View/ShareData/CustomCamereView.swift"
+            timestampString = "558364761.5025409"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "setupCameraSettings()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "catchu.ShareTypeSliderView.collectionView(_: __C.UICollectionView, didSelectItemAt: Foundation.IndexPath) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareTypeSliderView.swift"
-                  timestampString = "557875107.352927"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "113"
-                  endingLineNumber = "113"
-                  offsetFromSymbolStart = "1039">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in catchu.ShareTypeSliderView.collectionView(_: __C.UICollectionView, didSelectItemAt: Foundation.IndexPath) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareTypeSliderView.swift"
-                  timestampString = "557875107.3548059"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/CustomCamereView.swift"
+            timestampString = "558364761.503376"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
+            landmarkName = "beginSession()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/CustomCamereView.swift"
+            timestampString = "558364761.504065"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "koko()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

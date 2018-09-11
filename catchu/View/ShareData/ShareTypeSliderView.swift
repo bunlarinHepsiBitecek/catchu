@@ -19,13 +19,16 @@ class ShareTypeSliderView: UIView {
     
     let sliderImageArray = ["edit", "gallery", "play-button"]
     
+    weak var delegate : ShareDataProtocols!
+    weak var delegateForFunction : ShareDataProtocols!
+    
     func initialize() {
         
         self.backgroundColor = UIColor.clear
         
         self.clipsToBounds = true
         self.layer.cornerRadius = 7
-        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+//        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         self.shareTypeCollectionView.delegate = self
         self.shareTypeCollectionView.dataSource = self
         
@@ -37,6 +40,21 @@ class ShareTypeSliderView: UIView {
     
 }
 
+extension ShareTypeSliderView : ShareDataProtocols {
+    
+    func resizeShareTypeSliderConstraint(input: CGFloat) {
+        
+        sliderLeadingConstraint.constant = input / 3
+        
+    }
+    
+    func selectSliderTypeCell(inputIndexPath: IndexPath) {
+        
+        shareTypeCollectionView.selectItem(at: inputIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        
+    }
+    
+}
 
 // MARK: - Major functions
 extension ShareTypeSliderView {
@@ -79,11 +97,12 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
     
     private func calculateCellSize() -> CGFloat {
         
-        let deviceWidthSize = self.bounds.width
+//        let deviceWidthSize = UIScreen.main.bounds.width
+        let deviceWidthSize = delegate.returnSliderWidth()
         
         print("deviceWidthSize : \(String(describing: deviceWidthSize))")
         
-        return (deviceWidthSize - 2) / 3
+        return (deviceWidthSize) / 3
         
     }
     
@@ -106,13 +125,15 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
         
         print("didselect for shareTypeSliderCollectionView")
         
-        let x = CGFloat(indexPath.item) * sliderContainerView.frame.width / 3
-        
-        sliderLeadingConstraint.constant = x
-        
-        UIView.animate(withDuration: 0.2) {
-            self.layoutIfNeeded()
-        }
+//        let x = CGFloat(indexPath.item) * sliderContainerView.frame.width / 3
+//
+//        sliderLeadingConstraint.constant = x
+//
+//        UIView.animate(withDuration: 0.2) {
+//            self.layoutIfNeeded()
+//        }
+
+        delegateForFunction.selectFunctionCell(inputIndex: indexPath.item)
         
         
     }

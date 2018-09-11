@@ -16,10 +16,34 @@ class MediaLibraryManager {
     public var assets = [PHAsset]()
     public var success:Success? = nil
     
+    weak var delegateForExternalSources : PermissionProtocol!
     
     func loadPhotos(success:Success!){
         self.success = success
-        self.photoAuthorizationCheck()
+        self.assets = [PHAsset]()
+//        self.photoAuthorizationCheck()
+        self.photoAuthorizationCheckWithCustomViewController()
+    }
+    
+    private func photoAuthorizationCheckWithCustomViewController() {
+        // Get the current authorization state.
+        let status = PHPhotoLibrary.authorizationStatus()
+        PermissionHandler.shared.delegateForExternalClass = delegateForExternalSources
+        PermissionHandler.shared.delegate = self
+        
+        switch status {
+        case .authorized:
+            self.loadAllPhotos()
+            break
+        case .notDetermined:
+            PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .photoLibrary)
+//            ImageVideoPickerHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .photoLibrary)
+            break
+        case .restricted, .denied:
+            PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .photoLibraryUnAuthorized)
+//            ImageVideoPickerHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .photoLibraryUnAuthorized)
+            break
+        }
     }
     
     private func photoAuthorizationCheck() {
@@ -50,11 +74,12 @@ class MediaLibraryManager {
     }
     
     // MARK: Photos
-    private func loadAllPhotos() {
+    // private func loadAllPhotos()
+    func loadAllPhotos() {
         
         let fetchOptions: PHFetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit
+        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit100
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         fetchResult.enumerateObjects({ (object, index, stop) -> Void in
             self.assets.append(object)
@@ -82,6 +107,15 @@ class MediaLibraryManager {
             if self.assets.count == fetchResult.count{ self.success!(self.assets) }
         })
     }
-    
+
+}
+
+extension MediaLibraryManager : PermissionProtocol {
+    func returnPermissionResult(status: PHAuthorizationStatus) {
+        
+        self.loadAllPhotos()
+        
+//        assets.reverse()
+    }
     
 }

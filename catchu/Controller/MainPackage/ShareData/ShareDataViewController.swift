@@ -10,24 +10,33 @@ import UIKit
 
 class ShareDataViewController: UIViewController {
 
+    @IBOutlet var gridView: UIView!
     @IBOutlet var shareDataView: ShareDataView!
     @IBOutlet var shareTypeSliderView: ShareTypeSliderView!
     @IBOutlet var shareFunctionSliderView: ShareFunctionSliderView!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     var priorActiveTab : Int!
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         print("priorActiveTab : \(String(describing: priorActiveTab))")
         
+        
         setupShareDataView()
         setupShareTypeSliderView()
         setupShareFunctionSliderView()
+        setupDelegationForSliderTypeView()
         
         shareTypeSliderView.didSelectFirstCellForInitial()
         
     }
+    
+    
 
 }
 
@@ -53,6 +62,7 @@ extension ShareDataViewController {
     private func setupShareTypeSliderView() {
         
         shareTypeSliderView.translatesAutoresizingMaskIntoConstraints = false
+        shareTypeSliderView.delegate = shareDataView
         shareTypeSliderView.initialize()
         self.shareDataView.addSubview(shareTypeSliderView)
         
@@ -69,6 +79,8 @@ extension ShareDataViewController {
         
         shareFunctionSliderView.translatesAutoresizingMaskIntoConstraints = false
         
+        shareFunctionSliderView.delegate = shareTypeSliderView
+        shareFunctionSliderView.delegateForShareDataView = shareDataView
         shareFunctionSliderView.initialize()
         self.view.addSubview(shareFunctionSliderView)
         
@@ -82,9 +94,16 @@ extension ShareDataViewController {
         
     }
     
+    private func setupDelegationForSliderTypeView() {
+        
+        shareTypeSliderView.delegateForFunction = shareFunctionSliderView
+        
+    }
+    
 }
 
 extension ShareDataViewController: ShareDataProtocols {
+    
     func dismisViewController() {
         
         if let destionation = LoaderController.shared.currentViewController() as? MainTabBarViewController {
@@ -97,5 +116,5 @@ extension ShareDataViewController: ShareDataProtocols {
         
     }
     
-    
 }
+

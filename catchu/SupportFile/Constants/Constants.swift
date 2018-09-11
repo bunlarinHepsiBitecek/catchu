@@ -60,6 +60,8 @@ struct Constants {
     
     struct MediaLibrary {
         static let ImageFetchLimit = 11
+        static let ImageFetchLimit20 = 20
+        static let ImageFetchLimit100 = 100
         static let ImageHolderSize: CGSize    = CGSize(width: 50.0, height: 50.0)
         static let ImageSmallSize: CGSize = CGSize(width: 200.0, height: 200.0)
     }
@@ -189,6 +191,13 @@ struct Constants {
             static let groupCreateSelectedParticipantCell: String = "groupCreateSelectedParticipantCell"
             static let sliderShareTypeCell : String = "sliderShareTypeCell"
             static let shareFunctionCell : String = "shareFunctionCell"
+            static let textCell : String = "textCell"
+            static let cameraGalleryCell : String = "cameraGalleryCell"
+            static let videoCell : String = "videoCell"
+            static let imageCell : String = "imageCell"
+            static let photoCell : String = "photoCell"
+            static let photoLibraryCell : String = "photoLibraryCell"
+            static let permissinWarningCell : String = "permissinWarningCell"
             
         }
         

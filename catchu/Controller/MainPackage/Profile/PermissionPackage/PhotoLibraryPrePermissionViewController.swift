@@ -21,6 +21,10 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
     @IBOutlet var detailLabel: UILabel!
     
     var viewControllerFlowType : PermissionFLows!
+    var callerClass : CallerClass!
+    
+    weak var delegate : PermissionProtocol!
+    weak var delegateForExternalClass : PermissionProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +41,21 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
     @IBAction func notNowButtonTapped(_ sender: Any) {
         
         self.dismiss(animated: true, completion: nil)
+        
+        if let type = viewControllerFlowType {
+            
+            switch type {
+            case .camera: break
+//                startRequestProcessForCamera()
+                
+            case .photoLibrary:
+                self.delegateForExternalClass.initiateSpecificActions()
+                
+            default:
+                print("do nothing")
+            }
+            
+        }
         
     }
     
@@ -69,11 +88,7 @@ extension PhotoLibraryPrePermissionViewController {
         
         PHPhotoLibrary.requestAuthorization { (authorizationStatus) in
             
-            if authorizationStatus == .authorized {
-                
-                ImageVideoPickerHandler.shared.initializeGalery()
-                
-            }
+            self.delegate.returnPermissionResult(status: authorizationStatus)
             
         }
         
@@ -85,7 +100,13 @@ extension PhotoLibraryPrePermissionViewController {
             
             if result {
                 
-                ImageVideoPickerHandler.shared.initializeCamera()
+//                ImageVideoPickerHandler.shared.initializeCamera()
+                
+                // the function below triggers a uiview addsubview in main tread
+                DispatchQueue.main.async {
+                    self.delegate.returnPermissinResultBoolValue(result: result)
+                }
+                
                 
             }
             
