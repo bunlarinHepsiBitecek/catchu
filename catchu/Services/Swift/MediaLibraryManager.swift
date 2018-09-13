@@ -17,12 +17,31 @@ class MediaLibraryManager {
     public var success:Success? = nil
     
     weak var delegateForExternalSources : PermissionProtocol!
+    weak var delegateForGalleryPermission : PermissionProtocol!
     
     func loadPhotos(success:Success!){
         self.success = success
         self.assets = [PHAsset]()
 //        self.photoAuthorizationCheck()
-        self.photoAuthorizationCheckWithCustomViewController()
+        self.photoAuthorizationCheckWithCustomView()
+    }
+    
+    private func photoAuthorizationCheckWithCustomView() {
+        
+        let status = PHPhotoLibrary.authorizationStatus()
+
+        switch status {
+        case .authorized:
+            self.loadAllPhotos()
+            break
+        case .notDetermined:
+            delegateForGalleryPermission.requestPermission(permissionType: .photoLibrary)
+            break
+        case .restricted, .denied:
+            delegateForGalleryPermission.requestPermission(permissionType: .photoLibraryUnAuthorized)
+            break
+        }
+        
     }
     
     private func photoAuthorizationCheckWithCustomViewController() {
@@ -79,7 +98,7 @@ class MediaLibraryManager {
         
         let fetchOptions: PHFetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit100
+        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit20
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         fetchResult.enumerateObjects({ (object, index, stop) -> Void in
             self.assets.append(object)

@@ -31,13 +31,18 @@ class ShareFunctionSliderView: UIView {
     
 }
 
+
+// MARK: - ShareDataProtocols
 extension ShareFunctionSliderView : ShareDataProtocols {
     
     func selectFunctionCell(inputIndex: Int) {
         
         let indexPath = IndexPath(item: inputIndex, section: 0)
         
-        functionCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        // eger animated false yapmazsan animated olarak scroll ettigi icin 3. cell i de yukluyor
+//        functionCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        functionCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+        
         
     }
     
@@ -65,6 +70,7 @@ extension ShareFunctionSliderView : UICollectionViewDelegate, UICollectionViewDa
             
             guard let cell = functionCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.Collections.CollectionView.cameraGalleryCell, for: indexPath) as? CameraGalleryCollectionViewCell else { return UICollectionViewCell() }
             
+            cell.delegateForShareType  = self.delegate
             cell.delegate = self.delegateForShareDataView
             
             return cell

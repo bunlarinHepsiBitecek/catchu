@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class PermissionHandler {
     
@@ -14,11 +15,12 @@ class PermissionHandler {
 
     weak var delegate : PermissionProtocol!
     weak var delegateForExternalClass : PermissionProtocol!
+    weak var delegateForShareData : ShareDataProtocols!
     
     func gotoRequestProcessViewControllers(inputPermissionType : PermissionFLows) {
         
         switch inputPermissionType {
-        case .camera, .photoLibrary:
+        case .camera, .photoLibrary, .microphone:
             
             if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "PhotoLibraryPrePermissionViewController") as? PhotoLibraryPrePermissionViewController {
                 
@@ -29,7 +31,7 @@ class PermissionHandler {
                 
             }
             
-        case .cameraUnathorized, .photoLibraryUnAuthorized:
+        case .cameraUnathorized, .photoLibraryUnAuthorized, .microphoneUnAuthorizated:
             
             if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "MediaPermissionUnAuthorizedViewController") as? MediaPermissionUnAuthorizedViewController {
                 

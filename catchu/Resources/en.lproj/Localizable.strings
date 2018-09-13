@@ -66,6 +66,11 @@
 "AccessLibraryDisable"        = "Please enable access photos in Settings";
 "CameraNotAvaliableTitle"     = "Camera Access Error";
 "CameraNotAvaliable"          = "Camera not avaliable";
+"notNow" = "Not now";
+"giveAccess" = "Give Access";
+"enableAccessGallery" = "Enable Gallery Access";
+"enableAccessCamera" = "Enable Camera Access";
+"enableAccessMicrophone" = "Enable Microphone Access";
 
 // Share
 "MissingData"                 = "Missing Data";
@@ -106,3 +111,8 @@
 //Feed
 "Loading" = "Loading...";
 
+// Permission Statements
+"topicLabelForCamera" = "Please Allow Access to Your Camera";
+"detailLabelForCamera" = "This allows CatchU to access your camera";
+"topicLabelForPhotos" = "Please Allow Access to Your Photos";
+"detailLabelForPhotos" = "This allows CatchU to access your photo library";

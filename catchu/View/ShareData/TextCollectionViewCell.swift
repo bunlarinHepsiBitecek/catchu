@@ -15,6 +15,37 @@ class TextCollectionViewCell: UICollectionViewCell {
         
         print("TextCollectionViewCell starts")
         
+       
+//                initializeCustomVideoView()
+        
+    }
+    
+    func initializeCustomVideoView() {
+        
+        let customView = CustomVideoView()
+        
+        self.contentView.addSubview(customView)
+        
+        customView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safe = self.contentView.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            customView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            customView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            customView.topAnchor.constraint(equalTo: safe.topAnchor),
+            customView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            ])
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        
     }
     
 }
+

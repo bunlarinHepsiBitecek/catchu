@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class ShareTypeSliderView: UIView {
 
@@ -21,6 +22,8 @@ class ShareTypeSliderView: UIView {
     
     weak var delegate : ShareDataProtocols!
     weak var delegateForFunction : ShareDataProtocols!
+    
+    var selectedIndexPath = IndexPath()
     
     func initialize() {
         
@@ -73,6 +76,10 @@ extension ShareTypeSliderView {
         sliderWidthConstraint.constant = calculateCellSize()
         
         print("sliderObject.frame.width : \(String(describing: sliderObject.frame.width))")
+        
+    }
+    
+    private func getPhotosFromGallery() {
         
     }
     
@@ -132,9 +139,12 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
 //        UIView.animate(withDuration: 0.2) {
 //            self.layoutIfNeeded()
 //        }
-
+        
         delegateForFunction.selectFunctionCell(inputIndex: indexPath.item)
         
+//        selectedIndexPath = indexPath
+//
+//        permissionCheck(sliderItemIndex: indexPath.item)
         
     }
     
@@ -150,3 +160,4 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
     }
     
 }
+

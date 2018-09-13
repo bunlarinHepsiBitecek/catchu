@@ -89,6 +89,8 @@ enum PermissionFLows {
     case photoLibrary
     case cameraUnathorized
     case photoLibraryUnAuthorized
+    case microphone
+    case microphoneUnAuthorizated
 }
 
 enum CallerClass {
@@ -99,5 +101,10 @@ enum CallerClass {
 enum CameraPosition {
     case front
     case rear
+}
+
+enum RecordStatus {
+    case active
+    case passive
 }
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Photos
 
 class CustomVideo: NSObject {
 
@@ -19,6 +20,10 @@ class CustomVideo: NSObject {
     var previewLayer: AVCaptureVideoPreviewLayer?
     
     var videoFileOutput = AVCaptureMovieFileOutput()
+    
+    var isRecording : Bool = false
+    
+    weak var delegate : ShareDataProtocols!
     
 }
 
@@ -129,6 +134,63 @@ extension CustomVideo {
         
         self.previewLayer?.frame = view.frame
     }
+    
+    func startRecording() {
+        
+        let outputPath = "\(NSTemporaryDirectory())output.mov"
+        let outputURL = URL(fileURLWithPath: outputPath)
+        
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: outputPath) {
+            
+            do {
+                
+                try fileManager.removeItem(atPath: outputPath)
+                
+            } catch {
+                
+                print("error removing item at path: \(outputPath)")
+                return
+            }
+        }
+        
+        videoFileOutput.startRecording(to: outputURL, recordingDelegate: self)
+        
+    }
+    
+    func stopRecording() {
+        
+        videoFileOutput.stopRecording()
+        
+    }
+    
+}
+
+extension CustomVideo : AVCaptureFileOutputRecordingDelegate {
+    
+    func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
+        
+        print("started recording to: \(fileURL)")
+        
+    }
+    
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        
+        print("stopped recording to: \(outputFileURL)")
+        
+
+        self.delegate.directToCapturedVideoView(url: outputFileURL)
+        
+//        try? PHPhotoLibrary.shared().performChangesAndWait {
+//
+//            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
+//
+//        }
+        
+    }
+    
+    
+    
     
 }
 

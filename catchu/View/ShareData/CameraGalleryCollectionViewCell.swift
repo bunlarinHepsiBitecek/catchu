@@ -19,10 +19,13 @@ class CameraGalleryCollectionViewCell: UICollectionViewCell {
     var fetchResult: PHFetchResult<PHAsset> = PHFetchResult()
 
     weak var delegate : ShareDataProtocols!
+    weak var delegateForShareType : ShareDataProtocols!
     
     var selectedCell : IndexPath!
     var collectionViewCellSelected : Bool!
     
+    var customPermissionViewForGallery : CustomPermissionView?
+
     let selectedSpecialView : SelectedImageManager = {
         
         let temp = SelectedImageManager(frame: .zero)
@@ -30,20 +33,20 @@ class CameraGalleryCollectionViewCell: UICollectionViewCell {
         
     }()
     
-    let containerView : UIView = {
-        
-        let temp = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        temp.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        temp.layer.borderWidth = 3
-        temp.layer.cornerRadius = 7
-        
-        temp.isUserInteractionEnabled = true
-        
-        return temp
-        
-    }()
+//    let containerView : UIView = {
+//
+//        let temp = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+//        temp.translatesAutoresizingMaskIntoConstraints = false
+//        temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+//        temp.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+//        temp.layer.borderWidth = 3
+//        temp.layer.cornerRadius = 7
+//
+//        temp.isUserInteractionEnabled = true
+//
+//        return temp
+//
+//    }()
     
     let detailLable : UILabel = {
         
@@ -83,6 +86,7 @@ class CameraGalleryCollectionViewCell: UICollectionViewCell {
         
     }
     
+    
 }
 
 // MARK: - Major functions
@@ -92,7 +96,7 @@ extension CameraGalleryCollectionViewCell {
         
 //        MediaLibraryManager.shared.success = nil
         
-        MediaLibraryManager.shared.delegateForExternalSources = self
+        MediaLibraryManager.shared.delegateForGalleryPermission = self
         MediaLibraryManager.shared.loadPhotos { (phAssetResult) in
             
             print("phAssetResult.count : \(String(describing: phAssetResult))")
@@ -124,21 +128,24 @@ extension CameraGalleryCollectionViewCell {
         
         let customCamera = CustomCamereView()
         
-        self.contentView.addSubview(customCamera)
-        
-        
-        customCamera.translatesAutoresizingMaskIntoConstraints = false
-        
-        let safe = self.contentView.safeAreaLayoutGuide
-        
-        NSLayoutConstraint.activate([
+        UIView.transition(with: contentView, duration: 0.3, options: .transitionCrossDissolve, animations: {
             
-            customCamera.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            customCamera.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            customCamera.topAnchor.constraint(equalTo: safe.topAnchor),
-            customCamera.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            self.contentView.addSubview(customCamera)
             
-            ])
+            customCamera.translatesAutoresizingMaskIntoConstraints = false
+            
+            let safe = self.contentView.safeAreaLayoutGuide
+            
+            NSLayoutConstraint.activate([
+                
+                customCamera.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+                customCamera.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+                customCamera.topAnchor.constraint(equalTo: safe.topAnchor),
+                customCamera.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+                
+                ])
+            
+        })
         
     }
     
@@ -234,7 +241,7 @@ extension CameraGalleryCollectionViewCell : UICollectionViewDelegate, UICollecti
 }
 
 
-// MARK: - Protocols
+// MARK: - ShareDataProtocols
 extension CameraGalleryCollectionViewCell : ShareDataProtocols {
     
     func initiateCustomCamera() {
@@ -245,52 +252,55 @@ extension CameraGalleryCollectionViewCell : ShareDataProtocols {
     
 }
 
+
+// MARK: - PermissionProtocol
 extension CameraGalleryCollectionViewCell : PermissionProtocol {
     
-    func initiateSpecificActions() {
-        
-        mainView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
-        mainView.addSubview(containerView)
-        containerView.addSubview(detailLable)
-        
-        let safeAreaLayout = mainView.safeAreaLayoutGuide
-        let safeAreForLabel = containerView.safeAreaLayoutGuide
-        
-        print("safeAreaLayout : \(safeAreaLayout)")
-        
-        NSLayoutConstraint.activate([
-            
-            containerView.leadingAnchor.constraint(equalTo: safeAreaLayout.leadingAnchor, constant: 0),
-            containerView.trailingAnchor.constraint(equalTo: safeAreaLayout.trailingAnchor, constant: 0),
-            containerView.bottomAnchor.constraint(equalTo: safeAreaLayout.bottomAnchor, constant: 0),
-            containerView.topAnchor.constraint(equalTo: safeAreaLayout.topAnchor, constant: 0),
-            
-            detailLable.centerYAnchor.constraint(equalTo: safeAreForLabel.centerYAnchor),
-            detailLable.centerXAnchor.constraint(equalTo: safeAreForLabel.centerXAnchor),
-            detailLable.heightAnchor.constraint(equalToConstant: 100),
-            detailLable.widthAnchor.constraint(equalToConstant: 300)
-            
-            ])
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CameraGalleryCollectionViewCell.startPermissionFlow(_:)))
-        tapGestureRecognizer.delegate = self
-        containerView.addGestureRecognizer(tapGestureRecognizer)
-        
-        self.photoCollectionView.alpha = 0
-        
-    }
+//    func initiateSpecificActions() {
+//        
+//        mainView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+//        
+//        mainView.addSubview(View)
+//        containerView.addSubview(detailLable)
+//        
+//        let safeAreaLayout = mainView.safeAreaLayoutGuide
+//        let safeAreForLabel = containerView.safeAreaLayoutGuide
+//        
+//        print("safeAreaLayout : \(safeAreaLayout)")
+//        
+//        NSLayoutConstraint.activate([
+//            
+//            containerView.leadingAnchor.constraint(equalTo: safeAreaLayout.leadingAnchor, constant: 0),
+//            containerView.trailingAnchor.constraint(equalTo: safeAreaLayout.trailingAnchor, constant: 0),
+//            containerView.bottomAnchor.constraint(equalTo: safeAreaLayout.bottomAnchor, constant: 0),
+//            containerView.topAnchor.constraint(equalTo: safeAreaLayout.topAnchor, constant: 0),
+//            
+//            detailLable.centerYAnchor.constraint(equalTo: safeAreForLabel.centerYAnchor),
+//            detailLable.centerXAnchor.constraint(equalTo: safeAreForLabel.centerXAnchor),
+//            detailLable.heightAnchor.constraint(equalToConstant: 100),
+//            detailLable.widthAnchor.constraint(equalToConstant: 300)
+//            
+//            ])
+//        
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CameraGalleryCollectionViewCell.startPermissionFlow(_:)))
+//        tapGestureRecognizer.delegate = self
+//        containerView.addGestureRecognizer(tapGestureRecognizer)
+//        
+//        self.photoCollectionView.alpha = 0
+//        
+//    }
     
     func returnPermissionResult(status: PHAuthorizationStatus) {
         
         print("returnPermissionResult starts in cameraGalleryCollectionViewCell")
+        print("status : \(status)")
         
         getPhotosFromGallery()
         
-        DispatchQueue.main.async {
-            self.containerView.removeFromSuperview()
-            self.photoCollectionView.alpha = 1
-        }
+//        DispatchQueue.main.async {
+//            self.containerView.removeFromSuperview()
+//            self.photoCollectionView.alpha = 1
+//        }
         
     }
     
@@ -304,6 +314,24 @@ extension CameraGalleryCollectionViewCell : PermissionProtocol {
             
         }
         
+    }
+    
+    func requestPermission(permissionType : PermissionFLows) {
+        
+        CustomPermissionViewController.shared.delegate = self
+        
+        switch permissionType {
+        case .photoLibrary:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self.mainView, permissionType: .photoLibrary)
+        case .photoLibraryUnAuthorized:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self.mainView, permissionType: .photoLibraryUnAuthorized)
+        case .camera:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self.mainView, permissionType: .camera)
+        case .cameraUnathorized:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self.mainView, permissionType: .cameraUnathorized)
+        default:
+            return
+        }
         
     }
     

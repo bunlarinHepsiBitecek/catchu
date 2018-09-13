@@ -52,6 +52,21 @@
 "createGroup" = "Grup Oluştur";
 "createGroupName" = "Grubunun için bir isim belirleyebilirsiniz.";
 
+// Location Services
+//"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
+//"LocationServiceDisable"      = "Lütfen";
+//"Settings"                    = "Settings";
+//"AccessLibraryDisableTitle"   = "Access Library Disable";
+//"AccessLibraryDisable"        = "Please enable access photos in Settings";
+//"CameraNotAvaliableTitle"     = "Camera Access Error";
+//"CameraNotAvaliable"          = "Camera not avaliable";
+"notNow" = "Not now";
+"giveAccess" = "Give Access";
+"enableAccessGallery" = "Potoğraf galerisine erişimi açınız.";
+"enableAccessCamera" = "Kameraya erişimi açınız.";
+"enableAccessMicrophone" = "Mikrofona erişimi açınız.";
+
+
 // notification variables
 "CatchSomething" = "Bir şey yakaladınız :)";
 
@@ -83,6 +98,15 @@
 "Email" = "Email";
 "Phone" = "Telefon";
 "Gender" = "Cinsiyet";
+
+// Permission Statements
+"topicLabelForCamera" = "Lütfen kameraya erişim izni veriniz!";
+"detailLabelForCamera" = "CatchU kameranıza erişecek.";
+"topicLabelForPhotos" = "Lütfen fotoğraflarınıza erişim izni veriniz!";
+"detailLabelForPhotos" = "CatchU fotoğraf galerinize erişecek.";
+"topicLabelForMicrophone" = "Lütfen mikrofona erişim izni veriniz!";
+"detailLabelForMicrophone" = "CatchU mikrofonunuza erişecek.";
+
 
 
 

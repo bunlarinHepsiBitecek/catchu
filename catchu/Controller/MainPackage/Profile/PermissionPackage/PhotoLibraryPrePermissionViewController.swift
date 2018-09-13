@@ -25,6 +25,7 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
     
     weak var delegate : PermissionProtocol!
     weak var delegateForExternalClass : PermissionProtocol!
+    weak var delegateForShareData : ShareDataProtocols!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +50,11 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
 //                startRequestProcessForCamera()
                 
             case .photoLibrary:
-                self.delegateForExternalClass.initiateSpecificActions()
+//                self.delegateForExternalClass.initiateSpecificActions()
+                break
+                
+            case .microphone:
+                self.delegateForShareData.initiateCustomVideo()
                 
             default:
                 print("do nothing")
@@ -62,20 +67,23 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
     
     @IBAction func giveAccessButtonTapped(_ sender: Any) {
         
-        if let type = viewControllerFlowType {
-            
-            switch type {
-            case .camera:
-                startRequestProcessForCamera()
-                
-            case .photoLibrary:
-                startRequestProcessForPhotoLibrary()
-                
-            default:
-                print("do nothing")
-            }
-            
-        }
+//        if let type = viewControllerFlowType {
+//
+//            switch type {
+//            case .camera:
+//                startRequestProcessForCamera()
+//
+//            case .photoLibrary:
+//                startRequestProcessForPhotoLibrary()
+//
+//            case .microphone:
+//                startRequestProcessForMicrophone()
+//
+//            default:
+//                print("do nothing")
+//            }
+//
+//        }
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -84,37 +92,50 @@ class PhotoLibraryPrePermissionViewController: UIViewController {
 
 extension PhotoLibraryPrePermissionViewController {
     
-    func startRequestProcessForPhotoLibrary() {
+    private func startRequestProcessForPhotoLibrary() {
         
         PHPhotoLibrary.requestAuthorization { (authorizationStatus) in
             
-            self.delegate.returnPermissionResult(status: authorizationStatus)
-            
-        }
-        
-    }
-    
-    func startRequestProcessForCamera() {
-        
-        AVCaptureDevice.requestAccess(for: .video) { (result) in
-            
-            if result {
-                
-//                ImageVideoPickerHandler.shared.initializeCamera()
-                
-                // the function below triggers a uiview addsubview in main tread
-                DispatchQueue.main.async {
-                    self.delegate.returnPermissinResultBoolValue(result: result)
-                }
-                
-                
+            DispatchQueue.main.async {
+                self.delegate.returnPermissionResult(status: authorizationStatus)
             }
             
         }
         
     }
     
-    func setupObjects(inputPermissionFlow : PermissionFLows) {
+    private func startRequestProcessForCamera() {
+        
+//        AVCaptureDevice.requestAccess(for: .video) { (result) in
+//            
+//            if result {
+//                
+////                ImageVideoPickerHandler.shared.initializeCamera()
+//                
+//                // the function below triggers a uiview addsubview in main tread
+//                DispatchQueue.main.async {
+//                    self.delegate.returnPermissinResultBoolValue(result: result)
+//                }
+//                
+//            }
+//            
+//        }
+        
+    }
+    
+    private func startRequestProcessForMicrophone() {
+        
+        AVAudioSession.sharedInstance().requestRecordPermission { (granted) in
+            
+            if granted {
+                self.delegateForShareData.initiateCustomVideo()
+            } 
+            
+        }
+        
+    }
+    
+    private func setupObjects(inputPermissionFlow : PermissionFLows) {
         
         print("default setups in onlineimage")
         
@@ -126,33 +147,48 @@ extension PhotoLibraryPrePermissionViewController {
         case .camera:
             setupCameraRequestFlow()
             
+        case .microphone:
+            setupMicrophoneRequestFlow()
+            
         default:
             print("do nothing")
         }
         
     }
     
-    func setupPhotoLibraryFlow() {
+    private func setupPhotoLibraryFlow() {
 
         mainImage.image = UIImage(named: "jon-tyson-762647-unsplash.jpg")
         mainImage.alpha = 1
 
         mainIcon.image = UIImage(named: "gallery_request.png")
 
-        topicLabel.text = "Please Allow Access to Your Photos"
-        detailLabel.text = "This allows CatchU to access your photo library"
+        topicLabel.text = LocalizedConstants.PermissionStatements.topicLabelForPhotos
+        detailLabel.text = LocalizedConstants.PermissionStatements.detailLabelForPhotos
 
     }
 
-    func setupCameraRequestFlow() {
+    private func setupCameraRequestFlow() {
 
         mainImage.image = UIImage(named: "jakob-owens-168413-unsplash.jpg")
         mainImage.alpha = 1
 
         mainIcon.image = UIImage(named: "camera_request.png")
 
-        topicLabel.text = "Please Allow Access to Your Camera"
-        detailLabel.text = "This allows CatchU to access your camera"
+        topicLabel.text = LocalizedConstants.PermissionStatements.topicLabelForCamera
+        detailLabel.text = LocalizedConstants.PermissionStatements.detailLabelForCamera
 
+    }
+    
+    private func setupMicrophoneRequestFlow() {
+        
+        mainImage.image = UIImage(named: "microphoneMain")
+        mainImage.alpha = 1
+        
+        mainIcon.image = UIImage(named: "microphone")
+        
+        topicLabel.text = LocalizedConstants.PermissionStatements.topicLabelForMicrophone
+        detailLabel.text = LocalizedConstants.PermissionStatements.detailLabelForMicrophone
+        
     }
 }

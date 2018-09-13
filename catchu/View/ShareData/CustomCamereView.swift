@@ -19,6 +19,19 @@ class CustomCamereView: UIView {
     lazy var mainView: UIView = {
         
         let temp = UIView(frame: .zero)
+        temp.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.layer.shadowOffset = CGSize(width: 0, height: 10)
+        temp.layer.shadowColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.layer.shadowRadius = 30
+        temp.layer.shadowOpacity = 0.4
+        
+        return temp
+    }()
+    
+    lazy var shadowView: UIView = {
+        
+        let temp = UIView(frame: .zero)
         temp.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         temp.translatesAutoresizingMaskIntoConstraints = false
         
@@ -119,16 +132,6 @@ class CustomCamereView: UIView {
         
     }
     
-    func koko() {
-        
-        previewLayer.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        previewLayer.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        
-        print("mainView.bounds : \(mainView.bounds)")
-        
-        mainView.layer.addSublayer(previewLayer)
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -136,6 +139,7 @@ class CustomCamereView: UIView {
     func setupViews() {
         
         self.addSubview(mainView)
+        self.mainView.addSubview(shadowView)
         self.mainView.addSubview(closeButton)
         self.mainView.addSubview(cameraShootButton)
         self.mainView.addSubview(switchButton)
@@ -150,6 +154,11 @@ class CustomCamereView: UIView {
             mainView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             mainView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             mainView.topAnchor.constraint(equalTo: safe.topAnchor),
+            
+            shadowView.topAnchor.constraint(equalTo: safeMain.topAnchor, constant: 10),
+            shadowView.trailingAnchor.constraint(equalTo: safeMain.trailingAnchor, constant: -50),
+            shadowView.heightAnchor.constraint(equalToConstant: 2),
+            shadowView.widthAnchor.constraint(equalToConstant: 2),
             
             closeButton.topAnchor.constraint(equalTo: safeMain.topAnchor, constant: 10),
             closeButton.trailingAnchor.constraint(equalTo: safeMain.trailingAnchor, constant: -10),
@@ -320,18 +329,22 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
             
             capturedView.translatesAutoresizingMaskIntoConstraints = false
             
-            self.mainView.addSubview(capturedView)
-            
-            let safe = self.safeAreaLayoutGuide
-            
-            NSLayoutConstraint.activate([
+            UIView.transition(with: self.mainView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.mainView.addSubview(capturedView)
                 
-                capturedView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-                capturedView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-                capturedView.topAnchor.constraint(equalTo: safe.topAnchor),
-                capturedView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+                let safe = self.safeAreaLayoutGuide
                 
-                ])
+                NSLayoutConstraint.activate([
+                    
+                    capturedView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+                    capturedView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+                    capturedView.topAnchor.constraint(equalTo: safe.topAnchor),
+                    capturedView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+                    
+                    ])
+            })
+            
+            
             
             
 //            try? PHPhotoLibrary.shared().performChangesAndWait {

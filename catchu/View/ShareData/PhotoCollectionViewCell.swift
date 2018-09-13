@@ -76,13 +76,11 @@ extension PhotoCell : UIGestureRecognizerDelegate {
             delegate.initiateCustomCamera()
             
         case .notDetermined:
-            
-            PermissionHandler.shared.delegate = delegatePermissionControl
-            PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .camera)
+            delegatePermissionControl.requestPermission(permissionType: .camera)
             
         default:
-            PermissionHandler.shared.delegate = delegatePermissionControl
-            PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .cameraUnathorized)
+            delegatePermissionControl.requestPermission(permissionType: .cameraUnathorized)
+        
         }
         
     }

@@ -232,13 +232,14 @@ extension UIApplication {
 }
 
 extension ImageVideoPickerHandler : PermissionProtocol {
-    func returnPermissionResult(status: PHAuthorizationStatus) {
-        
-        if status == .authorized {
-            self.initializeGalery()
-        }
-        
-    }
+    
+//    func returnPermissionResult(status: PHAuthorizationStatus) {
+//        
+//        if status == .authorized {
+//            self.initializeGalery()
+//        }
+//        
+//    }
     
     
 }

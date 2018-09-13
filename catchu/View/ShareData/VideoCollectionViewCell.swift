@@ -15,10 +15,11 @@ class VideoCollectionViewCell: UICollectionViewCell {
         
         print("VideoCollectionViewCell starts")
         
+        self.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
         initializeCustomVideoView()
         
     }
-    
     
     func initializeCustomVideoView() {
         

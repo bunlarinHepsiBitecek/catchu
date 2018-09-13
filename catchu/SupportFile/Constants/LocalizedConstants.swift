@@ -86,6 +86,12 @@ struct LocalizedConstants {
             static let makeGroupAdmin = NSLocalizedString("makeGroupAdmin", comment: "")
             static let RemoveFromGroup = NSLocalizedString("RemoveFromGroup", comment: "")
             static let gotoInfo = NSLocalizedString("gotoInfo", comment: "")
+            static let notNow = NSLocalizedString("notNow", comment: "")
+            static let giveAccess = NSLocalizedString("giveAccess", comment: "")
+            static let enableAccessGallery = NSLocalizedString("enableAccessGallery", comment: "")
+            static let enableAccessCamera = NSLocalizedString("enableAccessCamera", comment: "")
+            static let enableAccessMicrophone = NSLocalizedString("enableAccessMicrophone", comment: "")
+            
             
         }
         
@@ -124,6 +130,17 @@ struct LocalizedConstants {
         static let MissingData = NSLocalizedString("MissingData", comment: "")
         static let NoShareData = NSLocalizedString("NoShareData", comment: "")
         static let Ok = NSLocalizedString("OK", comment: "")
+    }
+    
+    struct PermissionStatements {
+    
+        static let topicLabelForCamera = NSLocalizedString("topicLabelForCamera", comment: "")
+        static let detailLabelForCamera = NSLocalizedString("detailLabelForCamera", comment: "")
+        static let topicLabelForPhotos = NSLocalizedString("topicLabelForPhotos", comment: "")
+        static let detailLabelForPhotos = NSLocalizedString("detailLabelForPhotos", comment: "")
+        static let topicLabelForMicrophone = NSLocalizedString("topicLabelForMicrophone", comment: "")
+        static let detailLabelForMicrophone = NSLocalizedString("detailLabelForMicrophone", comment: "")
+    
     }
     
     struct Feed {

@@ -2309,7 +2309,7 @@
                     <viewLayoutGuide key="safeArea" id="kjy-JJ-QOF"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-3426" y="-1126"/>
+            <point key="canvasLocation" x="-3426.4000000000001" y="-1126.1083743842364"/>
         </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="2Dx-Yx-klv">
