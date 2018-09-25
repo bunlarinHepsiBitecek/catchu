@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 extension PasswordResetViewController {
     
@@ -40,43 +41,43 @@ extension PasswordResetViewController {
     
     func resetPasswordWithEmail(email: String) {
         
-//        guard validateRequiredFields() else {
-//            return
-//        }
-//        
-//        LoaderController.shared.showLoader()
-//        
-//        let actionCodeSetting = ActionCodeSettings.init()
-//        
-//        actionCodeSetting.url = URL(string: String(format: "passwordReset://catchu-594ca.firebaseapp.com?email=%@", email))
-//
-//        actionCodeSetting.setIOSBundleID("com.uren.catchu")
-//        
-//        Auth.auth().sendPasswordReset(withEmail: email, actionCodeSettings: actionCodeSetting) { (error) in
-//            
-//            if error != nil {
-//                
-//                if let errorCode = error as NSError? {
-//                    
-//                    if let firebaseErrorCode = Firebase.AuthErrorCode(rawValue: errorCode.code) {
-//                        
-//                        print("firebaseErrorCode :\(firebaseErrorCode)")
-//                        
-//                    }
-//                    
-//                }
-//                
-//            } else {
-//                
-//                print("PasswordReset process finished successfully")
-//                
-//                LoaderController.shared.removeLoader()
-//                self.informUserAboutEmailSend()
-//                
-//            }
-//        }
+        guard validateRequiredFields() else {
+            return
+        }
+        
+        LoaderController.shared.showLoader()
+        
+        let actionCodeSetting = ActionCodeSettings.init()
+        
+        actionCodeSetting.url = URL(string: String(format: "passwordReset://catchu-594ca.firebaseapp.com?email=%@", email))
+        
+        actionCodeSetting.setIOSBundleID("com.uren.catchu")
+        
+        Auth.auth().sendPasswordReset(withEmail: email, actionCodeSettings: actionCodeSetting) { (error) in
+            
+            if error != nil {
+                
+                if let errorCode = error as NSError? {
+                    
+                    if let firebaseErrorCode = Firebase.AuthErrorCode(rawValue: errorCode.code) {
+                        
+                        print("firebaseErrorCode :\(firebaseErrorCode)")
+                        
+                    }
+                    
+                }
+                
+            } else {
+                
+                print("PasswordReset process finished successfully")
+                
+                LoaderController.shared.removeLoader()
+                self.informUserAboutEmailSend()
+                
+            }
+        }
     }
-
+    
     func informUserAboutEmailSend() {
         
         AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Login.ForgotPassword, message: LocalizedConstants.PasswordReset.PasswordResetMailSend, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)

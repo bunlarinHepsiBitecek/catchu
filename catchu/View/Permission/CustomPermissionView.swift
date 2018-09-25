@@ -20,7 +20,7 @@ class CustomPermissionView: UIView {
         
         let temp = UIView(frame: .zero)
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.layer.cornerRadius = 10
+        temp.layer.cornerRadius = 7
         temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         temp.clipsToBounds = true
         temp.isUserInteractionEnabled = true
@@ -89,6 +89,8 @@ class CustomPermissionView: UIView {
         
         let temp = UILabel(frame: .zero)
         temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.numberOfLines = 0
+        temp.sizeToFit()
 //        temp.contentMode = .center
         temp.textAlignment = .center
         return temp
@@ -226,35 +228,9 @@ class CustomPermissionView: UIView {
     
 }
 
-extension CustomPermissionView : UIGestureRecognizerDelegate {
-    
-    func setupCloseButtonGesture() {
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomPermissionView.dismissCustomCameraView(_:)))
-        tapGesture.delegate = self
-        mainView.addGestureRecognizer(tapGesture)
-        
-    }
-    
-    @objc func dismissCustomCameraView(_ sender : UITapGestureRecognizer) {
-        
-        print("dismissCustomCameraView starts")
-        
-        guard let permissionType = permissionType else { return }
-        
-        switch permissionType {
-        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized:
-            self.removeFromSuperview()
-        default:
-            break
-        }
-        
-    }
-}
-
 extension CustomPermissionView {
     
-    func majorFields() {
+    private func majorFields() {
         
         self.layer.cornerRadius = 10
         
@@ -347,7 +323,7 @@ extension CustomPermissionView {
         
     }
     
-    func startAuthorizedProcess(permissionType : PermissionFLows) {
+    private func startAuthorizedProcess(permissionType : PermissionFLows) {
         
         self.actionContainerView.addSubview(giveAccessButtonContainer)
         self.actionContainerView.addSubview(notNowButtonContainer)
@@ -386,7 +362,7 @@ extension CustomPermissionView {
         
     }
     
-    func startUnAuthorizedProcess(permissionType : PermissionFLows) {
+    private func startUnAuthorizedProcess(permissionType : PermissionFLows) {
         
         self.actionContainerView.addSubview(enableAccessButton)
         
@@ -403,7 +379,7 @@ extension CustomPermissionView {
         
     }
     
-    func setPhotoLibrarySettings(permissionType : PermissionFLows) {
+    private func setPhotoLibrarySettings(permissionType : PermissionFLows) {
         
         switch permissionType {
         case .photoLibrary:
@@ -418,13 +394,19 @@ extension CustomPermissionView {
         case .cameraUnathorized:
             cameraUnAuthorized()
             
+        case .microphone:
+            microphoneAuthorized()
+            
+        case .microphoneUnAuthorizated:
+            microphoneUnAuthorized()
+            
         default:
             return
         }
         
     }
     
-    func photoLibraryAuthorized() {
+    private func photoLibraryAuthorized() {
         
         imageContainer.image = UIImage(named: "galleryRequest.jpg")
         iconImageViev.image = UIImage(named: "gallery_request.png")
@@ -434,7 +416,7 @@ extension CustomPermissionView {
         
     }
     
-    func photoLibraryUnAuthorized() {
+    private func photoLibraryUnAuthorized() {
         
         imageContainer.image = UIImage(named: "galleryRequest.jpg")
         imageContainer.alpha = 0.5
@@ -447,7 +429,7 @@ extension CustomPermissionView {
         
     }
     
-    func cameraAuthorized() {
+    private func cameraAuthorized() {
         
         imageContainer.image = UIImage(named: "cameraRequest.jpg")
         iconImageViev.image = UIImage(named: "camera_request.png")
@@ -457,7 +439,7 @@ extension CustomPermissionView {
         
     }
     
-    func cameraUnAuthorized() {
+    private func cameraUnAuthorized() {
         
         imageContainer.image = UIImage(named: "cameraRequest.jpg")
         imageContainer.alpha = 0.5
@@ -467,6 +449,28 @@ extension CustomPermissionView {
         detailLabel.text = LocalizedConstants.PermissionStatements.detailLabelForCamera
         
         enableAccessButton.setTitle(LocalizedConstants.TitleValues.ButtonTitle.enableAccessCamera, for: .normal)
+        
+    }
+    
+    private func microphoneAuthorized() {
+        
+        imageContainer.image = UIImage(named: "microphoneMain.jpeg")
+        iconImageViev.image = UIImage(named: "microphone")
+        
+        topicLabel.text = LocalizedConstants.PermissionStatements.topicLabelForMicrophone
+        detailLabel.text = LocalizedConstants.PermissionStatements.detailLabelForMicrophone
+        
+    }
+    
+    private func microphoneUnAuthorized() {
+        
+        imageContainer.image = UIImage(named: "microphoneMain.jpeg")
+        iconImageViev.image = UIImage(named: "microphone")
+        
+        topicLabel.text = LocalizedConstants.PermissionStatements.topicLabelForMicrophone
+        detailLabel.text = LocalizedConstants.PermissionStatements.detailLabelForMicrophone
+        
+        enableAccessButton.setTitle(LocalizedConstants.TitleValues.ButtonTitle.enableAccessMicrophone, for: .normal)
         
     }
     
@@ -495,17 +499,28 @@ extension CustomPermissionView {
             
         case .camera:
             
-//            AVCaptureDevice.requestAccess(for: .video) { (result) in
-//
-//                if result {
-//
-//                    DispatchQueue.main.async {
-//                        self.delegate.returnPermissinResultBoolValue(result: result)
-//                    }
-//                }
-//            }
+            AVCaptureDevice.requestAccess(for: .video) { (result) in
+
+                if result {
+                    DispatchQueue.main.async {
+                        self.delegate.returnPermissinResultBoolValue(result: result)
+                    }
+                }
+            }
             
             break
+            
+        case .microphone:
+            
+            AVAudioSession.sharedInstance().requestRecordPermission { (granted) in
+                
+                if granted {
+                    DispatchQueue.main.async {
+                        self.delegate.returnPermissinResultBoolValue(result: granted)
+                    }
+                }
+                
+            }
 
         default:
             return
@@ -516,7 +531,9 @@ extension CustomPermissionView {
         
         print("dismisView starts")
         
-        UIView.transition(with: self.superview!, duration: 0.7, options: .transitionCrossDissolve, animations: {
+        guard let callerView = self.superview else { return }
+        
+        UIView.transition(with: callerView, duration: Constants.AnimationValues.aminationTime_07, options: .transitionCrossDissolve, animations: {
             self.removeFromSuperview()
             
         })
@@ -526,10 +543,44 @@ extension CustomPermissionView {
     @objc func openSettings(_ sender : UIButton) {
         
         print("dismisView starts")
-        
+
         UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
         
     }
     
     
+}
+
+
+// MARK: - UIGestureRecognizerDelegate
+extension CustomPermissionView : UIGestureRecognizerDelegate {
+    
+    func setupCloseButtonGesture() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomPermissionView.dismissCustomCameraView(_:)))
+        tapGesture.delegate = self
+        mainView.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func dismissCustomCameraView(_ sender : UITapGestureRecognizer) {
+        
+        print("dismissCustomCameraView starts")
+        
+        guard let permissionType = permissionType else { return }
+        
+        switch permissionType {
+        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized:
+            
+            guard let callerView = self.superview else { return }
+            
+            UIView.transition(with: callerView, duration: Constants.AnimationValues.aminationTime_07, options: .transitionCrossDissolve, animations: {
+                self.removeFromSuperview()
+            })
+            
+        default:
+            break
+        }
+        
+    }
 }

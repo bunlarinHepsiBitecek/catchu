@@ -23,7 +23,8 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
     @IBAction func logoutButtonClick(_ sender: UIButton) {
         //FirebaseManager.shared.logout()
         
-        AWSManager.shared.signOut()
+//        AWSManager.shared.signOut()
+        FirebaseManager.shared.logout()
         
     }
     
@@ -110,26 +111,39 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         
         let client = RECatchUMobileAPIClient.default()
         
-        client.friendsGet(userid: User.shared.userID).continueWith { (taskFriendList) -> Any? in
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
-            if taskFriendList.error != nil {
-                
-                print("getting friend list failed")
-                completion(false)
-                
-            } else {
-                
-                print("getting friend list ok")
-                
-                User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
-                
+            if finished {
+            
+                client.friendsGet(userid: User.shared.userID, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                    
+                    if taskFriendList.error != nil {
+                        
+                        print("getting friend list failed")
+                        print("result : \(taskFriendList.error)")
+                        print("result : \(taskFriendList.result)")
+                        completion(false)
+                        
+                    } else {
+                        
+                        print("getting friend list ok")
+                        
+                        User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
+                        
+                    }
+                    
+                    completion(true)
+                    
+                    return nil
+                    
+                }
+            
             }
             
-            completion(true)
-            
-            return nil
             
         }
+        
+        
         
     }
     

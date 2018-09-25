@@ -33,6 +33,8 @@ class RegisterViewController: UIViewController {
     
     @IBAction func logoutButtonClicked(_ sender: Any) {
         
+        FirebaseManager.shared.logout()
+        
     }
 
     @IBAction func gotoMain(_ sender: Any) {

@@ -17,7 +17,6 @@ class LoaderController: NSObject {
     var progressCounter: Double = 0 {
         didSet {
             let progress = Float(progressCounter) / 100
-            
             DispatchQueue.main.async {
                 self.progressView.setProgress(progress, animated: self.progressCounter != 0)
             }
@@ -29,9 +28,7 @@ class LoaderController: NSObject {
         removeLoader()
         
         activityIndicator.hidesWhenStopped = true
-        //activityIndicator.activityIndicatorViewStyle = .gray
         activityIndicator.activityIndicatorViewStyle = .whiteLarge
-        
     }
     
     func showLoader() {
@@ -43,7 +40,7 @@ class LoaderController: NSObject {
             self.activityIndicator.center = currentView.center
             self.activityIndicator.startAnimating()
             currentView.addSubview(self.activityIndicator)
-//            UIApplication.shared.beginIgnoringInteractionEvents()
+            //            UIApplication.shared.beginIgnoringInteractionEvents()
         }
     }
     
@@ -51,22 +48,43 @@ class LoaderController: NSObject {
         DispatchQueue.main.async {
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
-//            UIApplication.shared.endIgnoringInteractionEvents()
+            //            UIApplication.shared.endIgnoringInteractionEvents()
         }
+    }
+    
+    func showLoader(style: UIActivityIndicatorView.Style) {
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.activityIndicatorViewStyle = style
+        self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        guard let currentVC = LoaderController.currentViewController() else {
+            print("Current View controller can not find for activity indicator")
+            return
+        }
+        guard let mainView = currentVC.view else { return }
+        
+        mainView.addSubview(self.activityIndicator)
+        let safeLayout = mainView.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: safeLayout.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: safeLayout.centerYAnchor)
+            ])
+        
+        self.activityIndicator.startAnimating()
     }
     
     func startProgressView(progressViewStyle: UIProgressViewStyle) {
         removeProgressView()
         print("startProgressView")
         
+        self.progressView.progressViewStyle = progressViewStyle
         let currentView = self.currentView()
         
         DispatchQueue.main.async {
-            self.progressView.progressViewStyle = progressViewStyle
             self.progressView.frame = currentView.frame
             currentView.addSubview(self.progressView)
             self.progressView.translatesAutoresizingMaskIntoConstraints = false
-    
+            
             let margins = self.currentViewController().view.safeAreaLayoutGuide
             NSLayoutConstraint.activate([
                 self.progressView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
@@ -77,9 +95,12 @@ class LoaderController: NSObject {
     }
     
     func removeProgressView() {
-        DispatchQueue.main.async {
-            self.progressView.removeFromSuperview()
-        }
+        self.progressView.removeFromSuperview()
+    }
+    
+    func currentView() -> UIView {
+        let appDel = appDelegate()
+        return appDel.window!.rootViewController!.view!
     }
     
     func appDelegate() -> AppDelegate {
@@ -90,9 +111,47 @@ class LoaderController: NSObject {
         return appDelegate().window!.rootViewController!
     }
     
-    func currentView() -> UIView {
-        let appDel = UIApplication.shared.delegate as! AppDelegate
-        return appDel.window!.rootViewController!.view!
+    class func currentViewController(rootViewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        
+        if let presentedViewController = rootViewController?.presentedViewController {
+            return currentViewController(rootViewController: presentedViewController)
+        }
+        
+        if let navigationController = rootViewController as? UINavigationController {
+            return currentViewController(rootViewController: navigationController.visibleViewController)
+        }
+        
+        if let tabBarController = rootViewController as? UITabBarController {
+            if let selectedViewController = tabBarController.selectedViewController {
+                return currentViewController(rootViewController: selectedViewController)
+            }
+        }
+        
+        return rootViewController
+    }
+    
+    class func currentNavigationController() -> UINavigationController? {
+        return LoaderController.currentViewController()?.navigationController
+    }
+    
+    
+    /// If exist find navigation controller and pushes given view controller
+    ///
+    /// - Parameter controller: The view controller to push onto the stack
+    class func pushViewController(controller: UIViewController?){
+        guard let controller = controller else { return }
+        guard let navigationController = LoaderController.currentNavigationController() else { return }
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    class func getSafeAreaInsets() -> UIEdgeInsets {
+        if #available(iOS 11, *) {
+            let window = UIApplication.shared.windows[0]
+            let insets:UIEdgeInsets = window.safeAreaInsets
+            return insets
+        } else {
+            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        }
     }
     
     func goToSettings() {
@@ -133,4 +192,3 @@ class LoaderController: NSObject {
     }
     
 }
-

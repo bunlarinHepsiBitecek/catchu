@@ -17,6 +17,9 @@ class CustomVideo: NSObject {
     var rearCamera: AVCaptureDevice?
     var rearCameraInput: AVCaptureDeviceInput?
     
+    var audioDevice: AVCaptureDevice?
+    var audioDeviceInput: AVCaptureDeviceInput?
+    
     var previewLayer: AVCaptureVideoPreviewLayer?
     
     var videoFileOutput = AVCaptureMovieFileOutput()
@@ -38,24 +41,41 @@ extension CustomVideo {
         
         func configureCaptureDevices() throws {
             
-            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInMicrophone, .builtInWideAngleCamera], mediaType: AVMediaType.video, position: .unspecified)
+            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTelephotoCamera, .builtInTrueDepthCamera], mediaType: AVMediaType.video, position: .unspecified)
             
-            let cameras = session.devices.compactMap { $0 }
+            let devices = session.devices.compactMap { $0 }
             
-            guard !cameras.isEmpty else { throw CustomVideoError.noCamerasAvailable }
+            guard !devices.isEmpty else { throw CustomVideoError.noCamerasAvailable }
             
-            for camera in cameras {
+            for device in devices {
                 
-                if camera.position == .back {
-                    self.rearCamera = camera
+                if device.position == .back {
+                    self.rearCamera = device
                     
-                    try camera.lockForConfiguration()
+                    try device.lockForConfiguration()
                     
-                    camera.exposureMode = .continuousAutoExposure
-                    camera.focusMode = .continuousAutoFocus
-                    camera.unlockForConfiguration()
+                    device.exposureMode = .continuousAutoExposure
+                    device.focusMode = .continuousAutoFocus
+                    device.unlockForConfiguration()
+                    
                 }
+                
             }
+            
+            let sessionForAudio = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInMicrophone], mediaType: AVMediaType.audio, position: .unspecified)
+            
+            let devicesForAudio = sessionForAudio.devices.compactMap { $0 }
+            
+            guard !devicesForAudio.isEmpty else { throw CustomVideoError.noMicrophoneAvailable }
+            
+            for device in devicesForAudio {
+                
+                if device.hasMediaType(.audio) {
+                    self.audioDevice = device
+                }
+                
+            }
+            
         }
         
         func configureDeviceInputs() throws {
@@ -88,6 +108,16 @@ extension CustomVideo {
                 
             }
             
+            if let audioDevice = self.audioDevice {
+                self.audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
+                
+                if videoSession.canAddInput(self.audioDeviceInput!) {
+                    videoSession.addInput(audioDeviceInput!)
+                    
+                }
+                
+            }
+            
         }
         
         func configurePhotoOutput() throws {
@@ -96,6 +126,7 @@ extension CustomVideo {
             if videoSession.canAddOutput(self.videoFileOutput) { videoSession.addOutput(self.videoFileOutput) }
             
             videoSession.startRunning()
+            
         }
         
         DispatchQueue(label: "prepare").async {
@@ -133,6 +164,21 @@ extension CustomVideo {
         print("view.frame : \(view.frame)")
         
         self.previewLayer?.frame = view.frame
+    }
+    
+    func disableVideoSession() throws {
+        
+        guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
+        
+        if videoSession.isRunning {
+            
+            self.previewLayer?.removeFromSuperlayer()
+            self.previewLayer = nil
+            
+            videoSession.stopRunning()
+
+        }
+
     }
     
     func startRecording() {
@@ -178,14 +224,15 @@ extension CustomVideo : AVCaptureFileOutputRecordingDelegate {
         
         print("stopped recording to: \(outputFileURL)")
         
-
         self.delegate.directToCapturedVideoView(url: outputFileURL)
         
-//        try? PHPhotoLibrary.shared().performChangesAndWait {
-//
-//            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
-//
-//        }
+        
+        
+        try? PHPhotoLibrary.shared().performChangesAndWait {
+
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
+
+        }
         
     }
     
@@ -202,6 +249,7 @@ extension CustomVideo {
         case inputsAreInvalid
         case invalidOperation
         case noCamerasAvailable
+        case noMicrophoneAvailable
         case unknown
     }
     

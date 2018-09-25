@@ -438,29 +438,39 @@ class APIGatewayManager {
         
         let client = RECatchUMobileAPIClient.default()
         
-        client.friendsGet(userid: User.shared.userID).continueWith { (taskFriendList) -> Any? in
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
-            if taskFriendList.error != nil {
+            if finished {
                 
-                print("getting friend list failed")
-                
-            } else {
-                
-                print("getting friend list ok")
-                
-                if let result = taskFriendList.result {
+                client.friendsGet(userid: User.shared.userID, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
                     
-                    completion(result, true)
+                    if taskFriendList.error != nil {
+                        
+                        print("getting friend list failed")
+                        
+                    } else {
+                        
+                        print("getting friend list ok")
+                        
+                        if let result = taskFriendList.result {
+                            
+                            completion(result, true)
+                            
+                        }
+                        
+                        //User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
+                        
+                    }
+                    
+                    return nil
                     
                 }
                 
-                //User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
-                
             }
             
-            return nil
-            
         }
+        
+        
         
     }
     

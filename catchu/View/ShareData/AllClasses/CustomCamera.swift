@@ -30,6 +30,10 @@ class CustomCamera: NSObject {
     
     var movieFileOutput = AVCaptureMovieFileOutput()
     
+    var deviceMaxZoomFactor : CGFloat?
+    var cameraZoomed : Bool = false
+    var stoppedZoomFactor : CGFloat?
+    
 }
 
 extension CustomCamera {
@@ -80,6 +84,7 @@ extension CustomCamera {
                     camera.exposureMode = .continuousAutoExposure
                     camera.unlockForConfiguration()
                     
+                    
                 }
                 
                 if camera.position == .back {
@@ -92,26 +97,13 @@ extension CustomCamera {
                     
                     camera.exposureMode = .continuousAutoExposure
                     camera.focusMode = .continuousAutoFocus
+                    
                     camera.unlockForConfiguration()
                 }
             }
         }
         
         func configureDeviceInputs() throws {
-            print("configureDeviceInputs starts")
-            print("frontCamera automaticallyAdjustsVideoHDREnabled : \(String(describing: self.frontCamera?.automaticallyAdjustsVideoHDREnabled))")
-            print("frontCamera isVideoHDREnabled : \(String(describing: self.frontCamera?.isVideoHDREnabled))")
-            print("rearCamera automaticallyAdjustsVideoHDREnabled : \(String(describing: self.rearCamera?.automaticallyAdjustsVideoHDREnabled))")
-            print("rearCamera isVideoHDREnabled : \(String(describing: self.rearCamera?.isVideoHDREnabled))")
-            print("isAdjustingExposure : \(frontCamera?.isAdjustingExposure)")
-            
-            print("frontCamera isAdjustingWhiteBalance : \(frontCamera?.isAdjustingWhiteBalance)")
-            print("rearCamera isAdjustingExposure : \(rearCamera?.isAdjustingExposure)")
-            print("frontCamera isAdjustingExposure : \(frontCamera?.isAdjustingExposure)")
-            
-            print("rearCamera exposure mode : \(rearCamera?.exposureMode.rawValue)")
-            print("frontCamera exposure mode : \(frontCamera?.exposureMode.rawValue)")
-            
             guard let captureSession = captureSession else { throw CustomCameraError.captureSessionIsMissing }
             
             if let rearCamera = self.rearCamera {
@@ -158,23 +150,6 @@ extension CustomCamera {
             
         }
         
-//        func setHDR_Mode() throws {
-//
-//            do {
-//
-//                try rearCamera?.lockForConfiguration()
-//
-//                rearCamera?.automaticallyAdjustsVideoHDREnabled = true
-//                rearCamera?.isVideoHDREnabled = true
-//
-//                rearCamera?.unlockForConfiguration()
-//
-//            }
-//            catch {
-//                print("something goes wrong")
-//            }
-//        }
-        
         DispatchQueue(label: "prepare").async {
             do {
                 createCaptureSession()
@@ -211,6 +186,31 @@ extension CustomCamera {
         print("view.frame : \(view.frame)")
         
         self.previewLayer?.frame = view.frame
+    }
+    
+    
+    /// it is used to stop capture session while other views uses AVCaptureSession
+    ///
+    /// - Throws: captureSession nil exception
+    func stopPreview() throws {
+        
+        print("stopPreview starts")
+        
+        guard let captureSession = self.captureSession else { throw CustomCameraError.captureSessionIsMissing }
+        
+        print("captureSession.isRunning : \(captureSession.isRunning)")
+        
+        if captureSession.isRunning {
+            
+            self.previewLayer?.removeFromSuperlayer()
+            self.previewLayer = nil
+            
+            captureSession.stopRunning()
+            
+        }
+        
+        print("captureSession.isRunning : \(captureSession.isRunning)")
+        
     }
     
     func switchCameras() throws {
@@ -278,6 +278,94 @@ extension CustomCamera {
         
         self.photoOutput?.capturePhoto(with: settings, delegate: self)
         self.photoCaptureCompletionBlock = completion
+    }
+
+    
+    /// to manage camera zoom process
+    ///
+    /// - Parameter input: pinch zoom is stop or not
+    func cameraZoomEnded(input : Bool, inputZoomEndedScale : CGFloat) {
+        
+        cameraZoomed = input
+        stoppedZoomFactor = inputZoomEndedScale
+        
+    }
+    
+    /// to make camera zoom
+    ///
+    /// - Parameter inputScale: input zoom scale
+    func zoom(inputScale : CGFloat) {
+        
+        var zoomFactor = inputScale
+        
+        print("cameraZoomed: \(cameraZoomed)")
+        
+        guard let currentCameraPosition = currentCameraPosition else { return }
+        
+        switch currentCameraPosition {
+        case .front:
+            guard let frontCamera = frontCamera else { return }
+            
+            deviceMaxZoomFactor = frontCamera.activeFormat.videoMaxZoomFactor
+            
+            do {
+                try frontCamera.lockForConfiguration()
+                
+                guard let deviceMaxZoomFactor = deviceMaxZoomFactor else { return }
+                
+                if zoomFactor <= deviceMaxZoomFactor {
+                    frontCamera.videoZoomFactor = max(1.0, min(zoomFactor, deviceMaxZoomFactor))
+                }
+                
+                frontCamera.unlockForConfiguration()
+                
+            } catch {
+                print("zoom error")
+            }
+            
+        case .rear:
+            
+            guard let rearCamera = rearCamera else { return }
+            
+            print("rearCamera.videoZoomFactor : \(rearCamera.videoZoomFactor)")
+            
+            deviceMaxZoomFactor = rearCamera.activeFormat.videoMaxZoomFactor
+            
+            do {
+                try rearCamera.lockForConfiguration()
+                
+                guard let deviceMaxZoomFactor = deviceMaxZoomFactor else { return }
+                
+//                if rearCamera.videoZoomFactor >= Constants.CameraZoomScale.deviceInitialZoomScale_01 && cameraZoomed {
+//                    
+//                    guard let stoppedZoomFactor = stoppedZoomFactor else { return }
+//                    
+//                    zoomFactor = inputScale + stoppedZoomFactor
+////                    cameraZoomed = false
+//                    
+//                    print("-----")
+//                    print("zoomFactor : \(zoomFactor)")
+//                    print("stoppedZoomFactor : \(stoppedZoomFactor)")
+//                    print("rearCamera.videoZoomFactor : \(rearCamera.videoZoomFactor)")
+//                    
+//                    print("-----")
+//                }
+                
+                if zoomFactor <= deviceMaxZoomFactor {
+                    rearCamera.videoZoomFactor = max(1.0, min(zoomFactor, deviceMaxZoomFactor))
+                    
+                    print("++++++ rearCamera.videoZoomFactor : \(rearCamera.videoZoomFactor)")
+                    
+                }
+                
+                rearCamera.unlockForConfiguration()
+                
+            } catch {
+                print("zoom error")
+            }
+            
+        }
+        
     }
     
 }

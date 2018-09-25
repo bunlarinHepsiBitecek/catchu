@@ -11,6 +11,7 @@ import AVFoundation
 
 class PhotoCell: UICollectionViewCell {
  
+    //
     // 5433FF 20BDFF A5FECB
     
     @IBOutlet var containerViewTrailingConstraints: NSLayoutConstraint!

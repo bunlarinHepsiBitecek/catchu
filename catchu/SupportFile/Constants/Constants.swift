@@ -29,9 +29,7 @@ struct Constants {
         static let FLOAT_ZERO: Float   = 0.0
         
         struct GeoFireUnits {
-            
             static let GEOFIRE_QUERY_RADIUS : Double = 0.05
-            
         }
         
     }
@@ -55,6 +53,29 @@ struct Constants {
             
         }
         
+    }
+    
+    struct colorPaletteCellSize {
+        
+        static let colorPaletteContainerCellHeigth : CGFloat = 30
+        static let colorCellWidth : CGFloat = 24
+        static let colorCellHeigth : CGFloat = 24
+        static let innerCellMinimumInteritemSpacing : CGFloat = 2
+        
+    }
+    
+    struct AnimationValues {
+        
+        static let aminationTime_07 : TimeInterval = 0.7
+        static let aminationTime_05 : TimeInterval = 0.5
+        static let aminationTime_03 : TimeInterval = 0.3
+        
+    }
+    
+    struct CameraZoomScale {
+        
+        static let deviceInitialZoomScale_01 : CGFloat = 1.0
+        static let maximumZoomScale_05 : CGFloat = 5.0
         
     }
     
@@ -170,6 +191,7 @@ struct Constants {
         static let SubjectChangeViewController: String = "SubjectChangeViewController"
         static let GroupCreateViewController: String = "GroupCreateViewController"
         static let ShareDataViewController: String = "ShareDataViewController"
+        static let ShareDataViewController2: String = "ShareDataViewController2"
         
     }
     
@@ -198,6 +220,8 @@ struct Constants {
             static let photoCell : String = "photoCell"
             static let photoLibraryCell : String = "photoLibraryCell"
             static let permissinWarningCell : String = "permissinWarningCell"
+            static let colorPaletteCell : String = "colorPaletteCell"
+            static let colorContainerCell : String = "colorContainerCell"
             
         }
         

@@ -14,7 +14,7 @@ extension LoginViewController {
         self.emailText.delegate = self
         self.passwordText.delegate = self
     }
-
+    
     func localized() {
         emailText.placeHolderTitle(title:  LocalizedConstants.Login.Email)
         passwordText.placeHolderTitle(title: LocalizedConstants.Login.Password)
@@ -30,11 +30,19 @@ extension LoginViewController {
 // MARK: Validation
 extension LoginViewController {
     
-    func login() {
+    func login(inputViewControllerDelegate : ViewPresentationProtocols) {
         guard validateRequiredField() else {return}
-        //let user = User(userID: Constants.CharacterConstants.SPACE, userName: Constants.CharacterConstants.SPACE, name: Constants.CharacterConstants.SPACE, email: emailText.text!, password: passwordText.text!, provider: Constants.CharacterConstants.SPACE, providerID: Constants.CharacterConstants.SPACE)
+        let user = User(userID: Constants.CharacterConstants.SPACE, userName: Constants.CharacterConstants.SPACE, name: Constants.CharacterConstants.SPACE, email: emailText.text!, password: passwordText.text!, provider: Constants.CharacterConstants.SPACE, providerID: Constants.CharacterConstants.SPACE)
+        FirebaseManager.shared.loginUser(user: user, inputDelegate : inputViewControllerDelegate)
     }
     
+    func loginWithFaceebook() {
+        FirebaseManager.shared.loginWithFacebookAccount()
+    }
+    
+    func loginWithTwitter() {
+        FirebaseManager.shared.loginWithTwitterAccount()
+    }
     
     func validateRequiredField() -> Bool {
         let validateEmailResult = Validation.shared.isValidEmail(email: emailText.text!)
@@ -77,7 +85,7 @@ extension LoginViewController {
         performSegue(withIdentifier: Constants.Segue.PasswwordResetView, sender: self)
     }
     
-    func pushMainTabBarView() {
+    func psuhMainTabBarView() {
         let mainTabBarViewController: UIViewController = self.buildFromStoryboard(Constants.Storyboard.Name.Main, Constants.Storyboard.ID.MainTabBarViewController)
         navigationController?.pushViewController(mainTabBarViewController, animated: true)
     }
@@ -91,4 +99,3 @@ extension LoginViewController {
     }
     
 }
-

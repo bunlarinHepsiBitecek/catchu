@@ -168,7 +168,11 @@ class User {
     
     var profilePictureUrl: String {
         get {
-            return _profilePictureUrl!
+            if let p = _profilePictureUrl {
+                return p
+            } else {
+                return ""
+            }
         }
         set {
             _profilePictureUrl = newValue
@@ -329,11 +333,22 @@ class User {
         for item in httpResult.resultArray! {
             
             let tempUser = User()
+
+            if let userid = item.userid {
+                tempUser.userID = userid
+            }
+
+            if let username = item.username {
+                tempUser.userName = username
+            }
             
-            tempUser.userID = item.userid!
-            tempUser.userName = item.username!
-            tempUser.profilePictureUrl = item.profilePhotoUrl!
-            tempUser.name = item.name!
+            if let profilePhotoUrl = item.profilePhotoUrl {
+                tempUser.profilePictureUrl = profilePhotoUrl
+            }
+            
+            if let name = item.name {
+                tempUser.name = name
+            }
             
             User.shared._userFriendList[item.userid!] = tempUser
             
@@ -417,15 +432,42 @@ class User {
         
         if let data = httpRequest.userInfo {
             
-            _name = data.name!
-            _userName = data.username!
-            _profilePictureUrl = data.profilePhotoUrl!
-            _userBirthday = data.birthday
-            _userGender = data.gender
-            _email = data.email!
-            _userPhone = data.phone
-            _userWebsite = data.website
-            _isUserHasAPrivateAccount = data.isPrivateAccount?.boolValue
+            if let name = data.name {
+                _name = name
+            }
+            
+            if let username = data.username {
+                _userName = username
+            }
+            
+            if let profilePhotoUrl = data.profilePhotoUrl {
+                _profilePictureUrl = profilePhotoUrl
+            }
+            
+            if let birthday = data.birthday {
+                _userBirthday = birthday
+            }
+            
+            if let gender = data.gender {
+                _userGender = gender
+            }
+            
+            if let email = data.email {
+                _email = email
+            }
+            
+            if let phone = data.phone {
+                _userPhone = phone
+            }
+            
+            if let website = data.website {
+                _userWebsite = website
+            }
+            
+            if let isPrivateAccount = data.isPrivateAccount {
+                _isUserHasAPrivateAccount = isPrivateAccount.boolValue
+                
+            }
             
         }
 

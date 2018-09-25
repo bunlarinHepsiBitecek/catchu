@@ -15,11 +15,15 @@ class ShareDataViewController: UIViewController {
     @IBOutlet var shareTypeSliderView: ShareTypeSliderView!
     @IBOutlet var shareFunctionSliderView: ShareFunctionSliderView!
     
+    @IBOutlet var shareMenuView: ShareMenuViews!
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
     var priorActiveTab : Int!
+    
+//    var shareMenuView : ShareMenuViews!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,14 +33,14 @@ class ShareDataViewController: UIViewController {
         
         setupShareDataView()
         setupShareTypeSliderView()
-        setupShareFunctionSliderView()
+//        setupShareFunctionSliderView()
         setupDelegationForSliderTypeView()
+        setupShareMenuViews()
+        
         
         shareTypeSliderView.didSelectFirstCellForInitial()
         
     }
-    
-    
 
 }
 
@@ -75,24 +79,54 @@ extension ShareDataViewController {
         
     }
     
-    private func setupShareFunctionSliderView() {
-        
-        shareFunctionSliderView.translatesAutoresizingMaskIntoConstraints = false
-        
-        shareFunctionSliderView.delegate = shareTypeSliderView
-        shareFunctionSliderView.delegateForShareDataView = shareDataView
-        shareFunctionSliderView.initialize()
-        self.view.addSubview(shareFunctionSliderView)
-        
+    private func setupShareMenuViews() {
+
+        shareMenuView.translatesAutoresizingMaskIntoConstraints = false
+
+        self.shareDataView.majorFunctionsContainerView.addSubview(shareMenuView)
+
         let safeAreaLayout = self.shareDataView.majorFunctionsContainerView.safeAreaLayoutGuide
+
+        shareMenuView.topAnchor.constraint(equalTo: safeAreaLayout.topAnchor).isActive = true
+        shareMenuView.bottomAnchor.constraint(equalTo: safeAreaLayout.bottomAnchor).isActive = true
+        shareMenuView.leadingAnchor.constraint(equalTo: safeAreaLayout.leadingAnchor).isActive = true
+        shareMenuView.trailingAnchor.constraint(equalTo: safeAreaLayout.trailingAnchor).isActive = true
         
-        shareFunctionSliderView.topAnchor.constraint(equalTo: safeAreaLayout.topAnchor).isActive = true
-        shareFunctionSliderView.bottomAnchor.constraint(equalTo: safeAreaLayout.bottomAnchor).isActive = true
-        shareFunctionSliderView.leadingAnchor.constraint(equalTo: safeAreaLayout.leadingAnchor).isActive = true
-        shareFunctionSliderView.trailingAnchor.constraint(equalTo: safeAreaLayout.trailingAnchor).isActive = true
+        print("------> : \(shareMenuView.frame.height)")
+        print("------> : \(shareMenuView.bounds.height)")
         
+//        shareMenuView.initialize()
         
+//        self.shareDataView.majorFunctionsContainerView.layoutIfNeeded()
+//
+//        print("self.shareDataView.majorFunctionsContainerView : \(self.shareDataView.majorFunctionsContainerView.frame.height)")
+//
+//        shareMenuView.setNeedsLayout()
+//        shareMenuView.layoutIfNeeded()
+//        shareMenuView.initialize()
+//        print("------> : \(shareMenuView.frame.height)")
+//        print("------> : \(shareMenuView.bounds.height)")
+
     }
+    
+//    private func setupShareFunctionSliderView() {
+//
+//        shareFunctionSliderView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        shareFunctionSliderView.delegate = shareTypeSliderView
+//        shareFunctionSliderView.delegateForShareDataView = shareDataView
+//        shareFunctionSliderView.initialize()
+//        self.view.addSubview(shareFunctionSliderView)
+//
+//        let safeAreaLayout = self.shareDataView.majorFunctionsContainerView.safeAreaLayoutGuide
+//
+//        shareFunctionSliderView.topAnchor.constraint(equalTo: safeAreaLayout.topAnchor).isActive = true
+//        shareFunctionSliderView.bottomAnchor.constraint(equalTo: safeAreaLayout.bottomAnchor).isActive = true
+//        shareFunctionSliderView.leadingAnchor.constraint(equalTo: safeAreaLayout.leadingAnchor).isActive = true
+//        shareFunctionSliderView.trailingAnchor.constraint(equalTo: safeAreaLayout.trailingAnchor).isActive = true
+//
+//
+//    }
     
     private func setupDelegationForSliderTypeView() {
         

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Artboard 1.png" translatesAutoresizingMaskIntoConstraints="NO" id="dqN-6t-Vpk">
-                                <rect key="frame" x="137" y="294" width="100" height="100"/>
+                                <rect key="frame" x="137.66666666666666" y="356" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="ER8-1m-qua"/>
                                     <constraint firstAttribute="height" constant="100" id="Ktj-gh-3A7"/>
@@ -28,9 +28,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dqN-6t-Vpk" secondAttribute="trailing" constant="138" id="OeY-Jj-6Re"/>
-                            <constraint firstItem="dqN-6t-Vpk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="137" id="atH-Vd-HiX"/>
-                            <constraint firstItem="dqN-6t-Vpk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="250" id="nzl-Ap-kfo"/>
+                            <constraint firstItem="dqN-6t-Vpk" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="HbB-1K-qRn"/>
+                            <constraint firstItem="dqN-6t-Vpk" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="sR1-rG-sko"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

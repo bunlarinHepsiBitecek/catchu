@@ -183,6 +183,10 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         
         var selectedImageFromPicker : UIImage?
         
+        if let x = info[UIImagePickerControllerReferenceURL] as? URL {
+            print("x.path : \(x.pathExtension)")
+        }
+        
         // downcast any to UIImage
         if let editedPickedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
             

@@ -34,6 +34,7 @@ class ShareTypeSliderView: UIView {
 //        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         self.shareTypeCollectionView.delegate = self
         self.shareTypeCollectionView.dataSource = self
+        self.shareTypeCollectionView.isPrefetchingEnabled = false
         
         // setup view settings
         setCollectionViewSettings()
@@ -76,10 +77,6 @@ extension ShareTypeSliderView {
         sliderWidthConstraint.constant = calculateCellSize()
         
         print("sliderObject.frame.width : \(String(describing: sliderObject.frame.width))")
-        
-    }
-    
-    private func getPhotosFromGallery() {
         
     }
     
@@ -128,23 +125,10 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-//        let cell = shareTypeCollectionView.cellForItem(at: indexPath) as? ShareTypeSliderCollectionViewCell
-        
         print("didselect for shareTypeSliderCollectionView")
         
-//        let x = CGFloat(indexPath.item) * sliderContainerView.frame.width / 3
-//
-//        sliderLeadingConstraint.constant = x
-//
-//        UIView.animate(withDuration: 0.2) {
-//            self.layoutIfNeeded()
-//        }
-        
-        delegateForFunction.selectFunctionCell(inputIndex: indexPath.item)
-        
-//        selectedIndexPath = indexPath
-//
-//        permissionCheck(sliderItemIndex: indexPath.item)
+//        delegateForFunction.selectFunctionCell2(indexPath: indexPath)
+        delegateForFunction.forceScrollMenuScrollView(selectedMenuIndex: indexPath.row)
         
     }
     

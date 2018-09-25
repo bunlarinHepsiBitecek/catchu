@@ -57,6 +57,9 @@
 "groupInformation" = "Group Information";
 "createGroup" = "Create Group";
 "createGroupName" = "You can set a specific name for your group.";
+"saved" = "Saved";
+"failed" = "Failed";
+
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";
@@ -112,7 +115,9 @@
 "Loading" = "Loading...";
 
 // Permission Statements
-"topicLabelForCamera" = "Please Allow Access to Your Camera";
+"topicLabelForCamera" = "Please Allow Access to Camera";
 "detailLabelForCamera" = "This allows CatchU to access your camera";
-"topicLabelForPhotos" = "Please Allow Access to Your Photos";
+"topicLabelForPhotos" = "Please Allow Access to Photos";
 "detailLabelForPhotos" = "This allows CatchU to access your photo library";
+"topicLabelForMicrophone" = "Please Allow Access to  Microphone";
+"detailLabelForMicrophone" = "This allows CatchU to access your Microphone";

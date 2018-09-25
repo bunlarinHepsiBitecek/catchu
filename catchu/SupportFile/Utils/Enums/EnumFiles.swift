@@ -108,3 +108,9 @@ enum RecordStatus {
     case passive
 }
 
+enum ColorPalettes {
+    case palette1
+    case palette2
+    case palette3
+}
+

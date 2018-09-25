@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Firebase
 //import IQKeyboardManagerSwift
 import FBSDKLoginKit
+import TwitterKit
 import UserNotifications
 
 import AWSMobileClient
@@ -21,12 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        FirebaseApp.configure()
+        //        IQKeyboardManager.sharedManager().enable = true
+        
         //Facebook
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-//        //Twitter
-//        TWTRTwitter.sharedInstance().start(withConsumerKey: Constants.TWITTER_CUSTOMER_KEY, consumerSecret: Constants.TWITTER_CUSTOMER_SECRETKEY)
+        //Twitter
+        TWTRTwitter.sharedInstance().start(withConsumerKey: Constants.TWITTER_CUSTOMER_KEY, consumerSecret: Constants.TWITTER_CUSTOMER_SECRETKEY)
         
+//        FirebaseManager.shared.checkUserLoggedIn()
+//        FirebaseManager.shared.userSigned()
         
         //NotificationManager.shared.initializeRegisterForRemoteNotification()
         //application.registerForRemoteNotifications()
@@ -79,12 +86,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-//    // MARK: Twitter log-in - Completed sign-in but not being redirected to my app
-//    func application(_ application:UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
-////        let directedByGGL =  GIDSignIn.sharedInstance().handle(url as URL!, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
-//        let directedByTWTR =  TWTRTwitter.sharedInstance().application(application, open: url, options: options)
-//        return directedByTWTR
-//    }
+    // MARK: Twitter log-in - Completed sign-in but not being redirected to my app
+    func application(_ application:UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
+//        let directedByGGL =  GIDSignIn.sharedInstance().handle(url as URL!, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+        let directedByTWTR =  TWTRTwitter.sharedInstance().application(application, open: url, options: options)
+        return directedByTWTR
+    }
     
     func initiateNotificationSettings() {
         

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Photos
 
 class CustomVideoView: UIView {
 
@@ -21,6 +22,8 @@ class CustomVideoView: UIView {
     var circleView : CircleView?
     
     var recordStopFlag : Bool = false
+    
+    weak var delegate : ShareDataProtocols!
     
     lazy var mainView: UIView = {
         
@@ -56,31 +59,103 @@ class CustomVideoView: UIView {
     }()
     
     override init(frame: CGRect) {
-        
-        super.init(frame: frame)
+
+        super.init(frame: .zero)
         
         initalizeViews()
         
-//        switch AVAudioSession.sharedInstance().recordPermission() {
-//        case .granted:
-//            initalizeViews()
-//        case .undetermined:
-//            initializeRequestProcess()
-//        case .denied:
-//            print(" ")
+//        disableCameraCaptureSession()
+
+//        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+//
+//        switch cameraAuthorizationStatus{
+//        case .authorized:
+//
+//            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+//
+//            switch statusForMicrophone {
+//            case .granted:
+//                initalizeViews()
+//
+//            default:
+//                microphonePermissionProcess(inputStatus: statusForMicrophone)
+//            }
+//
+//        default:
+//            videoCameraPermissionProcess(status: cameraAuthorizationStatus)
 //        }
+        
         
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+        
     }
     
     func initalizeViews() {
         
         setupViews()
-        initiateVideoProcess()
+//        initiateVideoProcess()
         setGestureToRecordButton()
+        customVideoViewVisibilityManagement(inputValue: false)
+        
+    }
+    
+    func customVideoViewVisibilityManagement(inputValue : Bool) {
+        
+        if inputValue {
+            self.alpha = 1
+        } else {
+            self.alpha = 0
+        }
+        
+    }
+    
+    func startVideo() {
+        
+        customVideoViewVisibilityManagement(inputValue: true)
+        
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch cameraAuthorizationStatus{
+        case .authorized:
+            
+            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+            
+            switch statusForMicrophone {
+            case .granted:
+                initiateVideoProcess()
+                
+            default:
+                microphonePermissionProcess(inputStatus: statusForMicrophone)
+            }
+            
+        default:
+            videoCameraPermissionProcess(status: cameraAuthorizationStatus)
+        }
+        
+    }
+    
+    func stopVideo() {
+        
+        customVideoViewVisibilityManagement(inputValue: false)
+        
+        do {
+            try customVideo.disableVideoSession()
+        } catch  {
+            print("customVideo session can not be disabled")
+        }
+        
+    }
+    
+    func disableCameraCaptureSession() {
+        
+        guard delegate != nil else {
+            return
+        }
+        
+        delegate.closeCameraOperations()
         
     }
     
@@ -132,8 +207,9 @@ class CustomVideoView: UIView {
         
     }
     
-    
     func initiateVideoProcess() {
+        
+//        disableCameraCaptureSession()
         
         customVideo.delegate = self
         
@@ -148,7 +224,8 @@ class CustomVideoView: UIView {
         }
         
         configureCustomVideo()
-        
+            
+
     }
     
     func adjustRecordButtonBorders(input : RecordStatus) {
@@ -254,8 +331,40 @@ class CustomVideoView: UIView {
         
     }
     
+    func videoCameraPermissionProcess(status : AVAuthorizationStatus) {
+        
+        CustomPermissionViewController.shared.delegate = self
+
+        switch status {
+        case .notDetermined:
+            // mainview lazy var oldugundan dolayı henuz o ayaga kalkmadan ona add subview yapılamıyor.
+            //CustomPermissionViewController.shared.createAuthorizationView(inputView: mainView, permissionType: .camera)
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .camera)
+        case .denied, .restricted:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .cameraUnathorized)
+        default:
+            break
+        }
+        
+    }
+    
+    func microphonePermissionProcess(inputStatus : AVAudioSessionRecordPermission) {
+        
+        CustomPermissionViewController.shared.delegate = self
+        
+        switch inputStatus {
+        case .undetermined:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .microphone)
+        default:
+            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .microphoneUnAuthorizated)
+        }
+        
+    }
+    
 }
 
+
+// MARK: - UIGestureRecognizerDelegate
 extension CustomVideoView : UIGestureRecognizerDelegate {
  
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -327,6 +436,32 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
     
 }
 
+extension CustomVideoView : PermissionProtocol {
+    
+    func returnPermissinResultBoolValue(result: Bool) {
+        
+        if result {
+            
+            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+            
+            switch statusForMicrophone {
+            case .granted:
+//                initalizeViews()
+                startVideo()
+                
+            default:
+                microphonePermissionProcess(inputStatus: statusForMicrophone)
+            }
+            
+        }
+        
+    }
+    
+    
+}
+
+
+// MARK: - ShareDataProtocols
 extension CustomVideoView : ShareDataProtocols {
     
     func directToCapturedVideoView(url: URL) {
@@ -335,7 +470,7 @@ extension CustomVideoView : ShareDataProtocols {
         
         capturedVideoView.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
         
-        UIView.transition(with: mainView, duration: 10, options: .transitionCrossDissolve, animations: {
+        UIView.transition(with: mainView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
             
             self.mainView.addSubview(capturedVideoView)
             
@@ -351,7 +486,6 @@ extension CustomVideoView : ShareDataProtocols {
                 capturedVideoView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
                 
                 ])
-            
             
         })
         

@@ -27,7 +27,7 @@ class CustomPermissionViewController: UIView {
         
         customPermissionView.translatesAutoresizingMaskIntoConstraints = false
         
-        UIView.transition(with: inputView, duration: 0.7, options: .transitionCrossDissolve, animations: {
+        UIView.transition(with: inputView, duration: Constants.AnimationValues.aminationTime_07, options: .transitionCrossDissolve, animations: {
             
             inputView.addSubview(customPermissionView)
             

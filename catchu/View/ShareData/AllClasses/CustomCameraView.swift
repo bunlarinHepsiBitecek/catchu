@@ -1,5 +1,5 @@
 //
-//  CustomCamereView.swift
+//  CustomCameraView.swift
 //  catchu
 //
 //  Created by Erkut Baş on 9/10/18.
@@ -10,30 +10,25 @@ import UIKit
 import AVFoundation
 import Photos
 
-class CustomCamereView: UIView {
+class CustomCameraView: UIView {
     
     var previewLayer = AVCaptureVideoPreviewLayer()
     
     let customCamera = CustomCamera()
-
+    
+    var stoppedZoomScale : CGFloat = 0.0
+    
+    weak var delegate : ShareDataProtocols!
+    
     lazy var mainView: UIView = {
         
         let temp = UIView(frame: .zero)
-        temp.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
+        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.layer.shadowOffset = CGSize(width: 0, height: 10)
-        temp.layer.shadowColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        temp.layer.shadowRadius = 30
-        temp.layer.shadowOpacity = 0.4
-        
-        return temp
-    }()
-    
-    lazy var shadowView: UIView = {
-        
-        let temp = UIView(frame: .zero)
-        temp.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
-        temp.translatesAutoresizingMaskIntoConstraints = false
+        //        temp.layer.shadowOffset = CGSize(width: 0, height: 10)
+        //        temp.layer.shadowColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        //        temp.layer.shadowRadius = 30
+        //        temp.layer.shadowOpacity = 0.4
         
         return temp
     }()
@@ -62,12 +57,23 @@ class CustomCamereView: UIView {
         return temp
     }()
     
+    lazy var switchButtonContainer: UIView = {
+        
+        let temp = UIView()
+        temp.layer.cornerRadius = 30
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        
+        return temp
+    }()
+    
     lazy var switchButton: UIImageView = {
         
         let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         temp.isUserInteractionEnabled = true
-        temp.image = UIImage(named: "switch-camera")?.withRenderingMode(.alwaysTemplate)
-//        temp.image = UIImage(named: "switch_camera_default")?.withRenderingMode(.alwaysTemplate)
+        temp.image = UIImage(named: "rotate-1")?.withRenderingMode(.alwaysTemplate)
+        //        temp.image = UIImage(named: "switch_camera_default")?.withRenderingMode(.alwaysTemplate)
         temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.translatesAutoresizingMaskIntoConstraints = false
         
@@ -75,11 +81,22 @@ class CustomCamereView: UIView {
         
     }()
     
+    lazy var flashButtonContainer: UIView = {
+        
+        let temp = UIView()
+        temp.layer.cornerRadius = 30
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        
+        return temp
+    }()
+    
     lazy var flashButton: UIImageView = {
         
         let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         temp.isUserInteractionEnabled = true
-        temp.image = UIImage(named: "auto_flash")?.withRenderingMode(.alwaysTemplate)
+        temp.image = UIImage(named: "flash")?.withRenderingMode(.alwaysTemplate)
         temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.tag = 1
@@ -90,7 +107,7 @@ class CustomCamereView: UIView {
     
     var captureSession = AVCaptureSession()
     var captureDevice: AVCaptureDevice!
-
+    
     override init(frame: CGRect) {
         
         super.init(frame: frame)
@@ -100,53 +117,73 @@ class CustomCamereView: UIView {
         setupGestureRecognizerForSwitchCamera()
         setupGestureRecognizerForFlashButton()
         setupGestureRecognizerForCameraShoot()
+        setPinchZoom()
         
-//        mainView.layer.insertSublayer(previewLayer, at: 0)
-//        previewLayer.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-//        previewLayer.frame = mainView.bounds
-//
-//        print("mainView.bounds : \(mainView.bounds)")
-//
-//        mainView.layer.addSublayer(previewLayer)
+        //        mainView.layer.insertSublayer(previewLayer, at: 0)
+        //        previewLayer.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        //        previewLayer.frame = mainView.bounds
+        //
+        //        print("mainView.bounds : \(mainView.bounds)")
+        //
+        //        mainView.layer.addSublayer(previewLayer)
         
-//        setupCameraSettings()
+        //        setupCameraSettings()
         
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-//        setupCameraSettings()
+        //        setupCameraSettings()
         
-        func configureCameraController() {
-            customCamera.prepare {(error) in
-                if let error = error {
-                    print(error)
-                }
-
-                try? self.customCamera.displayPreview(on: self.mainView)
-            }
-        }
-
-        configureCameraController()
-        
+//        startCustomCameraProcess()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func startCustomCameraProcess() {
+        
+        func configureCameraController() {
+            customCamera.prepare {(error) in
+                if let error = error {
+                    print(error)
+                }
+                
+                try? self.customCamera.displayPreview(on: self.mainView)
+            }
+        }
+        
+        configureCameraController()
+        
+    }
+    
+    func stopCustomCameraProcess() {
+        
+        do {
+            try customCamera.stopPreview()
+        } catch  {
+            print("camera can not be stopped")
+        }
+        
+    }
+    
     func setupViews() {
         
         self.addSubview(mainView)
-        self.mainView.addSubview(shadowView)
+        self.mainView.addSubview(flashButtonContainer)
+        self.mainView.addSubview(switchButtonContainer)
+        self.flashButtonContainer.addSubview(flashButton)
+        self.switchButtonContainer.addSubview(switchButton)
         self.mainView.addSubview(closeButton)
         self.mainView.addSubview(cameraShootButton)
-        self.mainView.addSubview(switchButton)
-        self.mainView.addSubview(flashButton)
         
         let safe = self.safeAreaLayoutGuide
         let safeMain = self.mainView.safeAreaLayoutGuide
+        let safeFlashContainer = self.flashButtonContainer.safeAreaLayoutGuide
+        let safeSwitchContainer = self.switchButtonContainer.safeAreaLayoutGuide
+        let safeCameraShoot = self.cameraShootButton.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -155,13 +192,8 @@ class CustomCamereView: UIView {
             mainView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             mainView.topAnchor.constraint(equalTo: safe.topAnchor),
             
-            shadowView.topAnchor.constraint(equalTo: safeMain.topAnchor, constant: 10),
-            shadowView.trailingAnchor.constraint(equalTo: safeMain.trailingAnchor, constant: -50),
-            shadowView.heightAnchor.constraint(equalToConstant: 2),
-            shadowView.widthAnchor.constraint(equalToConstant: 2),
-            
-            closeButton.topAnchor.constraint(equalTo: safeMain.topAnchor, constant: 10),
-            closeButton.trailingAnchor.constraint(equalTo: safeMain.trailingAnchor, constant: -10),
+            closeButton.topAnchor.constraint(equalTo: safeMain.topAnchor, constant: 15),
+            closeButton.leadingAnchor.constraint(equalTo: safeMain.leadingAnchor, constant: 15),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
             
@@ -170,26 +202,36 @@ class CustomCamereView: UIView {
             cameraShootButton.heightAnchor.constraint(equalToConstant: 80),
             cameraShootButton.widthAnchor.constraint(equalToConstant: 80),
             
-            switchButton.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor, constant: -30),
-            switchButton.trailingAnchor.constraint(equalTo: safeMain.trailingAnchor, constant: -20),
-            switchButton.heightAnchor.constraint(equalToConstant: 40),
-            switchButton.widthAnchor.constraint(equalToConstant: 40),
+            switchButtonContainer.leadingAnchor.constraint(equalTo: safeCameraShoot.trailingAnchor, constant: 20),
+            switchButtonContainer.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor, constant: -20),
+            switchButtonContainer.heightAnchor.constraint(equalToConstant: 60),
+            switchButtonContainer.widthAnchor.constraint(equalToConstant: 60),
             
-            flashButton.topAnchor.constraint(equalTo: safeMain.topAnchor, constant: 10),
-            flashButton.leadingAnchor.constraint(equalTo: safeMain.leadingAnchor, constant: 10),
+            switchButton.centerXAnchor.constraint(equalTo: safeSwitchContainer.centerXAnchor),
+            switchButton.centerYAnchor.constraint(equalTo: safeSwitchContainer.centerYAnchor),
+            switchButton.heightAnchor.constraint(equalToConstant: 30),
+            switchButton.widthAnchor.constraint(equalToConstant: 30),
+            
+            flashButtonContainer.trailingAnchor.constraint(equalTo: safeCameraShoot.leadingAnchor, constant: -20),
+            flashButtonContainer.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor, constant: -20),
+            flashButtonContainer.heightAnchor.constraint(equalToConstant: 60),
+            flashButtonContainer.widthAnchor.constraint(equalToConstant: 60),
+            
+            flashButton.centerXAnchor.constraint(equalTo: safeFlashContainer.centerXAnchor),
+            flashButton.centerYAnchor.constraint(equalTo: safeFlashContainer.centerYAnchor),
             flashButton.heightAnchor.constraint(equalToConstant: 30),
             flashButton.widthAnchor.constraint(equalToConstant: 30),
-
+            
             ])
         
     }
     
     func setupCameraSettings() {
-    
+        
         captureSession.sessionPreset = AVCaptureSession.Preset.photo
         
         let availableDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTrueDepthCamera, .builtInTelephotoCamera, .builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.back).devices
-
+        
         if let availableFirst = availableDevices.first {
             captureDevice = availableFirst
             beginSession()
@@ -211,9 +253,9 @@ class CustomCamereView: UIView {
         }
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-//        previewLayer.videoGravity = AVLayerVideoGravity(rawValue: kCAGravityResizeAspectFill)
-//        previewLayer.connection?.videoOrientation = .portrait
-//        previewLayer.connection?.videoOrientation = .portrait
+        //        previewLayer.videoGravity = AVLayerVideoGravity(rawValue: kCAGravityResizeAspectFill)
+        //        previewLayer.connection?.videoOrientation = .portrait
+        //        previewLayer.connection?.videoOrientation = .portrait
         
         self.previewLayer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.previewLayer.frame = self.mainView.bounds
@@ -223,38 +265,37 @@ class CustomCamereView: UIView {
         
         captureSession.startRunning()
         
-//        let dataOutput = AVCaptureVideoDataOutput()
-//
-//        dataOutput.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString):NSNumber(value:kCVPixelFormatType_32BGRA)] as [String : Any]
-//
-//        dataOutput.alwaysDiscardsLateVideoFrames = true
-//
-//        if captureSession.canAddOutput(dataOutput) {
-//            captureSession.addOutput(dataOutput)
-//        }
-//
-//        captureSession.commitConfiguration()
-//
-//        let queue = DispatchQueue(label: "com.brianadvent.captureQueue")
-//        dataOutput.setSampleBufferDelegate(self, queue: queue)
+        //        let dataOutput = AVCaptureVideoDataOutput()
+        //
+        //        dataOutput.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString):NSNumber(value:kCVPixelFormatType_32BGRA)] as [String : Any]
+        //
+        //        dataOutput.alwaysDiscardsLateVideoFrames = true
+        //
+        //        if captureSession.canAddOutput(dataOutput) {
+        //            captureSession.addOutput(dataOutput)
+        //        }
+        //
+        //        captureSession.commitConfiguration()
+        //
+        //        let queue = DispatchQueue(label: "com.brianadvent.captureQueue")
+        //        dataOutput.setSampleBufferDelegate(self, queue: queue)
         
     }
     
+}
+
+extension CustomCameraView : AVCaptureVideoDataOutputSampleBufferDelegate {
     
 }
 
-extension CustomCamereView : AVCaptureVideoDataOutputSampleBufferDelegate {
-    
-}
-
-extension CustomCamereView : UIGestureRecognizerDelegate {
+extension CustomCameraView : UIGestureRecognizerDelegate {
     
     func setupCloseButtonGesture() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCamereView.dismissCustomCameraView(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.dismissCustomCameraView(_:)))
         tapGesture.delegate = self
         closeButton.addGestureRecognizer(tapGesture)
-//        self.mainView.bringSubview(toFront: closeButton)
+        self.mainView.bringSubview(toFront: closeButton)
         
     }
     
@@ -262,22 +303,35 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
         
         print("dismissCustomCameraView starts")
         
-        self.removeFromSuperview()
+        self.stopCustomCameraProcess()
+        self.delegate.makeVisibleCustomViews()
+        
+//        guard let callerView = self.superview else { return }
+//
+//        UIView.transition(with: callerView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+//            self.removeFromSuperview()
+//        })
         
     }
     
     func setupGestureRecognizerForSwitchCamera() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCamereView.switchCamera(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.switchCamera(_:)))
         tapGesture.delegate = self
         switchButton.addGestureRecognizer(tapGesture)
+        switchButtonContainer.addGestureRecognizer(tapGesture)
         
     }
     
     @objc func switchCamera(_ sender : UITapGestureRecognizer) {
         
         print("switchCamera starts")
-
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_05) {
+            
+            self.switchButton.transform = self.switchButton.transform == CGAffineTransform(rotationAngle: CGFloat(Double.pi)) ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        }
+        
         do {
             try customCamera.switchCameras()
         }
@@ -290,7 +344,7 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
     
     func setupGestureRecognizerForCameraShoot() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCamereView.cameraShootProcess(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.cameraShootProcess(_:)))
         tapGesture.delegate = self
         cameraShootButton.addGestureRecognizer(tapGesture)
         
@@ -325,43 +379,54 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
                 return
             }
             
+//            let capturedView = CustomCapturedMainBackground(image: image, cameraPosition: self.customCamera.currentCameraPosition!)
+//
+//            capturedView.translatesAutoresizingMaskIntoConstraints = false
+//
+//            UIView.transition(with: self.mainView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+//                self.mainView.addSubview(capturedView)
+//
+//                let safe = self.safeAreaLayoutGuide
+//
+//                NSLayoutConstraint.activate([
+//
+//                    capturedView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+//                    capturedView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+//                    capturedView.topAnchor.constraint(equalTo: safe.topAnchor),
+//                    capturedView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+//
+//                    ])
+//            })
+            
             let capturedView = CustomCameraCapturedImageView(image: image, cameraPosition: self.customCamera.currentCameraPosition!)
-            
+
             capturedView.translatesAutoresizingMaskIntoConstraints = false
-            
+
             UIView.transition(with: self.mainView, duration: 0.2, options: .transitionCrossDissolve, animations: {
                 self.mainView.addSubview(capturedView)
-                
+
                 let safe = self.safeAreaLayoutGuide
-                
+
                 NSLayoutConstraint.activate([
-                    
+
                     capturedView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
                     capturedView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
                     capturedView.topAnchor.constraint(equalTo: safe.topAnchor),
                     capturedView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
-                    
+
                     ])
             })
             
-            
-            
-            
-//            try? PHPhotoLibrary.shared().performChangesAndWait {
-//                PHAssetChangeRequest.creationRequestForAsset(from: image)
-//            }
-            
         }
-        
-        
         
     }
     
     func setupGestureRecognizerForFlashButton() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCamereView.flashManagement(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.flashManagement(_:)))
         tapGesture.delegate = self
-        flashButton.addGestureRecognizer(tapGesture)
+        //        flashButton.addGestureRecognizer(tapGesture)
+        flashButtonContainer.addGestureRecognizer(tapGesture)
         
     }
     
@@ -376,7 +441,7 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
             
             UIView.transition(with: flashButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
                 
-                self.flashButton.image = UIImage(named: "on_flash")?.withRenderingMode(.alwaysTemplate)
+                self.flashButton.image = UIImage(named: "flash")?.withRenderingMode(.alwaysTemplate)
                 self.flashButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
                 
             }) { (result) in
@@ -390,7 +455,7 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
             
             UIView.transition(with: flashButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
                 
-                self.flashButton.image = UIImage(named: "off_flash")?.withRenderingMode(.alwaysTemplate)
+                self.flashButton.image = UIImage(named: "flash-2")?.withRenderingMode(.alwaysTemplate)
                 self.flashButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
                 
             }) { (result) in
@@ -404,7 +469,7 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
             
             UIView.transition(with: flashButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
                 
-                self.flashButton.image = UIImage(named: "auto_flash")?.withRenderingMode(.alwaysTemplate)
+                self.flashButton.image = UIImage(named: "flash-3")?.withRenderingMode(.alwaysTemplate)
                 self.flashButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
                 
             }) { (result) in
@@ -414,11 +479,56 @@ extension CustomCamereView : UIGestureRecognizerDelegate {
                 
             }
             
-            
         }
         
+    }
+    
+    func setPinchZoom() {
         
+        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(CustomCameraView.zoomCamera(_:)))
+        pinchGestureRecognizer.delegate = self
+        self.mainView.addGestureRecognizer(pinchGestureRecognizer)
+        //        guard let captureSession = captureSession else { return }
+        
+    }
+    
+    @objc func zoomCamera(_ sender : UIPinchGestureRecognizer) {
+        
+        //        customCamera.zoom(inputScale: sender.scale)
+        
+        /*
+         let deviceZoomScale = stoppedZoomScale + sender.scale
+         
+         print("deviceZoomScale : \(deviceZoomScale)")
+         
+         if sender.state == .changed {
+         
+         customCamera.zoom(inputScale: deviceZoomScale)
+         
+         } else if sender.state == .ended {
+         
+         stoppedZoomScale = sender.scale
+         }*/
+        
+        let deviceZoomScale = sender.scale
+        
+        if sender.state == .changed {
+            
+            if deviceZoomScale <= Constants.CameraZoomScale.maximumZoomScale_05 {
+                
+                print("deviceZoomScale :\(deviceZoomScale) ")
+                
+                customCamera.zoom(inputScale: sender.scale)
+            }
+            
+        } else if sender.state == .ended {
+            
+            //            stoppedZoomScale = sender.scale
+            customCamera.cameraZoomEnded(input: true, inputZoomEndedScale: sender.scale)
+            
+        }
         
     }
     
 }
+

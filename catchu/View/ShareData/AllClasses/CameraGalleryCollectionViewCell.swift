@@ -24,8 +24,9 @@ class CameraGalleryCollectionViewCell: UICollectionViewCell {
     var selectedCell : IndexPath!
     var collectionViewCellSelected : Bool!
     
-    var customPermissionViewForGallery : CustomPermissionView?
-
+    // main necessary views
+    var customCameraView : CustomCameraView?
+    
     let selectedSpecialView : SelectedImageManager = {
         
         let temp = SelectedImageManager(frame: .zero)
@@ -84,6 +85,8 @@ class CameraGalleryCollectionViewCell: UICollectionViewCell {
         getPhotosFromGallery()
 //        initiateSelectedImageView2()
         
+        initializeCustomCameraView()
+        
     }
     
     
@@ -99,7 +102,7 @@ extension CameraGalleryCollectionViewCell {
         MediaLibraryManager.shared.delegateForGalleryPermission = self
         MediaLibraryManager.shared.loadPhotos { (phAssetResult) in
             
-            print("phAssetResult.count : \(String(describing: phAssetResult))")
+//            print("phAssetResult.count : \(String(describing: phAssetResult))")
             
             if phAssetResult.count > 0 {
                 
@@ -126,27 +129,75 @@ extension CameraGalleryCollectionViewCell {
     
     func initializeCustomCameraView() {
         
-        let customCamera = CustomCamereView()
+        customCameraView = CustomCameraView()
         
-        UIView.transition(with: contentView, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            
-            self.contentView.addSubview(customCamera)
-            
-            customCamera.translatesAutoresizingMaskIntoConstraints = false
-            
-            let safe = self.contentView.safeAreaLayoutGuide
-            
-            NSLayoutConstraint.activate([
-                
-                customCamera.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-                customCamera.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-                customCamera.topAnchor.constraint(equalTo: safe.topAnchor),
-                customCamera.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-                
-                ])
-            
-        })
+        customCameraView!.isOpaque = true
+        customCameraViewActivationManager(active: false)
+        customCameraView!.delegate = self
         
+        self.contentView.addSubview(customCameraView!)
+        customCameraView!.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safe = self.contentView.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            customCameraView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            customCameraView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            customCameraView!.topAnchor.constraint(equalTo: safe.topAnchor),
+            customCameraView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+            
+            ])
+        
+//        UIView.transition(with: contentView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+//
+//            self.contentView.addSubview(customCamera)
+//
+//            customCamera.translatesAutoresizingMaskIntoConstraints = false
+//
+//            let safe = self.contentView.safeAreaLayoutGuide
+//
+//            NSLayoutConstraint.activate([
+//
+//                customCamera.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+//                customCamera.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+//                customCamera.topAnchor.constraint(equalTo: safe.topAnchor),
+//                customCamera.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+//
+//                ])
+//
+//        })
+        
+    }
+    
+    func customCameraViewActivationManager(active : Bool) {
+    
+        guard customCameraView != nil else {
+            return
+        }
+        
+        if active {
+            customCameraView!.alpha = 1
+        } else {
+            customCameraView!.alpha = 0
+        }
+        
+    }
+    
+    // when cell is changed from cameraGalleryCollectionViewCell to another, disable customCamera in order to use camera device session from a different cell for further actions like capture video 
+    func stopCameraSession() {
+        
+        guard customCameraView != nil else {
+            return
+        }
+        
+        customCameraView!.stopCustomCameraProcess()
+        customCameraViewActivationManager(active: false)
+        
+    }
+    
+    func test() {
+        print("TEST TEST TEST")
     }
     
 }
@@ -246,7 +297,24 @@ extension CameraGalleryCollectionViewCell : ShareDataProtocols {
     
     func initiateCustomCamera() {
         
-        initializeCustomCameraView()
+//        initializeCustomCameraView()
+        
+        guard customCameraView != nil else {
+            return
+        }
+        
+        customCameraView!.startCustomCameraProcess()
+        customCameraViewActivationManager(active: true)
+        
+    }
+    
+    func makeVisibleCustomViews() {
+        
+        guard customCameraView != nil else {
+            return
+        }
+        
+        customCameraViewActivationManager(active: false)
         
     }
     
@@ -255,40 +323,6 @@ extension CameraGalleryCollectionViewCell : ShareDataProtocols {
 
 // MARK: - PermissionProtocol
 extension CameraGalleryCollectionViewCell : PermissionProtocol {
-    
-//    func initiateSpecificActions() {
-//        
-//        mainView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-//        
-//        mainView.addSubview(View)
-//        containerView.addSubview(detailLable)
-//        
-//        let safeAreaLayout = mainView.safeAreaLayoutGuide
-//        let safeAreForLabel = containerView.safeAreaLayoutGuide
-//        
-//        print("safeAreaLayout : \(safeAreaLayout)")
-//        
-//        NSLayoutConstraint.activate([
-//            
-//            containerView.leadingAnchor.constraint(equalTo: safeAreaLayout.leadingAnchor, constant: 0),
-//            containerView.trailingAnchor.constraint(equalTo: safeAreaLayout.trailingAnchor, constant: 0),
-//            containerView.bottomAnchor.constraint(equalTo: safeAreaLayout.bottomAnchor, constant: 0),
-//            containerView.topAnchor.constraint(equalTo: safeAreaLayout.topAnchor, constant: 0),
-//            
-//            detailLable.centerYAnchor.constraint(equalTo: safeAreForLabel.centerYAnchor),
-//            detailLable.centerXAnchor.constraint(equalTo: safeAreForLabel.centerXAnchor),
-//            detailLable.heightAnchor.constraint(equalToConstant: 100),
-//            detailLable.widthAnchor.constraint(equalToConstant: 300)
-//            
-//            ])
-//        
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CameraGalleryCollectionViewCell.startPermissionFlow(_:)))
-//        tapGestureRecognizer.delegate = self
-//        containerView.addGestureRecognizer(tapGestureRecognizer)
-//        
-//        self.photoCollectionView.alpha = 0
-//        
-//    }
     
     func returnPermissionResult(status: PHAuthorizationStatus) {
         

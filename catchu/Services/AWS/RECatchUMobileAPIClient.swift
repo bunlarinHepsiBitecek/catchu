@@ -141,7 +141,7 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         super.init()
         
         self.configuration = configuration.copy() as! AWSServiceConfiguration
-        var URLString: String = "https://bnks4o5e0g.execute-api.us-east-1.amazonaws.com/prod"
+        var URLString: String = "https://gg83crxb25.execute-api.us-east-1.amazonaws.com/prod"
         if URLString.hasSuffix("/") {
             URLString = URLString.substring(to: URLString.index(before: URLString.endIndex))
         }
@@ -184,12 +184,29 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      return type: REFriendList
      */
-    public func friendsGet(userid: String) -> AWSTask<REFriendList> {
+//    public func friendsGet(userid: String) -> AWSTask<REFriendList> {
+//        let headerParameters = [
+//            "Content-Type": "application/json",
+//            "Accept": "application/json",
+//
+//            ]
+//
+//        var queryParameters:[String:Any] = [:]
+//        queryParameters["userid"] = userid
+//
+//        let pathParameters:[String:Any] = [:]
+//
+//        return self.invokeHTTPRequest("GET", urlString: "/friends", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REFriendList.self) as! AWSTask<REFriendList>
+//    }
+    
+    public func friendsGet(userid: String, authorization: String) -> AWSTask<REFriendList> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
-            
-            ]
+            "Authorization": authorization
+        ]
+        
+        print("authorization : \(authorization)")
         
         var queryParameters:[String:Any] = [:]
         queryParameters["userid"] = userid

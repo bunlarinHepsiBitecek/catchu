@@ -92,7 +92,6 @@ struct LocalizedConstants {
             static let enableAccessCamera = NSLocalizedString("enableAccessCamera", comment: "")
             static let enableAccessMicrophone = NSLocalizedString("enableAccessMicrophone", comment: "")
             
-            
         }
         
         struct LabelTitle {
@@ -101,9 +100,12 @@ struct LocalizedConstants {
             static let addParticipant = NSLocalizedString("addParticipant", comment: "")
             static let groupInformation = NSLocalizedString("groupInformation", comment: "")
             static let createGroupName = NSLocalizedString("createGroupName", comment: "")
+            static let saved = NSLocalizedString("saved", comment: "")
+            static let failed = NSLocalizedString("failed", comment: "")
             
         }
     }
+    
     struct Location {
         static let LocationServiceDisableTitle = NSLocalizedString("LocationServiceDisableTitle", comment: "")
         static let LocationServiceDisable      = NSLocalizedString("LocationServiceDisable", comment: "")

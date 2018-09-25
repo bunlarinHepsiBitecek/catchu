@@ -51,6 +51,8 @@
 "groupInformation" = "Group Bilgileri";
 "createGroup" = "Grup Oluştur";
 "createGroupName" = "Grubunun için bir isim belirleyebilirsiniz.";
+"saved" = "OK 😜";
+"failed" = "Opps 😭";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";

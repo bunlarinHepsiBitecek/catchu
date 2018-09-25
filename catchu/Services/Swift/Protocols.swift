@@ -9,6 +9,18 @@
 import UIKit
 import Photos
 
+protocol ViewPresentationProtocols {
+    
+    func dismissLoginViews()
+    
+}
+
+extension ViewPresentationProtocols {
+    
+    func dismissLoginViews() {}
+    
+}
+
 protocol ImageHandlerProtocol: class {
     
     func returnImage(inputImage : UIImage)
@@ -47,34 +59,45 @@ protocol ShareDataProtocols: class {
     func selectSliderTypeCell(inputIndexPath : IndexPath)
     func returnSliderWidth() -> CGFloat
     func selectFunctionCell(inputIndex: Int)
+    func selectFunctionCell2(indexPath: IndexPath)
     func deliverDelegation() -> UIViewController
     func initiateCustomCamera()
     func directToCapturedVideoView(url : URL)
     func initiateCustomVideo()
     func getPhotosFromLibrary(inputIndex: Int)
+    func updateSelectedColorFromPalette(inputView : UIView)
+    func menuContainersHideManagement(inputValue : Bool)
+    func returnTextViewScreenShot(inputScreenShot : UIImage)
+    func makeVisibleCustomViews()
+    func closeCameraOperations()
+    func closeVideoOperations()
+    
+    // new protocols for shareMenuViews
+    func forceScrollMenuScrollView(selectedMenuIndex : Int)
     
 }
 
 extension ShareDataProtocols {
     func dismisViewController() {}
-    
     func resizeShareTypeSliderConstraint(input : CGFloat) {}
-    
     func selectSliderTypeCell(inputIndexPath : IndexPath) {}
-    
     func returnSliderWidth() -> CGFloat { return 0 }
-    
     func selectFunctionCell(inputIndex: Int) {}
-    
+    func selectFunctionCell2(indexPath: IndexPath) {}
     func deliverDelegation() -> UIViewController { return UIViewController() }
-    
     func initiateCustomCamera() {}
-    
     func directToCapturedVideoView(url : URL) {}
-    
     func initiateCustomVideo() {}
-    
     func getPhotosFromLibrary(inputIndex: Int) {}
+    func updateSelectedColorFromPalette(inputView : UIView) {}
+    func menuContainersHideManagement(inputValue : Bool) {}
+    func returnTextViewScreenShot(inputScreenShot : UIImage) {}
+    func makeVisibleCustomViews() {}
+    func closeCameraOperations() {}
+    func closeVideoOperations() {}
+    
+    // new protocols for shareMenuViews
+    func forceScrollMenuScrollView(selectedMenuIndex : Int) {}
     
 }
 
