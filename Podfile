@@ -8,15 +8,7 @@ target 'catchu' do
   # Pods for catchu
 
   pod 'IQKeyboardManagerSwift'
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
-  pod 'AWSUserPoolsSignIn', '~> 2.6.13'
-  pod 'AWSAuthUI', '~> 2.6.13'
-  pod 'AWSMobileClient', '~> 2.6.13'
-  pod 'AWSPinpoint'
-  pod 'AWSFacebookSignIn', '~> 2.6.13'
-  pod 'AWSGoogleSignIn', '~> 2.6.13'
   
   pod 'AWSAPIGateway'
   pod 'AWSS3'

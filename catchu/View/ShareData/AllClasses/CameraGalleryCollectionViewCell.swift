@@ -129,7 +129,7 @@ extension CameraGalleryCollectionViewCell {
     
     func initializeCustomCameraView() {
         
-        customCameraView = CustomCameraView()
+        customCameraView = CustomCameraView(delegateShareDataProtocols: self, delegatePermissionProtocol: self)
         
         customCameraView!.isOpaque = true
         customCameraViewActivationManager(active: false)
@@ -191,8 +191,8 @@ extension CameraGalleryCollectionViewCell {
             return
         }
         
-        customCameraView!.stopCustomCameraProcess()
-        customCameraViewActivationManager(active: false)
+//        customCameraView!.stopCustomCameraProcess()
+//        customCameraViewActivationManager(active: false)
         
     }
     

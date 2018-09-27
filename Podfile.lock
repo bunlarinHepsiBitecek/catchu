@@ -1,74 +1,46 @@
 PODS:
-  - AWSAPIGateway (2.6.23):
-    - AWSCore (= 2.6.23)
-  - AWSAuthCore (2.6.23):
-    - AWSCore (= 2.6.23)
-  - AWSAuthUI (2.6.23):
-    - AWSAuthCore (= 2.6.23)
-    - AWSCore (= 2.6.23)
-  - AWSCognitoIdentityProvider (2.6.23):
-    - AWSCognitoIdentityProviderASF (= 1.0.1)
-    - AWSCore (= 2.6.23)
-  - AWSCognitoIdentityProviderASF (1.0.1)
-  - AWSCore (2.6.23)
-  - AWSFacebookSignIn (2.6.23):
-    - AWSAuthCore (= 2.6.23)
-    - FBSDKCoreKit (~> 4.0)
-    - FBSDKLoginKit (~> 4.0)
-  - AWSGoogleSignIn (2.6.23):
-    - AWSAuthCore (= 2.6.23)
-  - AWSMobileClient (2.6.23):
-    - AWSAuthCore (= 2.6.23)
-  - AWSPinpoint (2.6.23):
-    - AWSCore (= 2.6.23)
-  - AWSS3 (2.6.23):
-    - AWSCore (= 2.6.23)
-  - AWSUserPoolsSignIn (2.6.23):
-    - AWSAuthCore (= 2.6.23)
-    - AWSCognitoIdentityProvider (= 2.6.23)
+  - AWSAPIGateway (2.6.30):
+    - AWSCore (= 2.6.30)
+  - AWSCore (2.6.30)
+  - AWSS3 (2.6.30):
+    - AWSCore (= 2.6.30)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
-  - FBSDKCoreKit (4.34.0):
+  - FBSDKCoreKit (4.36.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.34.0):
+  - FBSDKLoginKit (4.36.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.34.0):
-    - FBSDKCoreKit (~> 4.34.0)
-  - Firebase/Auth (5.5.0):
+  - FBSDKShareKit (4.36.0):
+    - FBSDKCoreKit (~> 4.36.0)
+  - Firebase/Auth (5.9.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (= 5.0.3)
-  - Firebase/CoreOnly (5.5.0):
-    - FirebaseCore (= 5.1.0)
-  - FirebaseAuth (5.0.3):
+    - FirebaseAuth (= 5.0.4)
+  - Firebase/CoreOnly (5.9.0):
+    - FirebaseCore (= 5.1.4)
+  - FirebaseAuth (5.0.4):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 5.0)
     - GoogleUtilities/Environment (~> 5.2)
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseAuthInterop (1.0.0)
-  - FirebaseCore (5.1.0):
+  - FirebaseCore (5.1.4):
     - GoogleUtilities/Logger (~> 5.2)
-  - GoogleUtilities/Environment (5.2.2)
-  - GoogleUtilities/Logger (5.2.2):
+  - GoogleUtilities/Environment (5.3.0)
+  - GoogleUtilities/Logger (5.3.0):
     - GoogleUtilities/Environment
   - GTMSessionFetcher/Core (1.2.0)
-  - IQKeyboardManagerSwift (6.0.4)
+  - IQKeyboardManagerSwift (6.1.1)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
 
 DEPENDENCIES:
   - AWSAPIGateway
-  - AWSAuthUI (~> 2.6.13)
-  - AWSFacebookSignIn (~> 2.6.13)
-  - AWSGoogleSignIn (~> 2.6.13)
-  - AWSMobileClient (~> 2.6.13)
-  - AWSPinpoint
   - AWSS3
-  - AWSUserPoolsSignIn (~> 2.6.13)
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
@@ -79,17 +51,8 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AWSAPIGateway
-    - AWSAuthCore
-    - AWSAuthUI
-    - AWSCognitoIdentityProvider
-    - AWSCognitoIdentityProviderASF
     - AWSCore
-    - AWSFacebookSignIn
-    - AWSGoogleSignIn
-    - AWSMobileClient
-    - AWSPinpoint
     - AWSS3
-    - AWSUserPoolsSignIn
     - Bolts
     - FBSDKCoreKit
     - FBSDKLoginKit
@@ -105,32 +68,23 @@ SPEC REPOS:
     - TwitterKit
 
 SPEC CHECKSUMS:
-  AWSAPIGateway: d37c2c069e8821c11f8e1cf50cd35e4de8c0d568
-  AWSAuthCore: 2db4c4f3db70e5789193b602e0392d25da6aca4e
-  AWSAuthUI: 0ac83168ce36d55367b3755acf8af7d29a533b3f
-  AWSCognitoIdentityProvider: 605ea825077825717418e37fba27d5cd23958ea2
-  AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
-  AWSCore: d56f69d7312e652e51c70f3b25e1687a5c2d06ca
-  AWSFacebookSignIn: a6c0b1f211a31404fa74a15b90937b8e200b19c8
-  AWSGoogleSignIn: 1856e4f747222217c7639b674862907acb1458e6
-  AWSMobileClient: c94ca9856f99e99a4813ebc7f4c19cecce7f06c8
-  AWSPinpoint: 198ece283bc4b5b7dc8e08dfb3415b6225203e7f
-  AWSS3: 198942f234628f1ad1c373725d65c33ebfe87af6
-  AWSUserPoolsSignIn: a101355358dec050f2ee2e81302e6011e2a95093
+  AWSAPIGateway: c2b42cb5425b7d21831cdf7ca1a725518c6f0312
+  AWSCore: 11e8bb89d8d2e3bb6e31caa8b944ca7dae4c87cd
+  AWSS3: 63f401ca496ebedd05988f40c9f4108a72828121
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  FBSDKCoreKit: 0ff57f093b85c8c9d5aba697d3edf68a8960ce78
-  FBSDKLoginKit: 8c78f57a145afb756e4755e69195ebe08a42466e
-  FBSDKShareKit: 511d1dfc71204c0a8d69e6c5e3c964dcf0d4f3d9
-  Firebase: 8c957f9cb3852b519180fb378801b7eeeba4d288
-  FirebaseAuth: 657a25e4be044d2d333663ebf515a861c5a59cd7
+  FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
+  FBSDKLoginKit: 8bccb6064708ab2f4251a7fc4e3b6d8d00ad91ba
+  FBSDKShareKit: 7090fdd55c39b03941efddb64c83a64ff6b3949f
+  Firebase: 383fa29aca93e371cab776b48a5c66544d3c2003
+  FirebaseAuth: 504b198ceb3472dca5c65bb95544ea44cfc9439e
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
-  FirebaseCore: ee4b35cf8c8e781da296cc7c15125e4608bb954d
-  GoogleUtilities: 06b66f9567769a7958db20a92f0128b2843e49d5
+  FirebaseCore: 2a84b6b325792a4319ef71ee18819dcba08d2fd7
+  GoogleUtilities: 760ccb53b7c7f40f9c02d8c241f76f841a7a6162
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
-  IQKeyboardManagerSwift: 36dbe324b4f9793f5f41ba5227f3e7c76dfefd50
+  IQKeyboardManagerSwift: 977affaeb4d6e971975c7790a6850f31d38f1207
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
 
-PODFILE CHECKSUM: 799a19a42a8d49e36af683c1eba03145b98dac6a
+PODFILE CHECKSUM: 130df3d81b60d9957b3474db8634add97d3be829
 
 COCOAPODS: 1.5.0

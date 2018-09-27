@@ -114,3 +114,29 @@ enum ColorPalettes {
     case palette3
 }
 
+enum CustomVideoError: Swift.Error {
+    case captureSessionAlreadyRunning
+    case captureSessionIsMissing
+    case inputsAreInvalid
+    case invalidOperation
+    case noCamerasAvailable
+    case noMicrophoneAvailable
+    case unknown
+    case previewLayerIsMissing
+}
+
+enum CustomCameraError: Swift.Error {
+    case captureSessionAlreadyRunning
+    case captureSessionIsMissing
+    case inputsAreInvalid
+    case invalidOperation
+    case noCamerasAvailable
+    case unknown
+}
+
+enum DelegationErrors: Swift.Error {
+    case ShareDataProtocolsDelegateIsNil
+    case PermissionProtocolDelegateIsNil
+    case CustomCameraViewIsNil
+}
+

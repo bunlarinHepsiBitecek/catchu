@@ -25,6 +25,17 @@ class CustomVideoView: UIView {
     
     weak var delegate : ShareDataProtocols!
     
+    lazy var closeButton: UIImageView = {
+        
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.image = UIImage(named: "cancel_black")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.isUserInteractionEnabled = true
+        
+        return temp
+    }()
+    
     lazy var mainView: UIView = {
         
         let temp = UIView(frame: .zero)
@@ -62,28 +73,30 @@ class CustomVideoView: UIView {
 
         super.init(frame: .zero)
         
-        initalizeViews()
+        setupCloseButtonGesture()
+        
+//        initalizeViews()
         
 //        disableCameraCaptureSession()
 
-//        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-//
-//        switch cameraAuthorizationStatus{
-//        case .authorized:
-//
-//            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
-//
-//            switch statusForMicrophone {
-//            case .granted:
-//                initalizeViews()
-//
-//            default:
-//                microphonePermissionProcess(inputStatus: statusForMicrophone)
-//            }
-//
-//        default:
-//            videoCameraPermissionProcess(status: cameraAuthorizationStatus)
-//        }
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+
+        switch cameraAuthorizationStatus{
+        case .authorized:
+
+            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+
+            switch statusForMicrophone {
+            case .granted:
+                initalizeViews()
+
+            default:
+                microphonePermissionProcess(inputStatus: statusForMicrophone)
+            }
+
+        default:
+            videoCameraPermissionProcess(status: cameraAuthorizationStatus)
+        }
         
         
     }
@@ -96,9 +109,9 @@ class CustomVideoView: UIView {
     func initalizeViews() {
         
         setupViews()
-//        initiateVideoProcess()
+        initiateVideoProcess()
         setGestureToRecordButton()
-        customVideoViewVisibilityManagement(inputValue: false)
+        customVideoViewVisibilityManagement(inputValue: true)
         
     }
     
@@ -125,7 +138,9 @@ class CustomVideoView: UIView {
             
             switch statusForMicrophone {
             case .granted:
-                initiateVideoProcess()
+//                initiateVideoProcess()
+                startVideoProcess()
+                
                 
             default:
                 microphonePermissionProcess(inputStatus: statusForMicrophone)
@@ -133,6 +148,18 @@ class CustomVideoView: UIView {
             
         default:
             videoCameraPermissionProcess(status: cameraAuthorizationStatus)
+        }
+        
+    }
+    
+    func startVideoProcess() {
+        
+//        customVideoViewVisibilityManagement(inputValue: false)
+        
+        do {
+            try customVideo.enableVideoSession()
+        } catch  {
+            print("customVideo session can not be enabled")
         }
         
     }
@@ -171,6 +198,7 @@ class CustomVideoView: UIView {
         self.addSubview(mainView)
         self.mainView.addSubview(recordContainerView)
         self.mainView.addSubview(recordButton)
+        self.mainView.addSubview(closeButton)
 //        self.recordContainerView.addSubview(recordButton)
         
         let safe = self.safeAreaLayoutGuide
@@ -197,11 +225,15 @@ class CustomVideoView: UIView {
             recordButton.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -35),
 //            recordButton.centerYAnchor.constraint(equalTo: safeRecordView.centerYAnchor),
             recordButton.heightAnchor.constraint(equalToConstant: 60),
-            recordButton.widthAnchor.constraint(equalToConstant: 60)
+            recordButton.widthAnchor.constraint(equalToConstant: 60),
 //            bottomConstraints!,
 //            heigthConstraint!,
 //            widthConstraint!
             
+            closeButton.topAnchor.constraint(equalTo: safeMainview.topAnchor, constant: 15),
+            closeButton.leadingAnchor.constraint(equalTo: safeMainview.leadingAnchor, constant: 15),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
         
             ])
         
@@ -218,6 +250,8 @@ class CustomVideoView: UIView {
                 if let error = error {
                     print(error)
                 }
+                
+                print("initiateVideoProcess starts")
                 
                 try? self.customVideo.displayPreviewForVideo(on: self.mainView)
             }
@@ -363,7 +397,6 @@ class CustomVideoView: UIView {
     
 }
 
-
 // MARK: - UIGestureRecognizerDelegate
 extension CustomVideoView : UIGestureRecognizerDelegate {
  
@@ -430,6 +463,31 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
             adjustRecordButtonBorders(input: .passive)
             
 //            customVideo.stopRecording()
+        }
+        
+    }
+    
+    func setupCloseButtonGesture() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.dismissCustomCameraView(_:)))
+        tapGesture.delegate = self
+        closeButton.addGestureRecognizer(tapGesture)
+        self.mainView.bringSubview(toFront: closeButton)
+        
+    }
+    
+    @objc func dismissCustomCameraView(_ sender : UITapGestureRecognizer) {
+        
+        print("dismissCustomCameraView starts")
+        
+        guard customVideo != nil else {
+            return
+        }
+        
+        do {
+            try customVideo.enableVideoSession()
+        } catch  {
+            print("custom view is not enabled")
         }
         
     }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AWSAuthUI
 
 class FeedViewController: UIViewController {
     

@@ -72,17 +72,17 @@ extension PhotoCell : UIGestureRecognizerDelegate {
         
         let authorization = AVCaptureDevice.authorizationStatus(for: .video)
         
-        switch authorization {
-        case .authorized:
-            delegate.initiateCustomCamera()
-            
-        case .notDetermined:
-            delegatePermissionControl.requestPermission(permissionType: .camera)
-            
-        default:
-            delegatePermissionControl.requestPermission(permissionType: .cameraUnathorized)
-        
-        }
+//        switch authorization {
+//        case .authorized:
+//            delegate.initiateCustomCamera()
+//            
+//        case .notDetermined:
+//            delegatePermissionControl.requestPermission(permissionType: .camera)
+//            
+//        default:
+//            delegatePermissionControl.requestPermission(permissionType: .cameraUnathorized)
+//        
+//        }
         
     }
     

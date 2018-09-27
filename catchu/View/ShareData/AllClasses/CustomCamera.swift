@@ -146,7 +146,8 @@ extension CustomCamera {
             self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])], completionHandler: nil)
             
             if captureSession.canAddOutput(self.photoOutput!) { captureSession.addOutput(self.photoOutput!) }
-            captureSession.startRunning()
+            
+//            captureSession.startRunning()
             
         }
         
@@ -175,7 +176,8 @@ extension CustomCamera {
     }
     
     func displayPreview(on view: UIView) throws {
-        guard let captureSession = self.captureSession, captureSession.isRunning else { throw CustomCameraError.captureSessionIsMissing }
+//        guard let captureSession = self.captureSession, captureSession.isRunning else { throw CustomCameraError.captureSessionIsMissing }
+        guard let captureSession = self.captureSession else { throw CustomCameraError.captureSessionIsMissing }
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
@@ -189,21 +191,39 @@ extension CustomCamera {
     }
     
     
+    /// it is starts to stop capture session while other views uses AVCaptureSession
+    ///
+    /// - Throws: captureSession nil exception
+    func enableCameraSession() throws {
+        
+        print("enableCameraSession starts")
+        
+        guard let captureSession = self.captureSession else { throw CustomCameraError.captureSessionIsMissing }
+        
+        print("captureSession.isRunning : \(captureSession.isRunning)")
+        
+        if !captureSession.isRunning {
+            
+            captureSession.startRunning()
+            
+        }
+        
+        print("captureSession.isRunning : \(captureSession.isRunning)")
+        
+    }
+    
     /// it is used to stop capture session while other views uses AVCaptureSession
     ///
     /// - Throws: captureSession nil exception
-    func stopPreview() throws {
+    func disableCameraSession() throws {
         
-        print("stopPreview starts")
+        print("disableCameraSession starts")
         
         guard let captureSession = self.captureSession else { throw CustomCameraError.captureSessionIsMissing }
         
         print("captureSession.isRunning : \(captureSession.isRunning)")
         
         if captureSession.isRunning {
-            
-            self.previewLayer?.removeFromSuperlayer()
-            self.previewLayer = nil
             
             captureSession.stopRunning()
             
@@ -388,15 +408,15 @@ extension CustomCamera: AVCapturePhotoCaptureDelegate {
     
 }
 
-extension CustomCamera {
-    
-    enum CustomCameraError: Swift.Error {
-        case captureSessionAlreadyRunning
-        case captureSessionIsMissing
-        case inputsAreInvalid
-        case invalidOperation
-        case noCamerasAvailable
-        case unknown
-    }
-    
-}
+//extension CustomCamera {
+//    
+//    enum CustomCameraError: Swift.Error {
+//        case captureSessionAlreadyRunning
+//        case captureSessionIsMissing
+//        case inputsAreInvalid
+//        case invalidOperation
+//        case noCamerasAvailable
+//        case unknown
+//    }
+//    
+//}

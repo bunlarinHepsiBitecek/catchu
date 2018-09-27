@@ -12,13 +12,14 @@ import Photos
 
 class CustomCameraView: UIView {
     
-    var previewLayer = AVCaptureVideoPreviewLayer()
+//    var previewLayer = AVCaptureVideoPreviewLayer()
     
     let customCamera = CustomCamera()
     
     var stoppedZoomScale : CGFloat = 0.0
     
     weak var delegate : ShareDataProtocols!
+    weak var delegatePermissionControl : PermissionProtocol!
     
     lazy var mainView: UIView = {
         
@@ -108,9 +109,95 @@ class CustomCameraView: UIView {
     var captureSession = AVCaptureSession()
     var captureDevice: AVCaptureDevice!
     
-    override init(frame: CGRect) {
+    init(delegateShareDataProtocols : ShareDataProtocols, delegatePermissionProtocol : PermissionProtocol) {
+        super.init(frame: .zero)
         
-        super.init(frame: frame)
+        self.delegate = delegateShareDataProtocols
+        self.delegatePermissionControl = delegatePermissionProtocol
+        
+        do {
+            
+            try checkAuthorization()
+            
+        }
+        catch let error as DelegationErrors {
+            if error == .PermissionProtocolDelegateIsNil {
+                print("PermissionDelegation is nil")
+            }
+        }
+        catch {
+            print("Something terribly goes wrong")
+        }
+        
+        
+    }
+    
+//    override init(frame: CGRect, delegateShareDataProtocols : ShareDataProtocols, delegatePermissionProtocol : PermissionProtocol) {
+//        super.init(frame: frame)
+//        
+//        self.delegate = delegateShareDataProtocols
+//        self.delegatePermissionControl = delegatePermissionProtocol
+//        
+//        do {
+//            
+//            try checkAuthorization()
+//            
+//        }
+//        catch let error as DelegationErrors {
+//            if error == .PermissionProtocolDelegateIsNil {
+//                print("PermissionDelegation is nil")
+//            }
+//        }
+//        catch {
+//            print("Something terribly goes wrong")
+//        }
+//        
+//    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        startCustomCameraProcess()
+//    }
+    
+}
+
+// MARK: - major functions
+extension CustomCameraView {
+    
+    func checkAuthorization() throws {
+        
+        let authorization = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch authorization {
+        case .authorized:
+            initiateCustomCameraView()
+            
+        case .notDetermined:
+            
+            guard delegatePermissionControl != nil else {
+                throw DelegationErrors.PermissionProtocolDelegateIsNil
+            }
+            
+            delegatePermissionControl.requestPermission(permissionType: .camera)
+            
+        default:
+            
+            guard delegatePermissionControl != nil else {
+                throw DelegationErrors.PermissionProtocolDelegateIsNil
+            }
+            
+            delegatePermissionControl.requestPermission(permissionType: .cameraUnathorized)
+            
+        }
+        
+    }
+    
+    func initiateCustomCameraView() {
         
         setupViews()
         setupCloseButtonGesture()
@@ -118,29 +205,8 @@ class CustomCameraView: UIView {
         setupGestureRecognizerForFlashButton()
         setupGestureRecognizerForCameraShoot()
         setPinchZoom()
+        startCustomCameraProcess()
         
-        //        mainView.layer.insertSublayer(previewLayer, at: 0)
-        //        previewLayer.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        //        previewLayer.frame = mainView.bounds
-        //
-        //        print("mainView.bounds : \(mainView.bounds)")
-        //
-        //        mainView.layer.addSublayer(previewLayer)
-        
-        //        setupCameraSettings()
-        
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        //        setupCameraSettings()
-        
-//        startCustomCameraProcess()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     func startCustomCameraProcess() {
@@ -159,17 +225,55 @@ class CustomCameraView: UIView {
         
     }
     
-    func stopCustomCameraProcess() {
+    func disableCustomCameraProcess() {
+        
+        customCameraViewActivationManager(active: false)
         
         do {
-            try customCamera.stopPreview()
-        } catch  {
-            print("camera can not be stopped")
+            try customCamera.disableCameraSession()
+        }
+        catch let error as CustomCameraError {
+            
+            switch error {
+            case .captureSessionIsMissing:
+                print("Capture Session is missing")
+            default:
+                print(error)
+            }
+        }
+        catch {
+            print("camera can not be disabled")
+        }
+        
+    }
+    
+    func enableCustomCameraProcess() {
+        
+        customCameraViewActivationManager(active: true)
+        
+        do {
+            try customCamera.enableCameraSession()
+            
+        }
+        catch let error as CustomCameraError {
+            
+            switch error {
+            case .captureSessionIsMissing:
+                print("Capture Session is missing")
+            default:
+                print(error)
+            }
+        }
+        catch {
+            print("camera can not be enabled")
         }
         
     }
     
     func setupViews() {
+        
+        // let's make is opaque for performans issues
+        self.isOpaque = true
         
         self.addSubview(mainView)
         self.mainView.addSubview(flashButtonContainer)
@@ -226,68 +330,24 @@ class CustomCameraView: UIView {
         
     }
     
-    func setupCameraSettings() {
+    func customCameraViewActivationManager(active : Bool) {
         
-        captureSession.sessionPreset = AVCaptureSession.Preset.photo
-        
-        let availableDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTrueDepthCamera, .builtInTelephotoCamera, .builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.back).devices
-        
-        if let availableFirst = availableDevices.first {
-            captureDevice = availableFirst
-            beginSession()
+        if active {
+            self.alpha = 1
+        } else {
+            self.alpha = 0
         }
-        
-        
-    }
-    
-    func beginSession() {
-        
-        do {
-            
-            let captureDeviceInput = try AVCaptureDeviceInput(device: captureDevice)
-            
-            captureSession.addInput(captureDeviceInput)
-            
-        } catch  {
-            print("ERROR : \(error.localizedDescription)")
-        }
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        //        previewLayer.videoGravity = AVLayerVideoGravity(rawValue: kCAGravityResizeAspectFill)
-        //        previewLayer.connection?.videoOrientation = .portrait
-        //        previewLayer.connection?.videoOrientation = .portrait
-        
-        self.previewLayer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        self.previewLayer.frame = self.mainView.bounds
-        self.mainView.layer.addSublayer(previewLayer)
-        
-        print("previewLayer.bounds : \(previewLayer.bounds)")
-        
-        captureSession.startRunning()
-        
-        //        let dataOutput = AVCaptureVideoDataOutput()
-        //
-        //        dataOutput.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString):NSNumber(value:kCVPixelFormatType_32BGRA)] as [String : Any]
-        //
-        //        dataOutput.alwaysDiscardsLateVideoFrames = true
-        //
-        //        if captureSession.canAddOutput(dataOutput) {
-        //            captureSession.addOutput(dataOutput)
-        //        }
-        //
-        //        captureSession.commitConfiguration()
-        //
-        //        let queue = DispatchQueue(label: "com.brianadvent.captureQueue")
-        //        dataOutput.setSampleBufferDelegate(self, queue: queue)
         
     }
     
 }
 
+// MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
 extension CustomCameraView : AVCaptureVideoDataOutputSampleBufferDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension CustomCameraView : UIGestureRecognizerDelegate {
     
     func setupCloseButtonGesture() {
@@ -303,14 +363,7 @@ extension CustomCameraView : UIGestureRecognizerDelegate {
         
         print("dismissCustomCameraView starts")
         
-        self.stopCustomCameraProcess()
-        self.delegate.makeVisibleCustomViews()
-        
-//        guard let callerView = self.superview else { return }
-//
-//        UIView.transition(with: callerView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
-//            self.removeFromSuperview()
-//        })
+        self.disableCustomCameraProcess()
         
     }
     

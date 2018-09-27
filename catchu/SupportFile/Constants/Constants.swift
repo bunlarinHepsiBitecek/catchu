@@ -123,6 +123,11 @@ struct Constants {
         static let ShareCollectionViewCell        = "ShareCollectionViewCell"
         static let ShareCollectionViewItemPerLine = CGFloat(4)
         static let ShareCollectionViewItemSpace   = CGFloat(1)
+        static let imageCollectionViewCellWidth = CGFloat(92)
+        static let imageCollectionViewCellHeigth = CGFloat(92)
+        static let imageCollectionViewMinLineSpacing_01 : CGFloat = 1
+        static let imageCollectionViewEdgeInsets_02 : CGFloat = 2
+        static let imageCollectionViewMaxCellCount : CGFloat = 4
     }
     
     struct FirebaseCallableFunctions {

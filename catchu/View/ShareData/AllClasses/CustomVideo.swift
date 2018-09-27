@@ -34,11 +34,15 @@ extension CustomVideo {
     
     func prepare(completionHandler: @escaping (Error?) -> Void)  {
         
+        /// create session
         func createVideoSession() {
             self.videoSession = AVCaptureSession()
             
         }
         
+        /// find devices
+        ///
+        /// - Throws: throws exceptions
         func configureCaptureDevices() throws {
             
             let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTelephotoCamera, .builtInTrueDepthCamera], mediaType: AVMediaType.video, position: .unspecified)
@@ -78,6 +82,9 @@ extension CustomVideo {
             
         }
         
+        /// adding input devices into session
+        ///
+        /// - Throws: throws exceptions
         func configureDeviceInputs() throws {
             
             guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
@@ -120,12 +127,15 @@ extension CustomVideo {
             
         }
         
+        /// start video session
+        ///
+        /// - Throws: throw exceptions
         func configurePhotoOutput() throws {
             guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
             
             if videoSession.canAddOutput(self.videoFileOutput) { videoSession.addOutput(self.videoFileOutput) }
             
-            videoSession.startRunning()
+//            videoSession.startRunning()
             
         }
         
@@ -153,7 +163,11 @@ extension CustomVideo {
     }
     
     func displayPreviewForVideo(on view: UIView) throws {
-        guard let videoSession = self.videoSession, videoSession.isRunning else { throw CustomVideoError.captureSessionIsMissing }
+        /* videoSession.isRunning control is removed */
+//        guard let videoSession = self.videoSession, videoSession.isRunning else { throw CustomVideoError.captureSessionIsMissing }
+        guard let videoSession = self.videoSession else { throw CustomVideoError.captureSessionIsMissing }
+        
+        print("displayPreviewForVideo starts")
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: videoSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
@@ -162,18 +176,45 @@ extension CustomVideo {
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         
         print("view.frame : \(view.frame)")
+        print("preview connection : \(previewLayer?.connection)")
+        
         
         self.previewLayer?.frame = view.frame
+    }
+    
+    func enableVideoSession() throws {
+        
+        guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
+        
+        print("videoSession is running : \(videoSession.isRunning)")
+        print("preview connection : \(previewLayer?.connection)")
+        
+        if !videoSession.isRunning {
+            
+//            if let previewConnection = previewLayer?.connection {
+//                previewConnection.isEnabled = true
+//            }
+            
+            
+            videoSession.startRunning()
+            
+        }
     }
     
     func disableVideoSession() throws {
         
         guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
         
+        print("videoSession is running : \(videoSession.isRunning)")
+        
         if videoSession.isRunning {
             
-            self.previewLayer?.removeFromSuperlayer()
-            self.previewLayer = nil
+//            self.previewLayer?.removeFromSuperlayer()
+//            self.previewLayer = nil
+            
+//            if let previewConnection = previewLayer?.connection {
+//                previewConnection.isEnabled = false
+//            }
             
             videoSession.stopRunning()
 
@@ -241,16 +282,17 @@ extension CustomVideo : AVCaptureFileOutputRecordingDelegate {
     
 }
 
-extension CustomVideo {
-    
-    enum CustomVideoError: Swift.Error {
-        case captureSessionAlreadyRunning
-        case captureSessionIsMissing
-        case inputsAreInvalid
-        case invalidOperation
-        case noCamerasAvailable
-        case noMicrophoneAvailable
-        case unknown
-    }
-    
-}
+//extension CustomVideo {
+//    
+//    enum CustomVideoError: Swift.Error {
+//        case captureSessionAlreadyRunning
+//        case captureSessionIsMissing
+//        case inputsAreInvalid
+//        case invalidOperation
+//        case noCamerasAvailable
+//        case noMicrophoneAvailable
+//        case unknown
+//        case previewLayerIsMissing
+//    }
+//    
+//}

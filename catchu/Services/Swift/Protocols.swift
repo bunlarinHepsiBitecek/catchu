@@ -61,7 +61,7 @@ protocol ShareDataProtocols: class {
     func selectFunctionCell(inputIndex: Int)
     func selectFunctionCell2(indexPath: IndexPath)
     func deliverDelegation() -> UIViewController
-    func initiateCustomCamera()
+    func initiateCustomCamera() throws
     func directToCapturedVideoView(url : URL)
     func initiateCustomVideo()
     func getPhotosFromLibrary(inputIndex: Int)
@@ -85,7 +85,7 @@ extension ShareDataProtocols {
     func selectFunctionCell(inputIndex: Int) {}
     func selectFunctionCell2(indexPath: IndexPath) {}
     func deliverDelegation() -> UIViewController { return UIViewController() }
-    func initiateCustomCamera() {}
+    func initiateCustomCamera() throws {}
     func directToCapturedVideoView(url : URL) {}
     func initiateCustomVideo() {}
     func getPhotosFromLibrary(inputIndex: Int) {}

@@ -82,7 +82,7 @@ class ShareMenuViews: UIView {
             return
         }
         
-        customTextMenu!.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        customTextMenu!.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
     }
     
@@ -94,7 +94,7 @@ class ShareMenuViews: UIView {
             return
         }
         
-        customCameraGalleryMenu!.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+//        customCameraGalleryMenu!.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         
     }
     
@@ -133,7 +133,7 @@ class ShareMenuViews: UIView {
             return
         }
         
-        customVideoMenu!.startVideoProcess()
+//        customVideoMenu!.startVideoProcess()
         
     }
     
@@ -142,7 +142,7 @@ class ShareMenuViews: UIView {
             return
         }
         
-        customVideoMenu!.stopVideoProcess()
+//        customVideoMenu!.stopVideoProcess()
         
     }
     
@@ -192,7 +192,7 @@ extension ShareMenuViews : UIScrollViewDelegate {
         print("scrollViewDidEndDecelerating")
         print("index :\(index)")
         
-        menuViewCoordination(activeIndex : Int(index))
+//        menuViewCoordination(activeIndex : Int(index))
         
     }
     

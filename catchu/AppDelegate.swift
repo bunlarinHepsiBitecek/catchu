@@ -13,8 +13,6 @@ import FBSDKLoginKit
 import TwitterKit
 import UserNotifications
 
-import AWSMobileClient
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -57,11 +55,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //FirebaseManager.shared.checkUserLoggedIn()
         
-        let awsInstance = AWSMobileClient.sharedInstance().interceptApplication(
-            application, didFinishLaunchingWithOptions:
-            launchOptions)
+//        let awsInstance = AWSMobileClient.sharedInstance().interceptApplication(
+//            application, didFinishLaunchingWithOptions:
+//            launchOptions)
         
-        return awsInstance
+        return true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -114,16 +112,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    // Add a AWSMobileClient call in application:open url
-    func application(_ application: UIApplication, open url: URL,
-                     sourceApplication: String?, annotation: Any) -> Bool {
-        
-        return AWSMobileClient.sharedInstance().interceptApplication(
-            application, open: url,
-            sourceApplication: sourceApplication,
-            annotation: annotation)
-        
-    }
+//    // Add a AWSMobileClient call in application:open url
+//    func application(_ application: UIApplication, open url: URL,
+//                     sourceApplication: String?, annotation: Any) -> Bool {
+//
+//        return AWSMobileClient.sharedInstance().interceptApplication(
+//            application, open: url,
+//            sourceApplication: sourceApplication,
+//            annotation: annotation)
+//
+//    }
     
 }
 
