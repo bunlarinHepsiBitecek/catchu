@@ -111,27 +111,33 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         
         let client = RECatchUMobileAPIClient.default()
         
-        client.friendsGet(userid: User.shared.userID).continueWith { (taskFriendList) -> Any? in
-            
-            if taskFriendList.error != nil {
-                
-                print("getting friend list failed")
-                completion(false)
-                
-            } else {
-                
-                print("getting friend list ok")
-                
-                User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
-                
-            }
-            
-            completion(true)
-            
-            return nil
-            
-        }
+        let userid = User.shared.userID
         
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                client.friendsGet(userid: userid, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                    
+                    if taskFriendList.error != nil {
+                        
+                        print("getting friend list failed")
+                        completion(false)
+                        
+                    } else {
+                        
+                        print("getting friend list ok")
+                        
+                        User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
+                        
+                    }
+                    
+                    completion(true)
+                    
+                    return nil
+                    
+                }
+            }
+        }
     }
     
     func startFriendViewPresentation() {
@@ -285,27 +291,30 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         
         let client = RECatchUMobileAPIClient.default()
         
-        let inputBody = REFriendRequest()
+        guard let friendRequest = REFriendRequest() else { return }
         
-        inputBody?.requesterUserid = User.shared.userID
-        inputBody?.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Friends.requestingFollowList
+        friendRequest.requesterUserid = User.shared.userID
+        friendRequest.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Friends.requestingFollowList
         
-        client.requestProcessPost(body: inputBody!).continueWith { (task) -> Any? in
-            print("task : \(task.result)")
-            
-            
-            DispatchQueue.main.async {
-                
-                self.fiki.text = String(describing: task.result?.resultArray?.count)
-                
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                client.followRequestPost(authorization: tokenResult.token, body: friendRequest).continueWith { (task) -> Any? in
+                    print("task : \(task.result)")
+                    
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.fiki.text = String(describing: task.result?.resultArray?.count)
+                        
+                    }
+                    
+                    User.shared.addRequestingFollow(httpResult: task.result!)
+                    
+                    
+                    return nil
+                }
             }
-            
-            User.shared.addRequestingFollow(httpResult: task.result!)
-            
-            
-            return nil
         }
-        
-        
     }
 }

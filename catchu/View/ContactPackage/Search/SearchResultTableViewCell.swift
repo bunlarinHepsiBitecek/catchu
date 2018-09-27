@@ -27,10 +27,10 @@ class SearchResultTableViewCell: UITableViewCell {
         
         let client = RECatchUMobileAPIClient.default()
         
-        let input = REFriendRequest()
+        guard let friendRequest = REFriendRequest() else { return }
         
-        input?.requesterUserid = User.shared.userID
-        input?.requestedUserid = searchResultUser.userID
+        friendRequest.requesterUserid = User.shared.userID
+        friendRequest.requestedUserid = searchResultUser.userID
         
 //        switch inputRequestType {
 //        case .delete:
@@ -62,49 +62,54 @@ class SearchResultTableViewCell: UITableViewCell {
 //            return
 //        }
         
-        print("input?.requesterUserid : \(input?.requesterUserid)")
-        print("input?.requestedUserid : \(input?.requestedUserid)")
+        print("input?.requesterUserid : \(friendRequest.requesterUserid)")
+        print("input?.requestedUserid : \(friendRequest.requestedUserid)")
         
-        client.requestProcessPost(body: input!).continueWith { (taskResponse) -> Any? in
-            
-            print("taskresponse :\(taskResponse)")
-            print("taskResponse.result?.error?.code?.boolValue :\(taskResponse.result?.error?.code?.boolValue)")
-            print("taskResponse.result?.error?.code? :\(taskResponse.result?.error?.code)")
-            
-            if (taskResponse.result?.error?.code?.boolValue)! {
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
                 
-//                DispatchQueue.main.async {
-//                    
-//                    UIView.transition(with: self.friendRequestButton, duration: 0.3, options: .allowAnimatedContent, animations: {
-//                        
-//                        switch inputRequestType {
-//                            
-//                        case .delete:
-//                            self.friendRequestButton.setTitle(LocalizedConstants.Contact.addFriend, for: .normal)
-//                        
-//                        case .create:
-//                            if self.searchResultUser.isUserHasAPrivateAccount {
-//                                self.friendRequestButton.setTitle(LocalizedConstants.Contact.requested, for: .normal)
-//                                
-//                            } else {
-//                                self.friendRequestButton.setTitle(LocalizedConstants.Contact.friends, for: .normal)
-//                                
-//                            }
-//                            
-//                        default :
-//                            print("do nothing")
-//                        }
-//
-//                        self.blackTones()
-//                        
-//                    })
-//                    
-//                }
+                client.followRequestPost(authorization: tokenResult.token, body: friendRequest).continueWith { (taskResponse) -> Any? in
+                    
+                    print("taskresponse :\(taskResponse)")
+                    print("taskResponse.result?.error?.code?.boolValue :\(taskResponse.result?.error?.code?.boolValue)")
+                    print("taskResponse.result?.error?.code? :\(taskResponse.result?.error?.code)")
+                    
+                    if (taskResponse.result?.error?.code?.boolValue)! {
+                        
+                        //                DispatchQueue.main.async {
+                        //
+                        //                    UIView.transition(with: self.friendRequestButton, duration: 0.3, options: .allowAnimatedContent, animations: {
+                        //
+                        //                        switch inputRequestType {
+                        //
+                        //                        case .delete:
+                        //                            self.friendRequestButton.setTitle(LocalizedConstants.Contact.addFriend, for: .normal)
+                        //
+                        //                        case .create:
+                        //                            if self.searchResultUser.isUserHasAPrivateAccount {
+                        //                                self.friendRequestButton.setTitle(LocalizedConstants.Contact.requested, for: .normal)
+                        //
+                        //                            } else {
+                        //                                self.friendRequestButton.setTitle(LocalizedConstants.Contact.friends, for: .normal)
+                        //
+                        //                            }
+                        //
+                        //                        default :
+                        //                            print("do nothing")
+                        //                        }
+                        //
+                        //                        self.blackTones()
+                        //
+                        //                    })
+                        //
+                        //                }
+                    }
+                    
+                    return nil
+                    
+                }
                 
             }
-            
-            return nil
-            
         }
         
     }

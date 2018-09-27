@@ -55,23 +55,34 @@ class TakasiViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let client = RECatchUMobileAPIClient.default()
         
-        let inputBody = REFriendRequest()
+        guard let inputBody = REFriendRequest() else { return }
         
-        inputBody?.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Friends.acceptRequest
-        inputBody?.requesterUserid = cell?.textLabel?.text
-        inputBody?.requestedUserid = User.shared.userID
+        inputBody.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Friends.acceptRequest
+        inputBody.requesterUserid = cell?.textLabel?.text
+        inputBody.requestedUserid = User.shared.userID
         
-        client.requestProcessPost(body: inputBody!).continueWith { (task) -> Any? in
-            print("task : \(task.result)")
+        
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
-            
-            if task.error != nil {
-                print("error : \(task.error)")
-            }else {
-                print("task result :\(task.result)")
+            if finished {
+                
+                client.followRequestPost(authorization: tokenResult.token, body: inputBody).continueWith { (task) -> Any? in
+                    print("task : \(task.result)")
+                    
+                    
+                    if task.error != nil {
+                        print("error : \(task.error)")
+                    }else {
+                        print("task result :\(task.result)")
+                    }
+                    
+                    return nil
+                }
+                
+                
             }
             
-            return nil
         }
         
     }

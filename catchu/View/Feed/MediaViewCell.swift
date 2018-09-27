@@ -28,11 +28,11 @@ class BaseCollectionCell: UICollectionViewCell {
     }
 }
 
-class SwipingViewImageCell: BaseCollectionCell {
+class MediaViewImageCell: BaseCollectionCell {
     
-    var item: SwipingViewModelItem? {
+    var item: MediaViewModelItem? {
         didSet {
-            guard let item = item as? SwipingViewModelImageItem else {
+            guard let item = item as? MediaViewModelImageItem else {
                 return
             }
             
@@ -42,7 +42,7 @@ class SwipingViewImageCell: BaseCollectionCell {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "8771.jpg")
+        imageView.image = nil
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -70,14 +70,16 @@ class SwipingViewImageCell: BaseCollectionCell {
     
 }
 
-class SwipingViewVideoCell: BaseCollectionCell {
+class MediaViewVideoCell: BaseCollectionCell {
     
     var playerLayer: AVPlayerLayer?
     var player: AVPlayer?
     
-    var item: SwipingViewModelItem? {
+    var playerItem: AVPlayerItem?
+    
+    var item: MediaViewModelItem? {
         didSet {
-            guard let item = item as? SwipingViewModelVideoItem else {
+            guard let item = item as? MediaViewModelVideoItem else {
                 return
             }
             self.preparePlayerLayer(urlString: item.videoUrl)
@@ -96,7 +98,9 @@ class SwipingViewVideoCell: BaseCollectionCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = nil
         label.textColor = UIColor.white
+        label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 13)
+        
         return label
     }()
     
@@ -107,10 +111,19 @@ class SwipingViewVideoCell: BaseCollectionCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "play")
         button.tintColor = UIColor.white
+        button.backgroundColor = UIColor.black
         button.setImage(image, for: UIControlState())
+        
+        button.layer.cornerRadius = 10
+        
         button.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
         return button
     }()
+    
+    deinit {
+        // remove all observer when de allocated
+        NotificationCenter.default.removeObserver(self)
+    }
     
     
     @objc func handlePlay() {
@@ -118,7 +131,12 @@ class SwipingViewVideoCell: BaseCollectionCell {
             player?.pause()
             playButton.setImage(UIImage(named: "play"), for: UIControlState())
         } else {
-            player?.play()
+//            player?.play()
+            if #available(iOS 10.0, *) {
+                player?.playImmediately(atRate: 1.0)
+            } else {
+                player?.play()
+            }
             playButton.setImage(UIImage(named: "pause"), for: UIControlState())
         }
         
@@ -144,10 +162,10 @@ class SwipingViewVideoCell: BaseCollectionCell {
         
         //x,y,w,h
         NSLayoutConstraint.activate([
-            playButton.centerXAnchor.constraint(equalTo: safeLayout.centerXAnchor),
-            playButton.centerYAnchor.constraint(equalTo: safeLayout.centerYAnchor),
-            playButton.widthAnchor.constraint(equalToConstant: 50),
-            playButton.heightAnchor.constraint(equalToConstant: 50)
+            playButton.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor, constant: 10),
+            playButton.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor, constant: -10),
+            playButton.widthAnchor.constraint(equalToConstant: 20),
+            playButton.heightAnchor.constraint(equalToConstant: 20)
             ])
         
         NSLayoutConstraint.activate([
@@ -179,31 +197,17 @@ class SwipingViewVideoCell: BaseCollectionCell {
         })
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        //this is when the player is ready and rendering frames
-        if keyPath == "currentItem.loadedTimeRanges" {
-            activityIndicatorView.stopAnimating()
-            playButton.isHidden = false
-            
-            
-            if let duration = self.player?.currentItem?.duration {
-                self.remainingTime.text = self.remainingTime.text ?? formatTimeText(duration: duration)
-            }
-            
-        }
-    }
-    
     private func preparePlayerLayer(urlString: String) {
-//            guard let path = Bundle.main.path(forResource: "video", ofType:"mov") else {
-//                debugPrint("video.m4v not found")
-//                return
-//            }
-//            guard let url = URL(fileURLWithPath: path) else {return}
-        
-        
         guard let url = URL(string: urlString) else {return}
-        player = AVPlayer(url: url)
+        
+        // Create the asset to play
+        let asset = AVAsset(url: url)
+        
+        playerItem = AVPlayerItem(asset: asset)
+        
+        player = AVPlayer(playerItem: playerItem)
+//        player?.replaceCurrentItem(with: playerItem)
+        
         playerLayer = AVPlayerLayer(player: player)
         playerLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         
@@ -218,26 +222,87 @@ class SwipingViewVideoCell: BaseCollectionCell {
         self.bringSubview(toFront: playButton)
         self.bringSubview(toFront: remainingTime)
         
-        player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
         
-        let interval = CMTime(value: 1, timescale: 2)
-        player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { (progressTime) in
+        // or addObserver to player and forKey #keyPath(AVPlayer.currentItem.loadedTimeRanges)
+        playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.loadedTimeRanges), options: .new, context: nil)
+        playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: .new, context: nil)
+        
+        
+//        player?.addObserver(self, forKeyPath: #keyPath(AVPlayer.reasonForWaitingToPlay), options: .new, context: nil)
+        
+        
+        // for calculate remaining time and update UI
+        let interval = CMTime(value: 1, timescale: 2) // notify per 1 second
+        player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { [weak self](progressTime) in
             
-            if let duration = self.player?.currentItem?.duration {
+            if let duration = self?.player?.currentItem?.duration {
                 let remainingDuration = duration - progressTime
-                self.remainingTime.text = self.formatTimeText(duration: remainingDuration)
+                self?.remainingTime.text = self?.formatTimeText(duration: remainingDuration)
             }
+            
+//            if let playbackLikelyToKeepUp = self?.player?.currentItem?.isPlaybackLikelyToKeepUp {
+//                print("playbackLikelyToKeepUp: \(playbackLikelyToKeepUp)")
+//                if playbackLikelyToKeepUp {
+//                    self?.activityIndicatorView.stopAnimating()
+//                } else {
+//                    self?.activityIndicatorView.startAnimating()
+//                }
+//            }
             
         })
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
+        print("observeValue keypath: \(keyPath) == \(change)")
+        
+        //this is when the player is ready and rendering frames
+        if keyPath == #keyPath(AVPlayerItem.loadedTimeRanges) {
+            // AVPlayerItem.status move belove
+//            activityIndicatorView.stopAnimating()
+//            playButton.isHidden = false
+            
+            if let duration = self.player?.currentItem?.duration {
+                self.remainingTime.text = self.remainingTime.text ?? formatTimeText(duration: duration)
+            }
+        }
+        
+        if keyPath == #keyPath(AVPlayerItem.status) {
+            let status: AVPlayerItemStatus
+            if let statusNumber = change?[.newKey] as? NSNumber {
+                status = AVPlayerItemStatus(rawValue: statusNumber.intValue)!
+            } else {
+                status = .unknown
+            }
+            
+            // Switch over status value
+            switch status {
+            case .readyToPlay:
+                // Player item is ready to play.
+                print("Status : readyToPlay")
+                activityIndicatorView.stopAnimating()
+                playButton.isHidden = false
+            case .failed:
+                // Player item failed. See error.
+                print("Status : Failded")
+            case .unknown:
+                // Player item is not yet ready.
+                 print("Status : unknown")
+            }
+        }
+        
+    }
+    
+    
     private func formatTimeText(duration: CMTime) -> String {
+        var remainingText = "00:00"
         let durationSeconds = CMTimeGetSeconds(duration)
         
-        let seconds = Int(durationSeconds) % 60
-        let minutes = Int(durationSeconds) / 60
-        
-        let remainingText = "\(String(format: "%02d", minutes)):\(String(format: "%02d", seconds))"
+        if !durationSeconds.isNaN {
+            let seconds = Int(durationSeconds) % 60
+            let minutes = Int(durationSeconds) / 60
+            remainingText = "\(String(format: "%02d", minutes)):\(String(format: "%02d", seconds))"
+        }
         
         return remainingText
     }

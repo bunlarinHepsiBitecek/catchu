@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B09-IP-3uf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B09-IP-3uf">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -2076,32 +2076,8 @@
                         <viewLayoutGuide key="safeArea" id="mt8-Sg-5Tj"/>
                     </view>
                     <navigationItem key="navigationItem" id="Gz0-ky-WTF"/>
-                    <connections>
-                        <outlet property="feedView" destination="re6-VX-nDM" id="t4d-Hy-zYQ"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sT9-tP-zRf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="re6-VX-nDM" customClass="FeedView" customModule="catchu" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wfP-do-hQx">
-                            <rect key="frame" x="0.0" y="44" width="375" height="734"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </tableView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="wfP-do-hQx" firstAttribute="top" secondItem="g1Z-eF-dg9" secondAttribute="top" id="NcO-Fn-9vu"/>
-                        <constraint firstItem="wfP-do-hQx" firstAttribute="leading" secondItem="g1Z-eF-dg9" secondAttribute="leading" id="O5h-UC-gGO"/>
-                        <constraint firstItem="g1Z-eF-dg9" firstAttribute="bottom" secondItem="wfP-do-hQx" secondAttribute="bottom" id="QEC-jM-buI"/>
-                        <constraint firstItem="wfP-do-hQx" firstAttribute="trailing" secondItem="g1Z-eF-dg9" secondAttribute="trailing" id="p84-7j-PnC"/>
-                    </constraints>
-                    <viewLayoutGuide key="safeArea" id="g1Z-eF-dg9"/>
-                    <connections>
-                        <outlet property="tableView" destination="wfP-do-hQx" id="7U4-MO-hPq"/>
-                    </connections>
-                </view>
             </objects>
             <point key="canvasLocation" x="2439.1999999999998" y="59.852216748768477"/>
         </scene>
@@ -2127,13 +2103,13 @@
     </scenes>
     <resources>
         <image name="8771.jpg" width="2880" height="1620"/>
-        <image name="add_icon" width="137" height="137"/>
+        <image name="add_icon" width="137.33332824707031" height="137.33332824707031"/>
         <image name="baseline_person_black_48pt" width="48" height="48"/>
         <image name="baseline_pin_drop_black_48pt" width="48" height="48"/>
         <image name="gallery_request.png" width="128" height="128"/>
         <image name="jon-tyson-762647-unsplash.jpg" width="3418" height="2563"/>
         <image name="outline_check_circle_white_48pt" width="48" height="48"/>
-        <image name="searchSlim" width="31" height="31"/>
-        <image name="searchThick" width="35" height="35"/>
+        <image name="searchSlim" width="31.333333969116211" height="31.333333969116211"/>
+        <image name="searchThick" width="35.333332061767578" height="35.333332061767578"/>
     </resources>
 </document>

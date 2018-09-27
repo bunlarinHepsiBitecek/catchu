@@ -101,4 +101,9 @@
 
 //Feed
 "Loading" = "Loading...";
+"More" = "more";
+"Comments" = "Comments";
+"AddComment" = "Add a comment...";
+"Send" = "Send";
+"Reply" = "Reply";
 

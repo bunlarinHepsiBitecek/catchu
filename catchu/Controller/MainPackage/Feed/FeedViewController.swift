@@ -10,52 +10,53 @@ import UIKit
 import AWSAuthUI
 
 class FeedViewController: UIViewController {
+    // MARK: outlets
     
-    @IBOutlet var feedView: FeedView!
+    lazy var feedView: FeedView = {
+        let view = FeedView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        AWSManager.shared.startUserAuthenticationProcess(navigationController: self.navigationController!)
+//        AWSManager.shared.startUserAuthenticationProcess(navigationController: self.navigationController!)
         
-        //AWSManager.shared.showSignInView(navigationController: self.navigationController!)
+//        AWSManager.shared.showSignInView(navigationController: self.navigationController!)
         
-//        self.getData()
-        setup()
+        setupViews()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    func setup() {
-        self.view.addSubview(self.feedView)
+    func setupViews() {
 
-        self.feedView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.feedView)
         let safeLayout = self.view.safeAreaLayoutGuide
-        
-//        let barHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
-        
+
         NSLayoutConstraint.activate([
-            self.feedView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            self.feedView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor),
             self.feedView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            self.feedView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor)
+            self.feedView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
+            self.feedView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
+            self.feedView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
             ])
         
+        pushDummyComment()
     }
     
-    func getData() {
-        LocationManager.shared.delegete = self
-        LocationManager.shared.startUpdateLocation()
+    func pushDummyComment() {
+//        let
+//
+//        let commentViewController = CommentViewController()
+//        commentViewController.commentView.dataSource.post = post
+//        LoaderController.pushViewController(controller: commentViewController)
     }
     
 }
-
-extension FeedViewController: LocationManagerDelegate {
-    func didUpdateLocation() {
-//        FeedDataSource.shared.loadData()
-    }
-}
-
-

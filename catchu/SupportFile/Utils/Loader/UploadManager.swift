@@ -38,18 +38,20 @@ class UploadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSe
         }
     }
     
-    func uploadFile(signedUploadUrl: URL, data: Data, completion : @escaping (_ result : Bool) -> Void) {
+    func uploadFile(uploadUrl: URL, data: Data, type: MediaType, ext: String, completion : @escaping (_ result : Bool) -> Void) {
         print("uploadFile")
         self.showProgressView()
         
-        var request = URLRequest(url: signedUploadUrl)
+        var request = URLRequest(url: uploadUrl)
         request.cachePolicy = .reloadIgnoringLocalCacheData
         request.httpMethod = "PUT"
-        let fileContentTypeStr = "image/jpg"
-        request.setValue(fileContentTypeStr, forHTTPHeaderField: "Content-Type")
+//        let fileContentTypeStr = "image/jpg"
+        let contentType = "\(type.rawValue)/\(ext)"
+        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue.main)
+        
         let task = session.uploadTask(with: request, from: data) { (data, response, error) in
             print("Upload complated: \(String(describing: response))")
             

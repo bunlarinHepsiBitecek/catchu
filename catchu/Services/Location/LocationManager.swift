@@ -20,7 +20,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     public static let shared = LocationManager()
     var locationManager: CLLocationManager!
     var currentLocation: CLLocation!
-    weak var delegete: LocationManagerDelegate!
+    weak var delegate: LocationManagerDelegate!
     
     override init() {
         super.init()
@@ -101,21 +101,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             }
         }
         
-        // singleton for get last(current) location
-        
-        GeoFireData.shared.geofireDictionary.removeAll()
-        
         counter = counter + 1
         
         print("counter : \(counter)")
         
         self.currentLocation = location
         
-        GeoFireData.shared.currentLocation = self.currentLocation
+        delegate.didUpdateLocation()
         
-        delegete.didUpdateLocation()
-        
-        initiateGeoFireAndNotificationProtol(currentLocation: location)
+//        initiateGeoFireAndNotificationProtol(currentLocation: location)
         
     }
     

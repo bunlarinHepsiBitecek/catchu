@@ -78,6 +78,46 @@ class User {
         self._isUserSelected = false
     }
     
+    init(user: REUser?) {
+        // TODO: delete
+        self._userID     = Constants.CharacterConstants.SPACE
+        self._email      = Constants.CharacterConstants.SPACE
+        self._userName   = Constants.CharacterConstants.SPACE
+        self._name       = Constants.CharacterConstants.SPACE
+        self._password   = Constants.CharacterConstants.SPACE
+        self._provider   = Constants.CharacterConstants.SPACE
+        self._providerID = Constants.CharacterConstants.SPACE
+        self._isUserSelected = false
+        self._indexPathCollectionview = IndexPath()
+        self._indexPathTableViewOfSearchMode = IndexPath()
+        self._indexPathTableView = IndexPath()
+        self._isUserHasAFriendRelation = false
+        self._isUserHasPendingFriendRequest = false
+        self._userFollowerCount = Constants.CharacterConstants.SPACE
+        self._userFollowingCount = Constants.CharacterConstants.SPACE
+        self._userBirthday = Constants.CharacterConstants.SPACE
+        // TODO: delete
+        
+        guard let user = user else { return }
+        
+        if let userid = user.userid {
+            self.userID = userid
+        }
+        if let name = user.name {
+            self.name = name
+        }
+        if let username = user.username {
+            self.userName = username
+        }
+        if let profilePhotoUrl = user.profilePhotoUrl {
+            self.profilePictureUrl = profilePhotoUrl
+        }
+        if let isPrivateAccount = user.isPrivateAccount {
+            self.isUserHasAPrivateAccount = isPrivateAccount.boolValue
+        }
+    }
+    
+    
     func parseFriendDataToUser(dataDictionary : [String : AnyObject]) {
         
         self._name = dataDictionary["nameSurname"] as? String ?? ""
@@ -169,7 +209,10 @@ class User {
     
     var profilePictureUrl: String {
         get {
-            return _profilePictureUrl!
+            guard self._profilePictureUrl != nil else {
+                return ""
+            }
+            return self._profilePictureUrl!
         }
         set {
             _profilePictureUrl = newValue
@@ -241,7 +284,10 @@ class User {
     
     var isUserHasAPrivateAccount: Bool {
         get {
-            return _isUserHasAPrivateAccount
+            guard self._isUserHasAPrivateAccount != nil else {
+                return true
+            }
+            return self._isUserHasAPrivateAccount
         }
         set {
             _isUserHasAPrivateAccount = newValue
@@ -494,6 +540,16 @@ class User {
         print("userName :\(userName)")
         print("userBirthday :\(userBirthday)")
         
+    }
+    
+    func getUser() -> REUser {
+        let user = REUser()
+        user?.userid = self.userID
+        user?.name = self.name
+        user?.username = self.userName
+        user?.profilePhotoUrl = self.profilePictureUrl
+        user?.isPrivateAccount = NSNumber(booleanLiteral: self.isUserHasAPrivateAccount)
+        return user!
     }
     
     

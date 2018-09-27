@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //Twitter
         TWTRTwitter.sharedInstance().start(withConsumerKey: Constants.TWITTER_CUSTOMER_KEY, consumerSecret: Constants.TWITTER_CUSTOMER_SECRETKEY)
         
-        
         //NotificationManager.shared.initializeRegisterForRemoteNotification()
         //application.registerForRemoteNotifications()
         //UIApplication.shared.registerForRemoteNotifications()

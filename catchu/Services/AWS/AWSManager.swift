@@ -29,7 +29,7 @@ class AWSManager {
     
     func getCredentials() {
         
-        let identityPoolId = "us-east-1:4b70fd39-588a-439a-9241-6f35cb1beeab"
+        let identityPoolId = "us-east-1:e9fd1928-3588-4bd9-b1ef-f5f43df4f787"
         
         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: identityPoolId)
         

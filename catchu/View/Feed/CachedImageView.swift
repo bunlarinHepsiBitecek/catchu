@@ -13,7 +13,7 @@ import UIKit
  */
 open class CachedImageView: UIImageView {
     
-    open static let imageCache = NSCache<NSString, DiscardableImageCacheItem>()
+    public static let imageCache = NSCache<NSString, DiscardableImageCacheItem>()
     
     open var shouldUseEmptyImage = true
     
@@ -122,7 +122,6 @@ extension UIImageView {
             
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
-                    print("image geldi")
                     let cacheItem = DiscardableImageCacheItem(image: image)
                     imageCache.setObject(cacheItem, forKey: urlKey)
                     self?.image = image

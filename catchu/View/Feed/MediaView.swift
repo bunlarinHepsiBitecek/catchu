@@ -8,26 +8,33 @@
 
 import UIKit
 
-class SwipingView: UIView {
+class MediaView: UIView {
     
-    let dataSource: SwipingViewModel = {
+    let dataSource: MediaViewModel = {
         let share = Share()
-        share.videoUrl = "https://firebasestorage.googleapis.com/v0/b/gameofchats-762ca.appspot.com/o/message_movies%2F12323439-9729-4941-BA07-2BAE970967C7.mov?alt=media&token=3e37a093-3bc8-410f-84d3-38332af9c726"
-        share.imageUrl = "https://s3.amazonaws.com/catchumobilebucket/16d6b807-6de2-4143-910d-11d011208292.jpg"
-        return SwipingViewModel(share: share)
+        share.videoUrl = "https://s3.eu-west-2.amazonaws.com/catchuappbucket/small.mp4"
+        share.imageUrl = "https://s3.eu-west-2.amazonaws.com/catchuappbucket/0282ba0e-e539-4216-82b8-50fdc278ca59.jpg"
+        let user = User()
+        user.profilePictureUrl = ""
+        return MediaViewModel(share: share)
     }()
     
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = UIColor.white
-        cv.isPagingEnabled = true
-        cv.dataSource = self.dataSource
-//        cv.dataSource = self
-        cv.delegate = self
-        return cv
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor.white
+        collectionView.isPagingEnabled = true
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
+        
+        collectionView.register(MediaViewImageCell.self, forCellWithReuseIdentifier:
+            MediaViewImageCell.identifier)
+        collectionView.register(MediaViewVideoCell.self, forCellWithReuseIdentifier:
+            MediaViewVideoCell.identifier)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
     }()
     
     lazy var pageControl: UIPageControl = {
@@ -36,6 +43,7 @@ class SwipingView: UIView {
         pc.numberOfPages = dataSource.items.count
         pc.currentPageIndicatorTintColor = UIColor.blue
         pc.pageIndicatorTintColor = UIColor(red: 249/255, green: 207/255, blue: 224/255, alpha: 1)
+        pc.isEnabled = false
         return pc
     }()
     
@@ -55,16 +63,7 @@ class SwipingView: UIView {
     }
     
     func customization() {
-        print("Customization Yapildi")
-        
-        collectionView.register(SwipingViewImageCell.self, forCellWithReuseIdentifier:
-            SwipingViewImageCell.identifier)
-        collectionView.register(SwipingViewVideoCell.self, forCellWithReuseIdentifier:
-            SwipingViewVideoCell.identifier)
-        
         self.addSubview(collectionView)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         let safeLayout = self.safeAreaLayoutGuide
         
@@ -98,11 +97,11 @@ class SwipingView: UIView {
     }
 }
 
-extension SwipingView: UICollectionViewDelegate {
+extension MediaView: UICollectionViewDelegate {
     
 }
 
-extension SwipingView: UICollectionViewDelegateFlowLayout {
+extension MediaView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }

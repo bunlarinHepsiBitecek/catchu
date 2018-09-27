@@ -348,33 +348,40 @@ extension ContactView {
         
         let client = RECatchUMobileAPIClient.default()
         
-        let inputBody = REGroupRequest()
+        guard let groupRequest = REGroupRequest() else { return }
         
-        inputBody?.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Groups.GET_AUTHENTICATED_USER_GROUP_LIST
+        groupRequest.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Groups.GET_AUTHENTICATED_USER_GROUP_LIST
+        groupRequest.userid = User.shared.userID
         
-        inputBody?.userid = User.shared.userID
         
-        client.groupsPost(body: inputBody!).continueWith { (taskGroupRequestResult) -> Any? in
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
-            print("taskGroupRequestResult.result : \(taskGroupRequestResult.result)")
-            
-            if taskGroupRequestResult.error != nil {
-                
-                print("taskGroupRequestResult.error : \(taskGroupRequestResult.error)")
-                
-            } else {
-                
-                //Group.shared.createGroupDictionary(httpRequest: taskGroupRequestResult.result!)
-                print("Group count : \(taskGroupRequestResult.result?.resultArray?.count)")
-                Group.shared.createGroupList(httpRequest: taskGroupRequestResult.result!)
-                
-                completion(true)
-                
+            if finished {
+                client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith { (taskGroupRequestResult) -> Any? in
+                    
+                    print("taskGroupRequestResult.result : \(taskGroupRequestResult.result)")
+                    
+                    if taskGroupRequestResult.error != nil {
+                        
+                        print("taskGroupRequestResult.error : \(taskGroupRequestResult.error)")
+                        
+                    } else {
+                        
+                        //Group.shared.createGroupDictionary(httpRequest: taskGroupRequestResult.result!)
+                        print("Group count : \(taskGroupRequestResult.result?.resultArray?.count)")
+                        Group.shared.createGroupList(httpRequest: taskGroupRequestResult.result!)
+                        
+                        completion(true)
+                        
+                    }
+                    
+                    //completion(true)
+                    
+                    return nil
+                    
+                }
             }
             
-            //completion(true)
-            
-            return nil
             
         }
     
