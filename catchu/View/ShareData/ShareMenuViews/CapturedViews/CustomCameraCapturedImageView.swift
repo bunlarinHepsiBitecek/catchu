@@ -14,7 +14,8 @@ class CustomCameraCapturedImageView: UIView {
     private let capturedImage = UIImageView()
     private var gradientUploaded = false
     
-    weak var customAddingTextView : CustomAddingTextView!
+//    weak var customAddingTextView : CustomAddingTextView!
+    private var customAddingTextView : CustomAddingTextView?
     
 //    private var customAddingTextView : CustomAddingTextView?
     
@@ -102,19 +103,30 @@ class CustomCameraCapturedImageView: UIView {
         
     }()
     
+    /*
     required init(image: UIImage, cameraPosition : CameraPosition) {
         super.init(frame: .zero)
         
-        if cameraPosition == .front {
-            capturedImage.image = UIImage(cgImage: image.cgImage!, scale: 1.0, orientation: .leftMirrored)
-        } else {
-            capturedImage.image = image
-        }
         setupViews()
         setupCloseButtonGesture()
         downloadButtonGesture()
         setupAddTextGestures()
         addObserver()
+        
+        activationManager(granted : false, inputImage: image, cameraPosition : cameraPosition)
+        
+    }*/
+    
+    required init() {
+        super.init(frame: .zero)
+        
+        setupViews()
+        setupCloseButtonGesture()
+        downloadButtonGesture()
+        setupAddTextGestures()
+        
+        initializeTextEditingView()
+        activationManagerDefault(granted: false)
         
     }
     
@@ -122,31 +134,36 @@ class CustomCameraCapturedImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addObserver() {
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(CustomCameraCapturedImageView.setKeyboardHideProperties(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(CustomCameraCapturedImageView.setKeyboardShowProperties(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        
-    }
+}
+
+// MARK: - major functions
+extension CustomCameraCapturedImageView {
     
-    @objc func setKeyboardHideProperties(notification : Notification) {
-        
-        print("setKeyboardHideProperties starts")
-        
-    }
-    
-    @objc func setKeyboardShowProperties(notification : Notification) {
-        
-        print("setKeyboardHideProperties starts")
-        
-    }
+//    func addObserver() {
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(CustomCameraCapturedImageView.setKeyboardHideProperties(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(CustomCameraCapturedImageView.setKeyboardShowProperties(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//
+//    }
+//
+//    @objc func setKeyboardHideProperties(notification : Notification) {
+//
+//        print("setKeyboardHideProperties starts")
+//
+//    }
+//
+//    @objc func setKeyboardShowProperties(notification : Notification) {
+//
+//        print("setKeyboardHideProperties starts")
+//
+//    }
     
     func setupViews() {
         
         self.addSubview(capturedImage)
         self.addSubview(menuContainerView)
         self.addSubview(footerContainerView)
-
+        
         self.menuContainerView.addSubview(closeButton)
         self.menuContainerView.addSubview(addTextImage)
         self.menuContainerView.addSubview(addTextContainerView)
@@ -167,7 +184,7 @@ class CustomCameraCapturedImageView: UIView {
             capturedImage.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             capturedImage.topAnchor.constraint(equalTo: safe.topAnchor),
             capturedImage.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-
+            
             menuContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             menuContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             menuContainerView.topAnchor.constraint(equalTo: safe.topAnchor),
@@ -187,12 +204,12 @@ class CustomCameraCapturedImageView: UIView {
             addTextImage.centerYAnchor.constraint(equalTo: safeAddTextContainer.centerYAnchor),
             addTextImage.heightAnchor.constraint(equalToConstant: 30),
             addTextImage.widthAnchor.constraint(equalToConstant: 30),
-
+            
             footerContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             footerContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             footerContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             footerContainerView.heightAnchor.constraint(equalToConstant: 50),
-
+            
             downloadButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -5),
             downloadButton.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 20),
             downloadButton.heightAnchor.constraint(equalToConstant: 40),
@@ -364,7 +381,67 @@ class CustomCameraCapturedImageView: UIView {
         
     }
     
+    func activationManagerDefault(granted : Bool) {
+        
+        if granted {
+            self.alpha = 1
+            
+        } else {
+            self.alpha = 0
+        }
+        
+    }
+    
+    func activationManagerWithImageCameraPositionInfo(granted : Bool, inputImage : UIImage, cameraPosition : CameraPosition) {
+        
+        if granted {
+            self.alpha = 1
+            
+            if cameraPosition == .front {
+                capturedImage.image = UIImage(cgImage: inputImage.cgImage!, scale: 1.0, orientation: .leftMirrored)
+            } else {
+                capturedImage.image = inputImage
+            }
+            
+        } else {
+            self.alpha = 0
+            
+            capturedImage.image = UIImage()
+            
+        }
+        
+    }
+    
+    func initializeTextEditingView() {
+        
+        print("initializeTextEditingView starts")
+        
+        customAddingTextView = CustomAddingTextView(delegate: self)
+        
+//        customAddingTextView!.delegate = self
+        
+        self.addSubview(customAddingTextView!)
+        
+        customAddingTextView!.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safe = self.safeAreaLayoutGuide
+        
+//        menuAndFooterVisibiltyManagement(visibiltyVaule: true)
+        
+        NSLayoutConstraint.activate([
+            
+            customAddingTextView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            customAddingTextView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            customAddingTextView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            customAddingTextView!.topAnchor.constraint(equalTo: safe.topAnchor),
+            
+            ])
+        
+    }
+    
 }
+
+// MARK: - UIGestureRecognizerDelegate
 extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
     
     func setupCloseButtonGesture() {
@@ -380,7 +457,9 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
         
         print("dismissCustomCameraCapturedView starts")
         
-        self.removeFromSuperview()
+//        self.removeFromSuperview()
+        self.activationManagerDefault(granted: false)
+        
         
     }
     
@@ -453,32 +532,11 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
         print("startAddingTextView starts")
         print("customAddingTextView : \(customAddingTextView)")
         
-        if customAddingTextView == nil {
-            customAddingTextView = CustomAddingTextView()
+        guard customAddingTextView != nil else {
+            return
         }
         
-//        let customAddingTextView = CustomAddingTextView()
-        
-        print("customAddingTextView.isOpaque : \(customAddingTextView.isOpaque)")
-        customAddingTextView!.delegate = self
-        
-        self.addSubview(customAddingTextView!)
-        
-        customAddingTextView!.translatesAutoresizingMaskIntoConstraints = false
-        
-        let safe = self.safeAreaLayoutGuide
-        
-        menuAndFooterVisibiltyManagement(visibiltyVaule: true)
-        
-        NSLayoutConstraint.activate([
-            
-            customAddingTextView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            customAddingTextView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            customAddingTextView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            customAddingTextView!.topAnchor.constraint(equalTo: safe.topAnchor),
-            
-            ])
-        
+        customAddingTextView!.activationManagementWithDelegations(granted: true)
         
     }
     

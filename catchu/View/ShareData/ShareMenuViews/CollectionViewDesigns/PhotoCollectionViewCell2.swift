@@ -94,7 +94,7 @@ extension PhotoCollectionViewCell2 : UIGestureRecognizerDelegate {
     
     func setupGestureRecognizer() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PhotoCell.openCustomCamera(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PhotoCollectionViewCell2.openCustomCamera(_:)))
         tapGesture.delegate = self
         self.isUserInteractionEnabled = true
         self.addGestureRecognizer(tapGesture)

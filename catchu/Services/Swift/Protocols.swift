@@ -74,6 +74,7 @@ protocol ShareDataProtocols: class {
     
     // new protocols for shareMenuViews
     func forceScrollMenuScrollView(selectedMenuIndex : Int)
+    func setCapturedImage(inputImage : UIImage, cameraPosition : CameraPosition)
     
 }
 
@@ -98,6 +99,7 @@ extension ShareDataProtocols {
     
     // new protocols for shareMenuViews
     func forceScrollMenuScrollView(selectedMenuIndex : Int) {}
+    func setCapturedImage(inputImage : UIImage, cameraPosition : CameraPosition) {}
     
 }
 

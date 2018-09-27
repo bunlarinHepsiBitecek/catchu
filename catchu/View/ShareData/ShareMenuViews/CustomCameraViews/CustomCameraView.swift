@@ -205,6 +205,8 @@ extension CustomCameraView {
         setupGestureRecognizerForFlashButton()
         setupGestureRecognizerForCameraShoot()
         setPinchZoom()
+        
+        // awaken customCamera object
         startCustomCameraProcess()
         
     }
@@ -432,11 +434,20 @@ extension CustomCameraView : UIGestureRecognizerDelegate {
                 return
             }
             
-//            let capturedView = CustomCapturedMainBackground(image: image, cameraPosition: self.customCamera.currentCameraPosition!)
+            guard let cameraPosition = self.customCamera.currentCameraPosition else {
+                return
+            }
+            
+            self.delegate.setCapturedImage(inputImage: image, cameraPosition: cameraPosition)
+            
+//            delegate.setCapturedImage(inputImage: image, cameraPosition: <#T##CameraPosition#>)
+            
+//            let capturedView = CustomCameraCapturedImageView(image: image, cameraPosition: self.customCamera.currentCameraPosition!)
+//            capturedView.activationManager(granted: true, inputImage: image, cameraPosition: self.customCamera.currentCameraPosition!)
 //
 //            capturedView.translatesAutoresizingMaskIntoConstraints = false
 //
-//            UIView.transition(with: self.mainView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+//            UIView.transition(with: self.mainView, duration: 0.2, options: .transitionCrossDissolve, animations: {
 //                self.mainView.addSubview(capturedView)
 //
 //                let safe = self.safeAreaLayoutGuide
@@ -450,25 +461,6 @@ extension CustomCameraView : UIGestureRecognizerDelegate {
 //
 //                    ])
 //            })
-            
-            let capturedView = CustomCameraCapturedImageView(image: image, cameraPosition: self.customCamera.currentCameraPosition!)
-
-            capturedView.translatesAutoresizingMaskIntoConstraints = false
-
-            UIView.transition(with: self.mainView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-                self.mainView.addSubview(capturedView)
-
-                let safe = self.safeAreaLayoutGuide
-
-                NSLayoutConstraint.activate([
-
-                    capturedView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-                    capturedView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-                    capturedView.topAnchor.constraint(equalTo: safe.topAnchor),
-                    capturedView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
-
-                    ])
-            })
             
         }
         

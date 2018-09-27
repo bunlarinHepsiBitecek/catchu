@@ -12,6 +12,7 @@ import Photos
 class ImageManagementView: UIView {
     
     private var customCameraView : CustomCameraView?
+    private var captureImageView : CustomCameraCapturedImageView?
     
     public var photos = [PHAsset]()
 
@@ -62,6 +63,7 @@ class ImageManagementView: UIView {
         
         setupViews()
         initializeCustomCameraView()
+        initializeCapturedImageView()
         
         getPhotosFromGallery()
     }
@@ -136,6 +138,30 @@ extension ImageManagementView {
         
     }
     
+    func initializeCapturedImageView() {
+        
+        captureImageView = CustomCameraCapturedImageView()
+        
+        captureImageView!.translatesAutoresizingMaskIntoConstraints = false
+        
+        UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            
+            self.addSubview(self.captureImageView!)
+            
+            let safe = self.safeAreaLayoutGuide
+            
+            NSLayoutConstraint.activate([
+                
+                self.captureImageView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+                self.captureImageView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+                self.captureImageView!.topAnchor.constraint(equalTo: safe.topAnchor),
+                self.captureImageView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+                
+                ])
+        })
+        
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -184,7 +210,7 @@ extension ImageManagementView : UICollectionViewDelegate, UICollectionViewDataSo
         // we need to pass first two cell
         if indexPath.row > 1 {
             
-            let cell = collectionViewForImageManagement.cellForItem(at: indexPath) as? ImageCollectionViewCell
+            let cell = collectionViewForImageManagement.cellForItem(at: indexPath) as? ImageCollectionViewCell2
             
             let asset = self.photos[indexPath.item]
             MediaLibraryManager.shared.imageFrom(asset: asset, size: PHImageManagerMaximumSize) { (image) in
@@ -231,16 +257,15 @@ extension ImageManagementView : ShareDataProtocols {
         
     }
     
-//    func initiateCustomCamera() {
-//
-//        guard customCameraView != nil else {
-//            return
-//        }
-//
-//        customCameraView!.startCustomCameraProcess()
-////        customCameraViewActivationManager(active: true)
-//
-//    }
+    func setCapturedImage(inputImage: UIImage, cameraPosition: CameraPosition) {
+        
+        guard captureImageView != nil else {
+            return
+        }
+        
+        captureImageView!.activationManagerWithImageCameraPositionInfo(granted: true, inputImage: inputImage, cameraPosition: cameraPosition)
+        
+    }
     
 }
 
@@ -266,8 +291,6 @@ extension ImageManagementView : PermissionProtocol {
         print("returnPermissinResultBoolValue starts in cameraGalleryCollectionViewCell")
         print("result : \(result)")
         if result {
-            
-//            initializeCustomCameraView()
             
             guard customCameraView != nil else {
                 return

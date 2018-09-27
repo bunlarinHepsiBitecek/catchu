@@ -238,12 +238,12 @@ extension CustomScrollView2 : UIGestureRecognizerDelegate {
         let croppedCGImage = imageView.image?.cgImage?.cropping(to: CGRect(x: x, y: y, width: width, height: height))
         let croppedImage = UIImage(cgImage: croppedCGImage!)
     
-        if let destination = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "ShareFinaleViewController") as? ShareFinaleViewController {
-            
-            destination.imageFinal = croppedImage
-            UIApplication.topViewController()?.present(destination, animated: true, completion: nil)
-            
-        }
+//        if let destination = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ShareDataViewController2) as? ShareDataViewController2 {
+//            
+//            destination.imageFinal = croppedImage
+//            UIApplication.topViewController()?.present(destination, animated: true, completion: nil)
+//            
+//        }
         
         
         

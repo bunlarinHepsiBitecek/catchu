@@ -11,7 +11,7 @@ import AVFoundation
 import Photos
 
 class CustomVideoView: UIView {
-
+    
     let customVideo = CustomVideo()
     
     var heigthConstraint : NSLayoutConstraint?
@@ -62,38 +62,38 @@ class CustomVideoView: UIView {
         temp.isUserInteractionEnabled = true
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-//        temp.layer.borderWidth = 5
-//        temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        //        temp.layer.borderWidth = 5
+        //        temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.layer.cornerRadius = 30
         
         return temp
     }()
     
     override init(frame: CGRect) {
-
+        
         super.init(frame: .zero)
         
         setupCloseButtonGesture()
         
-//        initalizeViews()
+        //        initalizeViews()
         
-//        disableCameraCaptureSession()
-
+        //        disableCameraCaptureSession()
+        
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-
+        
         switch cameraAuthorizationStatus{
         case .authorized:
-
+            
             let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
-
+            
             switch statusForMicrophone {
             case .granted:
                 initalizeViews()
-
+                
             default:
                 microphonePermissionProcess(inputStatus: statusForMicrophone)
             }
-
+            
         default:
             videoCameraPermissionProcess(status: cameraAuthorizationStatus)
         }
@@ -138,7 +138,7 @@ class CustomVideoView: UIView {
             
             switch statusForMicrophone {
             case .granted:
-//                initiateVideoProcess()
+                //                initiateVideoProcess()
                 startVideoProcess()
                 
                 
@@ -154,7 +154,7 @@ class CustomVideoView: UIView {
     
     func startVideoProcess() {
         
-//        customVideoViewVisibilityManagement(inputValue: false)
+        //        customVideoViewVisibilityManagement(inputValue: false)
         
         do {
             try customVideo.enableVideoSession()
@@ -199,15 +199,15 @@ class CustomVideoView: UIView {
         self.mainView.addSubview(recordContainerView)
         self.mainView.addSubview(recordButton)
         self.mainView.addSubview(closeButton)
-//        self.recordContainerView.addSubview(recordButton)
+        //        self.recordContainerView.addSubview(recordButton)
         
         let safe = self.safeAreaLayoutGuide
         let safeMainview = self.mainView.safeAreaLayoutGuide
         let safeRecordView = self.recordContainerView.safeAreaLayoutGuide
         
-//        heigthConstraint = recordButton.heightAnchor.constraint(equalToConstant: 70)
-//        widthConstraint = recordButton.widthAnchor.constraint(equalToConstant: 70)
-//        bottomConstraints = recordButton.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -30)
+        //        heigthConstraint = recordButton.heightAnchor.constraint(equalToConstant: 70)
+        //        widthConstraint = recordButton.widthAnchor.constraint(equalToConstant: 70)
+        //        bottomConstraints = recordButton.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -30)
         
         NSLayoutConstraint.activate([
             
@@ -223,25 +223,25 @@ class CustomVideoView: UIView {
             
             recordButton.centerXAnchor.constraint(equalTo: safeMainview.centerXAnchor),
             recordButton.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -35),
-//            recordButton.centerYAnchor.constraint(equalTo: safeRecordView.centerYAnchor),
+            //            recordButton.centerYAnchor.constraint(equalTo: safeRecordView.centerYAnchor),
             recordButton.heightAnchor.constraint(equalToConstant: 60),
             recordButton.widthAnchor.constraint(equalToConstant: 60),
-//            bottomConstraints!,
-//            heigthConstraint!,
-//            widthConstraint!
+            //            bottomConstraints!,
+            //            heigthConstraint!,
+            //            widthConstraint!
             
             closeButton.topAnchor.constraint(equalTo: safeMainview.topAnchor, constant: 15),
             closeButton.leadingAnchor.constraint(equalTo: safeMainview.leadingAnchor, constant: 15),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
-        
+            
             ])
         
     }
     
     func initiateVideoProcess() {
         
-//        disableCameraCaptureSession()
+        //        disableCameraCaptureSession()
         
         customVideo.delegate = self
         
@@ -258,8 +258,8 @@ class CustomVideoView: UIView {
         }
         
         configureCustomVideo()
-            
-
+        
+        
     }
     
     func adjustRecordButtonBorders(input : RecordStatus) {
@@ -268,7 +268,7 @@ class CustomVideoView: UIView {
         case .active:
             
             print("activeeeeee")
-
+            
         case .passive:
             
             print("passiveeeee")
@@ -279,7 +279,7 @@ class CustomVideoView: UIView {
                 
             }
         }
-
+        
     }
     
     func addCircle() {
@@ -290,14 +290,14 @@ class CustomVideoView: UIView {
         
         // Create a new CircleView
         circleView = CircleView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-
+        
         guard let circleView = circleView else { return }
         
         recordContainerView.addSubview(circleView)
-//        recordContainerView.insertSubview(circleView, at: 0)
+        //        recordContainerView.insertSubview(circleView, at: 0)
         
         // Animate the drawing of the circle over the course of 1 second
-//        circleView.animateCircle(duration: 20)
+        //        circleView.animateCircle(duration: 20)
         
     }
     
@@ -368,7 +368,7 @@ class CustomVideoView: UIView {
     func videoCameraPermissionProcess(status : AVAuthorizationStatus) {
         
         CustomPermissionViewController.shared.delegate = self
-
+        
         switch status {
         case .notDetermined:
             // mainview lazy var oldugundan dolayı henuz o ayaga kalkmadan ona add subview yapılamıyor.
@@ -399,7 +399,7 @@ class CustomVideoView: UIView {
 
 // MARK: - UIGestureRecognizerDelegate
 extension CustomVideoView : UIGestureRecognizerDelegate {
- 
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let touch = touches.first {
@@ -419,17 +419,17 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
         print("touchesEnded")
         
         if let touch = touches.first {
-
+            
             if touch.view == recordButton {
-
+                
                 if !recordStopFlag {
                     
                     stopRecordButtonAnimation()
-
+                    
                 }
-
+                
             }
-
+            
         }
         
     }
@@ -443,14 +443,14 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
     }
     
     @objc func startRecordAnimation(_ sender : UILongPressGestureRecognizer)  {
-
+        
         if sender.state == .began {
             
             print("long press begins")
             
-//            customVideo.startRecording()
-//
-//            addCircle()
+            //            customVideo.startRecording()
+            //
+            //            addCircle()
             
             adjustRecordButtonBorders(input: .active)
             
@@ -462,7 +462,7 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
             
             adjustRecordButtonBorders(input: .passive)
             
-//            customVideo.stopRecording()
+            //            customVideo.stopRecording()
         }
         
     }
@@ -504,7 +504,7 @@ extension CustomVideoView : PermissionProtocol {
             
             switch statusForMicrophone {
             case .granted:
-//                initalizeViews()
+                //                initalizeViews()
                 startVideo()
                 
             default:

@@ -26,8 +26,8 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>gotoVerify</string>
-				<string>fb188399458686974</string>
-				<string>twitterkit-qSautcd7v9cuWd3FlH55HLBN6</string>
+                <string>fb188399458686974</string>
+                <string>twitterkit-qSautcd7v9cuWd3FlH55HLBN6</string>
 			</array>
 		</dict>
 	</array>
