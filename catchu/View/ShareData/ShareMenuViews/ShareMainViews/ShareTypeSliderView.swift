@@ -129,6 +129,7 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
         
 //        delegateForFunction.selectFunctionCell2(indexPath: indexPath)
         delegateForFunction.forceScrollMenuScrollView(selectedMenuIndex: indexPath.row)
+        delegateForFunction.customVideoViewSessionManagement(inputIndex: indexPath.row)
         
     }
     

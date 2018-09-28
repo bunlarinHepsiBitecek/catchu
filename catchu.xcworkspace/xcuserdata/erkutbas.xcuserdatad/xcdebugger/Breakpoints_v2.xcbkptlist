@@ -42,7 +42,7 @@
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/New%20Group/FirebaseManager.swift"
-                  timestampString = "559753032.994622"
+                  timestampString = "559773820.285504"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "126"
@@ -57,7 +57,7 @@
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/New%20Group/FirebaseManager.swift"
-                  timestampString = "559753032.996753"
+                  timestampString = "559773820.2876379"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "127"
@@ -65,6 +65,22 @@
                   offsetFromSymbolStart = "52">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/ShareMainViews/CameraGalleryMenuView.swift"
+            timestampString = "559776212.367505"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "checkIfCustomCameraSessionActive()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

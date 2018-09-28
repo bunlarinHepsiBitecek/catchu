@@ -11,8 +11,9 @@ import Photos
 
 class ImageManagementView: UIView {
     
-    private var customCameraView : CustomCameraView?
-    private var captureImageView : CustomCameraCapturedImageView?
+//    private var customCameraView : CustomCameraView?
+    var customCameraView : CustomCameraView?
+    var captureImageView : CustomCameraCapturedImageView?
     
     public var photos = [PHAsset]()
 

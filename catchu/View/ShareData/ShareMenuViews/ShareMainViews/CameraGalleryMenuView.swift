@@ -49,7 +49,20 @@ extension CameraGalleryMenuView {
 
             ])
 
-
+    }
+    
+    func checkIfCustomCameraSessionActive() {
+        
+        guard imageManagementView != nil else {
+            return
+        }
+        
+        guard let customCameraObject = imageManagementView!.customCameraView else {
+            return
+        }
+        
+        customCameraObject.disableCustomCameraProcess()
+        
     }
     
 }

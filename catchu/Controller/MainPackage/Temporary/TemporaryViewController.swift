@@ -140,11 +140,39 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
             
             }
             
-            
         }
         
-        
-        
+        // gecici silinecek
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            if finished {
+                
+                let input = REGroupRequest()
+                
+                client.groupsPost(body: input!).continueWith(block: { (task) -> Any? in
+                    
+                    if task.error != nil {
+                        
+                        print("Error : \(task.error?.localizedDescription)")
+                        
+                    } else {
+                    
+                        print("task result : \(task.result?.error)")
+                    
+                        completion(true)
+                        
+                        
+                    }
+                    
+                    return nil
+                    
+                })
+                
+                
+            }
+            
+        }
+
     }
     
     func startFriendViewPresentation() {

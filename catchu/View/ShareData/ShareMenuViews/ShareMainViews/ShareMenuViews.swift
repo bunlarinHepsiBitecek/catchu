@@ -32,6 +32,11 @@ class ShareMenuViews: UIView {
         
     }
     
+}
+
+// MARK: - major functions
+extension ShareMenuViews {
+    
     func setupSlideScrollView() {
         
         print("setupSlideScrollView")
@@ -48,9 +53,9 @@ class ShareMenuViews: UIView {
         mainScrollView.translatesAutoresizingMaskIntoConstraints = false
         
         mainScrollView.heightAnchor.constraint(equalTo: safe.heightAnchor).isActive = true
-//        mainScrollView.heightAnchor.constraint(equalTo: safe.heightAnchor).isActive = true
+        //        mainScrollView.heightAnchor.constraint(equalTo: safe.heightAnchor).isActive = true
         
-//        setupViews()
+        //        setupViews()
         
         configureSubviewsFrames()
         
@@ -94,7 +99,7 @@ class ShareMenuViews: UIView {
             return
         }
         
-//        customCameraGalleryMenu!.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        //        customCameraGalleryMenu!.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         
     }
     
@@ -118,50 +123,41 @@ class ShareMenuViews: UIView {
         
     }
     
-    private func videoMenuViewActivationProcess(granted : Bool) {
-        
-        if granted {
-            activateVideoSection()
-        } else {
-            disableVideoSection()
-        }
-        
-    }
-    
-    private func activateVideoSection() {
-        guard customVideoMenu != nil else {
-            return
-        }
-        
-//        customVideoMenu!.startVideoProcess()
-        
-    }
-    
-    private func disableVideoSection() {
-        guard customVideoMenu != nil else {
-            return
-        }
-        
-//        customVideoMenu!.stopVideoProcess()
-        
-    }
-    
     private func menuViewCoordination(activeIndex : Int) {
         
         // it means video view is activated
         if activeIndex == 2 {
-            videoMenuViewActivationProcess(granted: true)
+            customVideoViewCaptureManagement()
             
         } else if activeIndex == 1 {
-          // it means that camera gallery view is activated
-            videoMenuViewActivationProcess(granted: false)
+            // it means that camera gallery view is activated
             
         }
         
     }
     
+    private func customVideoViewCaptureManagement() {
+    
+        // close camera session if it's running
+        guard customCameraGalleryMenu != nil else {
+            return
+        }
+        
+        customCameraGalleryMenu!.checkIfCustomCameraSessionActive()
+        
+        // start camera session if it's stopping
+        guard customVideoMenu != nil else {
+            return
+        }
+        
+        customVideoMenu!.startVideoProcess()
+        
+    }
+    
+    
 }
 
+// MARK: - UIScrollViewDelegate
 extension ShareMenuViews : UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -192,7 +188,7 @@ extension ShareMenuViews : UIScrollViewDelegate {
         print("scrollViewDidEndDecelerating")
         print("index :\(index)")
         
-//        menuViewCoordination(activeIndex : Int(index))
+        menuViewCoordination(activeIndex : Int(index))
         
     }
     
@@ -205,6 +201,12 @@ extension ShareMenuViews : ShareDataProtocols {
         print("forceScrollMenuScrollView starts")
         print("selectedMenuIndex : \(selectedMenuIndex)")
         mainScrollView.scrollRectToVisible(CGRect(x: self.frame.width * CGFloat(selectedMenuIndex), y: 0, width: self.frame.width, height: self.frame.height), animated: true)
+        
+    }
+    
+    func customVideoViewSessionManagement(inputIndex : Int) {
+        
+        menuViewCoordination(activeIndex: inputIndex)
         
     }
     
