@@ -9,6 +9,8 @@
 import UIKit
 import Photos
 
+
+
 class PermissionHandler {
     
     public static var shared = PermissionHandler()
