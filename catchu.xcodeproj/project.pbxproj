@@ -763,7 +763,6 @@
 				A77D987D215A0C6F002F9A02 /* Firebase */,
 				A7276D36210F6CB000CAC67C /* Swift */,
 				A7276D35210F6C9F00CAC67C /* Location */,
-				A7276D34210F6C6900CAC67C /* AWS_gateway */,
 				A7276D26210F68D900CAC67C /* AWS */,
 			);
 			path = Services;
@@ -963,14 +962,6 @@
 				A7EC57D4211B43310078F631 /* RERelationProperties.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		A7276D34210F6C6900CAC67C /* AWS_gateway */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = AWS_gateway;
-			path = Firebase;
 			sourceTree = "<group>";
 		};
 		A7276D35210F6C9F00CAC67C /* Location */ = {
