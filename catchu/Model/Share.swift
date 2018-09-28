@@ -167,32 +167,6 @@ class Share {
         }
     }
     
-    
-    // global functions
-    class func convert(shareDTO: REShare?) -> Share {
-        
-        let share = Share()
-        
-        guard let shareDTO = shareDTO else {return share}
-        
-        share.shareId = shareDTO.shareid ?? Constants.CharacterConstants.SPACE
-        share.imageUrl = shareDTO.imageUrl ?? Constants.CharacterConstants.SPACE
-        share.text = shareDTO.text ?? Constants.CharacterConstants.SPACE
-        share.privacyType = shareDTO.privacyType ?? Constants.CharacterConstants.SPACE
-        share.distance = shareDTO.distance?.doubleValue ?? Constants.NumericConstants.DOUBLE_ZERO
-        
-        share.user.userID = shareDTO.user?.userid ?? Constants.CharacterConstants.SPACE
-        share.user.name = shareDTO.user?.name ?? Constants.CharacterConstants.SPACE
-        share.user.userName = shareDTO.user?.username ?? Constants.CharacterConstants.SPACE
-        share.user.profilePictureUrl = shareDTO.user?.profilePhotoUrl ?? Constants.CharacterConstants.SPACE
-        
-        return share
-    }
-    
-    
-    
-    
-    
     var imageUrlSmall: String {
         get {
             return _imageUrlSmall
