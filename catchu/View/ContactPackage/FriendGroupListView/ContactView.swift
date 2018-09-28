@@ -422,29 +422,29 @@ extension ContactView {
         
         inputBody?.userid = User.shared.userID
         
-        client.groupsPost(body: inputBody!).continueWith { (taskGroupRequestResult) -> Any? in
-            
-            print("taskGroupRequestResult.result : \(taskGroupRequestResult.result)")
-            
-            if taskGroupRequestResult.error != nil {
-                
-                print("taskGroupRequestResult.error : \(taskGroupRequestResult.error)")
-                
-            } else {
-                
-                //Group.shared.createGroupDictionary(httpRequest: taskGroupRequestResult.result!)
-                print("Group count : \(taskGroupRequestResult.result?.resultArray?.count)")
-                Group.shared.createGroupList(httpRequest: taskGroupRequestResult.result!)
-                
-                completion(true)
-                
-            }
-            
-            //completion(true)
-            
-            return nil
-            
-        }
+//        client.groupsPost(body: inputBody!).continueWith { (taskGroupRequestResult) -> Any? in
+//            
+//            print("taskGroupRequestResult.result : \(taskGroupRequestResult.result)")
+//            
+//            if taskGroupRequestResult.error != nil {
+//                
+//                print("taskGroupRequestResult.error : \(taskGroupRequestResult.error)")
+//                
+//            } else {
+//                
+//                //Group.shared.createGroupDictionary(httpRequest: taskGroupRequestResult.result!)
+//                print("Group count : \(taskGroupRequestResult.result?.resultArray?.count)")
+//                Group.shared.createGroupList(httpRequest: taskGroupRequestResult.result!)
+//                
+//                completion(true)
+//                
+//            }
+//            
+//            //completion(true)
+//            
+//            return nil
+//            
+//        }
     
     }
     

@@ -224,10 +224,11 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      return type: REGroupRequestResult
      */
-    public func groupsPost(body: REGroupRequest) -> AWSTask<REGroupRequestResult> {
+    public func groupsPost(authorization: String, body: REGroupRequest) -> AWSTask<REGroupRequestResult> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
+            "Authorization": authorization,
             
             ]
         

@@ -172,31 +172,31 @@ class APIGatewayManager {
         inputBody?.requestType = requestType.rawValue
         inputBody?.groupid = groupId
         
-        client.groupsPost(body: inputBody!).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                print("task result : \(task.result?.resultArrayParticipantList?.count)")
-                
-                if let result = task.result {
-                    
-                    completion(result, true)
-                    
-                }
-
-            }
-            
-            return nil
-            
-        }
+//        client.groupsPost(body: inputBody!).continueWith { (task) -> Any? in
+//
+//            if task.error != nil {
+//
+//                print("error : \(String(describing: task.error?.localizedDescription))")
+//
+//                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+//
+//                LoaderController.shared.removeLoader()
+//
+//            } else {
+//
+//                print("task result : \(task.result?.resultArrayParticipantList?.count)")
+//
+//                if let result = task.result {
+//
+//                    completion(result, true)
+//
+//                }
+//
+//            }
+//
+//            return nil
+//
+//        }
     
     }
     
@@ -213,41 +213,41 @@ class APIGatewayManager {
         
 //        groupBody.displayGroupAttributes()
         
-        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("task.error : \(task.error)")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                if let result = task.result {
-                    
-                    if let error = result.error {
-                        
-                        if error.code != 1 {
-                            
-                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                            
-                        }
-                        
-                    }
-                    
-                    LoaderController.shared.removeLoader()
-
-                    completion(result, true)
-                    
-                }
-                
-            }
-            
-            return nil
-            
-        }
+//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
+//
+//            if task.error != nil {
+//
+//                print("task.error : \(task.error)")
+//
+//                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+//
+//                LoaderController.shared.removeLoader()
+//
+//            } else {
+//
+//                if let result = task.result {
+//
+//                    if let error = result.error {
+//
+//                        if error.code != 1 {
+//
+//                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+//
+//                        }
+//
+//                    }
+//
+//                    LoaderController.shared.removeLoader()
+//
+//                    completion(result, true)
+//
+//                }
+//
+//            }
+//
+//            return nil
+//
+//        }
     
     }
     
@@ -263,41 +263,41 @@ class APIGatewayManager {
         
         groupBody.displayGroupAttributes()
         
-        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("task.error : \(task.error)")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                if let result = task.result {
-                    
-                    if let error = result.error {
-                        
-                        if error.code != 1 {
-                            
-                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                            
-                        }
-                        
-                    }
-                    
-                    LoaderController.shared.removeLoader()
-                    
-                    completion(result, true)
-                    
-                }
-                
-            }
-            
-            return nil
-            
-        }
+//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
+//
+//            if task.error != nil {
+//
+//                print("task.error : \(task.error)")
+//
+//                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+//
+//                LoaderController.shared.removeLoader()
+//
+//            } else {
+//
+//                if let result = task.result {
+//
+//                    if let error = result.error {
+//
+//                        if error.code != 1 {
+//
+//                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+//
+//                        }
+//
+//                    }
+//
+//                    LoaderController.shared.removeLoader()
+//
+//                    completion(result, true)
+//
+//                }
+//
+//            }
+//
+//            return nil
+//
+//        }
         
     }
     
@@ -309,78 +309,78 @@ class APIGatewayManager {
     ///   - completion: completion object
     func removeParticipantFromGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
         
-        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("Remove from group failed")
-                
-            } else {
-                
-                if let result = task.result {
-                    
-                    if let error = result.error {
-                        
-                        if error.code != 1 {
-                            
-                            print("Error code : \(error.code)")
-                            print("Error message : \(error.message)")
-                            
-                        } else {
-                            
-                            print("Remove from group is ok!")
-                            completion(result, true)
-                            
-                        }
-                        
-                    }
-                    
-                }
-                
-            }
-            
-            return nil
-            
-        }
+//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
+//            
+//            if task.error != nil {
+//                
+//                print("Remove from group failed")
+//                
+//            } else {
+//                
+//                if let result = task.result {
+//                    
+//                    if let error = result.error {
+//                        
+//                        if error.code != 1 {
+//                            
+//                            print("Error code : \(error.code)")
+//                            print("Error message : \(error.message)")
+//                            
+//                        } else {
+//                            
+//                            print("Remove from group is ok!")
+//                            completion(result, true)
+//                            
+//                        }
+//                        
+//                    }
+//                    
+//                }
+//                
+//            }
+//            
+//            return nil
+//            
+//        }
         
         
     }
     
     func createNewGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
         
-        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("Remove from group failed")
-                
-            } else {
-                
-                if let result = task.result {
-                    
-                    if let error = result.error {
-                        
-                        if error.code != 1 {
-                            
-                            print("Error code : \(error.code)")
-                            print("Error message : \(error.message)")
-                            
-                        } else {
-                            
-                            print("Remove from group is ok!")
-                            completion(result, true)
-                            
-                        }
-                        
-                    }
-                    
-                }
-                
-            }
-            
-            return nil
-            
-        }
+//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
+//
+//            if task.error != nil {
+//
+//                print("Remove from group failed")
+//
+//            } else {
+//
+//                if let result = task.result {
+//
+//                    if let error = result.error {
+//
+//                        if error.code != 1 {
+//
+//                            print("Error code : \(error.code)")
+//                            print("Error message : \(error.message)")
+//
+//                        } else {
+//
+//                            print("Remove from group is ok!")
+//                            completion(result, true)
+//
+//                        }
+//
+//                    }
+//
+//                }
+//
+//            }
+//
+//            return nil
+//
+//        }
         
     }
     

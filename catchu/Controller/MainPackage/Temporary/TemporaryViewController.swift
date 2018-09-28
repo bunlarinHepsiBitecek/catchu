@@ -140,38 +140,55 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
             
             }
             
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                
+                if finished {
+                    
+                    let input = REGroupRequest()
+                    
+                    input?.requestType = RequestType.get_group_participant_list.rawValue
+                    input?.groupid = "group1"
+                    
+                    client.groupsPost(authorization: tokenResult.token, body: input!).continueWith(block: { (task) -> Any? in
+                        
+                        print("yarrrroooooo")
+                        
+                        if task.error != nil {
+                            
+                            print("Error : \(task.error)")
+                            
+                        } else {
+                            
+                            print("task result : \(task.result?.error)")
+                            
+                            completion(true)
+                            
+                            
+                        }
+                        
+                        return nil
+                        
+                    })
+                    
+                }
+                
+            })
+            
+            
+            
         }
         
-        // gecici silinecek
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            
-            if finished {
-                
-                let input = REGroupRequest()
-                
-                client.groupsPost(body: input!).continueWith(block: { (task) -> Any? in
-                    
-                    if task.error != nil {
-                        
-                        print("Error : \(task.error?.localizedDescription)")
-                        
-                    } else {
-                    
-                        print("task result : \(task.result?.error)")
-                    
-                        completion(true)
-                        
-                        
-                    }
-                    
-                    return nil
-                    
-                })
-                
-                
-            }
-            
-        }
+//        // gecici silinecek
+//        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+//
+//            if finished {
+//
+//
+//
+//
+//            }
+//
+//        }
 
     }
     
