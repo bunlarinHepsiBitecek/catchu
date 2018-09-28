@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/New Group/FirebaseManager.swift"
-            timestampString = "559810916.219551"
+            timestampString = "559815195.014829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "loginWithTwitterAccount()"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "loginWithFacebookAccount()"
             landmarkType = "7">
             <Locations>
                <Location

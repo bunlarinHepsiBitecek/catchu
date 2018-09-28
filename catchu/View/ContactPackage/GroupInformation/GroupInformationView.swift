@@ -496,29 +496,29 @@ extension GroupInformationView: ImageHandlerProtocol {
 
         showSpinning()
 
-        APIGatewayManager.shared.startImageUploadProcess(inputImage: inputImage, inputGroup: group) { (requestSuccess, s3BucketResult, updatedGroup) in
-            
-            if requestSuccess {
-                
-                DispatchQueue.main.async {
-                    
-                    // remove old url from cache and set new image
-                    if let url = self.group.groupPictureUrl {
-                        SectionBasedFriend.shared.cachedFriendProfileImages.removeObject(forKey: NSString(string: url))
-                        SectionBasedFriend.shared.cachedFriendProfileImages.setObject(inputImage, forKey: NSString(string: url))
-                    }
-                    
-                    // update view's group object
-                    updatedGroup.displayGroupProperties()
-                    self.group = updatedGroup
-                   
-                    self.group.displayGroupProperties()
-                    
-                    self.stopSpinning()
-                    
-                }
-            }
-        }
+//        APIGatewayManager.shared.startImageUploadProcess(inputImage: inputImage, inputGroup: group) { (requestSuccess, s3BucketResult, updatedGroup) in
+//            
+//            if requestSuccess {
+//                
+//                DispatchQueue.main.async {
+//                    
+//                    // remove old url from cache and set new image
+//                    if let url = self.group.groupPictureUrl {
+//                        SectionBasedFriend.shared.cachedFriendProfileImages.removeObject(forKey: NSString(string: url))
+//                        SectionBasedFriend.shared.cachedFriendProfileImages.setObject(inputImage, forKey: NSString(string: url))
+//                    }
+//                    
+//                    // update view's group object
+//                    updatedGroup.displayGroupProperties()
+//                    self.group = updatedGroup
+//                   
+//                    self.group.displayGroupProperties()
+//                    
+//                    self.stopSpinning()
+//                    
+//                }
+//            }
+//        }
         
     }
     

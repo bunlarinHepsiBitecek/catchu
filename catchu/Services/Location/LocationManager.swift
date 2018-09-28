@@ -111,7 +111,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         GeoFireData.shared.currentLocation = self.currentLocation
         
-        delegete.didUpdateLocation()
+        delegate.didUpdateLocation()
         
     }
     

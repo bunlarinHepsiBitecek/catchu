@@ -33,7 +33,6 @@ PODS:
   - GoogleUtilities/Logger (5.3.0):
     - GoogleUtilities/Environment
   - GTMSessionFetcher/Core (1.2.0)
-  - IQKeyboardManagerSwift (6.1.1)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
@@ -45,7 +44,6 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - Firebase/Auth
-  - IQKeyboardManagerSwift
   - TwitterKit
 
 SPEC REPOS:
@@ -63,7 +61,6 @@ SPEC REPOS:
     - FirebaseCore
     - GoogleUtilities
     - GTMSessionFetcher
-    - IQKeyboardManagerSwift
     - TwitterCore
     - TwitterKit
 
@@ -81,10 +78,9 @@ SPEC CHECKSUMS:
   FirebaseCore: 2a84b6b325792a4319ef71ee18819dcba08d2fd7
   GoogleUtilities: 760ccb53b7c7f40f9c02d8c241f76f841a7a6162
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
-  IQKeyboardManagerSwift: 977affaeb4d6e971975c7790a6850f31d38f1207
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
 
-PODFILE CHECKSUM: 130df3d81b60d9957b3474db8634add97d3be829
+PODFILE CHECKSUM: 191fd0f87aa2c1c4b2b8c5a3616f43ce6bbc37e7
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

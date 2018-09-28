@@ -5,7 +5,6 @@
 //  Created by Remzi YILDIRIM on 8/8/18.
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
-
 import UIKit
 import AWSCore
 import AWSS3
@@ -41,29 +40,6 @@ class REAWSManager: BackEndAPIInterface {
     public static let shared = REAWSManager()
     
     
-    /// is used to signed url to upload file on Amazon S3
-    ///
-    /// - Parameter completion: A RECommonS3BucketResult
-    /// - Returns:
-    /// - Author: Remzi Yildirim
-    public func getSignedUpload(completion : @escaping (_ result : RECommonS3BucketResult) -> Void) {
-        let extention = "jpg"
-        
-        RECatchUMobileAPIClient.default().commonSignedurlGet(_extension: extention).continueWith { (task) -> Any? in
-            print("Task: \(task)")
-            
-            /*
-            if task.error != nil {
-                print("server network something cort")
-            }*/
-            
-            if let result = task.result {
-                completion(result)
-            }
-            
-            return nil
-        }
-    }
     
     /// Handle AWS API Gateway errors
     ///
@@ -479,14 +455,14 @@ extension REAWSManager {
         post.privacyType = PrivacyType.allFollowers.stringValue
         
         // MARK: for custom person selected
-//        post.privacyType = PrivacyType.custom.stringValue
-//        post.allowList = []
-//        let user1 = REShare_allowList_item()
-//        let user2 = REShare_allowList_item()
-//        user1?.userid = "us-east-1:ea155b84-4f97-49f0-8559-5b20d507bdfa"
-//        user2?.userid = "us-east-1:8a22a451-af0d-48cb-8e6b-f0ed3316449b"
-//        share?.allowList?.append(user1!)
-//        share?.allowList?.append(user2!)
+        //        post.privacyType = PrivacyType.custom.stringValue
+        //        post.allowList = []
+        //        let user1 = REShare_allowList_item()
+        //        let user2 = REShare_allowList_item()
+        //        user1?.userid = "us-east-1:ea155b84-4f97-49f0-8559-5b20d507bdfa"
+        //        user2?.userid = "us-east-1:8a22a451-af0d-48cb-8e6b-f0ed3316449b"
+        //        share?.allowList?.append(user1!)
+        //        share?.allowList?.append(user2!)
         
         guard let postRequest = REPostRequest() else { return }
         postRequest.post = post
@@ -504,7 +480,6 @@ extension REAWSManager {
                 }
             }
         }
-        
     }
-    
 }
+

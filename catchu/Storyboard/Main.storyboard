@@ -2106,32 +2106,8 @@
                         <viewLayoutGuide key="safeArea" id="mt8-Sg-5Tj"/>
                     </view>
                     <navigationItem key="navigationItem" id="Gz0-ky-WTF"/>
-                    <connections>
-                        <outlet property="feedView" destination="re6-VX-nDM" id="t4d-Hy-zYQ"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sT9-tP-zRf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="re6-VX-nDM" customClass="FeedView" customModule="catchu" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wfP-do-hQx">
-                            <rect key="frame" x="0.0" y="44" width="375" height="734"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </tableView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="wfP-do-hQx" firstAttribute="top" secondItem="g1Z-eF-dg9" secondAttribute="top" id="NcO-Fn-9vu"/>
-                        <constraint firstItem="wfP-do-hQx" firstAttribute="leading" secondItem="g1Z-eF-dg9" secondAttribute="leading" id="O5h-UC-gGO"/>
-                        <constraint firstItem="g1Z-eF-dg9" firstAttribute="bottom" secondItem="wfP-do-hQx" secondAttribute="bottom" id="QEC-jM-buI"/>
-                        <constraint firstItem="wfP-do-hQx" firstAttribute="trailing" secondItem="g1Z-eF-dg9" secondAttribute="trailing" id="p84-7j-PnC"/>
-                    </constraints>
-                    <viewLayoutGuide key="safeArea" id="g1Z-eF-dg9"/>
-                    <connections>
-                        <outlet property="tableView" destination="wfP-do-hQx" id="7U4-MO-hPq"/>
-                    </connections>
-                </view>
             </objects>
             <point key="canvasLocation" x="2438" y="-67"/>
         </scene>

@@ -7,7 +7,6 @@ target 'catchu' do
 
   # Pods for catchu
 
-  pod 'IQKeyboardManagerSwift'
   pod 'FBSDKShareKit'
   
   pod 'AWSAPIGateway'

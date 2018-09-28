@@ -126,7 +126,6 @@
 		A721C0032117ADC70037A62D /* ExtensionContainerGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721C0022117ADC70037A62D /* ExtensionContainerGroupViewController.swift */; };
 		A721C0052117AF560037A62D /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721C0042117AF560037A62D /* GroupTableViewCell.swift */; };
 		A7276D23210E12F800CAC67C /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = A7276D22210E12F700CAC67C /* awsconfiguration.json */; };
-		A7276D25210E1E8A00CAC67C /* AWSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D24210E1E8A00CAC67C /* AWSManager.swift */; };
 		A7276D392110790100CAC67C /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D382110790100CAC67C /* SearchView.swift */; };
 		A7276D3C2110797600CAC67C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D3B2110797600CAC67C /* SearchViewController.swift */; };
 		A7276D3E21107A9900CAC67C /* ExtensionSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D3D21107A9900CAC67C /* ExtensionSearchViewController.swift */; };
@@ -397,7 +396,6 @@
 		A721C0022117ADC70037A62D /* ExtensionContainerGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionContainerGroupViewController.swift; sourceTree = "<group>"; };
 		A721C0042117AF560037A62D /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GroupTableViewCell.swift; path = catchu/View/ContactPackage/Collections/GroupTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		A7276D22210E12F700CAC67C /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
-		A7276D24210E1E8A00CAC67C /* AWSManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSManager.swift; sourceTree = "<group>"; };
 		A7276D382110790100CAC67C /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A7276D3B2110797600CAC67C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A7276D3D21107A9900CAC67C /* ExtensionSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSearchViewController.swift; sourceTree = "<group>"; };
@@ -565,13 +563,6 @@
 		451E9F092139366300185925 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				451E9F0A2139366300185925 /* FeedViewCell.swift */,
-				451E9F0B2139366300185925 /* SwipingViewCell.swift */,
-				451E9F0C2139366300185925 /* SwipingViewModel.swift */,
-				451E9F0D2139366300185925 /* SwipingView.swift */,
-				451E9F0E2139366300185925 /* CachedImageView.swift */,
-				451E9F0F2139366300185925 /* DiscardableImageCacheItem.swift */,
-				451E9F102139366300185925 /* FeedView.swift */,
 				451E9F102139366300185925 /* FeedView.swift */,
 				45E8B5F5215A9AAE005AD00A /* FeedViewModel.swift */,
 				451E9F0A2139366300185925 /* FeedViewCell.swift */,
@@ -951,7 +942,6 @@
 				451E9EF32139315900185925 /* Bridging_Header.h */,
 				451E9EF42139315900185925 /* RECatchUMobileAPIClient.swift */,
 				A7276D33210F68EF00CAC67C /* Model */,
-				A7276D24210E1E8A00CAC67C /* AWSManager.swift */,
 			);
 			path = AWS;
 			sourceTree = "<group>";
@@ -1566,7 +1556,6 @@
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
 			);
@@ -1581,7 +1570,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
 			);
@@ -1759,7 +1747,7 @@
 				454285A8214A95E200F68FAC /* REBaseResponse.swift in Sources */,
 				A708791F21276CF00012C7F6 /* Item2CollectionViewCell.swift in Sources */,
 				A710F423213FEDA300ECC5DA /* ShareDataMapView.swift in Sources */,
-				451E9F122139366300185925 /* SwipingViewCell.swift in Sources */,
+				451E9F122139366300185925 /* MediaViewCell.swift in Sources */,
 				4542859C214A94D700F68FAC /* REComment_replies_item.swift in Sources */,
 				451E9F122139366300185925 /* MediaViewCell.swift in Sources */,
 				45E8B5F0215A9806005AD00A /* CommentViewCell.swift in Sources */,
@@ -1773,7 +1761,6 @@
 				A708792121276CF80012C7F6 /* Item3CollectionViewCell.swift in Sources */,
 				A7276D3E21107A9900CAC67C /* ExtensionSearchViewController.swift in Sources */,
 				A710F421213FCD8100ECC5DA /* ShareDataView.swift in Sources */,
-				451E9F1A213937E300185925 /* FeedDataSource.swift in Sources */,
 				451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */,
 				A7087932212B79960012C7F6 /* EditProfile4TableViewCell.swift in Sources */,
 				45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */,
@@ -1825,7 +1812,6 @@
 				45E8B5F6215A9AAE005AD00A /* FeedViewModel.swift in Sources */,
 				A77D3FD62131829A00D016D6 /* GroupInformationViewController.swift in Sources */,
 				A7EC57CB211924020078F631 /* SectionBasedGroup.swift in Sources */,
-				A7276D25210E1E8A00CAC67C /* AWSManager.swift in Sources */,
 				A7E2F85321128CCC00214066 /* REResponse.swift in Sources */,
 				A77D3FD32131824B00D016D6 /* GroupInformationView.swift in Sources */,
 				A765A97D213CBD9100881F1B /* GroupCreateCollectionViewCell.swift in Sources */,
@@ -1838,14 +1824,13 @@
 				45356B2220BDF34D00E0733F /* ExtensionPasswordReset.swift in Sources */,
 				A7C92D862150075400432D70 /* CustomCameraView.swift in Sources */,
 				A74240712145976000E20A58 /* CustomScrollView2.swift in Sources */,
-				451E9F132139366300185925 /* SwipingViewModel.swift in Sources */,
+				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
 				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
 				452001CA20CBB7AB00C1ED22 /* MapView.swift in Sources */,
 				A74240232142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift in Sources */,
 				A7276D5D2110C67900CAC67C /* REFriendList_resultArray_item.swift in Sources */,
 				A77EC7D5215D1C1600AE3D3E /* CustomVideoView.swift in Sources */,
 				4542859A214A94C700F68FAC /* RECommentListResponse.swift in Sources */,
-				A791E30A20C1B324005082C9 /* CloudFunctionsManager.swift in Sources */,
 				A79A768020C5CB1B00FCE198 /* FriendsTableViewCell.swift in Sources */,
 				4564E45A20B97387003B0D16 /* Constants.swift in Sources */,
 			);

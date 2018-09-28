@@ -29,6 +29,8 @@ class FeedViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
         
         if !FirebaseManager.shared.checkUserLoggedIn() {
             
@@ -39,12 +41,6 @@ class FeedViewController: UIViewController {
             }
             
         }
-        
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
         
     }
     override func didReceiveMemoryWarning() {
