@@ -8,31 +8,68 @@
 
 import UIKit
 
-class FeedView: UIView {
+class BaseView: UIView {
     
-    @IBOutlet weak var tableView: UITableView!
-    
-    // MARK: Variable
-    private let refreshControl = UIRefreshControl()
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.customization()
-        self.backgroundColor = UIColor.green
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
     }
     
-    private func customization() {
-        tableView.register(FeedViewCell.self, forCellReuseIdentifier: FeedViewCell.identifier)
-        
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        
-        setupRefreshControl()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupView() {
         
     }
 }
 
+class FeedView: BaseView {
+    
+    // MARK: Variable
+    private let dataSource = FeedViewModel()
+    private let refreshControl = UIRefreshControl()
+    
+    lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: self.frame)
+        
+        tableView.dataSource = dataSource
+        tableView.delegate = self
+        
+        // Setup dynamic auto-resizing for comment cells
+        tableView.estimatedRowHeight = 500
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorStyle = .none
+        
+        tableView.register(FeedViewCell.self, forCellReuseIdentifier: FeedViewCell.identifier)
+        
+        return tableView
+    }()
+    
+    
+    override func setupView() {
+        print("FeedView setupView")
+        
+        self.dataSource.delegate = self
+        
+        self.addSubview(tableView)
+        let safeLayout = self.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+            ])
+        
+        setupRefreshControl()
+    }
+    
+}
+
 extension FeedView {
+    
     func setupRefreshControl() {
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -46,31 +83,59 @@ extension FeedView {
     }
     
     @objc private func refreshData(_ sender: Any) {
-        //        self.loadData()
-        self.refreshControl.endRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+            // Put your code which should be executed with a delay here
+            self.dataSource.refreshData()
+            self.refreshControl.endRefreshing()
+        })
     }
 }
 
-extension FeedView: UITableViewDelegate, UITableViewDataSource {
+extension FeedView: UITableViewDelegate {
+
+}
+
+extension FeedView: FeedViewCellDelegate {
     
-    // MARK: section by per feed
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FeedViewCell.identifier, for: indexPath) as? FeedViewCell else {
-            return UITableViewCell()
+    func updateTableView(indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { return }
+
+        if let item = self.dataSource.items[indexPath.row] as? FeedViewModelPostItem {
+            item.expanded = true
+
+            guard let post = item.post else { return }
+            guard let message = post.message else { return }
+            
+            if let cell = tableView.cellForRow(at: indexPath) as? FeedViewCell {
+                cell.statusTextViewReadMore(expanded: true, text: message)
+            }
         }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 400
+        
+//        if let item = self.dataSource.items[indexPath.row] as? FeedViewModelPostItem {
+//            item.expanded = true
+//        }
+        
+        // MARK: Disabling animations gives us our desired behaviour
+//        UIView.setAnimationsEnabled(false)
+        self.tableView.beginUpdates()
+//        self.tableView.reloadRows(at: [indexPath], with: .none)
+        self.tableView.endUpdates()
+        // MARK: Enable animations
+//        UIView.setAnimationsEnabled(true)
     }
 }
+
+extension FeedView: FeedViewModelDelegete {
+    func apply(changes: CellChanges) {
+        print("tableview reloaded")
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.reloadRows(at: changes.reloads, with: .fade)
+            self.tableView.insertRows(at: changes.inserts, with: .fade)
+            self.tableView.deleteRows(at: changes.deletes, with: .fade)
+            self.tableView.endUpdates()
+        }
+    }
+    
+}
+

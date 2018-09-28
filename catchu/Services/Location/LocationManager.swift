@@ -20,7 +20,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     public static let shared = LocationManager()
     var locationManager: CLLocationManager!
     var currentLocation: CLLocation!
-    weak var delegete: LocationManagerDelegate!
+    weak var delegate: LocationManagerDelegate!
     
     var externalViewInitialize : Bool = false
     
@@ -102,10 +102,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                 return
             }
         }
-        
-        // singleton for get last(current) location
-        
-        GeoFireData.shared.geofireDictionary.removeAll()
         
         counter = counter + 1
         

@@ -8,11 +8,18 @@
 
 import UIKit
 
+
+enum MediaType: String {
+    case image
+    case video
+}
+
 enum PrivacyType: String {
     case everyone
     case allFollowers
     case custom
     case myself
+    case group
     
     public var stringValue: String {
         switch self {
@@ -24,6 +31,8 @@ enum PrivacyType: String {
             return "CUSTOM"
         case .myself:
             return "SELF"
+        case .group:
+            return "GROUP"
         }
     }
 }

@@ -73,6 +73,27 @@ class LoaderController: NSObject {
         self.activityIndicator.startAnimating()
     }
     
+    func showLoader(style: UIActivityIndicatorView.Style) {
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.activityIndicatorViewStyle = style
+        self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        guard let currentVC = LoaderController.currentViewController() else {
+            print("Current View controller can not find for activity indicator")
+            return
+        }
+        guard let mainView = currentVC.view else { return }
+        
+        mainView.addSubview(self.activityIndicator)
+        let safeLayout = mainView.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: safeLayout.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: safeLayout.centerYAnchor)
+            ])
+
+        self.activityIndicator.startAnimating()
+    }
+    
     func startProgressView(progressViewStyle: UIProgressViewStyle) {
         removeProgressView()
         print("startProgressView")

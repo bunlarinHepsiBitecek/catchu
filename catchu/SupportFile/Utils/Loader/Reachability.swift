@@ -8,6 +8,9 @@
 
 import SystemConfiguration
 
+
+/// Internet connection control class
+/// - Author: Remzi Yildirim
 public class Reachability {
     
     class func isConnectedToNetwork() -> Bool {
@@ -42,9 +45,15 @@ public class Reachability {
         return ret
     }
     
+    
+    /// Check device connect to internet. When no internet connection, present an alert and remove loader
+    ///
+    /// - Returns: Bool
+    /// - Author: Remzi Yildirim
     class func networkConnectionCheck() -> Bool {
         guard self.isConnectedToNetwork() else {
             AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Network.NoInternetConnection, message: LocalizedConstants.Network.NoInternetConnectionMessage, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, selfDismiss: false, seconds: 0, completionHandler: nil)
+            LoaderController.shared.removeLoader()
             return false
         }
         return true

@@ -16,6 +16,31 @@ class FirebaseManager {
     
     public static let shared = FirebaseManager()
     
+    func getIdToken(completion : @escaping (_ tokenResult : AuthTokenResult, _ finished : Bool) -> Void) {
+        
+        guard let currentUser = Auth.auth().currentUser else {
+            return
+        }
+        
+        currentUser.getIDTokenResult(forcingRefresh: true) { (result, error) in
+            
+            if let error = error {
+                self.handleError(error: error)
+                LoaderController.shared.removeLoader()
+                return
+                
+            } else {
+                
+                guard let result = result else { return }
+                
+                completion(result, true)
+                
+            }
+            
+        }
+        
+    }
+    
     func logout() {
         do
         {

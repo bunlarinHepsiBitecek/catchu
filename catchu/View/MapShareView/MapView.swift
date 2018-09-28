@@ -36,7 +36,7 @@ class MapView: UIView {
         mapView.isRotateEnabled = true
         mapView.isOpaque = true
         
-        LocationManager.shared.delegete = self
+        LocationManager.shared.delegate = self
         LocationManager.shared.startUpdateLocation()
     }
     

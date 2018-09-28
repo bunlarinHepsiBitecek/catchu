@@ -219,7 +219,8 @@ extension ShareView {
             imageExist = true
         }
         
-        REAWSManager.shared.shareData(imageExist: imageExist)
+        // TODO: change
+//        REAWSManager.shared.shareData(imageExist: imageExist)
         
     }
 }

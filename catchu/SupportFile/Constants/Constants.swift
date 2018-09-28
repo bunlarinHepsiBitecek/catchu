@@ -18,6 +18,7 @@ struct Constants {
     
     struct CharacterConstants {
         static let SPACE: String = " "
+        static let EMPTY: String = ""
     }
     struct NumericConstants {
         static let INTEGER_ZERO: Int   = 0
@@ -92,6 +93,16 @@ struct Constants {
         static let ZoomDegree: Double = 0.02
         static let Radius: Double = 0.10
     }
+    
+    struct Feed {
+        static let ReadMoreCaracterCount: Int = 120
+        static let ReadMoreFont: UIFont = UIFont.systemFont(ofSize: 14)
+        static let ReadMoreColor: UIColor = UIColor.lightGray
+        static let ReadMoreUnderlineColor: UIColor = UIColor.clear
+        static let DefaultImageExtension: String = "jpg"
+        static let DefaultVideoExtension: String = "mov"
+    }
+    
     struct Segue {
         static let RegisterView = "segueToRegisterView"
         static let PasswwordResetView = "segueToPasswordResetView"

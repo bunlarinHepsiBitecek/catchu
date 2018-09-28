@@ -18,23 +18,32 @@ import Foundation
 import AWSCore
 
 @objcMembers
-public class RECommonS3BucketResult : AWSModel {
+public class REComment : AWSModel {
     
-    var error: REError?
-    var signedUrl: String?
-    var downloadUrl: String?
-    var fileExtention: String?
+    var commentid: String?
+    var message: String?
+    var likeCount: NSNumber?
+    var isLiked: NSNumber?
+    var replies: [REComment_replies_item]?
+    var createAt: String?
+    var user: REUser?
     
    	public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
 		var params:[AnyHashable : Any] = [:]
-		params["error"] = "error"
-		params["signedUrl"] = "signedUrl"
-		params["downloadUrl"] = "downloadUrl"
-		params["fileExtention"] = "fileExtention"
+		params["commentid"] = "commentid"
+		params["message"] = "message"
+		params["likeCount"] = "likeCount"
+		params["isLiked"] = "isLiked"
+		params["replies"] = "replies"
+		params["createAt"] = "createAt"
+		params["user"] = "user"
 		
         return params
 	}
-	class func errorJSONTransformer() -> ValueTransformer{
-	    return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REError.self);
+	class func repliesJSONTransformer() -> ValueTransformer{
+		return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: REComment_replies_item.self);
+	}
+	class func userJSONTransformer() -> ValueTransformer{
+	    return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REUser.self);
 	}
 }

@@ -29,36 +29,41 @@ class APIGatewayManager {
     /// - Author: Erkut
     func requstProces(inputRequestType : RequestType, reqester : String, requested : String, completion :  @escaping (_ httpResult : REFriendRequestList) -> Void) {
         
-        let clientInput = REFriendRequest()
+        guard let friendRequest = REFriendRequest() else { return }
         
-        clientInput?.requestType = inputRequestType.rawValue
-        clientInput?.requesterUserid = reqester
-        clientInput?.requestedUserid = requested
+        friendRequest.requestType = inputRequestType.rawValue
+        friendRequest.requesterUserid = reqester
+        friendRequest.requestedUserid = requested
         
-        client.requestProcessPost(body: clientInput!).continueWith { (task) -> Any? in
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
-            if task.error != nil {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-            } else {
-                
-                if (task.result?.error?.code?.boolValue)! {
+            if finished {
+                self.client.followRequestPost(authorization: tokenResult.token, body: friendRequest).continueWith { (task) -> Any? in
                     
-                    if let result = task.result {
+                    if task.error != nil {
                         
-                        completion(result)
+                        print("error : \(String(describing: task.error?.localizedDescription))")
+                        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                        
+                    } else {
+                        
+                        if (task.result?.error?.code?.boolValue)! {
+                            
+                            if let result = task.result {
+                                
+                                completion(result)
+                            }
+                            
+                        }
+                        
                     }
                     
+                    return nil
                 }
-                
             }
-            
-            return nil
         }
-        
     }
     
 
@@ -69,33 +74,36 @@ class APIGatewayManager {
     ///   - completion: REUserProfile
     func getUserProfileInfo(userid : String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
-        client.usersGet(userid: userid).continueWith { (task) -> Any? in
-        
-            if task.error != nil {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                if (task.result?.error?.code?.boolValue)! {
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                self.client.usersGet(authorization: tokenResult.token, userid: userid).continueWith { (task) -> Any? in
                     
-                    if let result = task.result {
+                    if task.error != nil {
                         
-                        completion(result, true)
+                        print("error : \(String(describing: task.error?.localizedDescription))")
+                        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                        
+                        LoaderController.shared.removeLoader()
+                        
+                    } else {
+                        
+                        if (task.result?.error?.code?.boolValue)! {
+                            
+                            if let result = task.result {
+                                
+                                completion(result, true)
+                            }
+                            
+                        }
+                        
                     }
                     
+                    return nil
                 }
-                
             }
-            
-            return nil
-            
         }
-        
     }
     
     
@@ -104,52 +112,56 @@ class APIGatewayManager {
     /// - Parameters:
     ///   - userObject: USER singleton Shared object
     ///   - completion: REError
-    func updateUserProfileInformation(requestType : RequestType, userObject : User, completion :  @escaping (_ httpResult : REResponse, _ response : Bool) -> Void) {
+    func updateUserProfileInformation(requestType : RequestType, userObject : User, completion :  @escaping (_ httpResult : REBaseResponse, _ response : Bool) -> Void) {
      
         print("updateUserProfileInformation starts")
         print("userObject : \(userObject)")
         
-        let inputREUserProfile = REUserProfile()
+        guard let userProfile = REUserProfile() else { return }
         let inputUserInfo = REUserProfileProperties()
         
         inputUserInfo?.setUserProfileInformation(user: userObject)
         
-        inputREUserProfile?.userInfo = inputUserInfo
-        inputREUserProfile?.requestType = requestType.rawValue
+        userProfile.userInfo = inputUserInfo
+        userProfile.requestType = requestType.rawValue
         
-        inputREUserProfile?.userInfo?.displayProperties()
+        userProfile.userInfo?.displayProperties()
         
-        client.usersPost(body: inputREUserProfile!).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                print("task.result : \(task.result)")
-                print("task.result.code : \(task.result?.error?.code)")
-                print("task.result.message : \(task.result?.error?.message)")
-                
-                if (task.result?.error?.code?.boolValue)! {
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                self.client.usersPost(authorization: tokenResult.token, body: userProfile).continueWith { (task) -> Any? in
                     
-                    if let result = task.result {
+                    if task.error != nil {
                         
-                        completion(result, true)
+                        print("error : \(String(describing: task.error?.localizedDescription))")
+                        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                        
+                        LoaderController.shared.removeLoader()
+                        
+                    } else {
+                        
+                        print("error : \(String(describing: task.error?.localizedDescription))")
+                        
+                        print("task.result : \(task.result)")
+                        print("task.result.code : \(task.result?.error?.code)")
+                        print("task.result.message : \(task.result?.error?.message)")
+                        
+                        if (task.result?.error?.code?.boolValue)! {
+                            
+                            if let result = task.result {
+                                
+                                completion(result, true)
+                            }
+                        }
                         
                     }
+                    
+                    return nil
+                    
                 }
-                
             }
-            
-            return nil
-            
         }
         
     }
@@ -167,37 +179,42 @@ class APIGatewayManager {
         print("getGroupParticipantList starts")
         print("groupId : \(groupId)")
     
-        let inputBody = REGroupRequest()
+        guard let groupRequest = REGroupRequest() else { return }
         
-        inputBody?.requestType = requestType.rawValue
-        inputBody?.groupid = groupId
+        groupRequest.requestType = requestType.rawValue
+        groupRequest.groupid = groupId
         
-//        client.groupsPost(body: inputBody!).continueWith { (task) -> Any? in
-//
-//            if task.error != nil {
-//
-//                print("error : \(String(describing: task.error?.localizedDescription))")
-//
-//                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-//
-//                LoaderController.shared.removeLoader()
-//
-//            } else {
-//
-//                print("task result : \(task.result?.resultArrayParticipantList?.count)")
-//
-//                if let result = task.result {
-//
-//                    completion(result, true)
-//
-//                }
-//
-//            }
-//
-//            return nil
-//
-//        }
-    
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith { (task) -> Any? in
+                    
+                    if task.error != nil {
+                        
+                        print("error : \(String(describing: task.error?.localizedDescription))")
+                        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                        
+                        LoaderController.shared.removeLoader()
+                        
+                    } else {
+                        
+                        print("task result : \(task.result?.resultArrayParticipantList?.count)")
+                        
+                        if let result = task.result {
+                            
+                            completion(result, true)
+                            
+                        }
+                        
+                    }
+                    
+                    return nil
+                    
+                }
+            }
+        }
+        
     }
     
     
@@ -213,41 +230,46 @@ class APIGatewayManager {
         
 //        groupBody.displayGroupAttributes()
         
-//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-//
-//            if task.error != nil {
-//
-//                print("task.error : \(task.error)")
-//
-//                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-//
-//                LoaderController.shared.removeLoader()
-//
-//            } else {
-//
-//                if let result = task.result {
-//
-//                    if let error = result.error {
-//
-//                        if error.code != 1 {
-//
-//                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-//
-//                        }
-//
-//                    }
-//
-//                    LoaderController.shared.removeLoader()
-//
-//                    completion(result, true)
-//
-//                }
-//
-//            }
-//
-//            return nil
-//
-//        }
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                self.client.groupsPost(authorization: tokenResult.token, body: groupBody).continueWith { (task) -> Any? in
+                    
+                    if task.error != nil {
+                        
+                        print("task.error : \(task.error)")
+                        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                        
+                        LoaderController.shared.removeLoader()
+                        
+                    } else {
+                        
+                        if let result = task.result {
+                            
+                            if let error = result.error {
+                                
+                                if error.code != 1 {
+                                    
+                                    AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                                    
+                                }
+                                
+                            }
+                            
+                            LoaderController.shared.removeLoader()
+                            
+                            completion(result, true)
+                            
+                        }
+                        
+                    }
+                    
+                    return nil
+                    
+                }
+            }
+        }
     
     }
     
@@ -263,41 +285,48 @@ class APIGatewayManager {
         
         groupBody.displayGroupAttributes()
         
-//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-//
-//            if task.error != nil {
-//
-//                print("task.error : \(task.error)")
-//
-//                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-//
-//                LoaderController.shared.removeLoader()
-//
-//            } else {
-//
-//                if let result = task.result {
-//
-//                    if let error = result.error {
-//
-//                        if error.code != 1 {
-//
-//                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-//
-//                        }
-//
-//                    }
-//
-//                    LoaderController.shared.removeLoader()
-//
-//                    completion(result, true)
-//
-//                }
-//
-//            }
-//
-//            return nil
-//
-//        }
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                
+                self.client.groupsPost(authorization: tokenResult.token, body: groupBody).continueWith { (task) -> Any? in
+                    
+                    if task.error != nil {
+                        
+                        print("task.error : \(task.error)")
+                        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                        
+                        LoaderController.shared.removeLoader()
+                        
+                    } else {
+                        
+                        if let result = task.result {
+                            
+                            if let error = result.error {
+                                
+                                if error.code != 1 {
+                                    
+                                    AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                                    
+                                }
+                                
+                            }
+                            
+                            LoaderController.shared.removeLoader()
+                            
+                            completion(result, true)
+                            
+                        }
+                        
+                    }
+                    
+                    return nil
+                    
+                }
+                
+            }
+        }
         
     }
     
@@ -309,119 +338,41 @@ class APIGatewayManager {
     ///   - completion: completion object
     func removeParticipantFromGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
         
-//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-//            
-//            if task.error != nil {
-//                
-//                print("Remove from group failed")
-//                
-//            } else {
-//                
-//                if let result = task.result {
-//                    
-//                    if let error = result.error {
-//                        
-//                        if error.code != 1 {
-//                            
-//                            print("Error code : \(error.code)")
-//                            print("Error message : \(error.message)")
-//                            
-//                        } else {
-//                            
-//                            print("Remove from group is ok!")
-//                            completion(result, true)
-//                            
-//                        }
-//                        
-//                    }
-//                    
-//                }
-//                
-//            }
-//            
-//            return nil
-//            
-//        }
-        
-        
-    }
-    
-    func createNewGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
-        
-//        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-//
-//            if task.error != nil {
-//
-//                print("Remove from group failed")
-//
-//            } else {
-//
-//                if let result = task.result {
-//
-//                    if let error = result.error {
-//
-//                        if error.code != 1 {
-//
-//                            print("Error code : \(error.code)")
-//                            print("Error message : \(error.message)")
-//
-//                        } else {
-//
-//                            print("Remove from group is ok!")
-//                            completion(result, true)
-//
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
-//
-//            return nil
-//
-//        }
-        
-    }
-    
-    
-    /// Function Below triggers a group of events in a row. Firstly get download and upload urls from server. Then update group image url in neo4j.
-    ///
-    /// - Parameter inputImage: images selected from gallery or taken already
-    func startImageUploadProcess(inputImage : UIImage, inputGroup: Group, completion : @escaping (_ response : Bool, _ s3result : RECommonS3BucketResult, _ updatedGroupObject : Group) -> Void) {
-        
-        REAWSManager.shared.getSignedUpload { (s3BucketResult) in
-            
-            // check getting upload and download url request from lambda is ok or not
-            if let error = s3BucketResult.error {
-                if let errorCode = error.code {
-                    if errorCode.boolValue {
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            if finished {
+                self.client.groupsPost(authorization: tokenResult.token, body: groupBody).continueWith { (task) -> Any? in
+                    
+                    if task.error != nil {
                         
-                        // if everyting is all right, let's update group photo url with new one retrieved from s3 lambda service
-                        print("s3BucketResult : \(String(describing: s3BucketResult.downloadUrl))")
-                        print("s3BucketResult : \(String(describing: s3BucketResult.signedUrl))")
+                        print("Remove from group failed")
                         
-                        // call upload image directly s3 from client
-                        REAWSManager.shared.uploadFileToS3WithImageInput(inputImage: inputImage, commonS3BucketResult: s3BucketResult, completion: { (response) in
+                    } else {
+                        
+                        if let result = task.result {
                             
-                            // upload process is ok, call apigateway to update group information
-                            if response {
+                            if let error = result.error {
                                 
-                                // update photoUrl of inputGroup
-                                inputGroup.groupPictureUrl = s3BucketResult.downloadUrl
-                                
-                                APIGatewayManager.shared.updateGroupInformation(groupBody: Group.shared.returnGroupRequestForUpdateProcess(inputGroup: inputGroup), completion: { (groupRequestResult, groupProcessResponse) in
+                                if error.code != 1 {
                                     
-                                    // group information update process in neo4j is ok
-                                    if groupProcessResponse {
-                                        
-                                        completion(true, s3BucketResult, inputGroup)
-                                        
-                                    }
-                                })
+                                    print("Error code : \(error.code)")
+                                    print("Error message : \(error.message)")
+                                    
+                                } else {
+                                    
+                                    print("Remove from group is ok!")
+                                    completion(result, true)
+                                    
+                                }
+                                
                             }
-                        })
+                            
+                        }
+                        
                     }
+                    
+                    return nil
+                    
                 }
             }
         }
@@ -438,11 +389,12 @@ class APIGatewayManager {
         
         let client = RECatchUMobileAPIClient.default()
         
+        // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
             if finished {
                 
-                client.friendsGet(userid: User.shared.userID, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                self.client.friendsGet(userid: User.shared.userID, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
                     
                     if taskFriendList.error != nil {
                         
