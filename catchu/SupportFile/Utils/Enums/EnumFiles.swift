@@ -149,3 +149,9 @@ enum DelegationErrors: Swift.Error {
     case CustomCameraViewIsNil
 }
 
+enum CircleAnimationProcess {
+    case start
+    case stop
+    case progress
+}
+

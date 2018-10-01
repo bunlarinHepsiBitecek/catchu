@@ -76,6 +76,9 @@ protocol ShareDataProtocols: class {
     func forceScrollMenuScrollView(selectedMenuIndex : Int)
     func setCapturedImage(inputImage : UIImage, cameraPosition : CameraPosition)
     func customVideoViewSessionManagement(inputIndex : Int)
+    func startingICloudDownloadAnimation(animation : CircleAnimationProcess, inputProgressValue : CGFloat)
+    func setCroppedImage(inputImage : UIImage)
+    func closeShareDataViewController2()
     
 }
 
@@ -102,6 +105,9 @@ extension ShareDataProtocols {
     func forceScrollMenuScrollView(selectedMenuIndex : Int) {}
     func setCapturedImage(inputImage : UIImage, cameraPosition : CameraPosition) {}
     func customVideoViewSessionManagement(inputIndex : Int) {}
+    func startingICloudDownloadAnimation(animation : CircleAnimationProcess, inputProgressValue : CGFloat) {}
+    func setCroppedImage(inputImage : UIImage) {}
+    func closeShareDataViewController2() {}
     
 }
 

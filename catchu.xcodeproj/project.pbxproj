@@ -138,7 +138,6 @@
 		A7369B0020C86A5C001692F4 /* check-mark.png in Resources */ = {isa = PBXBuildFile; fileRef = A7369AFF20C86A5C001692F4 /* check-mark.png */; };
 		A7424021214284E200E20A58 /* PermissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7424020214284E200E20A58 /* PermissionHandler.swift */; };
 		A74240232142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240222142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift */; };
-		A74240712145976000E20A58 /* CustomScrollView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240702145976000E20A58 /* CustomScrollView2.swift */; };
 		A742407E214694C600E20A58 /* CustomCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742407D214694C600E20A58 /* CustomCamera.swift */; };
 		A74240822146DB4D00E20A58 /* CustomCameraCapturedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240812146DB4D00E20A58 /* CustomCameraCapturedImageView.swift */; };
 		A74240872147D3DB00E20A58 /* CustomVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240862147D3DB00E20A58 /* CustomVideo.swift */; };
@@ -155,6 +154,16 @@
 		A75F07F221354755001065AA /* SectionBasedParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75F07F121354755001065AA /* SectionBasedParticipant.swift */; };
 		A75F08182136526B001065AA /* check_mark_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = A75F08172136526A001065AA /* check_mark_grey.png */; };
 		A75F081A213752B8001065AA /* GroupImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75F0819213752B8001065AA /* GroupImageViewController.swift */; };
+		A762893C215E56A40083EE57 /* CustomScrollViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762893B215E56A40083EE57 /* CustomScrollViewContainer.swift */; };
+		A762B742215F71AE00DBB4EF /* CustomProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762B741215F71AE00DBB4EF /* CustomProgressBar.swift */; };
+		A762B7442160FB7000DBB4EF /* CustomProgressBarLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762B7432160FB7000DBB4EF /* CustomProgressBarLayer.swift */; };
+		A762B7462161116800DBB4EF /* CustomProgressBarLayer2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762B7452161116800DBB4EF /* CustomProgressBarLayer2.swift */; };
+		A762B74A216189AF00DBB4EF /* CustomFetchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762B749216189AF00DBB4EF /* CustomFetchView.swift */; };
+		A762B74C2161ACEE00DBB4EF /* CustomScrollView4.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762B74B2161ACEE00DBB4EF /* CustomScrollView4.swift */; };
+		A762B74E2161B0F800DBB4EF /* CustomCroppedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762B74D2161B0F800DBB4EF /* CustomCroppedImage.swift */; };
+		A762B7502161D9A000DBB4EF /* green_postit.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A762B74F2161D9A000DBB4EF /* green_postit.jpg */; };
+		A762B7522161DC4E00DBB4EF /* yellow_postit.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A762B7512161DC4D00DBB4EF /* yellow_postit.jpg */; };
+		A762B7542161E4CA00DBB4EF /* default_postit.png in Resources */ = {isa = PBXBuildFile; fileRef = A762B7532161E4CA00DBB4EF /* default_postit.png */; };
 		A765A96D213C88A100881F1B /* GroupCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A96C213C88A100881F1B /* GroupCreateView.swift */; };
 		A765A96F213C88F900881F1B /* GroupCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A96E213C88F900881F1B /* GroupCreateViewController.swift */; };
 		A765A971213C89DA00881F1B /* GroupCreateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A765A970213C89DA00881F1B /* GroupCreateTableViewCell.swift */; };
@@ -403,7 +412,6 @@
 		A7369AFF20C86A5C001692F4 /* check-mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-mark.png"; sourceTree = "<group>"; };
 		A7424020214284E200E20A58 /* PermissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionHandler.swift; sourceTree = "<group>"; };
 		A74240222142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionWarningCollectionViewCell.swift; sourceTree = "<group>"; };
-		A74240702145976000E20A58 /* CustomScrollView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView2.swift; sourceTree = "<group>"; };
 		A742407D214694C600E20A58 /* CustomCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCamera.swift; sourceTree = "<group>"; };
 		A74240812146DB4D00E20A58 /* CustomCameraCapturedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraCapturedImageView.swift; sourceTree = "<group>"; };
 		A74240862147D3DB00E20A58 /* CustomVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideo.swift; sourceTree = "<group>"; };
@@ -420,6 +428,16 @@
 		A75F07F121354755001065AA /* SectionBasedParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionBasedParticipant.swift; sourceTree = "<group>"; };
 		A75F08172136526A001065AA /* check_mark_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_mark_grey.png; sourceTree = "<group>"; };
 		A75F0819213752B8001065AA /* GroupImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageViewController.swift; sourceTree = "<group>"; };
+		A762893B215E56A40083EE57 /* CustomScrollViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollViewContainer.swift; sourceTree = "<group>"; };
+		A762B741215F71AE00DBB4EF /* CustomProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressBar.swift; sourceTree = "<group>"; };
+		A762B7432160FB7000DBB4EF /* CustomProgressBarLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressBarLayer.swift; sourceTree = "<group>"; };
+		A762B7452161116800DBB4EF /* CustomProgressBarLayer2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressBarLayer2.swift; sourceTree = "<group>"; };
+		A762B749216189AF00DBB4EF /* CustomFetchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFetchView.swift; sourceTree = "<group>"; };
+		A762B74B2161ACEE00DBB4EF /* CustomScrollView4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView4.swift; sourceTree = "<group>"; };
+		A762B74D2161B0F800DBB4EF /* CustomCroppedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCroppedImage.swift; sourceTree = "<group>"; };
+		A762B74F2161D9A000DBB4EF /* green_postit.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = green_postit.jpg; sourceTree = "<group>"; };
+		A762B7512161DC4D00DBB4EF /* yellow_postit.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellow_postit.jpg; sourceTree = "<group>"; };
+		A762B7532161E4CA00DBB4EF /* default_postit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_postit.png; sourceTree = "<group>"; };
 		A765A96C213C88A100881F1B /* GroupCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateView.swift; sourceTree = "<group>"; };
 		A765A96E213C88F900881F1B /* GroupCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateViewController.swift; sourceTree = "<group>"; };
 		A765A970213C89DA00881F1B /* GroupCreateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreateTableViewCell.swift; sourceTree = "<group>"; };
@@ -1033,6 +1051,17 @@
 			path = Contact;
 			sourceTree = "<group>";
 		};
+		A762B740215F719900DBB4EF /* CustomProgressBar */ = {
+			isa = PBXGroup;
+			children = (
+				A762B741215F71AE00DBB4EF /* CustomProgressBar.swift */,
+				A762B7432160FB7000DBB4EF /* CustomProgressBarLayer.swift */,
+				A762B7452161116800DBB4EF /* CustomProgressBarLayer2.swift */,
+				A762B749216189AF00DBB4EF /* CustomFetchView.swift */,
+			);
+			path = CustomProgressBar;
+			sourceTree = "<group>";
+		};
 		A765A96B213C887700881F1B /* GroupCreation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1084,6 +1113,7 @@
 		A77D98762159174B002F9A02 /* ShareMenuViews */ = {
 			isa = PBXGroup;
 			children = (
+				A762B740215F719900DBB4EF /* CustomProgressBar */,
 				A7D4E9872153A72900081859 /* ColorPaletteView */,
 				A77EC7D8215D1CC600AE3D3E /* ShareMainViews */,
 				A77EC7D7215D1C9B00AE3D3E /* CapturedViews */,
@@ -1117,11 +1147,13 @@
 		A77EC7D7215D1C9B00AE3D3E /* CapturedViews */ = {
 			isa = PBXGroup;
 			children = (
-				A74240702145976000E20A58 /* CustomScrollView2.swift */,
 				A74240812146DB4D00E20A58 /* CustomCameraCapturedImageView.swift */,
 				A7F8F1D921490F6A00EE45B6 /* CustomCapturedVideoView.swift */,
 				A7C92D8721500F5600432D70 /* CustomCapturedMainBackground.swift */,
 				A7D4E9712150E9AE00081859 /* CustomAddingTextView.swift */,
+				A762893B215E56A40083EE57 /* CustomScrollViewContainer.swift */,
+				A762B74B2161ACEE00DBB4EF /* CustomScrollView4.swift */,
+				A762B74D2161B0F800DBB4EF /* CustomCroppedImage.swift */,
 			);
 			path = CapturedViews;
 			sourceTree = "<group>";
@@ -1176,6 +1208,7 @@
 		A79A766A20C5BDB600FCE198 /* MediaFiles */ = {
 			isa = PBXGroup;
 			children = (
+				A762B7512161DC4D00DBB4EF /* yellow_postit.jpg */,
 				A79A766B20C5BDBE00FCE198 /* Images */,
 			);
 			path = MediaFiles;
@@ -1184,6 +1217,8 @@
 		A79A766B20C5BDBE00FCE198 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A762B7532161E4CA00DBB4EF /* default_postit.png */,
+				A762B74F2161D9A000DBB4EF /* green_postit.jpg */,
 				A7F8F1DB214944E800EE45B6 /* microphoneMain.jpeg */,
 				A7F35D9B21169A92005DA851 /* alarm_x.png */,
 				A735C57420D8447A00B7B1E2 /* 8771.jpg */,
@@ -1463,12 +1498,15 @@
 			files = (
 				A735C57520D8447B00B7B1E2 /* 8771.jpg in Resources */,
 				A7087938212DAD1B0012C7F6 /* Artboard 1.png in Resources */,
+				A762B7502161D9A000DBB4EF /* green_postit.jpg in Resources */,
 				A7F35D9C21169A94005DA851 /* alarm_x.png in Resources */,
 				A79A767620C5BF6600FCE198 /* cancel_gray.png in Resources */,
 				4564E46320B978F9003B0D16 /* Localizable.strings in Resources */,
+				A762B7542161E4CA00DBB4EF /* default_postit.png in Resources */,
 				A765A97B213C993D00881F1B /* photo-camera-outline-2.png in Resources */,
 				4564E41D20B95576003B0D16 /* LaunchScreen.storyboard in Resources */,
 				A79A766E20C5BDE800FCE198 /* user.png in Resources */,
+				A762B7522161DC4E00DBB4EF /* yellow_postit.jpg in Resources */,
 				4564E44220B958C7003B0D16 /* GoogleService-Info.plist in Resources */,
 				45356B2720C2F96E00E0733F /* Main.storyboard in Resources */,
 				A774ACA62132087000848B79 /* back_right.png in Resources */,
@@ -1606,6 +1644,7 @@
 				A7E2F84C2111EFD600214066 /* RESearchResult_error.swift in Sources */,
 				45356B2320BDF34D00E0733F /* PasswordResetViewController.swift in Sources */,
 				A75B459A2133F691009D2701 /* SubjectChangeViewController.swift in Sources */,
+				A762B74C2161ACEE00DBB4EF /* CustomScrollView4.swift in Sources */,
 				A77D987A21591915002F9A02 /* TextMenuView.swift in Sources */,
 				A71CC358215B44F7002A2468 /* PhotoCollectionViewCell2.swift in Sources */,
 				45354813214E6CCB00FC81F5 /* DifferenceCalculator.swift in Sources */,
@@ -1620,6 +1659,7 @@
 				A75B4598213307DE009D2701 /* ExitTableViewCell.swift in Sources */,
 				A7086B53215B554100C570C1 /* ImageManagementView.swift in Sources */,
 				A7812EB12124981400460117 /* SlidingView4.swift in Sources */,
+				A762B742215F71AE00DBB4EF /* CustomProgressBar.swift in Sources */,
 				454285A2214A95BA00F68FAC /* REMedia.swift in Sources */,
 				451E9F022139318E00185925 /* RELocation.swift in Sources */,
 				A7F35D922116811B005DA851 /* REFriendRequestList_resultArray_item.swift in Sources */,
@@ -1719,6 +1759,8 @@
 				A7D4E9742151444700081859 /* ColorPaletteCollectionViewCell.swift in Sources */,
 				A7276D3C2110797600CAC67C /* SearchViewController.swift in Sources */,
 				A7C92D8821500F5600432D70 /* CustomCapturedMainBackground.swift in Sources */,
+				A762893C215E56A40083EE57 /* CustomScrollViewContainer.swift in Sources */,
+				A762B74A216189AF00DBB4EF /* CustomFetchView.swift in Sources */,
 				A708792E212B250A0012C7F6 /* REGroupRequest_groupParticipantArray_item.swift in Sources */,
 				A7E2F85B2114A6F700214066 /* REUserProfile_error.swift in Sources */,
 				454285AB214A95FC00F68FAC /* REPostListResponse.swift in Sources */,
@@ -1764,10 +1806,12 @@
 				4564E47320B9A7FD003B0D16 /* Validation.swift in Sources */,
 				454285AE214A960600F68FAC /* REBucketUploadResponse.swift in Sources */,
 				A7812EAD21247EED00460117 /* MenuBar4.swift in Sources */,
+				A762B74E2161B0F800DBB4EF /* CustomCroppedImage.swift in Sources */,
 				A7276D392110790100CAC67C /* SearchView.swift in Sources */,
 				A77D98712158EC48002F9A02 /* ShareMenuViews.swift in Sources */,
 				A708792321276D080012C7F6 /* Item4CollectionViewCell.swift in Sources */,
 				A710F42521401CDA00ECC5DA /* ShareTypeSliderView.swift in Sources */,
+				A762B7442160FB7000DBB4EF /* CustomProgressBarLayer.swift in Sources */,
 				A79A768220C6564900FCE198 /* ContainerFriendViewController.swift in Sources */,
 				A710F41B213E7D2E00ECC5DA /* Protocols.swift in Sources */,
 				A7087928212AB7360012C7F6 /* ImageVideoPickerHandler.swift in Sources */,
@@ -1786,7 +1830,6 @@
 				A721BFF921176F000037A62D /* totoViewController.swift in Sources */,
 				45356B2220BDF34D00E0733F /* ExtensionPasswordReset.swift in Sources */,
 				A7C92D862150075400432D70 /* CustomCameraView.swift in Sources */,
-				A74240712145976000E20A58 /* CustomScrollView2.swift in Sources */,
 				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
 				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
 				452001CA20CBB7AB00C1ED22 /* MapView.swift in Sources */,
@@ -1795,6 +1838,7 @@
 				A77EC7D5215D1C1600AE3D3E /* CustomVideoView.swift in Sources */,
 				4542859A214A94C700F68FAC /* RECommentListResponse.swift in Sources */,
 				A79A768020C5CB1B00FCE198 /* FriendsTableViewCell.swift in Sources */,
+				A762B7462161116800DBB4EF /* CustomProgressBarLayer2.swift in Sources */,
 				4564E45A20B97387003B0D16 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

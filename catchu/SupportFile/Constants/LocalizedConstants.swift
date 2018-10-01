@@ -102,6 +102,8 @@ struct LocalizedConstants {
             static let createGroupName = NSLocalizedString("createGroupName", comment: "")
             static let saved = NSLocalizedString("saved", comment: "")
             static let failed = NSLocalizedString("failed", comment: "")
+            static let fetched = NSLocalizedString("fetched", comment: "")
+            static let fetching = NSLocalizedString("fetching", comment: "")
             
         }
     }

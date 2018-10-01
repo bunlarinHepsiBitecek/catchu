@@ -62,9 +62,12 @@ class ShareDataView: UIView {
     }
 }
 
+// MARK: - ShareDataProtocols
 extension ShareDataView : ShareDataProtocols {
     
     func returnSliderWidth() -> CGFloat {
+        
+        
         
         return UIScreen.main.bounds.width - (mainContainerLeadingConstraint.constant + mainContainerTrailingConstraint.constant)
         

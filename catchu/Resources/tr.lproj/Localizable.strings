@@ -53,6 +53,8 @@
 "createGroupName" = "Grubunun için bir isim belirleyebilirsiniz.";
 "saved" = "OK 😜";
 "failed" = "Opps 😭";
+"fetched" = "Fetched";
+"fetching" = "Fetching From ICloud";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";

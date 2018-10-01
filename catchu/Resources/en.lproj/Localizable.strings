@@ -59,6 +59,8 @@
 "createGroupName" = "You can set a specific name for your group.";
 "saved" = "Saved";
 "failed" = "Failed";
+"fetched" = "Fetched From ICloud";
+"fetching" = "Fetching From ICloud";
 
 
 // Location Services

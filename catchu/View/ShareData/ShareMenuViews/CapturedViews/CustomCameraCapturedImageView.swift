@@ -20,7 +20,6 @@ class CustomCameraCapturedImageView: UIView {
 //    private var customAddingTextView : CustomAddingTextView?
     
     var activityIndicator: UIActivityIndicatorView!
-    var tempView : UIView!
     var labelText : UILabel?
     
     lazy var menuContainerView : UIView = {

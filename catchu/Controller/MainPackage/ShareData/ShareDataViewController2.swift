@@ -61,6 +61,7 @@ extension ShareDataViewController2 {
         
         shareTypeSliderView.translatesAutoresizingMaskIntoConstraints = false
         shareTypeSliderView.delegate = shareDataView
+        shareTypeSliderView.delegateForViewController = self
         shareTypeSliderView.initialize()
         self.shareDataView.addSubview(shareTypeSliderView)
         

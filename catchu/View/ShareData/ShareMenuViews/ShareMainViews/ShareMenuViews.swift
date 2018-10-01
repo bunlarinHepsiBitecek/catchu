@@ -128,10 +128,14 @@ extension ShareMenuViews {
         // it means video view is activated
         if activeIndex == 2 {
             customVideoViewCaptureManagement()
+            keyboardManagementOfTextMenuView(active: false)
             
         } else if activeIndex == 1 {
             // it means that camera gallery view is activated
-            
+            keyboardManagementOfTextMenuView(active: false)
+        
+        } else if activeIndex == 0 {
+            keyboardManagementOfTextMenuView(active: true)
         }
         
     }
@@ -154,6 +158,20 @@ extension ShareMenuViews {
         
     }
     
+    private func keyboardManagementOfTextMenuView(active : Bool) {
+        
+        guard customTextMenu != nil else {
+            return
+        }
+        
+        if active {
+            customTextMenu!.focusTextView()
+        } else {
+            customTextMenu!.stopFocusingTextView()
+        }
+        
+        
+    }
     
 }
 
@@ -161,6 +179,7 @@ extension ShareMenuViews {
 extension ShareMenuViews : UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("scrollView.contentOffset.x : \(scrollView.contentOffset.x)")
         delegate.resizeShareTypeSliderConstraint(input: scrollView.contentOffset.x)
     }
     

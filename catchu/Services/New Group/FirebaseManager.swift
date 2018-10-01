@@ -286,7 +286,7 @@ class FirebaseManager {
             return
         }
         
-        currentUser.getIDTokenResult(forcingRefresh: false) { (result, error) in
+        currentUser.getIDTokenResult { (result, error) in
             
             if let error = error {
                 self.handleError(error: error)

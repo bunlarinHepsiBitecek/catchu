@@ -18,10 +18,13 @@ class ShareTypeSliderView: UIView {
     @IBOutlet var sliderWidthConstraint: NSLayoutConstraint!
     @IBOutlet var sliderLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet var closeView: UIImageView!
+    
     let sliderImageArray = ["edit", "gallery", "play-button"]
     
     weak var delegate : ShareDataProtocols!
     weak var delegateForFunction : ShareDataProtocols!
+    weak var delegateForViewController : ShareDataProtocols!
     
     var selectedIndexPath = IndexPath()
     
@@ -39,16 +42,20 @@ class ShareTypeSliderView: UIView {
         // setup view settings
         setCollectionViewSettings()
         setWidthForSliderObject()
+        addGestureRecognizerToCloseView()
         
     }
     
 }
 
+// MARK: - ShareDataProtocols
 extension ShareTypeSliderView : ShareDataProtocols {
     
     func resizeShareTypeSliderConstraint(input: CGFloat) {
         
-        sliderLeadingConstraint.constant = input / 3
+        let divider = UIScreen.main.bounds.size.width / (shareTypeCollectionView.contentSize.width / 3)
+        
+        sliderLeadingConstraint.constant = (input) / divider
         
     }
     
@@ -106,7 +113,7 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
         
         print("deviceWidthSize : \(String(describing: deviceWidthSize))")
         
-        return (deviceWidthSize) / 3
+        return (deviceWidthSize - 88) / 3
         
     }
     
@@ -145,4 +152,24 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
     }
     
 }
+
+extension ShareTypeSliderView : UIGestureRecognizerDelegate {
+
+    func addGestureRecognizerToCloseView() {
+    
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ShareTypeSliderView.closeView(_:)))
+        tapGestureRecognizer.delegate = self
+        closeView.isUserInteractionEnabled = true
+        closeView.addGestureRecognizer(tapGestureRecognizer)
+    
+    }
+    
+    @objc func closeView(_ sender : UITapGestureRecognizer) {
+        
+        delegateForViewController.dismisViewController()
+        
+    }
+    
+}
+
 

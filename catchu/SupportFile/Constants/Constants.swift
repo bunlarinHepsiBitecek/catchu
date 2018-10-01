@@ -70,6 +70,7 @@ struct Constants {
         static let aminationTime_07 : TimeInterval = 0.7
         static let aminationTime_05 : TimeInterval = 0.5
         static let aminationTime_03 : TimeInterval = 0.3
+        static let aminationTime_02 : TimeInterval = 0.2
         
     }
     
