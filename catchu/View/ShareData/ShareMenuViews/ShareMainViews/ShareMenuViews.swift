@@ -44,7 +44,7 @@ extension ShareMenuViews {
         print("self.frame.height : \(self.frame.height)")
         
         mainScrollView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        mainScrollView.contentSize = CGSize(width: self.frame.width * CGFloat(3), height: self.frame.height)
+        mainScrollView.contentSize = CGSize(width: self.frame.width * CGFloat(2), height: self.frame.height)
         mainScrollView.isPagingEnabled = true
         mainScrollView.backgroundColor = UIColor.black
         
@@ -71,7 +71,7 @@ extension ShareMenuViews {
     
     func configureSubviewsFrames() {
         
-        setupTextViewFrame()
+//        setupTextViewFrame()
         setupCameraGalleryMenuViewFrame()
         setupVideoMenuViewFrame()
         
@@ -93,7 +93,7 @@ extension ShareMenuViews {
     
     func setupCameraGalleryMenuViewFrame() {
         
-        customCameraGalleryMenu = CameraGalleryMenuView(frame: CGRect(x: self.frame.width * 1, y: 0, width: self.frame.width, height: self.frame.height))
+        customCameraGalleryMenu = CameraGalleryMenuView(frame: CGRect(x: self.frame.width * 0, y: 0, width: self.frame.width, height: self.frame.height))
         
         guard customCameraGalleryMenu != nil else {
             return
@@ -105,7 +105,7 @@ extension ShareMenuViews {
     
     func setupVideoMenuViewFrame() {
         
-        customVideoMenu = VideoMenuView(frame: CGRect(x: self.frame.width * 2, y: 0, width: self.frame.width, height: self.frame.height))
+        customVideoMenu = VideoMenuView(frame: CGRect(x: self.frame.width * 1, y: 0, width: self.frame.width, height: self.frame.height))
         
         guard customVideoMenu != nil else {
             return
@@ -117,7 +117,7 @@ extension ShareMenuViews {
     
     func addMenuViews() {
         
-        mainScrollView.addSubview(customTextMenu!)
+//        mainScrollView.addSubview(customTextMenu!)
         mainScrollView.addSubview(customCameraGalleryMenu!)
         mainScrollView.addSubview(customVideoMenu!)
         
@@ -126,17 +126,19 @@ extension ShareMenuViews {
     private func menuViewCoordination(activeIndex : Int) {
         
         // it means video view is activated
-        if activeIndex == 2 {
+        if activeIndex == 1 {
             customVideoViewCaptureManagement()
             keyboardManagementOfTextMenuView(active: false)
             
-        } else if activeIndex == 1 {
+        } else if activeIndex == 0 {
             // it means that camera gallery view is activated
             keyboardManagementOfTextMenuView(active: false)
         
-        } else if activeIndex == 0 {
-            keyboardManagementOfTextMenuView(active: true)
         }
+        
+//        else if activeIndex == 0 {
+//            keyboardManagementOfTextMenuView(active: true)
+//        }
         
     }
     

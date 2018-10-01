@@ -20,7 +20,7 @@ class ShareTypeSliderView: UIView {
     
     @IBOutlet var closeView: UIImageView!
     
-    let sliderImageArray = ["edit", "gallery", "play-button"]
+    let sliderImageArray = ["gallery", "play-button"]
     
     weak var delegate : ShareDataProtocols!
     weak var delegateForFunction : ShareDataProtocols!
@@ -53,7 +53,7 @@ extension ShareTypeSliderView : ShareDataProtocols {
     
     func resizeShareTypeSliderConstraint(input: CGFloat) {
         
-        let divider = UIScreen.main.bounds.size.width / (shareTypeCollectionView.contentSize.width / 3)
+        let divider = UIScreen.main.bounds.size.width / (shareTypeCollectionView.contentSize.width / 2)
         
         sliderLeadingConstraint.constant = (input) / divider
         
@@ -95,7 +95,7 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 3
+        return 2
         
     }
     
@@ -113,7 +113,7 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
         
         print("deviceWidthSize : \(String(describing: deviceWidthSize))")
         
-        return (deviceWidthSize - 88) / 3
+        return (deviceWidthSize - 88) / 2
         
     }
     
