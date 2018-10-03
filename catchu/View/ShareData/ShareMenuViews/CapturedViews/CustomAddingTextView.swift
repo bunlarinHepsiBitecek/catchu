@@ -133,6 +133,8 @@ class CustomAddingTextView: UIView {
         self.isOpaque = true
         self.delegate = delegate
         
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        
         setupMajorSettings()
         setupColorPaletteSettings()
         addObservers()
@@ -257,7 +259,7 @@ extension CustomAddingTextView {
 
         guard let customColorPalette = customColorPalette else { return }
 
-        customColorPalette.addingTextViewDelegate = self
+        customColorPalette.delegate = self
         textView.inputAccessoryView = customColorPalette
         
     }
@@ -303,7 +305,7 @@ extension CustomAddingTextView {
     @objc func keyboardViewChangeFrame(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            print("keyboard heigth : \(keyboardSize.height)")
+            print("keyboard heigth 3: \(keyboardSize.height)")
             
             keyboardHeigth = keyboardSize.height
             
@@ -316,7 +318,7 @@ extension CustomAddingTextView {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
 
-            print("keyboard heigth : \(keyboardSize.height)")
+            print("keyboard heigth 4: \(keyboardSize.height)")
             
             keyboardHeigth = keyboardSize.height
             

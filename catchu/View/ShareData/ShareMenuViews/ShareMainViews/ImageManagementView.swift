@@ -14,6 +14,22 @@ class ImageManagementView: UIView {
 //    private var customCameraView : CustomCameraView?
     var customCameraView : CustomCameraView?
     var captureImageView : CustomCameraCapturedImageView?
+    var customSelectedImageContainer : CustomScrollViewContainer?
+    var croppedImage : CustomCroppedImage?
+    
+    var customFetchView : CustomFetchView?
+    
+//    lazy var customFetchView: CustomFetchView = {
+//
+//        let temp = CustomFetchView(progressInfo: CircleAnimationProcess.start, inputProgressValue: 0)
+//        temp.translatesAutoresizingMaskIntoConstraints = false
+//        temp.isUserInteractionEnabled = true
+//        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
+//
+//        return temp
+//    }()
+    
+    var fetchFromIcloud : Bool = false
     
     public var photos = [PHAsset]()
 
@@ -65,12 +81,50 @@ class ImageManagementView: UIView {
         setupViews()
         initializeCustomCameraView()
         initializeCapturedImageView()
+        initializeSelectedImageView()
+        initializeCroppedImageView()
         
         getPhotosFromGallery()
+        
+//        setupFetchingView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+//    override func layoutSubviews() {
+//
+//        setupFetchingView()
+//
+//    }
+    
+    func setupFetchingView() {
+        
+        let x = self.center.x
+        let y = self.center.y
+        let position = CGPoint(x: x, y: y)
+        
+        customFetchView = CustomFetchView(frame: CGRect(x: 0, y: 0, width: 200, height: 80))
+        
+        guard customFetchView != nil else {
+            return
+        }
+        
+        customFetchView!.center = position
+        
+        customFetchView!.layer.cornerRadius = 10
+        customFetchView!.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)
+        
+        self.addSubview(customFetchView!)
+        
+        activationManagerOfFetchView(activate: false)
+        
+//        let safe = self.safeAreaLayoutGuide
+//        
+//        customFetchView!.centerYAnchor.constraint(equalTo: safe.centerYAnchor).isActive = true
+//        customFetchView!.centerXAnchor.constraint(equalTo: safe.centerXAnchor).isActive = true
+        
     }
     
 }
@@ -81,6 +135,7 @@ extension ImageManagementView {
     private func setupViews() {
         
         self.addSubview(collectionViewForImageManagement)
+//        self.addSubview(customFetchView)
         
         let safe = self.safeAreaLayoutGuide
         
@@ -91,7 +146,13 @@ extension ImageManagementView {
             collectionViewForImageManagement.topAnchor.constraint(equalTo: safe.topAnchor),
             collectionViewForImageManagement.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             
+//            customFetchView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+//            customFetchView.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+//            customFetchView.heightAnchor.constraint(equalToConstant: 80),
+//            customFetchView.widthAnchor.constraint(equalToConstant: 200)
+            
             ])
+        
         
     }
     
@@ -100,6 +161,7 @@ extension ImageManagementView {
         //        MediaLibraryManager.shared.success = nil
         
         MediaLibraryManager.shared.delegateForGalleryPermission = self
+        MediaLibraryManager.shared.delegateForShareDataProtocols = self
         MediaLibraryManager.shared.loadPhotos { (phAssetResult) in
             
             //            print("phAssetResult.count : \(String(describing: phAssetResult))")
@@ -163,6 +225,67 @@ extension ImageManagementView {
         
     }
     
+    func initializeSelectedImageView() {
+        
+        customSelectedImageContainer = CustomScrollViewContainer()
+        customSelectedImageContainer!.setDelegate(delegate: self)
+        
+        customSelectedImageContainer!.translatesAutoresizingMaskIntoConstraints = false
+        
+        UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            
+            self.addSubview(self.customSelectedImageContainer!)
+            
+            let safe = self.safeAreaLayoutGuide
+            
+            NSLayoutConstraint.activate([
+                
+                self.customSelectedImageContainer!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+                self.customSelectedImageContainer!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+                self.customSelectedImageContainer!.topAnchor.constraint(equalTo: safe.topAnchor),
+                self.customSelectedImageContainer!.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+                
+                ])
+        })
+        
+    }
+    
+    func initializeCroppedImageView() {
+        
+        croppedImage = CustomCroppedImage()
+        
+        croppedImage!.translatesAutoresizingMaskIntoConstraints = false
+        
+        UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            
+            self.addSubview(self.croppedImage!)
+            
+            let safe = self.safeAreaLayoutGuide
+            
+            NSLayoutConstraint.activate([
+                
+                self.croppedImage!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+                self.croppedImage!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+                self.croppedImage!.topAnchor.constraint(equalTo: safe.topAnchor),
+                self.croppedImage!.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+                
+                ])
+        })
+        
+    }
+    
+    func startCropImageView(inputImage : UIImage) {
+        
+        guard customSelectedImageContainer != nil else {
+            return
+        }
+        
+        customSelectedImageContainer!.setImage(inputImage: inputImage)
+        
+    }
+    
+    
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -218,13 +341,10 @@ extension ImageManagementView : UICollectionViewDelegate, UICollectionViewDataSo
                 DispatchQueue.main.async {
                     
                     UIView.animate(withDuration: 0.4) {
-                        
-                        //                        self.initiateSelectedImageView2()
-                        //                        self.selectedSpecialView.setImage(input: image)
-                        
-//                        self.initiateSelectedImageView4(input: image)
+                       
+                        self.startCropImageView(inputImage : image)
+                       
                     }
-                    
                 }
             }
         }
@@ -248,6 +368,16 @@ extension ImageManagementView : UICollectionViewDelegate, UICollectionViewDataSo
 // MARK: - ShareDataProtocols
 extension ImageManagementView : ShareDataProtocols {
 
+    func setCroppedImage(inputImage: UIImage) {
+        
+        guard croppedImage != nil else {
+            return
+        }
+        
+        croppedImage!.setImage(inputImage: inputImage)
+        
+    }
+    
     func initiateCustomCamera() throws {
         
         guard customCameraView != nil else {
@@ -268,6 +398,80 @@ extension ImageManagementView : ShareDataProtocols {
         
     }
     
+    func startingICloudDownloadAnimation(animation: CircleAnimationProcess, inputProgressValue: CGFloat) {
+        
+        switch animation {
+        case .start:
+            print("start")
+            startCustomProgressView()
+            
+        case .stop:
+            print("stop")
+            stopCustomProgressView()
+        case .progress:
+            print("progress")
+            progressCustomProgressView(inputProgressValue: inputProgressValue)
+        }
+        
+    }
+    
+    func progressCustomProgressView(inputProgressValue: CGFloat) {
+        
+        print("progressCustomProgressView starts")
+        print("inputProgressValue : \(inputProgressValue)")
+        
+        guard customFetchView != nil else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.customFetchView!.setProgress(progress: inputProgressValue)
+        }
+        
+        
+    }
+    
+    func stopCustomProgressView() {
+        
+        print("stopCustomProgressView starts")
+        
+        guard customFetchView != nil else {
+            return
+        }
+        
+        customFetchView!.setProgress(progress: 100)
+        activationManagerOfFetchView(activate: false)
+        
+    }
+    
+    func startCustomProgressView() {
+        
+        print("startCustomProgressView starts")
+        
+        UIView.transition(with: self, duration: Constants.AnimationValues.aminationTime_02, options: .transitionCrossDissolve, animations: {
+            
+            self.activationManagerOfFetchView(activate: true)
+            
+        })
+        
+    }
+    
+    func activationManagerOfFetchView(activate : Bool) {
+        
+        guard customFetchView != nil else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            if activate {
+                self.customFetchView!.alpha = 1
+            } else {
+                self.customFetchView!.alpha = 0
+            }
+        }
+        
+    }
+    
 }
 
 // MARK: - PermissionProtocol
@@ -279,11 +483,6 @@ extension ImageManagementView : PermissionProtocol {
         print("status : \(status)")
         
         getPhotosFromGallery()
-        
-        //        DispatchQueue.main.async {
-        //            self.containerView.removeFromSuperview()
-        //            self.photoCollectionView.alpha = 1
-        //        }
         
     }
     

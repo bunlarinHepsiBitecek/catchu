@@ -18,6 +18,7 @@ class MediaLibraryManager {
     
     weak var delegateForExternalSources : PermissionProtocol!
     weak var delegateForGalleryPermission : PermissionProtocol!
+    weak var delegateForShareDataProtocols : ShareDataProtocols!
     
     func loadPhotos(success:Success!){
         self.success = success
@@ -98,7 +99,7 @@ class MediaLibraryManager {
         
         let fetchOptions: PHFetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit20
+        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit100
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         fetchResult.enumerateObjects({ (object, index, stop) -> Void in
             self.assets.append(object)
@@ -107,12 +108,64 @@ class MediaLibraryManager {
     }
     
     public func imageFrom(asset:PHAsset, size:CGSize, compilation:@escaping (_ photo:UIImage)->Void){
+        
+        print("imageFrom starts")
+        print("size : \(size)")
+        
+        var progressFlag = true
+        
+        let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
+        let cache = PHCachingImageManager()
+
+        options.isNetworkAccessAllowed = true;
         options.isSynchronous = false
-        options.deliveryMode = (size == PHImageManagerMaximumSize) ? .highQualityFormat : .opportunistic
-        PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (image, attributes) in
-            compilation(image!)
+//        options.resizeMode = .exact
+        options.deliveryMode = .highQualityFormat
+        //options.deliveryMode = (size == PHImageManagerMaximumSize) ? .highQualityFormat : .opportunistic
+      
+//        options.progressHandler = { (progress, error, stop, info) in
+//            
+//            if progressFlag {
+//                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.start, inputProgressValue: CGFloat(progress * 100))
+//                progressFlag = false
+//            }
+//
+//            if(progress == 1.0){
+//                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.stop, inputProgressValue: 100)
+//            } else {
+//                print("devammm : \(progress)")
+//
+//                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.progress, inputProgressValue: CGFloat(progress * 100))
+//            }
+//        }
+        
+//        cache.startCachingImages(for: assets, targetSize: size, contentMode: .aspectFill, options: options)
+//
+//        cache.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (image, attributes) in
+//
+//            if let image = image {
+//                compilation(image)
+//            }
+//
+//        })
+
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (image, info) in
+
+//            if let x = PHImageResultIsInCloudKey {
+//                print("ICLOUD dan aldık")
+//            }
+            
+            if let result = info![PHImageResultIsInCloudKey] {
+                print("ICLOUD dan aldık")
+            }
+            
+            if let image = image {
+                compilation(image)
+            }
+
         })
+        
     }
     
     // MARK: Videos

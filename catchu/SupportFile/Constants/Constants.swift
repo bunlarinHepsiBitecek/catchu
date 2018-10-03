@@ -71,6 +71,7 @@ struct Constants {
         static let aminationTime_07 : TimeInterval = 0.7
         static let aminationTime_05 : TimeInterval = 0.5
         static let aminationTime_03 : TimeInterval = 0.3
+        static let aminationTime_02 : TimeInterval = 0.2
         
     }
     
@@ -209,6 +210,7 @@ struct Constants {
         static let GroupCreateViewController: String = "GroupCreateViewController"
         static let ShareDataViewController: String = "ShareDataViewController"
         static let ShareDataViewController2: String = "ShareDataViewController2"
+        static let FinalShareInfoViewController: String = "FinalShareInfoViewController"
         
     }
     

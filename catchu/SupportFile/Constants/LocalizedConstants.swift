@@ -108,6 +108,8 @@ struct LocalizedConstants {
             static let createGroupName = NSLocalizedString("createGroupName", comment: "")
             static let saved = NSLocalizedString("saved", comment: "")
             static let failed = NSLocalizedString("failed", comment: "")
+            static let fetched = NSLocalizedString("fetched", comment: "")
+            static let fetching = NSLocalizedString("fetching", comment: "")
             
         }
     }
@@ -194,6 +196,15 @@ struct LocalizedConstants {
         static let Email = NSLocalizedString("Email", comment: "")
         static let Phone = NSLocalizedString("Phone", comment: "")
         static let Gender = NSLocalizedString("Gender", comment: "")
+        
+    }
+    
+    struct PostAttachments {
+
+        static let friends = NSLocalizedString("friends", comment: "")
+        static let group = NSLocalizedString("group", comment: "")
+        static let publicInfo = NSLocalizedString("public", comment: "")
+        static let onlyMe = NSLocalizedString("onlyMe", comment: "")
         
     }
     

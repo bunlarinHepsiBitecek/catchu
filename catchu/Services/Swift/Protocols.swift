@@ -9,15 +9,17 @@
 import UIKit
 import Photos
 
-protocol ViewPresentationProtocols {
+protocol ViewPresentationProtocols : class {
     
     func dismissLoginViews()
+    func dismissFinalShareViewController()
     
 }
 
 extension ViewPresentationProtocols {
     
     func dismissLoginViews() {}
+    func dismissFinalShareViewController() {}
     
 }
 
@@ -76,6 +78,12 @@ protocol ShareDataProtocols: class {
     func forceScrollMenuScrollView(selectedMenuIndex : Int)
     func setCapturedImage(inputImage : UIImage, cameraPosition : CameraPosition)
     func customVideoViewSessionManagement(inputIndex : Int)
+    func startingICloudDownloadAnimation(animation : CircleAnimationProcess, inputProgressValue : CGFloat)
+    func setCroppedImage(inputImage : UIImage)
+    func closeShareDataViewController2()
+    func nextToFinalSharePage()
+    func selectedPostAttachmentTypeManagement(returned : PostAttachmentView)
+    func clearPostAttachmentType()
     
 }
 
@@ -102,6 +110,24 @@ extension ShareDataProtocols {
     func forceScrollMenuScrollView(selectedMenuIndex : Int) {}
     func setCapturedImage(inputImage : UIImage, cameraPosition : CameraPosition) {}
     func customVideoViewSessionManagement(inputIndex : Int) {}
+    func startingICloudDownloadAnimation(animation : CircleAnimationProcess, inputProgressValue : CGFloat) {}
+    func setCroppedImage(inputImage : UIImage) {}
+    func closeShareDataViewController2() {}
+    func nextToFinalSharePage() {}
+    func selectedPostAttachmentTypeManagement(returned : PostAttachmentView) {}
+    func clearPostAttachmentType() {}
+    
+}
+
+protocol TabBarControlProtocols : class {
+    
+    func tabBarHiddenManagement(hidden : Bool)
+    
+}
+
+extension TabBarControlProtocols {
+    
+    func tabBarHiddenManagement(hidden : Bool) {}
     
 }
 

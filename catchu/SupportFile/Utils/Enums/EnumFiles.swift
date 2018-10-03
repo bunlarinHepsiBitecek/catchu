@@ -149,3 +149,16 @@ enum DelegationErrors: Swift.Error {
     case CustomCameraViewIsNil
 }
 
+enum CircleAnimationProcess {
+    case start
+    case stop
+    case progress
+}
+
+enum PostAttachmentTypes {
+    case publicPost
+    case friends
+    case group
+    case onlyMe
+}
+

@@ -301,6 +301,7 @@ class FirebaseManager {
         }
         
         currentUser.getIDTokenResult { (result, error) in
+            
             if let error = error {
                 self.handleError(error: error)
                 LoaderController.shared.removeLoader()

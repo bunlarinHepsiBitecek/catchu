@@ -69,31 +69,34 @@ class APIGatewayManager {
     ///   - completion: REUserProfile
     func getUserProfileInfo(userid : String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
-        client.usersGet(authorization: "", userid: userid).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        
+            self.client.usersGet(authorization: tokenResult.token, userid: userid).continueWith { (task) -> Any? in
                 
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                if (task.result?.error?.code?.boolValue)! {
+                if task.error != nil {
                     
-                    if let result = task.result {
+                    print("error : \(String(describing: task.error?.localizedDescription))")
+                    
+                    AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+                    
+                    LoaderController.shared.removeLoader()
+                    
+                } else {
+                    
+                    if (task.result?.error?.code?.boolValue)! {
                         
-                        completion(result, true)
+                        if let result = task.result {
+                            
+                            completion(result, true)
+                        }
+                        
                     }
                     
                 }
                 
+                return nil
+                
             }
-            
-            return nil
-            
         }
         
     }

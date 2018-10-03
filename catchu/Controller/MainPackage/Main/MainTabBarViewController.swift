@@ -55,8 +55,13 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             
             if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ShareDataViewController2) as? ShareDataViewController2 {
                 
+                addTransitionToPresentationOfShareViews()
+                
+                tabBarHiddenManagement(hidden: true)
+                destinationController.delegate = self
                 destinationController.priorActiveTab = selectedIndexInfo
-                self.present(destinationController, animated: true, completion: nil)
+//                self.present(destinationController, animated: true, completion: nil)
+                self.present(destinationController, animated: false, completion: nil)
                 
             }
             
@@ -68,6 +73,29 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         
     }
     
+    func addTransitionToPresentationOfShareViews() {
+        
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromTop
+        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        
+    }
     
+    
+    
+}
+
+extension MainTabBarViewController : TabBarControlProtocols {
+    
+    func tabBarHiddenManagement(hidden: Bool) {
+        if hidden {
+            self.tabBar.isHidden = true
+        } else {
+            self.tabBar.isHidden = false
+        }
+    }
     
 }

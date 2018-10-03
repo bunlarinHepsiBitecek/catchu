@@ -65,12 +65,12 @@ final class CustomScrollView2: UIScrollView {
         
         print("imageView size : \(imageView.frame)")
         
-        imageView.image = image
-        imageView.sizeToFit()
-        addSubview(imageView)
-        contentSize = imageView.bounds.size
-        
-        print("imageView size : \(imageView.frame)")
+//        imageView.image = image
+//        imageView.sizeToFit()
+//        addSubview(imageView)
+//        contentSize = imageView.bounds.size
+//
+//        print("imageView size : \(imageView.frame)")
         
         contentInsetAdjustmentBehavior = .never // Adjust content according to safe area if necessary
         showsVerticalScrollIndicator = false
@@ -87,13 +87,28 @@ final class CustomScrollView2: UIScrollView {
         setupViews()
         addGestures()
         
+        activationManagementDefault(granted: false)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Helper methods
+}
+
+// MARK: - major functions
+extension CustomScrollView2 {
+    
+    func activationManagementDefault(granted : Bool) {
+        
+        if granted {
+            self.alpha = 1
+        } else {
+            self.alpha = 0
+        }
+        
+    }
     
     func setZoomScale() {
         
@@ -132,7 +147,7 @@ final class CustomScrollView2: UIScrollView {
         
         NSLayoutConstraint.activate([
             closeButtonContainer.topAnchor.constraint(equalTo: safeAreaForMainView.topAnchor, constant: 10),
-            closeButtonContainer.trailingAnchor.constraint(equalTo: safeAreaForMainView.trailingAnchor, constant: -10),
+            closeButtonContainer.leadingAnchor.constraint(equalTo: safeAreaForMainView.leadingAnchor, constant: 10),
             closeButtonContainer.heightAnchor.constraint(equalToConstant: 30),
             closeButtonContainer.widthAnchor.constraint(equalToConstant: 30),
             
@@ -153,7 +168,6 @@ final class CustomScrollView2: UIScrollView {
             
             ])
         
-        
     }
     
     func addGestures() {
@@ -170,9 +184,23 @@ final class CustomScrollView2: UIScrollView {
         
     }
     
+    func setImage(inputImage : UIImage) {
+        
+        self.activationManagementDefault(granted: true)
+        self.imageView.image = inputImage
+        
+        imageView.sizeToFit()
+        addSubview(imageView)
+        contentSize = imageView.bounds.size
+        setZoomScale()
+        
+        print("imageView size : \(imageView.frame)")
+        
+    }
     
 }
 
+// MARK: - UIScrollViewDelegate
 extension CustomScrollView2: UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -193,6 +221,7 @@ extension CustomScrollView2: UIScrollViewDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension CustomScrollView2 : UIGestureRecognizerDelegate {
     
     @objc func disappearView(_ sender : UITapGestureRecognizer) {
@@ -202,7 +231,8 @@ extension CustomScrollView2 : UIGestureRecognizerDelegate {
         }) { (result) in
             
             if result {
-                self.removeFromSuperview()
+//                self.removeFromSuperview()
+                self.activationManagementDefault(granted: false)
             }
             
         }
