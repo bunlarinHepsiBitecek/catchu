@@ -24,7 +24,7 @@ class ImageCollectionViewCell2: UICollectionViewCell {
         temp.layer.shadowOpacity = 0.6
         temp.translatesAutoresizingMaskIntoConstraints = false*/
         
-        temp.layer.borderWidth = 1
+//        temp.layer.borderWidth = 1
         temp.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         temp.translatesAutoresizingMaskIntoConstraints = false
         
@@ -38,7 +38,7 @@ class ImageCollectionViewCell2: UICollectionViewCell {
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.clipsToBounds = true
-        temp.layer.cornerRadius = 5
+//        temp.layer.cornerRadius = 5
         temp.contentMode = .scaleAspectFill
         
         return temp

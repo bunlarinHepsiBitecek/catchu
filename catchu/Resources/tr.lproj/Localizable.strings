@@ -111,7 +111,11 @@
 "topicLabelForMicrophone" = "Lütfen mikrofona erişim izni veriniz!";
 "detailLabelForMicrophone" = "CatchU mikrofonunuza erişecek.";
 
-
+// post Attachments
+"friends" = "Arkadaşlar";
+"group" = "Grup";
+"public" = "Herkese";
+"onlyMe" = "Bana Özel";
 
 
 

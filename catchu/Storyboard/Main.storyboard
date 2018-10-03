@@ -1728,7 +1728,7 @@
                     <view key="view" contentMode="scaleToFill" id="8Fr-Y1-BQG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="t8w-vb-HMu"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="DropPin" id="fJh-yP-DFM"/>
@@ -1737,40 +1737,29 @@
             </objects>
             <point key="canvasLocation" x="-1292" y="-1126"/>
         </scene>
-        <!--Share Finale View Controller-->
+        <!--Final Share Info View Controller-->
         <scene sceneID="nzA-sx-umV">
             <objects>
-                <viewController storyboardIdentifier="ShareFinaleViewController" id="6qz-s9-7iz" customClass="ShareFinaleViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FinalShareInfoViewController" id="6qz-s9-7iz" customClass="FinalShareInfoViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Po4-4l-LbM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user.png" translatesAutoresizingMaskIntoConstraints="NO" id="zSM-NZ-wqK">
-                                <rect key="frame" x="139" y="44" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FT1-AB-wBu">
-                                <rect key="frame" x="126" y="75" width="57" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BLa-ln-3Bv">
-                                <rect key="frame" x="16" y="152" width="343" height="397"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vxp-mw-FHU"/>
                     </view>
                     <connections>
-                        <outlet property="image" destination="BLa-ln-3Bv" id="eXR-jp-ksg"/>
+                        <outlet property="mainContainerView" destination="NVx-Zk-aoF" id="lnC-Hd-FPU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B2I-TI-Vt4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="NVx-Zk-aoF">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <viewLayoutGuide key="safeArea" id="bJF-Cm-Uy6"/>
+                </view>
             </objects>
-            <point key="canvasLocation" x="-5490.3999999999996" y="-297.04433497536945"/>
+            <point key="canvasLocation" x="-6122" y="-1126"/>
         </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="2Dx-Yx-klv">
@@ -2379,6 +2368,7 @@
                     <viewLayoutGuide key="safeArea" id="q8h-eR-oMg"/>
                     <connections>
                         <outlet property="closeView" destination="CDG-z0-76W" id="Ulm-fS-pQg"/>
+                        <outlet property="nextView" destination="QKr-M1-EfK" id="btx-6M-Eff"/>
                         <outlet property="shareTypeCollectionView" destination="RNx-xl-IUp" id="rqq-dj-3dn"/>
                         <outlet property="sliderContainerView" destination="Oyl-Bi-hR4" id="WQh-C6-SJc"/>
                         <outlet property="sliderLeadingConstraint" destination="alO-qE-f9L" id="AW9-8E-wG1"/>
@@ -2574,6 +2564,5 @@
         <image name="searchSlim" width="31.333333969116211" height="31.333333969116211"/>
         <image name="searchThick" width="35.333332061767578" height="35.333332061767578"/>
         <image name="trending" width="40" height="40"/>
-        <image name="user.png" width="512" height="512"/>
     </resources>
 </document>

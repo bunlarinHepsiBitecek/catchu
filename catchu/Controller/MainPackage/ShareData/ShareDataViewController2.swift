@@ -14,6 +14,8 @@ class ShareDataViewController2: UIViewController {
     @IBOutlet var shareTypeSliderView: ShareTypeSliderView!
     @IBOutlet var shareMenuView: ShareMenuViews!
     
+    weak var delegate : TabBarControlProtocols!
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -115,7 +117,39 @@ extension ShareDataViewController2: ShareDataProtocols {
             
         }
         
+        guard delegate != nil else {
+            return
+        }
+        
+        delegate.tabBarHiddenManagement(hidden: false)
         self.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func nextToFinalSharePage() {
+        
+        print("nextToFinalSharePage start")
+        
+        if let destination = UIStoryboard.init(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.FinalShareInfoViewController) as? FinalShareInfoViewController {
+            
+            addTransition()
+            
+            destination.delegateForViewController = self
+//            self.present(destination, animated: true, completion: nil)
+            self.present(destination, animated: false, completion: nil)
+            
+        }
+        
+    }
+    
+    func addTransition() {
+        
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
         
     }
     

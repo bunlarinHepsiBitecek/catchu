@@ -9,15 +9,17 @@
 import UIKit
 import Photos
 
-protocol ViewPresentationProtocols {
+protocol ViewPresentationProtocols : class {
     
     func dismissLoginViews()
+    func dismissFinalShareViewController()
     
 }
 
 extension ViewPresentationProtocols {
     
     func dismissLoginViews() {}
+    func dismissFinalShareViewController() {}
     
 }
 
@@ -79,6 +81,9 @@ protocol ShareDataProtocols: class {
     func startingICloudDownloadAnimation(animation : CircleAnimationProcess, inputProgressValue : CGFloat)
     func setCroppedImage(inputImage : UIImage)
     func closeShareDataViewController2()
+    func nextToFinalSharePage()
+    func selectedPostAttachmentTypeManagement(returned : PostAttachmentView)
+    func clearPostAttachmentType()
     
 }
 
@@ -108,6 +113,21 @@ extension ShareDataProtocols {
     func startingICloudDownloadAnimation(animation : CircleAnimationProcess, inputProgressValue : CGFloat) {}
     func setCroppedImage(inputImage : UIImage) {}
     func closeShareDataViewController2() {}
+    func nextToFinalSharePage() {}
+    func selectedPostAttachmentTypeManagement(returned : PostAttachmentView) {}
+    func clearPostAttachmentType() {}
+    
+}
+
+protocol TabBarControlProtocols : class {
+    
+    func tabBarHiddenManagement(hidden : Bool)
+    
+}
+
+extension TabBarControlProtocols {
+    
+    func tabBarHiddenManagement(hidden : Bool) {}
     
 }
 

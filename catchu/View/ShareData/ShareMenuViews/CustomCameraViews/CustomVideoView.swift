@@ -73,7 +73,7 @@ class CustomVideoView: UIView {
         
         super.init(frame: .zero)
         
-        setupCloseButtonGesture()
+//        setupCloseButtonGesture()
         
         //        initalizeViews()
         
@@ -198,7 +198,7 @@ class CustomVideoView: UIView {
         self.addSubview(mainView)
         self.mainView.addSubview(recordContainerView)
         self.mainView.addSubview(recordButton)
-        self.mainView.addSubview(closeButton)
+//        self.mainView.addSubview(closeButton)
         //        self.recordContainerView.addSubview(recordButton)
         
         let safe = self.safeAreaLayoutGuide
@@ -230,10 +230,10 @@ class CustomVideoView: UIView {
             //            heigthConstraint!,
             //            widthConstraint!
             
-            closeButton.topAnchor.constraint(equalTo: safeMainview.topAnchor, constant: 15),
-            closeButton.leadingAnchor.constraint(equalTo: safeMainview.leadingAnchor, constant: 15),
-            closeButton.heightAnchor.constraint(equalToConstant: 30),
-            closeButton.widthAnchor.constraint(equalToConstant: 30),
+//            closeButton.topAnchor.constraint(equalTo: safeMainview.topAnchor, constant: 15),
+//            closeButton.leadingAnchor.constraint(equalTo: safeMainview.leadingAnchor, constant: 15),
+//            closeButton.heightAnchor.constraint(equalToConstant: 30),
+//            closeButton.widthAnchor.constraint(equalToConstant: 30),
             
             ])
         

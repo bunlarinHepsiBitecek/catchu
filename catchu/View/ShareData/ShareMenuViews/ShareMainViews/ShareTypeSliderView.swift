@@ -19,6 +19,7 @@ class ShareTypeSliderView: UIView {
     @IBOutlet var sliderLeadingConstraint: NSLayoutConstraint!
     
     @IBOutlet var closeView: UIImageView!
+    @IBOutlet var nextView: UIImageView!
     
     let sliderImageArray = ["gallery", "play-button"]
     
@@ -43,6 +44,7 @@ class ShareTypeSliderView: UIView {
         setCollectionViewSettings()
         setWidthForSliderObject()
         addGestureRecognizerToCloseView()
+        addGestureRecognizerToNextView()
         
     }
     
@@ -167,6 +169,23 @@ extension ShareTypeSliderView : UIGestureRecognizerDelegate {
     @objc func closeView(_ sender : UITapGestureRecognizer) {
         
         delegateForViewController.dismisViewController()
+        
+    }
+    
+    func addGestureRecognizerToNextView() {
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ShareTypeSliderView.nextView(_:)))
+        tapGestureRecognizer.delegate = self
+        nextView.isUserInteractionEnabled = true
+        nextView.addGestureRecognizer(tapGestureRecognizer)
+        
+    }
+    
+    @objc func nextView(_ sender : UITapGestureRecognizer) {
+        
+        print("delegate : \(delegate)")
+        
+        delegateForViewController.nextToFinalSharePage()
         
     }
     

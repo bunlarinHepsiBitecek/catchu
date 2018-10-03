@@ -140,17 +140,17 @@ extension ShareDataView {
 //
 //}
 
-//extension ShareDataView: LocationManagerDelegate {
-//    func didUpdateLocation() {
-//
-//        print("Yarro baskan buraya :D")
-//
+extension ShareDataView: LocationManagerDelegate {
+    func didUpdateLocation() {
+
+        print("Yarro baskan buraya :D")
+
 //        mapKit.centerCoordinate = LocationManager.shared.currentLocation.coordinate
 //
 ////        coordinate = LocationManager.shared.currentLocation.coordinate
 //        centerMap(mapKit.centerCoordinate)
-//
-//    }
-//
-//
-//}
+
+    }
+
+
+}

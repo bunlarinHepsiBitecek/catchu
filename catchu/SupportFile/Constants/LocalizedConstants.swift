@@ -193,6 +193,15 @@ struct LocalizedConstants {
         
     }
     
+    struct PostAttachments {
+
+        static let friends = NSLocalizedString("friends", comment: "")
+        static let group = NSLocalizedString("group", comment: "")
+        static let publicInfo = NSLocalizedString("public", comment: "")
+        static let onlyMe = NSLocalizedString("onlyMe", comment: "")
+        
+    }
+    
     
     
 }

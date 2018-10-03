@@ -128,3 +128,9 @@
 "detailLabelForPhotos" = "This allows CatchU to access your photo library";
 "topicLabelForMicrophone" = "Please Allow Access to  Microphone";
 "detailLabelForMicrophone" = "This allows CatchU to access your Microphone";
+
+// post Attachments
+"friends" = "Friends";
+"group" = "Group";
+"public" = "Public";
+"onlyMe" = "Only Me";

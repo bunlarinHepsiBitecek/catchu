@@ -155,3 +155,10 @@ enum CircleAnimationProcess {
     case progress
 }
 
+enum PostAttachmentTypes {
+    case publicPost
+    case friends
+    case group
+    case onlyMe
+}
+

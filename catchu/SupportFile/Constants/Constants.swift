@@ -209,6 +209,7 @@ struct Constants {
         static let GroupCreateViewController: String = "GroupCreateViewController"
         static let ShareDataViewController: String = "ShareDataViewController"
         static let ShareDataViewController2: String = "ShareDataViewController2"
+        static let FinalShareInfoViewController: String = "FinalShareInfoViewController"
         
     }
     
