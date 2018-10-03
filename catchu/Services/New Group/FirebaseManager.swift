@@ -16,8 +16,6 @@ class FirebaseManager {
     
     public static let shared = FirebaseManager()
     
-    typealias TokenCompletion = (_ tokenResult : AuthTokenResult, _ finished : Bool) -> Void
-    
     func logout() {
         do
         {
@@ -293,6 +291,8 @@ class FirebaseManager {
         }
         
     }
+    
+    typealias TokenCompletion = (_ tokenResult : AuthTokenResult, _ finished : Bool) -> Void
     
     func getIdToken(completion : @escaping TokenCompletion) {
         
