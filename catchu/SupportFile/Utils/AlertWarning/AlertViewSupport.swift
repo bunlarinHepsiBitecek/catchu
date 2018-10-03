@@ -134,4 +134,5 @@ class AlertViewManager : NSObject {
         errorView.configureContent(title: title, body: body)
         errorView.show(targetView: targetView)
     }
+    
 }
