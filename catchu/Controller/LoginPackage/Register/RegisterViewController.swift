@@ -10,14 +10,16 @@ import UIKit
 
 class RegisterViewController: UIViewController {
 
-    @IBOutlet var userNameTextField: UITextField!
-    @IBOutlet var emailTextField: UITextField!
-    @IBOutlet var passwordTextField: UITextField!
-    @IBOutlet var registerButton: UIButton!
+    let registerView: RegisterView = {
+        let view = RegisterView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,26 +27,17 @@ class RegisterViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func registerButtonClicked(_ sender: Any) {
+    func setupViews() {
+        self.view.backgroundColor = UIColor.white
+        let safeLayout = self.view.safeAreaLayoutGuide
         
-        registerUser()
+        self.view.addSubview(registerView)
         
+        NSLayoutConstraint.activate([
+            registerView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
+            registerView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
+            registerView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
+            registerView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+            ])
     }
-    
-    @IBAction func logoutButtonClicked(_ sender: Any) {
-        
-        FirebaseManager.shared.logout()
-        
-    }
-
-    @IBAction func gotoMain(_ sender: Any) {
-        
-        if let destinationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TemporaryViewController") as? TemporaryViewController {
-            
-            present(destinationViewController, animated: true, completion: nil)
-            
-        }
-        
-    }
-    
 }

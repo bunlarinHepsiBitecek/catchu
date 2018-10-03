@@ -21,6 +21,10 @@
 "ForgotPassword"  = "Forgot your password?";
 "DontHaveAccount" = "Don't have an account?";
 "Register"        = "Register";
+"Reset"           = "Reset";
+"Confirm"         = "Confirm";
+"ConfirmationCode"= "Confirmation code";
+"ResendConfirmationCode"= "Resend confirmation code";
 
 // Error Message
 "UnknownError"    = "Unknown error occured";
@@ -33,6 +37,7 @@
 "DefaultError" = "Something went wrong, please try again 😜";
 
 // Error explanation retrieved from Firebase.AuthErrorCode
+"SocialLoginError" = "Cann't get information";
 "accountExistsWithDifferentCredential" = "Account exists with different credentials";
 "credentialAlreadyInUse" = "Credential is already in use";
 "emailAlreadyInUse" = "Email is already in use";

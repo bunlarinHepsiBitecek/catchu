@@ -54,7 +54,7 @@ class FeedViewCell: BaseTableCell {
         return view
     }()
     
-    lazy var swipingView: MediaView = {
+    lazy var mediaView: MediaView = {
         let view = MediaView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 250))
         view.backgroundColor = UIColor.orange
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -203,7 +203,7 @@ class FeedViewCell: BaseTableCell {
         self.containerView.addSubview(username)
         self.containerView.addSubview(likeButton)
         self.containerView.addSubview(statusTextView)
-        self.containerView.addSubview(swipingView)
+        self.containerView.addSubview(mediaView)
         self.containerView.addSubview(footerView)
         
         footerView.addSubview(timeAgoLabel)
@@ -257,14 +257,14 @@ class FeedViewCell: BaseTableCell {
             ])
         
         NSLayoutConstraint.activate([
-            swipingView.topAnchor.constraint(equalTo: statusTextView.bottomAnchor),
-            swipingView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor),
-            swipingView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor),
-            swipingView.heightAnchor.constraint(equalToConstant: self.swipingView.frame.height)
+            mediaView.topAnchor.constraint(equalTo: statusTextView.bottomAnchor),
+            mediaView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor),
+            mediaView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor),
+            mediaView.heightAnchor.constraint(equalToConstant: mediaView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            footerView.topAnchor.constraint(equalTo: swipingView.bottomAnchor, constant: 10),
+            footerView.topAnchor.constraint(equalTo: mediaView.bottomAnchor, constant: 10),
             footerView.bottomAnchor.constraint(equalTo: containerLayout.bottomAnchor, constant: -10),
             footerView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor, constant: 10),
             footerView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor, constant: -10),

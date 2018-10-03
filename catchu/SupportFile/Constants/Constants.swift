@@ -9,6 +9,7 @@
 import UIKit
 
 struct Constants {
+    static let CATCHU = "CatchU"
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
     
@@ -382,6 +383,11 @@ struct Constants {
         static let Y = "Y"
         static let Z = "Z"
         
+    }
+    
+    struct Login {
+        static let Padding: CGFloat = 20
+        static let Height: CGFloat = 50
     }
     
 }

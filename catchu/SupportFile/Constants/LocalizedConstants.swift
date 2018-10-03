@@ -21,17 +21,22 @@ struct LocalizedConstants {
     }
     
     struct Login {
-        static let Email           = NSLocalizedString("Email", comment: "")
-        static let Password        = NSLocalizedString("Password", comment: "")
-        static let Login           = NSLocalizedString("Login", comment: "").uppercased(with: NSLocale.current)
-        static let ForgotPassword  = NSLocalizedString("ForgotPassword", comment: "")
-        static let Register        = NSLocalizedString("Register", comment: "")
-        static let DontHaveAccount = NSLocalizedString("DontHaveAccount", comment: "")
+        static let UserName         = NSLocalizedString("UserName", comment: "")
+        static let Email            = NSLocalizedString("Email", comment: "")
+        static let Password         = NSLocalizedString("Password", comment: "")
+        static let Login            = NSLocalizedString("Login", comment: "")
+        static let ForgotPassword   = NSLocalizedString("ForgotPassword", comment: "")
+        static let DontHaveAccount  = NSLocalizedString("DontHaveAccount", comment: "")
+        static let Register         = NSLocalizedString("Register", comment: "")
+        static let Reset            = NSLocalizedString("Reset", comment: "")
+        static let Confirm          = NSLocalizedString("Confirm", comment: "")
+        static let ConfirmationCode = NSLocalizedString("ConfirmationCode", comment: "")
+        static let ResendConfirmationCode = NSLocalizedString("ResendConfirmationCode", comment: "")
         
-        static let EmptyEmail      = NSLocalizedString("EmptyEmail", comment: "")
-        static let EmptyPassword   = NSLocalizedString("EmptyPassword", comment: "")
-        static let InvalidEmail    = NSLocalizedString("InvalidEmail", comment: "")
-        static let InvalidPassword = NSLocalizedString("InvalidPassword", comment: "")
+        static let EmptyEmail       = NSLocalizedString("EmptyEmail", comment: "")
+        static let EmptyPassword    = NSLocalizedString("EmptyPassword", comment: "")
+        static let InvalidEmail     = NSLocalizedString("InvalidEmail", comment: "")
+        static let InvalidPassword  = NSLocalizedString("InvalidPassword", comment: "")
     }
     
     struct PasswordReset {
@@ -49,6 +54,7 @@ struct LocalizedConstants {
     
     struct FirebaseError {
         
+        static let SocialLoginError = NSLocalizedString("SocialLoginError", comment: "")
         static let accountExistsWithDifferentCredential =   
             NSLocalizedString("accountExistsWithDifferentCredential", comment: "")
         static let credentialAlreadyInUse =

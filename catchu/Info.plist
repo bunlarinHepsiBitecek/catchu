@@ -26,15 +26,15 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>gotoVerify</string>
-                <string>fb188399458686974</string>
-                <string>twitterkit-qSautcd7v9cuWd3FlH55HLBN6</string>
+				<string>fb1429718627133451</string>
+				<string>twitterkit-qSautcd7v9cuWd3FlH55HLBN6</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>188399458686974</string>
+	<string>1429718627133451</string>
 	<key>FacebookDisplayName</key>
 	<string>CatchUApp</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -75,6 +75,8 @@
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>

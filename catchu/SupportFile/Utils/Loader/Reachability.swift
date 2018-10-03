@@ -52,7 +52,7 @@ public class Reachability {
     /// - Author: Remzi Yildirim
     class func networkConnectionCheck() -> Bool {
         guard self.isConnectedToNetwork() else {
-            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Network.NoInternetConnection, message: LocalizedConstants.Network.NoInternetConnectionMessage, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, selfDismiss: false, seconds: 0, completionHandler: nil)
+            AlertViewManager.show(type: .error, placement: .top, body: LocalizedConstants.Network.NoInternetConnectionMessage)
             LoaderController.shared.removeLoader()
             return false
         }

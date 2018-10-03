@@ -115,7 +115,8 @@ class FeedViewModel: NSObject {
     
     private func loadData() {
         LoaderController.shared.showLoader(style: .gray)
-        REAWSManager.shared.getFeeds(page: page, perPage: perPage, radius: Constants.Map.Radius) { [weak self] result in
+        REAWSManager.shared.getFeeds(page: page, perPage: perPage, radius: Constants.Map.Radius) { [weak self]
+            result in
             print("\(#function) working and get data")
             LoaderController.shared.removeLoader()
             self?.handleResult(result)
@@ -166,7 +167,9 @@ class FeedViewModel: NSObject {
         let cellChanges = DifferenceCalculator.calculate(oldItems: oldData, newItems: newData)
         
         self.items = newItems
-        delegate.apply(changes: cellChanges)
+        if let delegate = self.delegate {
+            delegate.apply(changes: cellChanges)
+        }
         LoaderController.shared.removeLoader()
     }
     

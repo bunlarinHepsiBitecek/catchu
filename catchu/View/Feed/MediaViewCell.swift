@@ -123,6 +123,8 @@ class MediaViewVideoCell: BaseCollectionCell {
     deinit {
         // remove all observer when de allocated
         NotificationCenter.default.removeObserver(self)
+        playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.loadedTimeRanges))
+        playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status))
     }
     
     
@@ -144,7 +146,7 @@ class MediaViewVideoCell: BaseCollectionCell {
     }
     
     override func setupViews() {
-        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         
         addSubview(activityIndicatorView)
         addSubview(playButton)
@@ -184,7 +186,7 @@ class MediaViewVideoCell: BaseCollectionCell {
         activityIndicatorView.stopAnimating()
     }
     
-    @objc func playerDidFinishPlaying(note: NSNotification){
+    @objc func playerDidFinishPlaying(note: Notification){
         //Called when player finished playing
         playButton.setImage(UIImage(named: "play"), for: UIControlState())
         isPlaying = !isPlaying
@@ -227,7 +229,6 @@ class MediaViewVideoCell: BaseCollectionCell {
         playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.loadedTimeRanges), options: .new, context: nil)
         playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: .new, context: nil)
         
-        
 //        player?.addObserver(self, forKeyPath: #keyPath(AVPlayer.reasonForWaitingToPlay), options: .new, context: nil)
         
         
@@ -253,8 +254,6 @@ class MediaViewVideoCell: BaseCollectionCell {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        print("observeValue keypath: \(keyPath) == \(change)")
         
         //this is when the player is ready and rendering frames
         if keyPath == #keyPath(AVPlayerItem.loadedTimeRanges) {

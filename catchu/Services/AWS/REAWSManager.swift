@@ -39,8 +39,6 @@ class REAWSManager: BackEndAPIInterface {
     
     public static let shared = REAWSManager()
     
-    
-    
     /// Handle AWS API Gateway errors
     ///
     /// - Parameters:
@@ -63,6 +61,7 @@ class REAWSManager: BackEndAPIInterface {
     ///   - user: Contains login user info
     ///   - completion: A NetworkResult<REBaseResponse>
     func loginSync(user: User, completion : @escaping (NetworkResult<REBaseResponse>) -> Void ) {
+        guard Reachability.networkConnectionCheck() else {return}
         
         guard let userReq = REUser() else { return }
         userReq.userid = user.userID
@@ -73,8 +72,6 @@ class REAWSManager: BackEndAPIInterface {
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = userReq
-        
-        
         
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
@@ -226,8 +223,7 @@ class REAWSManager: BackEndAPIInterface {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func getFeeds(page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void) {
-        guard Reachability.networkConnectionCheck() else {
-            return }
+        guard Reachability.networkConnectionCheck() else { return }
         
         guard LocationManager.shared.currentLocation != nil else {
             print("\(#function) Lokasyon verisi bos")
@@ -268,6 +264,7 @@ class REAWSManager: BackEndAPIInterface {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func getPostComments(post: Post, commentid: String, compiletion: @escaping (NetworkResult<RECommentListResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return }
         
@@ -301,6 +298,8 @@ class REAWSManager: BackEndAPIInterface {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func comment(post: Post, repliedCommentid: String, comment: Comment ,compiletion: @escaping (NetworkResult<RECommentResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
+        
         guard let postid = post.postid else { return } // postid is mandatory
         
         guard let message = comment.message, !message.isEmpty else { return } // message is mandatory
@@ -337,6 +336,7 @@ class REAWSManager: BackEndAPIInterface {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func like(post: Post, comment: Comment, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return } // postid is mandatory
         
@@ -369,6 +369,7 @@ class REAWSManager: BackEndAPIInterface {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func unlike(post: Post, comment: Comment, compiletion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return } // postid is mandatory
         
@@ -400,6 +401,8 @@ class REAWSManager: BackEndAPIInterface {
 extension REAWSManager {
     
     private func sharePostRequest(share: Share, completion: @escaping (NetworkResult<REPostResponse>)-> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
+        
         guard let user = REUser() else { return }
         user.userid = User.shared.userID
         

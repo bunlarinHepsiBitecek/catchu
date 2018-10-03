@@ -2,83 +2,47 @@
 //  LoginViewController.swift
 //  catchu
 //
-//  Created by Remzi YILDIRIM on 5/26/18.
+//  Created by Remzi YILDIRIM on 9/30/18.
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
 import UIKit
 
 class LoginViewController: UIViewController {
-    //MARK: outlets
-    @IBOutlet weak var emailText: DesignableUITextField!
-    @IBOutlet weak var passwordText: DesignableUITextField!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var forgotPasswordButton: UIButton!
-    @IBOutlet weak var dontHaveAccountLabel: UILabel!
-    @IBOutlet weak var registerButton: UIButton!
     
+    let loginView: LoginView = {
+        let view = LoginView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.customization()
-        self.localized()
-        
-        //self.navigationController?.isNavigationBarHidden = true
+        setupViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = false
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    @IBAction func loginButtonClicked(_ sender: UIButton) {
-        self.login(inputViewControllerDelegate: self)
-    }
-    
-    @IBAction func facebookButtonClicked(_ sender: UIButton) {
-        self.loginWithFaceebook()
-    }
-    
-    @IBAction func twitterButtonClicked(_ sender: UIButton) {
-        self.loginWithTwitter()
-    }
-    @IBAction func registerButtonClicked(_ sender: UIButton) {
-        self.performSegueToRegisterView()
-    }
-    
-    @IBAction func forgotPasswordButtonClicked(_ sender: UIButton) {
-        self.performSegueToForgetPassword()
-    }
-    @IBAction func denemeButtonClicked(_ sender: UIButton) {
-        //        CloudFunctionsManager.shared.cfAddMessage()
-        //        CloudFunctionsManager.shared.getFriendList()
-        self.psuhMainTabBarView()
-    }
-}
-
-extension LoginViewController : ViewPresentationProtocols {
-    
-    func dismissLoginViews() {
+    func setupViews() {
+        self.view.backgroundColor = UIColor.white
+        let safeLayout = self.view.safeAreaLayoutGuide
         
-        self.dismiss(animated: true, completion: nil)
+        self.view.addSubview(loginView)
         
+        NSLayoutConstraint.activate([
+            loginView.safeTopAnchor.constraint(equalTo: safeLayout.topAnchor),
+            loginView.safeBottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
+            loginView.safeLeadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
+            loginView.safeTrailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+            ])
     }
+
 }
-
-

@@ -15,8 +15,6 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        self.selectedIndex = 3
-        
         self.tabBarItem.image?.withRenderingMode(.alwaysOriginal)
         
         self.delegate = self

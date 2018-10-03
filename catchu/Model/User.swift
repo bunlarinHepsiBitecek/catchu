@@ -563,5 +563,4 @@ class User {
         return user!
     }
     
-    
 }

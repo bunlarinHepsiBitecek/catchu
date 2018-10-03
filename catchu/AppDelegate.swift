@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-//import IQKeyboardManagerSwift
 import FBSDKLoginKit
 import TwitterKit
 import UserNotifications
@@ -22,16 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
-        //        IQKeyboardManager.sharedManager().enable = true
         
         //Facebook
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         //Twitter
         TWTRTwitter.sharedInstance().start(withConsumerKey: Constants.TWITTER_CUSTOMER_KEY, consumerSecret: Constants.TWITTER_CUSTOMER_SECRETKEY)
-        
-//        FirebaseManager.shared.checkUserLoggedIn()
-//        FirebaseManager.shared.userSigned()
         
         //NotificationManager.shared.initializeRegisterForRemoteNotification()
         //application.registerForRemoteNotifications()

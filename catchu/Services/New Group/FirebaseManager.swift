@@ -16,45 +16,37 @@ class FirebaseManager {
     
     public static let shared = FirebaseManager()
     
+    typealias TokenCompletion = (_ tokenResult : AuthTokenResult, _ finished : Bool) -> Void
+    
     func logout() {
         do
         {
             try Auth.auth().signOut()
-            userSignOut()
-            print("logout is ok")
-        }
-        catch let error as NSError
-        {
+            redirectSignin()
+        } catch let error as NSError {
             print(error.localizedDescription)
             print("logout is failed")
         }
     }
     
     // MARK: if user not sigin, redirect loginVC
-    func userSignOut() {
+    func redirectSignin() {
         if (Auth.auth().currentUser == nil) {
             User.shared = User()
-            //            LoaderController.shared.appDelegate().window?.rootViewController = UIStoryboard(name: "Login", bundle: Bundle.main).instantiateInitialViewController()
-            //            LoaderController.shared.appDelegate().window?.rootViewController?.dismiss(animated: true, completion: nil)
+            LoaderController.changeRootNavigationController(controller: LoginViewController())
         }
     }
     
     // MARK: push mainVC
-    func userSigned() {
-        //        if (Auth.auth().currentUser != nil) {
-//        LoaderController.shared.appDelegate().window?.rootViewController = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: Bundle.main).instantiateViewController(withIdentifier: Constants.Storyboard.ID.MainTabBarViewController)
-//        LoaderController.shared.appDelegate().window?.rootViewController?.dismiss(animated: true, completion: nil)
-        //        }
-        
-        let vc = MainTabBarViewController()
-        LoaderController.pushViewController(controller: vc)
-        
-        print("şlsafjlşsdjfsdklfjsldkfjsdlkf")
-        
+    func redirectSigned() {
+        if (Auth.auth().currentUser != nil) {
+            LoaderController.changeRootMainTabBarController()
+        }
     }
     
-    func loginUser(user: User, inputDelegate : ViewPresentationProtocols) {
-        LoaderController.shared.showLoader()
+    func loginFirebase(user: User) {
+        LoaderController.shared.showLoader(style: .gray)
+        
         Auth.auth().signIn(withEmail: user.email, password: user.password) { (userData, error) in
             if let error = error {
                 self.handleError(error: error)
@@ -63,29 +55,32 @@ class FirebaseManager {
             }
             
             if let userData = userData {
-                print("user successfully login uid: \(userData.user.uid)")
-                print("REMZI: full:\(userData.user)")
-                
-                inputDelegate.dismissLoginViews()
-                
+                print("REMZI Login Success: full:\(userData.user)")
+                if let email = userData.user.email {
+                    User.shared.email = email
+                }
                 User.shared.userID = userData.user.uid
-                User.shared.email = userData.user.email!
-                // TODO: Burayi duzelt
-                //                User.shared.userName = userSignIn.displayName!
-                User.shared.providerID = userData.user.providerID
-                User.shared.provider = ProviderType.firebase.rawValue
+                let providerData = userData.user.providerData[0]
+                User.shared.providerID = userData.user.uid
+                User.shared.provider = providerData.providerID
             }
             LoaderController.shared.removeLoader()
         }
     }
     
     func loginWithFacebookAccount() {
-        let currentVC = getPresentViewController()
+        guard let currentVC = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
+        }
         
         let facebookLogin = FBSDKLoginManager()
         let permissions = [FacebookPermissions.email,
                            FacebookPermissions.public_profile,
                            FacebookPermissions.user_friends]
+        let parameterKey = FacebookPermissions.parameter_key
+        let parameterValue = FacebookPermissions.parameter_value
+        let method = FacebookPermissions.method
         
         facebookLogin.logIn(withReadPermissions: permissions, from: currentVC) { (result, error) in
             if let error = error {
@@ -93,28 +88,23 @@ class FirebaseManager {
                 return
             }
             if (result?.isCancelled)! {
-                print("Remzi: User cancel facebook login")
                 return
             } else {
-                print("***** Token: \(FBSDKAccessToken.current().tokenString)")
                 guard let accessToken = FBSDKAccessToken.current().tokenString else {return}
                 
-                let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"id, name, short_name, email"], tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: "GET")
+                let req = FBSDKGraphRequest(graphPath: "me", parameters: [parameterKey: parameterValue], tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: method)
                 
                 req?.start(completionHandler: { (connection, result, error) in
-                    
-                    if(error != nil) {
-                        print("GET request error: \(String(describing: error))")
+                    if let error = error {
+                        self.handleError(error: error)
                     } else {
                         print("GET request success result: \(String(describing: result))")
                         
-                        let data = result as! NSDictionary
-                        
-                        print("result as a data form: \(data)")
-                        
-                        self.parseFacebookGraph(data: data, provider: .facebook)
-                        let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
-                        self.firebaseAuth(credential)
+                        if let data = result as? NSDictionary {
+                            self.parseFacebookGraph(data: data)
+                            let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
+                            self.firebaseSocialAuth(credential)
+                        }
                     }
                 })
             }
@@ -128,75 +118,88 @@ class FirebaseManager {
                 self.handleError(error: error)
                 return
             }
-            
             if let session = session {
-                print("REMZİ Twitter dönen session: \(String(describing: session))")
-                print("signed in as \(String(describing: session.userName))");
-                
-                TWTRAPIClient.withCurrentUser().requestEmail { email, error in
-                    if (email != nil) {
-                        print("get email user: \(String(describing: session.userName)) and email: \(String(describing: email))");
-                        let credential = TwitterAuthProvider.credential(withToken: (session.authToken), secret: (session.authTokenSecret))
-                        User.shared.userName = session.userName
-                        self.firebaseAuth(credential)
-                    } else {
-                        print("get email error: \(String(describing: error?.localizedDescription))");
-                    }
-                }
-                
+                let credential = TwitterAuthProvider.credential(withToken: (session.authToken), secret: (session.authTokenSecret))
+                User.shared.userName = session.userName
+                self.firebaseSocialAuth(credential)
+            } else {
+                AlertViewManager.show(type: .error, placement: .top, title: LocalizedConstants.Error, body: LocalizedConstants.FirebaseError.SocialLoginError)
             }
         })
         twitterLoginButton.sendActions(for: .touchUpInside)
     }
     
-    private func firebaseAuth(_ credential: AuthCredential) {
-        LoaderController.shared.showLoader()
+    private func firebaseSocialAuth(_ credential: AuthCredential) {
+        LoaderController.shared.showLoader(style: .gray)
         
-        Auth.auth().signIn(with: credential) { (user, error) in
+        Auth.auth().signInAndRetrieveData(with: credential) { (authData, error) in
             if let error = error {
-                print("REMZİ: Unable to authenticate with Firebase")
-                print(error)
+                self.handleError(error: error)
             } else {
-                print("REMZİ: Successfullty authenticate with Firebase")
-                if let user = user {
-                    print("REMZI1: \(user.providerID)")
-                    print("REMZI2: \(user.uid)")
-                    print("REMZI3: \(user.email)")
-                    print("REMZI4: \(user.displayName)")
-                    print("REMZI5: \(user.isEmailVerified)")
-                    User.shared.userID = user.uid
-                    User.shared.provider = user.providerID
+                self.signidUserSync(authData: authData)
+            }
+            LoaderController.shared.removeLoader()
+        }
+    }
+    
+    private func signidUserSync(authData: AuthDataResult?) {
+        if let user = authData?.user {
+            User.shared.userID = user.uid
+            if let displayName = user.displayName {
+                User.shared.name = displayName
+            }
+            let providerData = user.providerData[0]
+            User.shared.providerID = providerData.uid
+            User.shared.provider = providerData.providerID
+            if let email = providerData.email {
+                User.shared.email = email
+            }
+            if let photoUrl = providerData.photoURL {
+                // in twitter image url return
+                // https://pbs.twimg.com/profile_images/1029101800446672896/rhgFoAYM_normal.jpg
+                // https://graph.facebook.com/10155522219482546/picture?type=large
+                
+                var orginalUrl = photoUrl.absoluteString
+                if (providerData.providerID.contains("facebook")) {
+                    orginalUrl = orginalUrl + "?type=large"
+                } else {
+                    orginalUrl = orginalUrl.replacingOccurrences(of: "_normal", with: "")
                 }
+                
+                User.shared.profilePictureUrl = orginalUrl
+                print("profile image url: \(orginalUrl)")
+                print("provider: \(User.shared.provider)")
+                print("providerId: \(User.shared.providerID)")
+            }
+            REAWSManager.shared.loginSync(user: User.shared) { [weak self] result in
+                self?.handleResult(result)
+            }
+            
+        }
+    }
+        
+    func handleResult(_ result: NetworkResult<REBaseResponse>) {
+        switch result {
+        case .success(let response):
+            if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                print("Lambda Error: \(error)")
+                guard let message = error.message else { return }
+                AlertViewManager.show(type: .error, body: message)
+                return
+            }
+            self.redirectSigned()
+        case .failure(let apiError):
+            switch apiError {
+            case .serverError(let error):
+                print("Server error: \(error)")
+            case .connectionError(let error) :
+                print("Connection error: \(error)")
+            case .missingDataError:
+                print("Missing Data Error")
             }
         }
-        LoaderController.shared.removeLoader()
     }
     
-    func parseFacebookGraph(data: NSDictionary, provider: ProviderType) {
-        User.shared.provider = provider.rawValue
-        
-        if let email = data["email"]  as? String {
-            User.shared.email = email
-        }
-        if let name = data["name"]  as? String {
-            User.shared.name = name
-        }
-        
-        if let providerID = data["id"]  as? String {
-            User.shared.providerID = providerID
-        }
-    }
-    
-    // MARK: find current VC
-    private func getPresentViewController() -> UIViewController {
-        if var topController = UIApplication.shared.keyWindow?.rootViewController {
-            while let presentedViewController = topController.presentedViewController {
-                topController = presentedViewController
-            }
-            return topController
-        }
-        return UIViewController()
-    }
     
     func registerFirebase(user: User) {
         
@@ -229,6 +232,14 @@ class FirebaseManager {
                         
                     }
                     
+                    // TODO: new feature check
+                    guard let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest() else { return }
+                    changeRequest.displayName = user.userName
+                    changeRequest.commitChanges { (error) in
+                        if let error = error {
+                            print("Firebase changeRequest error: \(error)")
+                        }
+                    }
                 }
                 
             }
@@ -238,8 +249,11 @@ class FirebaseManager {
     }
     
     func handleError(error: Error) {
-        print("error: \(String(describing: error.localizedDescription))");
+        print("error: \(String(describing: error))");
         if let errorCode = error as NSError? {
+            if errorCode.code == 1 { // no Error
+                return
+            }
             if let firebaseErrorCode = Firebase.AuthErrorCode(rawValue: errorCode.code){
                 let functionName = String(#function.split(separator: "(")[0])
                 self.handleFirebaseErrorCodes(errorCode: firebaseErrorCode, functionName)
@@ -267,12 +281,12 @@ class FirebaseManager {
             
         case .userNotFound:
             AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.userNotFound, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            
+        
         default:
             AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.unknownError, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            //            let className = type(of: self)
-            let className = ""
-            let eventName = className + "_" + callerFunctionName
+//            let className = type(of: self)
+//            let className = ""
+//            let eventName = className + "_" + callerFunctionName
 //            Analytics.logEvent(eventName, parameters: [
 //                "email": User.shared.email,
 //                "password": User.shared.password])
@@ -280,14 +294,13 @@ class FirebaseManager {
         
     }
     
-    func getIdToken(completion : @escaping (_ tokenResult : AuthTokenResult, _ finished : Bool) -> Void) {
+    func getIdToken(completion : @escaping TokenCompletion) {
         
         guard let currentUser = Auth.auth().currentUser else {
             return
         }
         
-        currentUser.getIDTokenResult(forcingRefresh: false) { (result, error) in
-            
+        currentUser.getIDTokenResult { (result, error) in
             if let error = error {
                 self.handleError(error: error)
                 LoaderController.shared.removeLoader()
@@ -296,50 +309,47 @@ class FirebaseManager {
             } else {
                 
                 guard let result = result else { return }
-                
                 completion(result, true)
-                
             }
-            
         }
-        
     }
     
     func checkUserLoggedIn() -> Bool {
-        
-        print("checkUserLoggedIn starts")
-        
-        if Auth.auth().currentUser != nil {
-            
-            User.shared.userID = (Auth.auth().currentUser?.uid)!
+        if let currentUser = Auth.auth().currentUser {
+            User.shared.userID = currentUser.uid
             print("User.shared.userID : \(User.shared.userID)")
-            
             return true
-            
-//            CloudFunctionsManager.shared.getFriends()
-            
         } else {
-            
             return false
         }
-        
     }
+}
+
+extension FirebaseManager {
     
+    func parseFacebookGraph(data: NSDictionary) {
+        User.shared.userName = "" // no longer return username
+        
+        if let email = data[FacebookPermissions.email]  as? String {
+            User.shared.email = email
+        }
+        if let name = data[FacebookPermissions.name]  as? String {
+            User.shared.name = name
+        }
+        if let providerID = data[FacebookPermissions.id]  as? String {
+            User.shared.providerID = providerID
+        }
+    }
 }
 
 
 struct FacebookPermissions {
-    static let email = "email"
-    static let public_profile = "public_profile"
-    static let user_friends = "user_friends"
-}
-
-public enum ProviderType: String  {
-    case facebook, twitter, firebase
-}
-
-struct DenemeObject: Decodable {
-    let name: String?
-    let surname: String?
-    let age: Int?
+    static let email               = "email"
+    static let name                = "name"
+    static let id                  = "id"
+    static let public_profile      = "public_profile"
+    static let user_friends        = "user_friends"
+    static let parameter_key       = "fields"
+    static let parameter_value     = "id, name, short_name, email"
+    static let method              = "GET"
 }

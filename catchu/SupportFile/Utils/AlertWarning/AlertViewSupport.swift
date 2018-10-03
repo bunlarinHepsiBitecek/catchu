@@ -35,10 +35,11 @@ class AlertViewManager : NSObject {
         
         alertController.addAction(alertAction)
         
-        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-            
-            self.presentAlertController(alertController, presentingViewController: presentingViewController)
+        guard let currentViewController = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
         }
+        currentViewController.present(alertController, animated: true, completion: nil)
     }
     
     func createAlert_2(title: String, message: String, preferredStyle: UIAlertControllerStyle, actionTitle: String, actionStyle: UIAlertActionStyle, selfDismiss: Bool, seconds: Int, completionHandler: ((UIAlertAction) -> Void)?) {
@@ -48,11 +49,11 @@ class AlertViewManager : NSObject {
         
         alertController.addAction(alertAction)
         
-        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-            
-            self.presentAlertController(alertController, presentingViewController: presentingViewController)
-            
-        }
+//        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
+//
+//            self.presentAlertController(alertController, presentingViewController: presentingViewController)
+//
+//        }
         
         if selfDismiss {
             
@@ -75,10 +76,15 @@ class AlertViewManager : NSObject {
         alertController.addAction(alertActionLeft)
         alertController.addAction(alertActionRight)
         
-        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-            
-            self.presentAlertController(alertController, presentingViewController: presentingViewController)
+//        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
+//
+//            self.presentAlertController(alertController, presentingViewController: presentingViewController)
+//        }
+        guard let currentViewController = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
         }
+        currentViewController.present(alertController, animated: true, completion: nil)
     }
     
     
@@ -97,11 +103,16 @@ class AlertViewManager : NSObject {
             alertController.addAction(action)
         }
         
-        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-            
-            self.presentAlertController(alertController, presentingViewController: presentingViewController)
-            
+//        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
+//
+//            self.presentAlertController(alertController, presentingViewController: presentingViewController)
+//
+//        }
+        guard let currentViewController = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
         }
+        currentViewController.present(alertController, animated: true, completion: nil)
     }
     
     private func presentAlertController(_ alertController : UIAlertController, presentingViewController : UIViewController) {
@@ -116,4 +127,11 @@ class AlertViewManager : NSObject {
         }
     }
     
+    
+    class func show(targetView: UIView? = nil, type: ErrorType, placement: Placement? = nil, title: String? = nil, body: String? = nil) {
+        let errorView = ErrorView()
+        errorView.configureTheme(type, placement)
+        errorView.configureContent(title: title, body: body)
+        errorView.show(targetView: targetView)
+    }
 }

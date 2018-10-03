@@ -13,6 +13,8 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
 
     @IBOutlet var testImage: UIImageView!
     
+    var testBool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,11 +23,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
     }
     
     @IBAction func logoutButtonClick(_ sender: UIButton) {
-        //FirebaseManager.shared.logout()
-        
-//        AWSManager.shared.signOut()
         FirebaseManager.shared.logout()
-        
     }
     
     func requestPermissionWithCompletionhandler(completion: ((Bool) -> (Void))? ) {

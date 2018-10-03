@@ -58,7 +58,7 @@ class LoaderController: NSObject {
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         
         guard let currentVC = LoaderController.currentViewController() else {
-            print("Current View controller can not find for activity indicator")
+            print("Current View controller can not be found for activity indicator")
             return
         }
         guard let mainView = currentVC.view else { return }
@@ -144,15 +144,49 @@ class LoaderController: NSObject {
         navigationController.pushViewController(controller, animated: true)
     }
     
-    class func getSafeAreaInsets() -> UIEdgeInsets {
-        if #available(iOS 11, *) {
-            let window = UIApplication.shared.windows[0]
-            let insets:UIEdgeInsets = window.safeAreaInsets
-            return insets
-        } else {
-            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+    
+    /// Change navigation controller with releated controller
+    ///
+    /// - Parameter controller: The view controller which contains a navigation controller
+    class func changeRootNavigationController(controller: UIViewController?) {
+        guard let controller = controller else { return }
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.popToRootViewController(animated: true)
+        guard let appDel = UIApplication.shared.delegate as? AppDelegate, let window = appDel.window else { return }
+        
+        window.rootViewController = navigationController
+    }
+    
+    class func changeRootMainTabBarController() {
+        DispatchQueue.main.async {
+            let name = Constants.Storyboard.Name.Main
+            let identifier = Constants.Storyboard.ID.MainTabBarViewController
+            let tabBarController = UIStoryboard(name: name, bundle: Bundle.main).instantiateViewController(withIdentifier: identifier)
+            guard let appDel = UIApplication.shared.delegate as? AppDelegate, let window = appDel.window else { return }
+            window.rootViewController = tabBarController
+            
+//            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//                let oldState: Bool = UIView.areAnimationsEnabled
+//                UIView.setAnimationsEnabled(false)
+//                window.rootViewController = tabBarController
+//                UIView.setAnimationsEnabled(oldState)
+//            }, completion: { (finished: Bool) -> () in
+//                
+//            })
+            
         }
     }
+    
+    
+//    class func getSafeAreaInsets() -> UIEdgeInsets {
+//        if #available(iOS 11, *) {
+//            let window = UIApplication.shared.windows[0]
+//            let insets:UIEdgeInsets = window.safeAreaInsets
+//            return insets
+//        } else {
+//            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+//        }
+//    }
     
     func goToSettings() {
         let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)

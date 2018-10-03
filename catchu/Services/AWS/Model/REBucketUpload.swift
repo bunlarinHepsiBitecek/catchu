@@ -23,13 +23,15 @@ public class REBucketUpload : AWSModel {
     var uploadUrl: String?
     var downloadUrl: String?
     var thumbnailUrl: String?
+    var thumbnailUploadUrl: String?
     var _extension: String?
     
    	public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
 		var params:[AnyHashable : Any] = [:]
 		params["uploadUrl"] = "uploadUrl"
 		params["downloadUrl"] = "downloadUrl"
-		params["thumbnailUrl"] = "thumbnailUrl"
+        params["thumbnailUrl"] = "thumbnailUrl"
+        params["thumbnailUploadUrl"] = "thumbnailUploadUrl"
 		params["_extension"] = "extension"
 		
         return params

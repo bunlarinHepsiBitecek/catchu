@@ -1,9 +1,9 @@
 PODS:
-  - AWSAPIGateway (2.6.30):
-    - AWSCore (= 2.6.30)
-  - AWSCore (2.6.30)
-  - AWSS3 (2.6.30):
-    - AWSCore (= 2.6.30)
+  - AWSAPIGateway (2.6.31):
+    - AWSCore (= 2.6.31)
+  - AWSCore (2.6.31)
+  - AWSS3 (2.6.31):
+    - AWSCore (= 2.6.31)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -46,28 +46,10 @@ DEPENDENCIES:
   - Firebase/Auth
   - TwitterKit
 
-SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - AWSAPIGateway
-    - AWSCore
-    - AWSS3
-    - Bolts
-    - FBSDKCoreKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
-    - Firebase
-    - FirebaseAuth
-    - FirebaseAuthInterop
-    - FirebaseCore
-    - GoogleUtilities
-    - GTMSessionFetcher
-    - TwitterCore
-    - TwitterKit
-
 SPEC CHECKSUMS:
-  AWSAPIGateway: c2b42cb5425b7d21831cdf7ca1a725518c6f0312
-  AWSCore: 11e8bb89d8d2e3bb6e31caa8b944ca7dae4c87cd
-  AWSS3: 63f401ca496ebedd05988f40c9f4108a72828121
+  AWSAPIGateway: d3021095dcfaaaff5da885929e6d3f371d8baf28
+  AWSCore: c7abfb87ef802d1c4b5dd56db64ac8b4a7823ef0
+  AWSS3: 5647e89f9ac8e7033f3e5507dbb3eccc37f82b75
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
   FBSDKLoginKit: 8bccb6064708ab2f4251a7fc4e3b6d8d00ad91ba
@@ -83,4 +65,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 191fd0f87aa2c1c4b2b8c5a3616f43ce6bbc37e7
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.4.0
