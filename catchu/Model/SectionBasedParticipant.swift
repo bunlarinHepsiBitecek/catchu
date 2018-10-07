@@ -22,7 +22,7 @@ class SectionBasedParticipant: SectionBasedFriend {
         for item in inputParticipantArray {
             
             let temp = REGroupRequest_groupParticipantArray_item()
-            temp?.participantUserid = item.userID
+            temp?.participantUserid = item.userid
             
             returnREGroup?.groupParticipantArray?.append(temp!)
             

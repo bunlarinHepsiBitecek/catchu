@@ -64,9 +64,9 @@ class REAWSManager: BackEndAPIInterface {
         guard Reachability.networkConnectionCheck() else {return}
         
         guard let userReq = REUser() else { return }
-        userReq.userid = user.userID
+        userReq.userid = user.userid
         userReq.name = user.name
-        userReq.username = user.userName
+        userReq.username = user.username
         userReq.email = user.email
         userReq.profilePhotoUrl = user.profilePictureUrl
         
@@ -236,7 +236,7 @@ class REAWSManager: BackEndAPIInterface {
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = REUser()
-        baseRequest.user?.userid = User.shared.userID
+        baseRequest.user?.userid = User.shared.userid
         
         let pageStr = "\(page)"
         let perPageStr = "\(perPage)"
@@ -403,12 +403,14 @@ extension REAWSManager {
     private func sharePostRequest(share: Share, completion: @escaping (NetworkResult<REPostResponse>)-> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
+        guard let shareLocation = Share.shared.location else { return }
+        
         guard let user = REUser() else { return }
-        user.userid = User.shared.userID
+        user.userid = User.shared.userid
         
         guard let location = RELocation() else { return }
-        location.latitude = NSNumber(value: Share.shared.location.coordinate.latitude)
-        location.longitude = NSNumber(value: Share.shared.location.coordinate.longitude)
+        location.latitude = NSNumber(value: shareLocation.coordinate.latitude)
+        location.longitude = NSNumber(value: shareLocation.coordinate.longitude)
         
         var attachments = [REMedia]()
         
@@ -454,7 +456,7 @@ extension REAWSManager {
         post.user = user
         post.location = location
         post.attachments = attachments
-        post.message = Share.shared.text
+        post.message = Share.shared.message
         post.privacyType = PrivacyType.allFollowers.stringValue
         
         // MARK: for custom person selected

@@ -48,8 +48,13 @@ extension GroupCreateTableViewCell: UICollectionViewDelegate, UICollectionViewDa
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Collections.CollectionView.groupCreateSelectedParticipantCell, for: indexPath) as? GroupCreateCollectionViewCell else { return UICollectionViewCell() }
         
         cell.participant = SectionBasedFriend.shared.selectedUserArray[indexPath.row]
-    cell.participantImage.setImagesFromCacheOrFirebaseForFriend(cell.participant.profilePictureUrl)
-        cell.participantName.text = cell.participant.userName
+        if let profilePictureUrl = cell.participant.profilePictureUrl {
+            cell.participantImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+        }
+        
+        if let username = cell.participant.username {
+            cell.participantName.text = username
+        }
         
         return cell
         
@@ -59,10 +64,10 @@ extension GroupCreateTableViewCell: UICollectionViewDelegate, UICollectionViewDa
         
         let cell = collectionView.cellForItem(at: indexPath) as? GroupCreateCollectionViewCell
         
-        if let i = SectionBasedFriend.shared.selectedUserArray.index(where: { $0.userID == cell?.participant.userID}) {
+        if let i = SectionBasedFriend.shared.selectedUserArray.index(where: { $0.userid == cell?.participant.userid}) {
             
             SectionBasedFriend.shared.selectedUserArray.remove(at: i)
-            SectionBasedFriend.shared.ifUserSelectedDictionary[(cell?.participant.userID)!] = false
+            SectionBasedFriend.shared.ifUserSelectedDictionary[(cell?.participant.userid)!] = false
             
         }
         

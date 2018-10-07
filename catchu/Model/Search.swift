@@ -57,13 +57,19 @@ class Search {
             
             let tempUser = User()
             
-            tempUser.userID = item._userid
-            tempUser.userName = item._username
-            tempUser.name = item._name
-            tempUser.profilePictureUrl = item._profilePhotoUrl
-            tempUser.isUserHasAFriendRelation = item._friendRelation.boolValue
-            tempUser.isUserHasPendingFriendRequest = item._pendingFriendRequest.boolValue
-            tempUser.isUserHasAPrivateAccount = item._isPrivateAccount.boolValue
+            tempUser.userid = item.userid
+            tempUser.username = item.username
+            tempUser.name = item.name
+            tempUser.profilePictureUrl = item.profilePhotoUrl
+            if let friendRelation = item.friendRelation {
+                tempUser.isUserHasAFriendRelation = friendRelation.boolValue
+            }
+            if let pendingFriendRequest = item.pendingFriendRequest {
+                tempUser.isUserHasPendingFriendRequest = pendingFriendRequest.boolValue
+            }
+            if let isPrivateAccount = item.isPrivateAccount {
+                tempUser.isUserHasAPrivateAccount = isPrivateAccount.boolValue
+            }
             
             _searchResultArray.append(tempUser)
             

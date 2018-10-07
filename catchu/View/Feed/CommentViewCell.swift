@@ -190,16 +190,12 @@ class CommentViewCell: BaseTableCell {
         guard let comment = item.comment else { return }
         guard let user = comment.user else { return }
         
-        // TODO: user objesi duzenlenecek optional yapilacak
-        //        if let profileImageUrl = user.profilePictureUrl {
-        //            self.profileImageView.loadImageUsingUrlString(urlString: profileImageUrl)
-        //        }
-        //        if let username = user.userName {
-        //            self.username.text = username
-        //        }
-        
-        self.profileImageView.loadImageUsingUrlString(urlString: user.profilePictureUrl )
-        self.username.text = user.userName
+        if let profileImageUrl = user.profilePictureUrl {
+            self.profileImageView.loadAndCacheImage(url: profileImageUrl)
+        }
+        if let username = user.username {
+            self.username.text = username
+        }
         
         if let message = comment.message {
             self.messageTextView.text = message
@@ -219,6 +215,7 @@ class CommentViewCell: BaseTableCell {
             let buttonImage = isLiked ? UIImage(named: "icon-like-filled") : UIImage(named: "icon-like")
             self.likeButton.setImage(buttonImage, for: .normal)
         }
+        
     }
     
     @objc func likeButtonClicked() {

@@ -104,7 +104,6 @@ extension CustomMapView {
     func setLocationManangerSettings() {
         
         LocationManager.shared.delegate = self
-        LocationManager.shared.externalViewInitialize = true
         LocationManager.shared.startUpdateLocation()
         
     }

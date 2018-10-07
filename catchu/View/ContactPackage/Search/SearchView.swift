@@ -44,7 +44,7 @@ extension SearchView : UISearchBarDelegate {
     func searchTrigger(input : String, completion : @escaping (_ result : Bool) -> Void) {
     
         let client = RECatchUMobileAPIClient.default()
-        let userid = User.shared.userID
+        let userid = User.shared.userid ?? ""
         
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in

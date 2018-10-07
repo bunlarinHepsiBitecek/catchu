@@ -154,13 +154,13 @@ struct LocalizedConstants {
     }
     
     struct Feed {
+        static let CatchU = NSLocalizedString("CatchU", comment: "")
         static let Loading = NSLocalizedString("Loading", comment: "")
         static let More = NSLocalizedString("More", comment: "")
         static let Comments = NSLocalizedString("Comments", comment: "")
         static let AddComment = NSLocalizedString("AddComment", comment: "")
         static let Send = NSLocalizedString("Send", comment: "")
         static let Reply = NSLocalizedString("Reply", comment: "")
-        
     }
     
     struct Notification {

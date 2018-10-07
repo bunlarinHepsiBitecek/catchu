@@ -448,7 +448,6 @@ extension FinalSharePageView : UIGestureRecognizerDelegate {
         
         // if you dont stop location service, even if you remove view, because of no changes on location, update location service does not work
         LocationManager.shared.stopUpdateLocation()
-        LocationManager.shared.externalViewInitialize = false
         
         delegate.dismissFinalShareViewController()
         
@@ -466,7 +465,6 @@ extension FinalSharePageView : UIGestureRecognizerDelegate {
         
         // if you dont stop location service, even if you remove view, because of no changes on location, update location service does not work
         LocationManager.shared.stopUpdateLocation()
-        LocationManager.shared.externalViewInitialize = false
         
         delegate.dismissFinalShareViewController()
         delegateForViewController.dismisViewController()

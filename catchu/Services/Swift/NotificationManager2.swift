@@ -98,13 +98,13 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
         
         print("setContentOfLocalNotification starts")
         
-        print("share.shared.text : \(Share.shared.text)")
-        
         let content = UNMutableNotificationContent()
         
         content.title = "CatchU"
         content.subtitle = LocalizedConstants.Notification.CatchSomething
-        content.body = Share.shared.text
+        if let message = Share.shared.message {
+            content.body = message
+        }
         
         //let url = Bundle.main.url(forResource: "8771", withExtension: "jpg")
         

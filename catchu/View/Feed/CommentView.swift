@@ -90,7 +90,7 @@ extension CommentView: CommentAccessoryViewDelegate {
         guard let user = comment.user else { return }
         // TODO: user objesi duzeltilecek
         //        guard let username = user.userName else { return }
-        let username = user.userName
+        let username = user.username
         self.commentAccessoryView.messageTextView.text = "@\(username) "
         self.commentAccessoryView.messageTextView.becomeFirstResponder()
         if let commentid = comment.commentid {

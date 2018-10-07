@@ -109,7 +109,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         
         let client = RECatchUMobileAPIClient.default()
         
-        let userid = User.shared.userID
+        guard let userid = User.shared.userid else { return }
         
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
@@ -317,7 +317,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         
         guard let friendRequest = REFriendRequest() else { return }
         
-        friendRequest.requesterUserid = User.shared.userID
+        friendRequest.requesterUserid = User.shared.userid
         friendRequest.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Friends.requestingFollowList
         
         // TODO: Authorization

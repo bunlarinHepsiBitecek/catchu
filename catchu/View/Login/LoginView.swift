@@ -190,8 +190,9 @@ extension LoginView {
 
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
-
-        let user = User(userID: Constants.CharacterConstants.SPACE, userName: Constants.CharacterConstants.SPACE, name: Constants.CharacterConstants.SPACE, email: email, password: password, provider: Constants.CharacterConstants.SPACE, providerID: Constants.CharacterConstants.SPACE)
+        
+        let user = User(email: email, password: password)
+        
 
         FirebaseManager.shared.loginFirebase(user: user)
     }

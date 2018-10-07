@@ -32,11 +32,13 @@ class MediaViewImageCell: BaseCollectionCell {
     
     var item: MediaViewModelItem? {
         didSet {
-            guard let item = item as? MediaViewModelImageItem else {
+            guard let item = item as? MediaViewModelMediaItem else {
                 return
             }
+            guard let media = item.media else { return }
+            guard let url = media.url else { return }
             
-            imageView.loadImageUsingUrlString(urlString: item.imageUrl)
+            imageView.loadAndCacheImage(url: url)
         }
     }
     
@@ -57,14 +59,13 @@ class MediaViewImageCell: BaseCollectionCell {
     
     
     override func setupViews() {
-        addSubview(imageView)
+        self.addSubview(imageView)
         
-        let safeLayout = self.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+            imageView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
+            imageView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
+            imageView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            imageView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
             ])
     }
     
@@ -79,10 +80,12 @@ class MediaViewVideoCell: BaseCollectionCell {
     
     var item: MediaViewModelItem? {
         didSet {
-            guard let item = item as? MediaViewModelVideoItem else {
-                return
-            }
-            self.preparePlayerLayer(urlString: item.videoUrl)
+            guard let item = item as? MediaViewModelMediaItem else { return }
+            
+            guard let media = item.media else { return }
+            guard let url = media.url else { return }
+            
+            self.preparePlayerLayer(urlString: url)
         }
     }
     
@@ -148,31 +151,29 @@ class MediaViewVideoCell: BaseCollectionCell {
     override func setupViews() {
         NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         
-        addSubview(activityIndicatorView)
-        addSubview(playButton)
-        addSubview(remainingTime)
-        
-        let safeLayout = self.safeAreaLayoutGuide
+        self.addSubview(activityIndicatorView)
+        self.addSubview(playButton)
+        self.addSubview(remainingTime)
         
         //x,y,w,h
         NSLayoutConstraint.activate([
-            activityIndicatorView.centerXAnchor.constraint(equalTo: safeLayout.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: safeLayout.centerYAnchor),
+            activityIndicatorView.safeCenterXAnchor.constraint(equalTo: safeCenterXAnchor),
+            activityIndicatorView.safeCenterYAnchor.constraint(equalTo: safeCenterYAnchor),
             activityIndicatorView.widthAnchor.constraint(equalToConstant: 50),
             activityIndicatorView.heightAnchor.constraint(equalToConstant: 50)
             ])
         
         //x,y,w,h
         NSLayoutConstraint.activate([
-            playButton.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor, constant: 10),
-            playButton.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor, constant: -10),
+            playButton.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: 10),
+            playButton.safeBottomAnchor.constraint(equalTo: safeBottomAnchor, constant: -10),
             playButton.widthAnchor.constraint(equalToConstant: 20),
             playButton.heightAnchor.constraint(equalToConstant: 20)
             ])
         
         NSLayoutConstraint.activate([
-            remainingTime.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            remainingTime.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor, constant: -8),
+            remainingTime.safeTopAnchor.constraint(equalTo: safeTopAnchor),
+            remainingTime.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -8),
             remainingTime.widthAnchor.constraint(equalToConstant: 50),
             remainingTime.heightAnchor.constraint(equalToConstant: 24)
             ])
@@ -205,7 +206,16 @@ class MediaViewVideoCell: BaseCollectionCell {
         // Create the asset to play
         let asset = AVAsset(url: url)
         
-        playerItem = AVPlayerItem(asset: asset)
+        if Constants.LOCALTEST {
+            guard let path = Bundle.main.path(forResource: "video", ofType:"mov") else {
+                debugPrint("video.mov not found")
+                return
+            }
+            
+            playerItem = AVPlayerItem(asset: AVAsset(url: URL(fileURLWithPath: path)))
+        } else {
+            playerItem = AVPlayerItem(asset: asset)
+        }
         
         player = AVPlayer(playerItem: playerItem)
 //        player?.replaceCurrentItem(with: playerItem)
@@ -307,5 +317,3 @@ class MediaViewVideoCell: BaseCollectionCell {
     }
     
 }
-
-

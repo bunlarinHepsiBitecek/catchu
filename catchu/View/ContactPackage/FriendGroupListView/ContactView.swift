@@ -419,8 +419,9 @@ extension ContactView {
         guard let groupRequest = REGroupRequest() else { return }
         
         groupRequest.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Groups.GET_AUTHENTICATED_USER_GROUP_LIST
-        groupRequest.userid = User.shared.userID
-        
+        if let userid = User.shared.userid {
+            groupRequest.userid = userid
+        }
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
@@ -540,11 +541,13 @@ extension ContactView : UISearchBarDelegate {
                 
                 if let user = item.value as User? {
                     
-                    print("name : \(user.name)")
+                    print("name : \(user.name ?? "")")
                     
                     var arraySplit = [Substring]()
                     
-                    arraySplit = item.value.name.split(separator: " ")
+                    if let name = item.value.name {
+                        arraySplit = name.split(separator: " ")
+                    }
                     
                     for item in arraySplit {
                         

@@ -11,13 +11,15 @@ import UIKit
 class FeedViewController: UIViewController {
     
     lazy var feedView: FeedView = {
-        let view = FeedView(frame: .zero)
+        let view = FeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.title = LocalizedConstants.Feed.CatchU
         
         guard checkLoginAuth() else { return }
         
@@ -43,13 +45,12 @@ class FeedViewController: UIViewController {
     
     func setupViews() {
         self.view.addSubview(self.feedView)
-        let safeLayout = self.view.safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
-            self.feedView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            self.feedView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
-            self.feedView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            self.feedView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+            feedView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
+            feedView.safeBottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            feedView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
+            feedView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor)
             ])
     }
 }

@@ -445,7 +445,9 @@ class APIGatewayManager {
             
             if finished {
                 
-                client.friendsGet(userid: User.shared.userID, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                guard let userid = User.shared.userid else { return }
+                
+                client.friendsGet(userid: userid, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
                     
                     if taskFriendList.error != nil {
                         

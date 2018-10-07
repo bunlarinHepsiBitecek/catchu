@@ -29,8 +29,13 @@ class SearchResultTableViewCell: UITableViewCell {
         
         guard let friendRequest = REFriendRequest() else { return }
         
-        friendRequest.requesterUserid = User.shared.userID
-        friendRequest.requestedUserid = searchResultUser.userID
+        if let userid = User.shared.userid {
+            friendRequest.requestedUserid = userid
+        }
+        
+        if let userid = searchResultUser.userid {
+            friendRequest.requestedUserid = userid
+        }
         
 //        switch inputRequestType {
 //        case .delete:
@@ -116,34 +121,46 @@ class SearchResultTableViewCell: UITableViewCell {
     
     func returnRequestType() -> RequestType {
         
-        if searchResultUser.isUserHasAFriendRelation {
-            return RequestType.deleteFollow
-        } else {
-            if searchResultUser.isUserHasPendingFriendRequest {
-                return RequestType.deletePendingFollowRequest
-            } else {
-                if searchResultUser.isUserHasAPrivateAccount {
-                    return RequestType.followRequest
-                } else {
-                    return RequestType.createFollowDirectly
-                }
+        if let isUserHasAFriendRelation = searchResultUser.isUserHasAFriendRelation {
+            if isUserHasAFriendRelation {
+                return RequestType.deleteFollow
             }
         }
+        if let isUserHasPendingFriendRequest = searchResultUser.isUserHasPendingFriendRequest {
+            if isUserHasPendingFriendRequest {
+                return RequestType.deletePendingFollowRequest
+            }
+        }
+        if let isUserHasAPrivateAccount = searchResultUser.isUserHasAPrivateAccount {
+            if isUserHasAPrivateAccount {
+                return RequestType.followRequest
+            }
+        }
+        
+       return RequestType.createFollowDirectly
+        
     }
     
     func requestButtonVisualManagementWhileLoadingTableView() {
         
-        if searchResultUser.isUserHasAFriendRelation {
-            self.friendRequestButton.setTitle(LocalizedConstants.Contact.friends, for: .normal)
-            blackTones()
-        } else if searchResultUser.isUserHasPendingFriendRequest {
-            self.friendRequestButton.setTitle(LocalizedConstants.Contact.requested, for: .normal)
-            blackTones()
-        } else {
-            self.friendRequestButton.setTitle(LocalizedConstants.Contact.addFriend, for: .normal)
-            defaultButtonColors()
+        if let isUserHasAFriendRelation = searchResultUser.isUserHasAFriendRelation {
+            if isUserHasAFriendRelation {
+                self.friendRequestButton.setTitle(LocalizedConstants.Contact.friends, for: .normal)
+                blackTones()
+                return
+            }
         }
         
+        if let isUserHasPendingFriendRequest = searchResultUser.isUserHasPendingFriendRequest {
+            if isUserHasPendingFriendRequest {
+                self.friendRequestButton.setTitle(LocalizedConstants.Contact.requested, for: .normal)
+                blackTones()
+                return
+            }
+        }
+        
+        self.friendRequestButton.setTitle(LocalizedConstants.Contact.addFriend, for: .normal)
+        defaultButtonColors()
     }
     
     // function below decides button titles after updating nodes in neo4j
@@ -195,7 +212,10 @@ class SearchResultTableViewCell: UITableViewCell {
     
     @IBAction func requestButtonTapped(_ sender: Any) {
         
-        APIGatewayManager.shared.requstProces(inputRequestType: returnRequestType(), reqester: User.shared.userID, requested: searchResultUser.userID) { (response) in
+        guard let userid = User.shared.userid else { return }
+        guard let requestedUserid = searchResultUser.userid else { return }
+        
+        APIGatewayManager.shared.requstProces(inputRequestType: returnRequestType(), reqester: userid, requested: requestedUserid) { (response) in
             
             // when httprequest is finished, let's update user cell information
             if let responseData = response as? REFriendRequestList {

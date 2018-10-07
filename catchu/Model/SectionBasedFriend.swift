@@ -148,8 +148,9 @@ class SectionBasedFriend {
         print("_friendUsernameInitialBasedDictionary : \(_friendUsernameInitialBasedDictionary.count)")
         
         for item in User.shared.userFriendList {
-            
-            _ifUserSelectedDictionary[item.value.userID] = false
+            if let userid = item.value.userid {
+                _ifUserSelectedDictionary[userid] = false
+            }
             
         }
         
@@ -169,7 +170,7 @@ class SectionBasedFriend {
     
     func sortSearchResult() {
         
-        _searchResult.sort(by: {$0.name < $1.name})
+        _searchResult.sort(by: {$0.nameCompare < $1.nameCompare})
         
     }
     
@@ -179,238 +180,240 @@ class SectionBasedFriend {
         
         for item in User.shared.sortedFriendArray {
             
-            if item.name.uppercased().hasPrefix(Constants.LetterConstants.A) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.B){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.C) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.D){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.E) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.F){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.G) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.H){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.I) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.J){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.K) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.L){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.M) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.N){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.O) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.P){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.Q) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.R) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.S){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.T) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.U){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.V) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.W){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.X) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.Y){
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y]?.append(item)
-                }
-                
-            } else if item.name.uppercased().hasPrefix(Constants.LetterConstants.Z) {
-                
-                if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z] == nil {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z] = [User]()
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z]?.append(item)
-                } else {
-                    self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z]?.append(item)
+            if let nameUppercased = item.name?.uppercased() {
+                if nameUppercased.hasPrefix(Constants.LetterConstants.A) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.A]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.B){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.B]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.C) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.C]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.D){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.D]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.E) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.E]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.F){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.F]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.G) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.G]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.H){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.H]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.I) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.I]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.J){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.J]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.K) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.K]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.L){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.L]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.M) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.M]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.N){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.N]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.O) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.O]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.P){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.P]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.Q) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Q]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.R) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.R]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.S){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.S]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.T) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.T]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.U){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.U]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.V) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.V]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.W){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.W]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.X) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.X]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.Y){
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Y]?.append(item)
+                    }
+                    
+                } else if nameUppercased.hasPrefix(Constants.LetterConstants.Z) {
+                    
+                    if self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z] == nil {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z] = [User]()
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z]?.append(item)
+                    } else {
+                        self._friendUsernameInitialBasedDictionary[Constants.LetterConstants.Z]?.append(item)
+                    }
                 }
             }
             

@@ -50,17 +50,13 @@ class FeedView: BaseView {
     
     
     override func setupView() {
-        print("FeedView setupView")
-        
         self.dataSource.delegate = self
-        
         self.addSubview(tableView)
-        let safeLayout = self.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+            tableView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
+            tableView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
+            tableView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            tableView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
             ])
         
         setupRefreshControl()

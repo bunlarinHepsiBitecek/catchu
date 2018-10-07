@@ -68,13 +68,15 @@ extension ContainerSearchResultViewController: UITableViewDelegate, UITableViewD
             // getting search result from neo4j
             let searchObject = Search.shared.searchResultArray[indexPath.row]
             cell.searchResultUser = searchObject
-            cell.searchUsername.text = searchObject.userName
-            cell.searchUserExtraLabel.text = searchObject.name
+            if let username = searchObject.username {
+                cell.searchUsername.text = username
+            }
+            if let name = searchObject.name {
+                cell.searchUserExtraLabel.text = name
+            }
             
-            if searchObject.profilePictureUrl != Constants.CharacterConstants.SPACE {
-                
-                cell.searchUserImage.setImagesFromCacheOrFirebaseForFriend(searchObject.profilePictureUrl)
-                
+            if let profilePictureUrl = searchObject.profilePictureUrl {
+                cell.searchUserImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
             }
             
             cell.requestButtonVisualManagementWhileLoadingTableView()
@@ -84,8 +86,6 @@ extension ContainerSearchResultViewController: UITableViewDelegate, UITableViewD
             
         }
         
-        return UITableViewCell()
-        
     }
     
     // didselect row
@@ -93,11 +93,11 @@ extension ContainerSearchResultViewController: UITableViewDelegate, UITableViewD
         
         if !Search.shared.isSearchProgressActive {
 
-            let cell = tableView.cellForRow(at: indexPath) as! SearchResultTableViewCell
+//            let cell = tableView.cellForRow(at: indexPath) as! SearchResultTableViewCell
 
             //cell.defaultButtonColors()
             
-            let storyboard = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil)
+//            let storyboard = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil)
 //            let vc = storyboard.instantiateViewController(withIdentifier: "ProfileMainViewController") as! ProfileMainViewController
 //            let vc = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
             //navigationController?.pushViewController(vc, animated: true)

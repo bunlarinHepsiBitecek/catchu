@@ -93,14 +93,12 @@ class EditProfile4View: UIView {
 //        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
         
         User.shared.name            = referenceOfRootView.editableProfileView.nameTextField.text!
-        User.shared.userName        = referenceOfRootView.editableProfileView.usernameTextField.text!
+        User.shared.username        = referenceOfRootView.editableProfileView.usernameTextField.text!
         User.shared.userWebsite     = referenceOfRootView.editableProfileView.websiteTextField.text!
         User.shared.userBirthday    = referenceOfRootView.editableProfileView.birthDayTextField.text!
         User.shared.email           = referenceOfRootView.editableProfileView.emailTextField.text!
         User.shared.userPhone       = referenceOfRootView.editableProfileView.phoneNumberTextField.text!
         User.shared.userGender      = referenceOfRootView.editableProfileView.genderTextField.text!
-        
-        User.shared.displayProperties()
         
 //        var temp = User()
 //
@@ -161,7 +159,9 @@ extension EditProfile4View: UIGestureRecognizerDelegate {
     
     func setupUserProfileInformation() {
         
-        profileImage.setImagesFromCacheOrFirebaseForFriend(User.shared.profilePictureUrl)
+        if let profilePictureUrl = User.shared.profilePictureUrl {
+            profileImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+        }
         
     }
     

@@ -43,15 +43,13 @@ class CommentViewController: UIViewController {
     
     func setupView() {
         self.view.backgroundColor = .white
-
         self.view.addSubview(commentView)
-
-        let safeLayout = self.view.safeAreaLayoutGuide
+        
         NSLayoutConstraint.activate([
-            commentView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            commentView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
-            commentView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            commentView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor),
+            commentView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
+            commentView.safeBottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            commentView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
+            commentView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
             ])
     }
     

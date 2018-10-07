@@ -45,8 +45,8 @@ class ParticipantListView: UIView {
     }()
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-        
-        APIGatewayManager.shared.getUserFriendList(userid: User.shared.userID) { (friendList, response) in
+        guard let userid = User.shared.userid else { return }
+        APIGatewayManager.shared.getUserFriendList(userid: userid) { (friendList, response) in
             
             if response {
                 
@@ -228,7 +228,9 @@ extension ParticipantListView {
             
             for item in SectionBasedParticipant.sharedParticipant.selectedUserArray {
                 
-                title = title + item.name
+                if let name = item.name {
+                    title = title + name
+                }
                 
                 print("SectionBasedParticipant.sharedParticipant.selectedUserArray.endIndex : \(SectionBasedParticipant.sharedParticipant.selectedUserArray.endIndex)")
                 
@@ -265,7 +267,9 @@ extension ParticipantListView {
                 
                 print("index(ofAccessibilityElement: item) : \(index(ofAccessibilityElement: item))")
                 
-                title = title + item.name
+                if let name = item.name {
+                    title = title + name
+                }
                 
                 print("SectionBasedParticipant.sharedParticipant.selectedUserArray.endIndex : \(SectionBasedParticipant.sharedParticipant.selectedUserArray.endIndex)")
                 
@@ -442,7 +446,9 @@ extension ParticipantListView: UISearchBarDelegate {
                     
                     var arraySplit = [Substring]()
                     
-                    arraySplit = item.value.name.split(separator: " ")
+                    if let name = item.value.name {
+                        arraySplit = name.split(separator: " ")
+                    }
                     
                     for item in arraySplit {
                         
@@ -488,8 +494,13 @@ extension ParticipantListView: UICollectionViewDelegate, UICollectionViewDataSou
         if SectionBasedParticipant.sharedParticipant.selectedUserArray.count > 0 {
             
             UIView.transition(with: collectionView, duration: 0.3, options: .transitionCrossDissolve, animations: {
-                cell.selectedParticipantImage.setImagesFromCacheOrFirebaseForFriend(SectionBasedParticipant.sharedParticipant.selectedUserArray[indexPath.row].profilePictureUrl)
-                cell.selectedParticipantName.text = SectionBasedParticipant.sharedParticipant.selectedUserArray[indexPath.row].name
+               
+                if let profilePictureUrl = SectionBasedParticipant.sharedParticipant.selectedUserArray[indexPath.row].profilePictureUrl {
+                    cell.selectedParticipantImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+                }
+                if let name = SectionBasedParticipant.sharedParticipant.selectedUserArray[indexPath.row].name {
+                    cell.selectedParticipantName.text = name
+                }
                 cell.participant = SectionBasedParticipant.sharedParticipant.selectedUserArray[indexPath.row]
                 
             })
@@ -511,14 +522,16 @@ extension ParticipantListView: UICollectionViewDelegate, UICollectionViewDataSou
         
         let cell = collectionView.cellForItem(at: indexPath) as! ParticipantSelectedCollectionViewCell
         
-        if let i = SectionBasedParticipant.sharedParticipant.selectedUserArray.index(where: { $0.userID == cell.participant.userID}) {
+        if let i = SectionBasedParticipant.sharedParticipant.selectedUserArray.index(where: { $0.userid == cell.participant.userid}) {
             
             SectionBasedParticipant.sharedParticipant.selectedUserArray.remove(at: i)
         }
         
         collectionView.deleteItems(at: [indexPath])
         
-        SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[cell.participant.userID] = false
+        if let userid = cell.participant.userid {
+            SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[userid] = false
+        }
         
         /* if collection view is reload, the user interface changes sharply, not smoothly */
         //collectionView.reloadData()
@@ -534,10 +547,16 @@ extension ParticipantListView: UICollectionViewDelegate, UICollectionViewDataSou
         
         if SectionBasedParticipant.sharedParticipant.isSearchModeActivated {
             tableView.deselectRow(at: cell.participant.indexPathTableViewOfSearchMode, animated: true)
-            cellSelectedIconManagement(indexPath: cell.participant.indexPathTableViewOfSearchMode, iconManagement: .deselected, userId: cell.participant.userID)
+            
+            if let userid = cell.participant.userid {
+                cellSelectedIconManagement(indexPath: cell.participant.indexPathTableViewOfSearchMode, iconManagement: .deselected, userId: userid)
+            }
         } else {
             tableView.deselectRow(at: cell.participant.indexPathTableView, animated: true)
-            cellSelectedIconManagement(indexPath: cell.participant.indexPathTableView, iconManagement: .deselected, userId: cell.participant.userID)
+            
+            if let userid = cell.participant.userid {
+                cellSelectedIconManagement(indexPath: cell.participant.indexPathTableView, iconManagement: .deselected, userId: userid)
+            }
         }
         
         //tableView.deselectRow(at: cell.selectedUser.indexPathTableView, animated: true)
@@ -698,13 +717,14 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
         //cell.participant = SectionBasedParticipant.sharedParticipant.returnUserFromSectionBasedDictionary(indexPath: indexPath)
         cell.participant = returnUser(indexPath: indexPath)
         
-        cell.participant.displayProperties()
-        
         /* the code below supplies data for table view - end */
         
-        cell.participantName.text = cell.participant.userName
+        cell.participantName.text = cell.participant.username
         cell.participantDetailInformation.text = cell.participant.name
-        cell.participantImage.setImagesFromCacheOrFirebaseForFriend(cell.participant.profilePictureUrl)
+       
+        if let profilePictureUrl = cell.participant.profilePictureUrl {
+            cell.participantImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+        }
         
 //        for (key, value) in SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary {
 //            
@@ -713,18 +733,21 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
 //            
 //        }
         
-        print("cell.participant.userID : \(cell.participant.userID)")
+        print("cell.participant.userID : \(cell.participant.userid)")
         
-        if SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[cell.participant.userID]! {
-            
-            cell.participantSelectedIcon.image = #imageLiteral(resourceName: "check-mark.png")
-            
-            // after reloading tableview selected rows will be gone, that's why we need to implement code below
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            
-        } else {
-            
-            cell.participantSelectedIcon.image = nil
+        if let userid = cell.participant.userid {
+            if SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[userid]! {
+                
+                cell.participantSelectedIcon.image = #imageLiteral(resourceName: "check-mark.png")
+                
+                // after reloading tableview selected rows will be gone, that's why we need to implement code below
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                
+            } else {
+                
+                cell.participantSelectedIcon.image = nil
+                
+            }
             
         }
         
@@ -733,7 +756,7 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
                 
                 for item in userList {
                     
-                    if item.userID == cell.participant.userID {
+                    if item.userid == cell.participant.userid {
                         
                         cell.setParticipantAlreadyInGroup()
                         
@@ -755,7 +778,9 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
          userID is marked as selected
          user is added into selected user array
          */
-        SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[cell.participant.userID] = true
+        if let userid = cell.participant.userid {
+            SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[userid] = true
+        }
         //cell.participant.indexPathTableView = indexPath
         cell.participant.indexPathTableView = indexPath
         cell.participant.indexPathTableViewOfSearchMode = indexPath
@@ -772,7 +797,9 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
         /*
          check image is activated
          */
-        cellSelectedIconManagement(indexPath: indexPath, iconManagement: .selected, userId: cell.participant.userID)
+        if let userid = cell.participant.userid {
+            cellSelectedIconManagement(indexPath: indexPath, iconManagement: .selected, userId: userid)
+        }
         
         collectionViewAnimationManagement()
         
@@ -832,9 +859,11 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
         /*  userID is marked as deselected
          user is removed from selected user array
          */
-        SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[cell.participant.userID] = false
+        if let userid = cell.participant.userid {
+            SectionBasedParticipant.sharedParticipant.ifUserSelectedDictionary[userid] = false
+        }
         
-        if let i = SectionBasedParticipant.sharedParticipant.selectedUserArray.index(where: { $0.userID == cell.participant.userID}) {
+        if let i = SectionBasedParticipant.sharedParticipant.selectedUserArray.index(where: { $0.userid == cell.participant.userid}) {
             
             SectionBasedParticipant.sharedParticipant.selectedUserArray.remove(at: i)
         }
@@ -842,8 +871,9 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
         /*
          uncheck image is activated
          */
-        
-        cellSelectedIconManagement(indexPath: indexPath, iconManagement: .deselected, userId: cell.participant.userID)
+        if let userid = cell.participant.userid {
+            cellSelectedIconManagement(indexPath: indexPath, iconManagement: .deselected, userId: userid)
+        }
         
         print("cell.userFriend.indexPathCollectionView :\(cell.participant.indexPathCollectionView)")
         //collectionView.deleteItems(at: [cell.userFriend.indexPathCollectionView])
@@ -899,7 +929,7 @@ extension ParticipantListView: UITableViewDelegate, UITableViewDataSource {
             
             let cell = item as! ParticipantListTableViewCell
             
-            if cell.participant.userID == userId {
+            if cell.participant.userid == userId {
                 
                 UIView.transition(with: cell.participantSelectedIcon, duration: 0.3, options: .transitionCrossDissolve, animations: {
                     

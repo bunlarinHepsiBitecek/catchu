@@ -109,8 +109,8 @@ class FeedViewModel: NSObject {
     }
     
     func refreshData() {
-//        LocationManager.shared.startUpdateLocation()
-        self.loadData()
+        LocationManager.shared.startUpdateLocation()
+//        self.loadData()
     }
     
     private func loadData() {

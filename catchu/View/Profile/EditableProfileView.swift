@@ -67,15 +67,29 @@ class EditableProfileView: UIView {
     
     func setCurrentValuesToView() {
         
-        nameTextField.text = User.shared.name
-        usernameTextField.text = User.shared.userName
-        websiteTextField.text = User.shared.userWebsite
-        shortBioTextField.text = Constants.CharacterConstants.SPACE
-        birthDayTextField.text = User.shared.userBirthday
-        emailTextField.text = User.shared.email
-        phoneNumberTextField.text = User.shared.userPhone
-        genderTextField.text = User.shared.userGender
+        if let name = User.shared.name {
+            nameTextField.text = name
+        }
+        if let username = User.shared.username {
+            usernameTextField.text = username
+        }
+        if let website = User.shared.userWebsite {
+            websiteTextField.text = website
+        }
+        if let birthday = User.shared.userBirthday {
+            birthDayTextField.text = birthday
+        }
+        if let email = User.shared.email {
+            emailTextField.text = email
+        }
+        if let phone = User.shared.userPhone {
+            phoneNumberTextField.text = phone
+        }
+        if let gender = User.shared.userGender {
+            genderTextField.text = gender
+        }
         
+        shortBioTextField.text = Constants.CharacterConstants.SPACE
     }
     
     func setupDatePicker() {

@@ -22,9 +22,6 @@ class ContactViewController: UIViewController {
         contactView.referenceMasterViewController = self
         
         prepareViewLoadProcess()
-        
-        print("------------> \(GeoFireData.shared.geofireDictionary.count)")
-
     }
 
     override func didReceiveMemoryWarning() {

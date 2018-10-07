@@ -40,16 +40,19 @@ class FeedViewCell: BaseTableCell {
     
     weak var delegate: FeedViewCellDelegate!
     
+    private var shadowLayer: CAShapeLayer!
+    private let padding: CGFloat = 10.0
+    
     lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        view.layer.shadowColor = UIColor.lightGray.cgColor
-        view.layer.shadowOpacity = 0.8
-        view.layer.shadowOffset = CGSize(width: 0, height: 5) // for CGSize.zero
-        view.layer.shadowRadius = 7
-        view.layer.cornerRadius = 15
+//        view.layer.shadowColor = UIColor.lightGray.cgColor
+//        view.layer.shadowOpacity = 0.8
+//        view.layer.shadowOffset = CGSize(width: 0, height: 5) // for CGSize.zero
+//        view.layer.shadowRadius = 7
+//        view.layer.cornerRadius = 15
         
         return view
     }()
@@ -58,6 +61,7 @@ class FeedViewCell: BaseTableCell {
         let view = MediaView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 250))
         view.backgroundColor = UIColor.orange
         view.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }()
     
@@ -197,6 +201,7 @@ class FeedViewCell: BaseTableCell {
     
     
     override func setupViews() {
+        super.setupViews()
         
         self.containerView.addSubview(profileImageView)
         self.containerView.addSubview(name)
@@ -217,86 +222,100 @@ class FeedViewCell: BaseTableCell {
         
         // now add container view to content view for UITableViewAutomaticDimension
         self.contentView.addSubview(self.containerView)
-        let contentLayout   = self.contentView.safeAreaLayoutGuide
-        let containerLayout = self.containerView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
             // pin containerView to content
-            containerView.topAnchor.constraint(equalTo: contentLayout.topAnchor, constant: 10),
-            containerView.bottomAnchor.constraint(equalTo: contentLayout.bottomAnchor, constant: -10),
-            containerView.leadingAnchor.constraint(equalTo: contentLayout.leadingAnchor, constant: 10),
-            containerView.trailingAnchor.constraint(equalTo: contentLayout.trailingAnchor, constant: -10),
+            containerView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor, constant: padding),
+            containerView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor, constant: -padding),
+            containerView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor, constant: padding),
+            containerView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor, constant: -padding),
             
             //pin profileImage
-            profileImageView.topAnchor.constraint(equalTo: containerLayout.topAnchor, constant: 10),
-            profileImageView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor, constant: 10),
+            profileImageView.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor, constant: padding),
+            profileImageView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor, constant: padding),
             profileImageView.widthAnchor.constraint(equalToConstant: profileImageView.frame.width),
             profileImageView.heightAnchor.constraint(equalToConstant: profileImageView.frame.height),
             
             //pin name
-            name.topAnchor.constraint(equalTo: profileImageView.topAnchor),
-            name.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
-            name.trailingAnchor.constraint(equalTo: likeButton.leadingAnchor, constant: -10),
+            name.safeTopAnchor.constraint(equalTo: profileImageView.safeTopAnchor),
+            name.safeLeadingAnchor.constraint(equalTo: profileImageView.safeTrailingAnchor, constant: padding),
+            name.safeTrailingAnchor.constraint(equalTo: likeButton.safeLeadingAnchor, constant: -padding),
             
             //pin username
-            username.topAnchor.constraint(equalTo: name.bottomAnchor),
-            username.leadingAnchor.constraint(equalTo: name.leadingAnchor),
-            username.trailingAnchor.constraint(equalTo: name.trailingAnchor),
+            username.safeTopAnchor.constraint(equalTo: name.safeBottomAnchor),
+            username.safeLeadingAnchor.constraint(equalTo: name.safeLeadingAnchor),
+            username.safeTrailingAnchor.constraint(equalTo: name.safeTrailingAnchor),
             
             //layout addButton
-            likeButton.topAnchor.constraint(equalTo: containerLayout.topAnchor, constant: 10),
-            likeButton.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor, constant: -10),
+            likeButton.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor, constant: padding),
+            likeButton.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor, constant: -padding),
             likeButton.widthAnchor.constraint(equalToConstant: 50),
             likeButton.heightAnchor.constraint(equalToConstant: 50),
             
             // pin statustext
-            statusTextView.topAnchor.constraint(equalTo: username.bottomAnchor),
-            statusTextView.leadingAnchor.constraint(equalTo: username.leadingAnchor),
-            statusTextView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor),
-            ])
-        
-        NSLayoutConstraint.activate([
-            mediaView.topAnchor.constraint(equalTo: statusTextView.bottomAnchor),
-            mediaView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor),
-            mediaView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor),
-            mediaView.heightAnchor.constraint(equalToConstant: mediaView.frame.height)
-            ])
-
-        NSLayoutConstraint.activate([
-            footerView.topAnchor.constraint(equalTo: mediaView.bottomAnchor, constant: 10),
-            footerView.bottomAnchor.constraint(equalTo: containerLayout.bottomAnchor, constant: -10),
-            footerView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor, constant: 10),
-            footerView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor, constant: -10),
-            ])
-
-        let footerLayout = self.footerView.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            timeAgoLabel.topAnchor.constraint(equalTo: footerLayout.topAnchor),
-            timeAgoLabel.leadingAnchor.constraint(equalTo: footerLayout.leadingAnchor),
+            statusTextView.safeTopAnchor.constraint(equalTo: username.safeBottomAnchor),
+            statusTextView.safeLeadingAnchor.constraint(equalTo: username.safeLeadingAnchor),
+            statusTextView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
             
-            distanceLabel.topAnchor.constraint(equalTo: footerLayout.topAnchor),
-            distanceLabel.trailingAnchor.constraint(equalTo: footerLayout.trailingAnchor),
+            mediaView.safeTopAnchor.constraint(equalTo: statusTextView.safeBottomAnchor),
+            mediaView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor),
+            mediaView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
+            mediaView.heightAnchor.constraint(equalToConstant: mediaView.frame.height),
             
-            likeCountLabel.topAnchor.constraint(equalTo: timeAgoLabel.bottomAnchor, constant: 10),
-            likeCountLabel.bottomAnchor.constraint(equalTo: footerLayout.bottomAnchor),
-            likeCountLabel.leadingAnchor.constraint(equalTo: footerLayout.leadingAnchor),
-            likeIcon.bottomAnchor.constraint(equalTo: likeCountLabel.bottomAnchor),
-            likeIcon.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: 5),
+            footerView.safeTopAnchor.constraint(equalTo: mediaView.safeBottomAnchor, constant: padding),
+            footerView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor, constant: -padding),
+            footerView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor, constant: padding),
+            footerView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor, constant: -padding),
+            
+            timeAgoLabel.safeTopAnchor.constraint(equalTo: footerView.safeTopAnchor),
+            timeAgoLabel.safeLeadingAnchor.constraint(equalTo: footerView.safeLeadingAnchor),
+            
+            distanceLabel.safeTopAnchor.constraint(equalTo: footerView.safeTopAnchor),
+            distanceLabel.safeTrailingAnchor.constraint(equalTo: footerView.safeTrailingAnchor),
+            
+            likeCountLabel.safeTopAnchor.constraint(equalTo: timeAgoLabel.safeBottomAnchor, constant: padding),
+            likeCountLabel.safeBottomAnchor.constraint(equalTo: footerView.safeBottomAnchor),
+            likeCountLabel.safeLeadingAnchor.constraint(equalTo: footerView.safeLeadingAnchor),
+            likeIcon.safeBottomAnchor.constraint(equalTo: likeCountLabel.safeBottomAnchor),
+            likeIcon.safeLeadingAnchor.constraint(equalTo: likeCountLabel.safeTrailingAnchor, constant: 5),
             likeIcon.widthAnchor.constraint(equalToConstant: 17),
             likeIcon.heightAnchor.constraint(equalToConstant: 17),
             
-            commentCountLabel.bottomAnchor.constraint(equalTo: likeCountLabel.bottomAnchor),
-            commentCountLabel.leadingAnchor.constraint(equalTo: likeIcon.trailingAnchor, constant: 20),
-            commentIcon.bottomAnchor.constraint(equalTo: commentCountLabel.bottomAnchor),
-            commentIcon.leadingAnchor.constraint(equalTo: commentCountLabel.trailingAnchor, constant: 5),
+            commentCountLabel.safeBottomAnchor.constraint(equalTo: likeCountLabel.safeBottomAnchor),
+            commentCountLabel.safeLeadingAnchor.constraint(equalTo: likeIcon.safeTrailingAnchor, constant: 20),
+            commentIcon.safeBottomAnchor.constraint(equalTo: commentCountLabel.safeBottomAnchor),
+            commentIcon.safeLeadingAnchor.constraint(equalTo: commentCountLabel.safeTrailingAnchor, constant: 5),
             commentIcon.widthAnchor.constraint(equalToConstant: 17),
             commentIcon.heightAnchor.constraint(equalToConstant: 17),
             
-            moreButton.bottomAnchor.constraint(equalTo: footerLayout.bottomAnchor),
-            moreButton.trailingAnchor.constraint(equalTo: footerLayout.trailingAnchor),
-            
+            moreButton.safeBottomAnchor.constraint(equalTo: footerView.safeBottomAnchor),
+            moreButton.safeTrailingAnchor.constraint(equalTo: footerView.safeTrailingAnchor),
             ])
+        
+
+    }
+    
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        
+         /// Custom cell subview actual size zero in layoutSubviews(), so override layoutIfNeeded
+        if shadowLayer == nil {
+            let cornerRadius: CGFloat = 15.0
+            
+            shadowLayer = CAShapeLayer()
+            
+            shadowLayer.path = UIBezierPath(roundedRect: containerView.bounds, cornerRadius: cornerRadius).cgPath
+            shadowLayer.fillColor = UIColor.white.cgColor
+            
+            shadowLayer.shadowColor = UIColor.lightGray.cgColor
+            shadowLayer.shadowPath = shadowLayer.path
+            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+            shadowLayer.shadowOpacity = 0.8
+            shadowLayer.shadowRadius = 7
+            
+            containerView.layer.insertSublayer(shadowLayer, at: 0)
+        }
     }
     
     func configure(item: FeedViewModelItem, indexPath: IndexPath) {
@@ -306,6 +325,7 @@ class FeedViewCell: BaseTableCell {
         
         // MARK: Post value converter
         if let post = item.post {
+            self.mediaView.post = post
             
             if let message = post.message {
                 statusTextViewReadMore(expanded: item.expanded, text: message)
@@ -323,14 +343,21 @@ class FeedViewCell: BaseTableCell {
             if let createAt = post.createAt {
                 self.timeAgoLabel.text = createAt.timeAgoSinceDate()
             }
-            if let distance = post.distance {
-                self.distanceLabel.text = "\(Int(distance)) m"
-            }
+            self.distanceLabel.text = post.distanceFormatter()
+            
             if let user = post.user {
-                self.name.text = user.name
-                self.username.text = user.userName
-                self.profileImageView.loadImageUsingUrlString(urlString: user.profilePictureUrl)
+                if let name = user.name {
+                    self.name.text = name
+                    self.profileImageView.setImageInitialPlaceholder(name, circular: true)
+                }
+                if let username = user.username {
+                    self.username.text = username
+                }
+                if let profilePictureUrl = user.profilePictureUrl {
+                    self.profileImageView.loadAndCacheImage(url: profilePictureUrl)
+                }
             }
+            
         }
     }
     
@@ -436,3 +463,4 @@ extension FeedViewCell: UITextViewDelegate {
         return true
     }
 }
+

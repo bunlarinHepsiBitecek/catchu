@@ -41,14 +41,14 @@ class GroupCreateView: UIView {
         inputRequest?.groupParticipantArray = [REGroupRequest_groupParticipantArray_item]()
         
         inputRequest?.requestType = RequestType.create_group.rawValue
-        inputRequest?.userid = User.shared.userID
+        inputRequest?.userid = User.shared.userid
         inputRequest?.groupName = "Erkut Unit Test"
         
         for item in SectionBasedFriend.shared.selectedUserArray {
             
             let temp = REGroupRequest_groupParticipantArray_item()
             
-            temp?.participantUserid = item.userID
+            temp?.participantUserid = item.userid
             inputRequest?.groupParticipantArray?.append(temp!)
             
         }

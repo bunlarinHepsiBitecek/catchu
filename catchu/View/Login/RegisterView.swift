@@ -122,7 +122,7 @@ extension RegisterView {
         }
         
         // MARK: set user info
-        User.shared.userName = username
+        User.shared.username = username
         User.shared.email = email
         User.shared.password = password
         

@@ -97,25 +97,27 @@ let imageCache = NSCache<NSString, DiscardableImageCacheItem>()
 
 extension UIImageView {
     
-    func loadImageUsingUrlString(urlString: String ) {
+    func loadAndCacheImage(url: String) {
         
         self.image = nil
         
-        guard let url = URL(string: urlString) else {
+        guard let urlValue = URL(string: url) else {
             return
         }
         
-        let urlKey = urlString as NSString
-        
-        // MARK: SIL
-//        self.image = UIImage(named: "alarm_x.png")
+        let urlKey = url as NSString
         
         if let cachedItem = imageCache.object(forKey: urlKey) {
             self.image = cachedItem.image
             return
         }
         
-        URLSession.shared.dataTask(with: url, completionHandler: { [weak self] (data, response, error) in
+        if Constants.LOCALTEST {
+            self.image = UIImage(named: "AppIcon")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: urlValue, completionHandler: { [weak self] (data, response, error) in
             if error != nil {
                 return
             }
@@ -131,4 +133,41 @@ extension UIImageView {
         }).resume()
         
     }
+}
+
+
+open class DiscardableImageCacheItem: NSObject, NSDiscardableContent {
+    
+    private(set) public var image: UIImage?
+    var accessCount: UInt = 0
+    
+    public init(image: UIImage) {
+        self.image = image
+    }
+    
+    public func beginContentAccess() -> Bool {
+        if image == nil {
+            return false
+        }
+        
+        accessCount += 1
+        return true
+    }
+    
+    public func endContentAccess() {
+        if accessCount > 0 {
+            accessCount -= 1
+        }
+    }
+    
+    public func discardContentIfPossible() {
+        if accessCount == 0 {
+            image = nil
+        }
+    }
+    
+    public func isContentDiscarded() -> Bool {
+        return image == nil
+    }
+    
 }

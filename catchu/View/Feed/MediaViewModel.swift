@@ -13,51 +13,64 @@ class MediaViewModel: NSObject {
         super.init()
     }
     
-    init(share: Share) {
-        if let videoUrl = share.videoUrl {
-            let videoItem = MediaViewModelVideoItem(videoUrl: videoUrl)
-            items.append(videoItem)
-        }
-        
-        if let imageUrl = share.imageUrl {
-            let imageItem = MediaViewModelImageItem(imageUrl: imageUrl)
-            items.append(imageItem)
+    init(post: Post?) {
+        guard let post = post else { return }
+        guard let attachments = post.attachments else { return }
+
+        for media in attachments {
+            let mediaItem = MediaViewModelMediaItem(media: media)
+            items.append(mediaItem)
         }
     }
+    
+    func populate(post: Post?) {
+        guard let post = post else { return }
+        guard let attachments = post.attachments else { return }
+        
+        print("populate data: \(attachments.count)")
+        
+        for media in attachments {
+            let mediaItem = MediaViewModelMediaItem(media: media)
+            items.append(mediaItem)
+            
+            print("media: \(mediaItem.type) url: \(mediaItem.media?.url)")
+        }
+    }
+    
 }
 
-enum MediaViewModelItemType {
+enum MediaViewModelItemType: String {
     case image
     case video
+    case none
 }
 
 protocol MediaViewModelItem {
     var type: MediaViewModelItemType { get }
 }
 
-class MediaViewModelImageItem: MediaViewModelItem {
+class MediaViewModelMediaItem: MediaViewModelItem {
     
     var type: MediaViewModelItemType {
-        return .image
+        guard let media = self.media else { return .none }
+        guard let mediaType = media.type else { return .none }
+        
+        switch mediaType {
+        case MediaViewModelItemType.image.rawValue:
+            return .image
+        case MediaViewModelItemType.video.rawValue:
+            return .video
+        default:
+            return .none
+        }
     }
-    var imageUrl: String
     
-    init(imageUrl: String) {
-        self.imageUrl = imageUrl
+    var media: Media?
+    
+    init(media: Media?) {
+        self.media = media
     }
     
-}
-
-class MediaViewModelVideoItem: MediaViewModelItem {
-    
-    var type: MediaViewModelItemType {
-        return .video
-    }
-    var videoUrl: String
-    
-    init(videoUrl: String) {
-        self.videoUrl = videoUrl
-    }
     
 }
 
@@ -65,7 +78,6 @@ class MediaViewModelVideoItem: MediaViewModelItem {
 extension MediaViewModel: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
@@ -87,8 +99,9 @@ extension MediaViewModel: UICollectionViewDelegate, UICollectionViewDataSource {
                 cell.item = item
                 return cell
             }
+        case .none:
+            print("Media type cann't find type: \(item.type.rawValue)")
         }
-        
         return UICollectionViewCell()
     }
     

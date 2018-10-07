@@ -109,7 +109,9 @@ extension Profile4: UIGestureRecognizerDelegate {
         
         LoaderController.shared.showLoader()
         
-        APIGatewayManager.shared.getUserProfileInfo(userid: User.shared.userID) { (userProfileData, result) in
+        guard let userid = User.shared.userid else { return }
+        
+        APIGatewayManager.shared.getUserProfileInfo(userid: userid) { (userProfileData, result) in
             
             if result {
                 
@@ -127,7 +129,9 @@ extension Profile4: UIGestureRecognizerDelegate {
                     
                     UIView.transition(with: self.profileImage, duration: 0.5, options: .transitionCrossDissolve, animations: {
                         
-                        self.profileImage.setImagesFromCacheOrFirebaseForFriend(User.shared.profilePictureUrl)
+                        if let profilePictureUrl = User.shared.profilePictureUrl {
+                            self.profileImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+                        }
                         
                     })
                     
@@ -474,8 +478,9 @@ extension Profile4: UIGestureRecognizerDelegate {
         switch inputDirection {
         case .UP:
             print("up")
-            setTitle(inputTitle: User.shared.name)
-            
+            if let name = User.shared.name {
+                setTitle(inputTitle: name)
+            }
         case .DOWN:
             print("down")
             setTitle(inputTitle: Constants.CharacterConstants.SPACE)

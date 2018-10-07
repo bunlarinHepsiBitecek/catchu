@@ -31,21 +31,27 @@ class FirebaseManager {
     func redirectSignin() {
         if (Auth.auth().currentUser == nil) {
             User.shared = User()
-            LoaderController.changeRootNavigationController(controller: LoginViewController())
+            let transition = LoaderTransition(direction: .toBottom, style: .easeInOut)
+            LoaderController.setRootViewController(controller: LoginViewController(), transition: transition)
         }
     }
     
     // MARK: push mainVC
     func redirectSigned() {
         if (Auth.auth().currentUser != nil) {
-            LoaderController.changeRootMainTabBarController()
+            let name = Constants.Storyboard.Name.Main
+            let identifier = Constants.Storyboard.ID.MainTabBarViewController
+            let transition = LoaderTransition(direction: .toTop, style: .easeInOut)
+            LoaderController.setRootViewControllerForStoryboard(name: name, identifier: identifier, transition: transition)
         }
     }
     
     func loginFirebase(user: User) {
         LoaderController.shared.showLoader(style: .gray)
-        
-        Auth.auth().signIn(withEmail: user.email, password: user.password) { (userData, error) in
+        guard let email = user.email else { return }
+        guard let password = user.password else { return }
+
+        Auth.auth().signIn(withEmail: email, password: password) { (userData, error) in
             if let error = error {
                 self.handleError(error: error)
                 LoaderController.shared.removeLoader()
@@ -57,7 +63,7 @@ class FirebaseManager {
                 if let email = userData.user.email {
                     User.shared.email = email
                 }
-                User.shared.userID = userData.user.uid
+                User.shared.userid = userData.user.uid
                 let providerData = userData.user.providerData[0]
                 User.shared.providerID = userData.user.uid
                 User.shared.provider = providerData.providerID
@@ -118,7 +124,7 @@ class FirebaseManager {
             }
             if let session = session {
                 let credential = TwitterAuthProvider.credential(withToken: (session.authToken), secret: (session.authTokenSecret))
-                User.shared.userName = session.userName
+                User.shared.username = session.userName
                 self.firebaseSocialAuth(credential)
             } else {
                 AlertViewManager.show(type: .error, placement: .top, title: LocalizedConstants.Error, body: LocalizedConstants.FirebaseError.SocialLoginError)
@@ -142,7 +148,7 @@ class FirebaseManager {
     
     private func signidUserSync(authData: AuthDataResult?) {
         if let user = authData?.user {
-            User.shared.userID = user.uid
+            User.shared.userid = user.uid
             if let displayName = user.displayName {
                 User.shared.name = displayName
             }
@@ -166,11 +172,12 @@ class FirebaseManager {
                 
                 User.shared.profilePictureUrl = orginalUrl
                 print("profile image url: \(orginalUrl)")
-                print("provider: \(User.shared.provider)")
-                print("providerId: \(User.shared.providerID)")
+                print("provider: \(User.shared.provider ?? "")")
+                print("providerId: \(User.shared.providerID ?? "")")
             }
             REAWSManager.shared.loginSync(user: User.shared) { [weak self] result in
                 self?.handleResult(result)
+                LoaderController.shared.removeLoader()
             }
             
         }
@@ -201,11 +208,12 @@ class FirebaseManager {
     
     func registerFirebase(user: User) {
         
-        user.toString()
-        
         LoaderController.shared.showLoader()
         
-        Auth.auth().createUser(withEmail: user.email, password: user.password) { (userData, error) in
+        guard let email = user.email else { return }
+        guard let password = user.password else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (userData, error) in
             
             if error != nil {
                 
@@ -225,14 +233,14 @@ class FirebaseManager {
                     if let userID = userData.user.uid as String? {
                         
                         print("userID : \(userID)")
-                        User.shared.userID = userID
+                        User.shared.userid = userID
 //                        CloudFunctionsManager.shared.createUserProfileModel()
                         
                     }
                     
                     // TODO: new feature check
                     guard let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest() else { return }
-                    changeRequest.displayName = user.userName
+                    changeRequest.displayName = user.username
                     changeRequest.commitChanges { (error) in
                         if let error = error {
                             print("Firebase changeRequest error: \(error)")
@@ -317,8 +325,8 @@ class FirebaseManager {
     
     func checkUserLoggedIn() -> Bool {
         if let currentUser = Auth.auth().currentUser {
-            User.shared.userID = currentUser.uid
-            print("User.shared.userID : \(User.shared.userID)")
+            User.shared.userid = currentUser.uid
+            print("User.shared.userID : \(User.shared.userid)")
             return true
         } else {
             return false
@@ -329,7 +337,7 @@ class FirebaseManager {
 extension FirebaseManager {
     
     func parseFacebookGraph(data: NSDictionary) {
-        User.shared.userName = "" // no longer return username
+//        User.shared.username = "" // no longer return username
         
         if let email = data[FacebookPermissions.email]  as? String {
             User.shared.email = email

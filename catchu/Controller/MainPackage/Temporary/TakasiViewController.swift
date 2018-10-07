@@ -42,8 +42,9 @@ class TakasiViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tempObj = User.shared.requestingFriendList[indexPath.row]
 
-        cell.textLabel?.text = tempObj.userID
-        
+        if let userid = tempObj.userid {
+            cell.textLabel?.text = userid
+        }
         
         return cell
         
@@ -59,7 +60,9 @@ class TakasiViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         inputBody.requestType = Constants.AwsApiGatewayHttpRequestParameters.RequestOperationTypes.Friends.acceptRequest
         inputBody.requesterUserid = cell?.textLabel?.text
-        inputBody.requestedUserid = User.shared.userID
+        if let userid = User.shared.userid {
+            inputBody.requestedUserid = userid
+        }
         
         
         // TODO: Authorization

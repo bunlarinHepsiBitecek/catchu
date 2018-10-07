@@ -66,11 +66,10 @@ public class REUserProfileProperties : AWSModel {
     func setUserProfileInformation(user : User) {
         
         print("setUserProfileInformation starts")
-        print("user : \(user.displayProperties())")
         
         name = user.name
-        userid = user.userID
-        username = user.userName
+        userid = user.userid
+        username = user.username
         birthday = user.userBirthday
         gender = user.userGender
         email = user.email

@@ -145,35 +145,25 @@ class LoaderController: NSObject {
     }
     
     
-    /// Change navigation controller with releated controller
-    ///
-    /// - Parameter controller: The view controller which contains a navigation controller
-    class func changeRootNavigationController(controller: UIViewController?) {
-        guard let controller = controller else { return }
-        let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.popToRootViewController(animated: true)
-        guard let appDel = UIApplication.shared.delegate as? AppDelegate, let window = appDel.window else { return }
-        
-        window.rootViewController = navigationController
+    class func setRootViewController(controller: UIViewController?, transition: LoaderTransition) {
+        DispatchQueue.main.async {
+            guard let controller = controller else { return }
+            let navigationController = UINavigationController(rootViewController: controller)
+            navigationController.popToRootViewController(animated: true)
+            guard let appDel = UIApplication.shared.delegate as? AppDelegate, let window = appDel.window else { return }
+            window.layer.add(transition.animation, forKey: transition.forKey)
+            window.rootViewController = navigationController
+            window.makeKeyAndVisible()
+        }
     }
     
-    class func changeRootMainTabBarController() {
+    class func setRootViewControllerForStoryboard(name: String, identifier: String, transition: LoaderTransition) {
         DispatchQueue.main.async {
-            let name = Constants.Storyboard.Name.Main
-            let identifier = Constants.Storyboard.ID.MainTabBarViewController
-            let tabBarController = UIStoryboard(name: name, bundle: Bundle.main).instantiateViewController(withIdentifier: identifier)
+            let storyboardController = UIStoryboard(name: name, bundle: Bundle.main).instantiateViewController(withIdentifier: identifier)
             guard let appDel = UIApplication.shared.delegate as? AppDelegate, let window = appDel.window else { return }
-            window.rootViewController = tabBarController
-            
-//            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
-//                let oldState: Bool = UIView.areAnimationsEnabled
-//                UIView.setAnimationsEnabled(false)
-//                window.rootViewController = tabBarController
-//                UIView.setAnimationsEnabled(oldState)
-//            }, completion: { (finished: Bool) -> () in
-//                
-//            })
-            
+            window.layer.add(transition.animation, forKey: transition.forKey)
+            window.rootViewController = storyboardController
+            window.makeKeyAndVisible()
         }
     }
     
@@ -204,25 +194,16 @@ class LoaderController: NSObject {
         }
     }
     
-    func goToLoginViewController() {
-        LoaderController.shared.appDelegate().window?.rootViewController = UIStoryboard(name: Constants.Storyboard.Name.Login, bundle: Bundle.main).instantiateViewController(withIdentifier: Constants.Storyboard.ID.LoginViewController)
-        LoaderController.shared.appDelegate().window?.rootViewController?.dismiss(animated: true, completion: nil)
-    }
-    
-    func goToFeedViewController() {
-        LoaderController.shared.appDelegate().window?.rootViewController = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: Bundle.main).instantiateViewController(withIdentifier: Constants.Storyboard.ID.FeedViewController)
-        LoaderController.shared.appDelegate().window?.rootViewController?.dismiss(animated: true, completion: nil)
-    }
-    
-    func gotoConfirmationViewController() {
-        LoaderController.shared.appDelegate().window?.rootViewController = UIStoryboard(name: Constants.Storyboard.Name.Login, bundle: Bundle.main).instantiateViewController(withIdentifier: Constants.Storyboard.ID.ConfirmationViewController)
-        LoaderController.shared.appDelegate().window?.rootViewController?.dismiss(animated: true, completion: nil)
+    class func transitionAnimation() -> CATransition {
+        let transition = CATransition()
+        /// Second, we define the duration for the transition to get COMPLETED
+        transition.duration = 0.20
+        /// Here, you define the animation pacing (whether it starts slowly, ends faster OR starts faster, ends slowly... etc)
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromTop
         
-    }
-    
-    func goToMainViewController() {
-        LoaderController.shared.appDelegate().window?.rootViewController = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: Bundle.main).instantiateViewController(withIdentifier: Constants.Storyboard.ID.MainTabBarViewController)
-        LoaderController.shared.appDelegate().window?.rootViewController?.dismiss(animated: true, completion: nil)
+        return transition
     }
     
 }

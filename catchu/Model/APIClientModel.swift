@@ -71,12 +71,11 @@ class Media {
 extension User: CustomStringConvertible {
     var description: String {
         var description = ""
-        // TODO: User Modeli duzeltilmeli
-        //        guard let userid = self.userID else { return description }
-        //        guard let username = self.userName else { return description }
-        //        guard let profilePictureUrl = self.profilePictureUrl else { return description }
+        guard let userid = self.userid else { return description }
+        guard let username = self.username else { return description }
+        guard let profilePictureUrl = self.profilePictureUrl else { return description }
         
-        description = "\(userID), \(name), \(userName)"
+        description = "\(userid), \(name), \(username)"
         return description
     }
 }
@@ -151,6 +150,29 @@ class Post {
                 self.comments?.append(Comment(comment: comment))
             }
         }
+    }
+    
+    public func distanceFormatter() -> String {
+        let multipler: Double = 1000
+        var meauser = "m"
+        var roundedDistance: Double = 0
+        
+        /// distance is km format
+        if let distance = self.distance {
+            var distanceCalculated = distance
+            if distanceCalculated < 1.0 {
+                distanceCalculated = distanceCalculated * multipler
+            } else {
+                meauser = "km"
+            }
+            roundedDistance = rounded(distance: distanceCalculated, toPlaces: 1)
+        }
+        return "\(roundedDistance) \(meauser)"
+    }
+    
+    private func rounded(distance: Double, toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (distance * divisor).rounded() / divisor
     }
     
 }

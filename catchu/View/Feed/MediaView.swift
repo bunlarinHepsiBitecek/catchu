@@ -10,22 +10,24 @@ import UIKit
 
 class MediaView: UIView {
     
-    let dataSource: MediaViewModel = {
-        let share = Share()
-        share.videoUrl = "https://s3.eu-west-2.amazonaws.com/catchuappbucket/small.mp4"
-        share.imageUrl = "https://s3.eu-west-2.amazonaws.com/catchuappbucket/0282ba0e-e539-4216-82b8-50fdc278ca59.jpg"
-        let user = User()
-        user.profilePictureUrl = ""
-        return MediaViewModel(share: share)
-    }()
+    var post: Post? {
+        didSet {
+            self.dataSource.populate(post: post)
+//            self.collectionView.reloadData()
+            self.pageControl.numberOfPages = self.dataSource.items.count
+        }
+    }
     
+    private let dataSource = MediaViewModel()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.white
         collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         
@@ -57,11 +59,6 @@ class MediaView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        customization()
-    }
-    
     func customization() {
         self.addSubview(collectionView)
         
@@ -88,17 +85,17 @@ class MediaView: UIView {
             bottomControlsStackView.heightAnchor.constraint(equalToConstant: 20)
             ])
     }
-
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-        let x = targetContentOffset.pointee.x
-
-        pageControl.currentPage = Int(x / self.frame.width)
-    }
+    
 }
 
 extension MediaView: UICollectionViewDelegate {
     
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        let x = targetContentOffset.pointee.x
+        
+        pageControl.currentPage = Int(x / self.frame.width)
+    }
 }
 
 extension MediaView: UICollectionViewDelegateFlowLayout {

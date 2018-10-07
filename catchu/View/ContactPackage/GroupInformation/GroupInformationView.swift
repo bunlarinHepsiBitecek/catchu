@@ -398,9 +398,8 @@ extension GroupInformationView {
         
         authenticatedUserAdmin = false
         
-        if User.shared.userID == group.adminUserID {
+        if User.shared.userid == group.adminUserID {
             authenticatedUserAdmin = true
-            
         }
         
     }
@@ -705,16 +704,19 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
         if let groupid = group.groupID {
             cell.participant = Participant.shared.participantDictionary[groupid]![indexPath.row]
         }
-        
-        if cell.participant.userID == group.adminUserID {
+        if cell.participant.userid == group.adminUserID {
             cell.adminLabel.text = "Admin"
             cell.isUserAdmin = true
         }
-        
-        cell.participantImage.setImagesFromCacheOrFirebaseForFriend(cell.participant.profilePictureUrl)
-        cell.participantName.text = cell.participant.name
-        cell.participantUsername.text = cell.participant.userName
-        
+        if let profilePictureUrl = cell.participant.profilePictureUrl {
+            cell.participantImage.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+        }
+        if let name = cell.participant.name {
+            cell.participantName.text = name
+        }
+        if let username = cell.participant.username {
+            cell.participantUsername.text = username
+        }
         return cell
         
     }
@@ -772,7 +774,9 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
     
     func createAlertActions(inputCell : GroupInfoTableViewCell, indexPath : IndexPath) {
         
-        let alertControl = UIAlertController(title: inputCell.participant.userName, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let username = inputCell.participant.username ?? ""
+        
+        let alertControl = UIAlertController(title: username, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let actionGotoInfo = UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.gotoInfo, style: .default) { (alertAction) in
             
@@ -821,14 +825,14 @@ extension GroupInformationView: UITableViewDelegate, UITableViewDataSource {
         
         inputRequest?.requestType = RequestType.exit_group.rawValue
         inputRequest?.groupid = group.groupID
-        inputRequest?.userid = inputCell.participant.userID
+        inputRequest?.userid = inputCell.participant.userid
         
         APIGatewayManager.shared.removeParticipantFromGroup(groupBody: inputRequest!) { (groupRequestResult, response) in
             
             if response {
                 
                 if let groupid = self.group.groupID {
-                    if let indexFound = Participant.shared.participantDictionary[groupid]?.index(where: { $0.userID == inputCell.participant.userID}) {
+                    if let indexFound = Participant.shared.participantDictionary[groupid]?.index(where: { $0.userid == inputCell.participant.userid}) {
                         
                         Participant.shared.participantDictionary[groupid]?.remove(at: indexFound)
                         
