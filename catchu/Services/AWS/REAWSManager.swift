@@ -407,8 +407,8 @@ extension REAWSManager {
         user.userid = User.shared.userID
         
         guard let location = RELocation() else { return }
-        location.latitude = NSNumber(value: Share.shared.location.coordinate.latitude)
-        location.longitude = NSNumber(value: Share.shared.location.coordinate.longitude)
+//        location.latitude = NSNumber(value: Share.shared.location.coordinate.latitude)
+//        location.longitude = NSNumber(value: Share.shared.location.coordinate.longitude)
         
         var attachments = [REMedia]()
         
@@ -454,7 +454,7 @@ extension REAWSManager {
         post.user = user
         post.location = location
         post.attachments = attachments
-        post.message = Share.shared.text
+//        post.message = Share.shared.text
         post.privacyType = PrivacyType.allFollowers.stringValue
         
         // MARK: for custom person selected

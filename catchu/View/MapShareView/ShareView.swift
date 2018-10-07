@@ -179,19 +179,19 @@ extension ShareView {
             return
         }
         
-        Share.shared.text = self.textField.text ?? Constants.CharacterConstants.SPACE
-        Share.shared.location = LocationManager.shared.currentLocation
-        //        Share.shared.shareId = UUID().uuidString
-        
-        if selectedCell.count > 0 {
-            let cell: ShareCollectionViewCell = collectionView.cellForItem(at: selectedCell) as! ShareCollectionViewCell
-            
-            // MARK: for Small Image
-            Share.shared.imageSmall = cell.originalImageSmall
-
-        } else {
-            self.insertFirebase()
-        }
+//        Share.shared.text = self.textField.text ?? Constants.CharacterConstants.SPACE
+//        Share.shared.location = LocationManager.shared.currentLocation
+//        //        Share.shared.shareId = UUID().uuidString
+//
+//        if selectedCell.count > 0 {
+//            let cell: ShareCollectionViewCell = collectionView.cellForItem(at: selectedCell) as! ShareCollectionViewCell
+//
+//            // MARK: for Small Image
+//            Share.shared.imageSmall = cell.originalImageSmall
+//
+//        } else {
+//            self.insertFirebase()
+//        }
     }
     
     func insertFirebase() {
@@ -207,18 +207,18 @@ extension ShareView {
             return
         }
         
-        Share.shared.imageUrl = Constants.CharacterConstants.SPACE
-        Share.shared.text = self.textField.text ?? Constants.CharacterConstants.SPACE
-        Share.shared.location = LocationManager.shared.currentLocation
-        
-        var imageExist = false
-        if selectedCell.count > 0 {
-            let cell: ShareCollectionViewCell = collectionView.cellForItem(at: selectedCell) as! ShareCollectionViewCell
-            
-            Share.shared.image = cell.originalImage
-            imageExist = true
-        }
-        
+//        Share.shared.imageUrl = Constants.CharacterConstants.SPACE
+//        Share.shared.text = self.textField.text ?? Constants.CharacterConstants.SPACE
+//        Share.shared.location = LocationManager.shared.currentLocation
+//        
+//        var imageExist = false
+//        if selectedCell.count > 0 {
+//            let cell: ShareCollectionViewCell = collectionView.cellForItem(at: selectedCell) as! ShareCollectionViewCell
+//            
+//            Share.shared.image = cell.originalImage
+//            imageExist = true
+//        }
+//        
         // TODO: change
 //        REAWSManager.shared.shareData(imageExist: imageExist)
         

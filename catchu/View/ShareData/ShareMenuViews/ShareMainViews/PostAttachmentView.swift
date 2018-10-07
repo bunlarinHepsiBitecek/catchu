@@ -130,8 +130,8 @@ extension PostAttachmentView {
             
             imageView.centerXAnchor.constraint(equalTo: safeImageContainer.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: safeImageContainer.centerYAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: inputContainerSize - 15),
-            imageView.widthAnchor.constraint(equalToConstant: inputContainerSize - 15),
+            imageView.heightAnchor.constraint(equalToConstant: inputContainerSize - 10),
+            imageView.widthAnchor.constraint(equalToConstant: inputContainerSize - 10),
             
             badge.trailingAnchor.constraint(equalTo: safeImageContainer.trailingAnchor),
             badge.topAnchor.constraint(equalTo: safeImageContainer.topAnchor),
@@ -142,6 +142,7 @@ extension PostAttachmentView {
             labelContainer.trailingAnchor.constraint(equalTo: safeContainer.trailingAnchor),
             labelContainer.bottomAnchor.constraint(equalTo: safeContainer.bottomAnchor),
             labelContainer.heightAnchor.constraint(equalToConstant: 10),
+            labelContainer.topAnchor.constraint(equalTo: safeImageContainer.bottomAnchor),
             
             labelObject.leadingAnchor.constraint(equalTo: safeLabelContainer.leadingAnchor),
             labelObject.trailingAnchor.constraint(equalTo: safeLabelContainer.trailingAnchor),
@@ -204,7 +205,7 @@ extension PostAttachmentView : UIGestureRecognizerDelegate {
     func addGestureToContainer() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PostAttachmentView.menuSelectionManagement(_:)))
-        tapGesture.delegate = self
+        tapGesture.delegate = self   
         containerView.addGestureRecognizer(tapGesture)
         
     }
@@ -222,7 +223,8 @@ extension PostAttachmentView : UIGestureRecognizerDelegate {
         
         print("type : \(postAttachmentType!)")
         
-        delegate.clearPostAttachmentType()
+//        delegate.clearPostAttachmentType()
+        delegate.selectedPostAttachmentAnimations(selectedAttachmentType: self.postAttachmentType!)
         
         self.setTintColor()
         

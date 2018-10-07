@@ -13,9 +13,11 @@ class FinalSharePageView: UIView {
 
     private var customMapView : CustomMapView?
     
-    private var attachmentArray : [UIView]?
-    private var postItemArray : [UIView]?
+    private var postItemArray = [UIView]()
     private var attachmentSelectedInfo = Dictionary<Int, Bool>()
+    private var collectionView : UICollectionView!
+    
+    private var leadingConstraintsOfStackViewForAttachments = NSLayoutConstraint()
     
     weak var delegate : ViewPresentationProtocols!
     weak var delegateForViewController : ShareDataProtocols!
@@ -33,7 +35,24 @@ class FinalSharePageView: UIView {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-//        temp.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+        
+        return temp
+    }()
+    
+    lazy var attachmentContainerView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+//        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
+//        temp.layer.cornerRadius = 10
+        
+        return temp
+    }()
+    
+    lazy var saySomethingContainerView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
         
         return temp
     }()
@@ -74,7 +93,7 @@ class FinalSharePageView: UIView {
     
     lazy var stackViewForPostAttachments: UIStackView = {
         
-        let temp = UIStackView()
+        let temp = UIStackView(arrangedSubviews: createStackViewObjects2())
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.alignment = .center
         temp.axis = .horizontal
@@ -120,22 +139,6 @@ extension FinalSharePageView {
         self.delegateForViewController = delegateForShareMenuViews
     }
     
-    func initializeDictionary() {
-    
-        guard attachmentArray != nil else {
-            return
-        }
-        
-        let count = attachmentArray!.count
-        var i = 1
-        
-        while i <= count {
-            attachmentSelectedInfo[i] = false
-            i += 1
-        }
-        
-    }
-    
     func setupViews() {
         
         addCustomMapView()
@@ -144,9 +147,7 @@ extension FinalSharePageView {
         addGestureToBackButton()
         addGestureToCloseButton()
         
-        createStackViewObjects2()
         createStackView()
-        initializeDictionary()
         
         createPostItemArray()
         createStackView2()
@@ -156,8 +157,8 @@ extension FinalSharePageView {
         
         customMapView = CustomMapView()
 
+        customMapView!.clipsToBounds = true
         customMapView!.translatesAutoresizingMaskIntoConstraints = false
-        customMapView!.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
 
         self.addSubview(customMapView!)
         
@@ -174,7 +175,7 @@ extension FinalSharePageView {
             
             customMapView!.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
             customMapView!.topAnchor.constraint(equalTo: safe.topAnchor, constant: 10),
-            customMapView!.heightAnchor.constraint(equalToConstant: 150),
+            customMapView!.heightAnchor.constraint(equalToConstant: 200),
             customMapView!.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width - 20)
             
 //            test.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
@@ -189,6 +190,7 @@ extension FinalSharePageView {
     func addViewControllerContainer() {
         
         self.addSubview(controllerTab)
+        self.addSubview(attachmentContainerView)
         self.controllerTab.addSubview(backButtonContainer)
         self.controllerTab.addSubview(closeButtonContainer)
         self.backButtonContainer.addSubview(backButton)
@@ -209,6 +211,11 @@ extension FinalSharePageView {
             controllerTab.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             controllerTab.topAnchor.constraint(equalTo: safe.topAnchor),
             controllerTab.heightAnchor.constraint(equalToConstant: 40),
+            
+            attachmentContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            attachmentContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            attachmentContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            attachmentContainerView.heightAnchor.constraint(equalToConstant: 40),
             
             backButtonContainer.leadingAnchor.constraint(equalTo: safeControllerTab.leadingAnchor),
             backButtonContainer.bottomAnchor.constraint(equalTo: safeControllerTab.bottomAnchor),
@@ -247,8 +254,14 @@ extension FinalSharePageView {
         let gradient = CAGradientLayer()
         gradient.frame = controllerTab.bounds
         gradient.cornerRadius = 10
-        gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
+        gradient.colors = [UIColor.black.cgColor.copy(alpha: 0.7), UIColor.clear.cgColor]
         controllerTab.layer.insertSublayer(gradient, at: 0)
+        
+        let gradientForAttachments = CAGradientLayer()
+        gradientForAttachments.frame = attachmentContainerView.bounds
+        gradientForAttachments.cornerRadius = 10
+        gradientForAttachments.colors = [UIColor.clear.cgColor, UIColor.black.cgColor.copy(alpha: 1)]
+        attachmentContainerView.layer.insertSublayer(gradientForAttachments, at: 0)
         
     }
     
@@ -276,96 +289,74 @@ extension FinalSharePageView {
         
     }
     
-    private func createStackViewObjects2() {
+    private func createStackViewObjects2() -> [UIView] {
         
-        let attachment1 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), inputContainerSize: 50)
+        var attachmentArray = [UIView]()
+        
+        let attachment1 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), inputContainerSize: 40)
 
         attachment1.setDelegation(inputDelegate: self)
-        attachment1.tag = 1
         attachment1.setType(type: PostAttachmentTypes.publicPost)
         attachment1.setImage(inputImage: UIImage(named: "earth")!)
         attachment1.setLabel(inputText: LocalizedConstants.PostAttachments.publicInfo)
 
-        attachment1.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        attachment1.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        attachmentArray.append(attachment1)
         
-        if attachmentArray == nil {
-            attachmentArray = [UIView]()
-        }
-        
-        attachmentArray!.append(attachment1)
-
-        let attachment2 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), inputContainerSize: 50)
+        let attachment2 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), inputContainerSize: 40)
         
         attachment2.setDelegation(inputDelegate: self)
-        attachment2.tag = 2
-        attachment2.setType(type: PostAttachmentTypes.friends)
-        attachment2.setImage(inputImage: UIImage(named: "friend")!)
-        attachment2.setLabel(inputText: LocalizedConstants.PostAttachments.friends)
+        attachment2.setType(type: PostAttachmentTypes.onlyMe)
+        attachment2.setImage(inputImage: UIImage(named: "unlocked")!)
+        attachment2.setLabel(inputText: LocalizedConstants.PostAttachments.onlyMe)
         
-        attachment2.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        attachment2.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        attachmentArray!.append(attachment2)
-        
-        let attachment3 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), inputContainerSize: 50)
+        attachmentArray.append(attachment2)
+
+        let attachment3 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), inputContainerSize: 40)
         
         attachment3.setDelegation(inputDelegate: self)
-        attachment3.tag = 3
         attachment3.setType(type: PostAttachmentTypes.group)
         attachment3.setImage(inputImage: UIImage(named: "group")!)
         attachment3.setLabel(inputText: LocalizedConstants.PostAttachments.group)
         
-        attachment3.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        attachment3.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        attachmentArray.append(attachment3)
         
-        attachmentArray!.append(attachment3)
-        
-        let attachment4 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), inputContainerSize: 50)
+        let attachment4 = PostAttachmentView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), inputContainerSize: 40)
         
         attachment4.setDelegation(inputDelegate: self)
-        attachment4.tag = 4
-        attachment4.setType(type: PostAttachmentTypes.onlyMe)
-        attachment4.setImage(inputImage: UIImage(named: "unlocked")!)
-        attachment4.setLabel(inputText: LocalizedConstants.PostAttachments.onlyMe)
+        attachment4.setType(type: PostAttachmentTypes.friends)
+        attachment4.setImage(inputImage: UIImage(named: "friend")!)
+        attachment4.setLabel(inputText: LocalizedConstants.PostAttachments.friends)
         
-        attachment4.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        attachment4.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        attachmentArray!.append(attachment4)
+        attachmentArray.append(attachment4)
         
         print("hihi")
+        
+        return attachmentArray
         
     }
     
     private func createStackView() {
         
-        guard let attachmentArray = attachmentArray else { return }
-        
-        stackViewForPostAttachments = UIStackView(arrangedSubviews: attachmentArray)
-        stackViewForPostAttachments.translatesAutoresizingMaskIntoConstraints = false
-        //        stackView.spacing = 5
-        stackViewForPostAttachments.alignment = .center
+        stackViewForPostAttachments.alignment = .fill
         stackViewForPostAttachments.axis = .horizontal
         stackViewForPostAttachments.distribution = .equalSpacing
         stackViewForPostAttachments.backgroundColor = UIColor.red
         
-        self.addSubview(stackViewForPostAttachments)
-        
-        let safe = self.safeAreaLayoutGuide
+        self.attachmentContainerView.addSubview(stackViewForPostAttachments)
         
         guard customMapView != nil else {
             return
         }
         
-        let safeMapView = self.customMapView!.safeAreaLayoutGuide
+        let safeAttachmentContainer = self.attachmentContainerView.safeAreaLayoutGuide
+        
+        leadingConstraintsOfStackViewForAttachments = stackViewForPostAttachments.leadingAnchor.constraint(equalTo: safeAttachmentContainer.leadingAnchor, constant: 10)
         
         NSLayoutConstraint.activate([
             
-            stackViewForPostAttachments.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            stackViewForPostAttachments.topAnchor.constraint(equalTo: safeMapView.bottomAnchor, constant: 10),
-            stackViewForPostAttachments.heightAnchor.constraint(equalToConstant: 50),
-            stackViewForPostAttachments.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width - 20)
+            stackViewForPostAttachments.trailingAnchor.constraint(equalTo: safeAttachmentContainer.trailingAnchor, constant: -10),
+            leadingConstraintsOfStackViewForAttachments,
+            stackViewForPostAttachments.bottomAnchor.constraint(equalTo: safeAttachmentContainer.bottomAnchor),
             
             ])
         
@@ -373,17 +364,13 @@ extension FinalSharePageView {
     
     func createPostItemArray() {
         
-        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-        textView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        let textView = UILabel()
+        textView.text = "Erkut Deneme"
+        textView.numberOfLines = 1
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.font = UIFont.systemFont(ofSize: 15)
         
-        textView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        if postItemArray == nil {
-            postItemArray = [UIView]()
-        }
-        
-        postItemArray!.append(textView)
+        postItemArray.append(textView)
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -392,28 +379,28 @@ extension FinalSharePageView {
         layout.sectionInset = UIEdgeInsets(top: Constants.Cell.imageCollectionViewEdgeInsets_02, left: Constants.Cell.imageCollectionViewEdgeInsets_02, bottom: Constants.Cell.imageCollectionViewEdgeInsets_02, right: Constants.Cell.imageCollectionViewEdgeInsets_02)
         
         
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200), collectionViewLayout: layout)
-        
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200), collectionViewLayout: layout)
+
         collectionView.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        collectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        collectionView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "erkut")
         
-        postItemArray!.append(collectionView)
+        postItemArray.append(collectionView)
         
         
     }
     
     private func createStackView2() {
         
-        guard let postItemArray = postItemArray else { return }
+        for item in postItemArray {
+            stackViewForPostItems.addArrangedSubview(item)
+        }
         
-        stackViewForPostItems = UIStackView(arrangedSubviews: postItemArray)
-        stackViewForPostItems.translatesAutoresizingMaskIntoConstraints = false
         //        stackView.spacing = 5
-        stackViewForPostItems.alignment = .center
-        stackViewForPostItems.axis = .vertical
-        stackViewForPostItems.distribution = .equalSpacing
+        stackViewForPostItems.alignment = .fill
+        stackViewForPostItems.axis = .horizontal
+        stackViewForPostItems.distribution = .fillProportionally
         stackViewForPostItems.backgroundColor = UIColor.red
         
         self.addSubview(stackViewForPostItems)
@@ -425,11 +412,30 @@ extension FinalSharePageView {
 
             stackViewForPostItems.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
             stackViewForPostItems.topAnchor.constraint(equalTo: x.bottomAnchor, constant: 10),
-            stackViewForPostItems.heightAnchor.constraint(equalToConstant: 200),
+            stackViewForPostItems.heightAnchor.constraint(equalToConstant: 300),
             stackViewForPostItems.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width - 20)
 
             ])
         
+    }
+    
+}
+
+extension FinalSharePageView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "erkut", for: indexPath)
+        
+        return cell
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 200, height: 200)
     }
     
 }
@@ -478,16 +484,37 @@ extension FinalSharePageView : ShareDataProtocols {
     
     func clearPostAttachmentType() {
         
-        guard attachmentArray != nil else {
-            return
-        }
-        
-        for item in attachmentArray! {
+        for item in stackViewForPostAttachments.arrangedSubviews {
             
             if let view = item as? PostAttachmentView {
                 view.clearTintColor()
             }
+        }
+    }
+    
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes) {
+        
+        for item in stackViewForPostAttachments.arrangedSubviews {
             
+            if let view = item as? PostAttachmentView {
+                
+                if view.postAttachmentType != selectedAttachmentType {
+                    
+                    UIView.animate(withDuration: 0.3) {
+                        view.isHidden = true
+                        view.alpha = 0
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.leadingConstraintsOfStackViewForAttachments.isActive = false
+            self.layoutIfNeeded()
+
         }
         
     }
