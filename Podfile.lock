@@ -46,24 +46,6 @@ DEPENDENCIES:
   - Firebase/Auth
   - TwitterKit
 
-SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - AWSAPIGateway
-    - AWSCore
-    - AWSS3
-    - Bolts
-    - FBSDKCoreKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
-    - Firebase
-    - FirebaseAuth
-    - FirebaseAuthInterop
-    - FirebaseCore
-    - GoogleUtilities
-    - GTMSessionFetcher
-    - TwitterCore
-    - TwitterKit
-
 SPEC CHECKSUMS:
   AWSAPIGateway: d3021095dcfaaaff5da885929e6d3f371d8baf28
   AWSCore: c7abfb87ef802d1c4b5dd56db64ac8b4a7823ef0
@@ -83,4 +65,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 191fd0f87aa2c1c4b2b8c5a3616f43ce6bbc37e7
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.4.0
