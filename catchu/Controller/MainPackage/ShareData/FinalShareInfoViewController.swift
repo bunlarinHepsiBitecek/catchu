@@ -65,9 +65,13 @@ extension FinalShareInfoViewController {
     
     func addTranstion() {
         
+        print("addTranstion starts")
+        print("view : \(view)")
+        print("view.window : \(view.window)")
+        
         let transition = CATransition()
         
-        transition.duration = Constants.AnimationValues.aminationTime_05
+        transition.duration = Constants.AnimationValues.aminationTime_03
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromLeft
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)

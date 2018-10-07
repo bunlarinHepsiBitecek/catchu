@@ -173,6 +173,34 @@ extension ShareView: UINavigationControllerDelegate, UIImagePickerControllerDele
 // MARK:
 extension ShareView {
     
+    func populateShareViewData_Old() {
+        if (self.textField.text?.isEmpty)! && self.selectedCell.count == 0 {
+            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Share.MissingData, message: LocalizedConstants.Share.NoShareData, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+            return
+        }
+        
+//        Share.shared.text = self.textField.text ?? Constants.CharacterConstants.SPACE
+//        Share.shared.location = LocationManager.shared.currentLocation
+//        //        Share.shared.shareId = UUID().uuidString
+//
+//        if selectedCell.count > 0 {
+//            let cell: ShareCollectionViewCell = collectionView.cellForItem(at: selectedCell) as! ShareCollectionViewCell
+//
+//            // MARK: for Small Image
+//            Share.shared.imageSmall = cell.originalImageSmall
+//
+//        } else {
+//            self.insertFirebase()
+//        }
+    }
+    
+    func insertFirebase() {
+        User.shared.createSortedUserArray() // for selectedFriends
+        let selectedFriends = User.shared.sortedFriendArray
+    }
+    
+    
+    
     func populateShareViewData() {
         if (self.textField.text?.isEmpty)! && self.selectedCell.count == 0 {
             AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Share.MissingData, message: LocalizedConstants.Share.NoShareData, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
@@ -188,6 +216,18 @@ extension ShareView {
             Share.shared.image = cell.originalImage
         }
         
+//        Share.shared.imageUrl = Constants.CharacterConstants.SPACE
+//        Share.shared.text = self.textField.text ?? Constants.CharacterConstants.SPACE
+//        Share.shared.location = LocationManager.shared.currentLocation
+//        
+//        var imageExist = false
+//        if selectedCell.count > 0 {
+//            let cell: ShareCollectionViewCell = collectionView.cellForItem(at: selectedCell) as! ShareCollectionViewCell
+//            
+//            Share.shared.image = cell.originalImage
+//            imageExist = true
+//        }
+//        
         // TODO: change
 //        REAWSManager.shared.shareData(imageExist: imageExist)
         

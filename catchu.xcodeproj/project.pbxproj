@@ -114,6 +114,10 @@
 		A71CC356215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */; };
 		A71CC358215B44F7002A2468 /* PhotoCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */; };
 		A71CC35A215B4524002A2468 /* ImageCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC359215B4524002A2468 /* ImageCollectionViewCell2.swift */; };
+		A71F65A921664C2D002A7C5C /* FinalSharePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F65A821664C2D002A7C5C /* FinalSharePageView.swift */; };
+		A71F65AB21691705002A7C5C /* FinalSharedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F65AA21691705002A7C5C /* FinalSharedItemsView.swift */; };
+		A71F65AD2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F65AC2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift */; };
+		A71F65AF2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F65AE2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift */; };
 		A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B520E5793300F73B9C /* NotificationManager2.swift */; };
 		A72173BA20E7D32700F73B9C /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B920E7D32700F73B9C /* UIImageExtensions.swift */; };
 		A721BFF921176F000037A62D /* totoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721BFF821176F000037A62D /* totoViewController.swift */; };
@@ -391,6 +395,10 @@
 		A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCell2.swift; sourceTree = "<group>"; };
 		A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell2.swift; sourceTree = "<group>"; };
 		A71CC359215B4524002A2468 /* ImageCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell2.swift; sourceTree = "<group>"; };
+		A71F65A821664C2D002A7C5C /* FinalSharePageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalSharePageView.swift; sourceTree = "<group>"; };
+		A71F65AA21691705002A7C5C /* FinalSharedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalSharedItemsView.swift; sourceTree = "<group>"; };
+		A71F65AC2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalSelectedImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		A71F65AE2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalSelectedVideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		A72173B520E5793300F73B9C /* NotificationManager2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager2.swift; sourceTree = "<group>"; };
 		A72173B920E7D32700F73B9C /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		A721BFF821176F000037A62D /* totoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = totoViewController.swift; sourceTree = "<group>"; };
@@ -940,6 +948,8 @@
 				A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */,
 				A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */,
 				A71CC359215B4524002A2468 /* ImageCollectionViewCell2.swift */,
+				A71F65AC2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift */,
+				A71F65AE2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift */,
 			);
 			path = CollectionViewDesigns;
 			sourceTree = "<group>";
@@ -1189,8 +1199,10 @@
 				A710F42621401E3B00ECC5DA /* ShareTypeSliderCollectionViewCell.swift */,
 				A762B7572163BD1800DBB4EF /* FinalSharePageView.swift */,
 				A762B75B2163FD6200DBB4EF /* FinalSharePageView.swift */,
+				A71F65A821664C2D002A7C5C /* FinalSharePageView.swift */,
 				A762B7592163C80200DBB4EF /* CustomMapView.swift */,
 				A762B75D21641ADB00DBB4EF /* PostAttachmentView.swift */,
+				A71F65AA21691705002A7C5C /* FinalSharedItemsView.swift */,
 			);
 			path = ShareMainViews;
 			sourceTree = "<group>";
@@ -1711,6 +1723,7 @@
 				45DABA9C21665BC80070840E /* LoaderTransition.swift in Sources */,
 				451E9F152139366300185925 /* CachedImageView.swift in Sources */,
 				45DEEA9D20E16DB000FE484E /* Share.swift in Sources */,
+				A71F65AB21691705002A7C5C /* FinalSharedItemsView.swift in Sources */,
 				A77D98782159175F002F9A02 /* VideoMenuView.swift in Sources */,
 				451E9F172139366300185925 /* FeedView.swift in Sources */,
 				A7276D42211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift in Sources */,
@@ -1740,9 +1753,11 @@
 				A75B459621324865009D2701 /* AddParticipantTableViewCell.swift in Sources */,
 				A7812EAB2124621C00460117 /* Profile4.swift in Sources */,
 				A79A766920C5B55900FCE198 /* ExtensionContactViewController.swift in Sources */,
+				A71F65AD2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift in Sources */,
 				A75F081A213752B8001065AA /* GroupImageViewController.swift in Sources */,
 				A762B7582163BD1800DBB4EF /* FinalSharePageView.swift in Sources */,
 				A79A768420C656E100FCE198 /* ExtensionContainerFriendController.swift in Sources */,
+				A71F65A921664C2D002A7C5C /* FinalSharePageView.swift in Sources */,
 				A774AC9E2131D80900848B79 /* Group2InformationView.swift in Sources */,
 				A774ACA821321A5C00848B79 /* Participant.swift in Sources */,
 				A7E2F85221128CCC00214066 /* REResponse_error.swift in Sources */,
@@ -1787,6 +1802,7 @@
 				451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */,
 				A7087932212B79960012C7F6 /* EditProfile4TableViewCell.swift in Sources */,
 				45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */,
+				A71F65AF2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift in Sources */,
 				A7E2F847211131CC00214066 /* UIButtonCustomDesign.swift in Sources */,
 				A7E2F85C2114A6F700214066 /* REUserProfile_resultArray_item.swift in Sources */,
 				A774AC9A21319B3700848B79 /* GroupBridgeNavigationController.swift in Sources */,

@@ -242,6 +242,8 @@ struct Constants {
             static let permissinWarningCell : String = "permissinWarningCell"
             static let colorPaletteCell : String = "colorPaletteCell"
             static let colorContainerCell : String = "colorContainerCell"
+            static let selectedItemImageCell: String = "selectedItemImageCell"
+            static let selectedItemVideoCell : String = "selectedItemVideoCell"
             
         }
         

@@ -40,6 +40,7 @@ class ShareDataViewController2: UIViewController {
     
 }
 
+// MARK: - major functions
 extension ShareDataViewController2 {
     
     private func setupShareDataView() {
@@ -104,6 +105,26 @@ extension ShareDataViewController2 {
         
     }
     
+    // adding transition for dismissing view controller
+    func addTransitionToPresentationOfShareViews() {
+        
+        print("addTransitionToPresentationOfShareViews starts")
+        print("view : \(view)")
+        print("view.window : \(view.window)")
+        
+        let transition = CATransition()
+        transition.duration = Constants.AnimationValues.aminationTime_03
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromBottom
+        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        
+        if let window = view.window {
+            window.layer.add(transition, forKey: kCATransition)
+        }
+        
+        
+    }
+    
 }
 
 // MARK: - ShareDataProtocols
@@ -121,6 +142,7 @@ extension ShareDataViewController2: ShareDataProtocols {
             return
         }
         
+        addTransitionToPresentationOfShareViews()
         delegate.tabBarHiddenManagement(hidden: false)
         self.dismiss(animated: true, completion: nil)
         
@@ -145,7 +167,7 @@ extension ShareDataViewController2: ShareDataProtocols {
     func addTransition() {
         
         let transition = CATransition()
-        transition.duration = 0.5
+        transition.duration = Constants.AnimationValues.aminationTime_03
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
         transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)

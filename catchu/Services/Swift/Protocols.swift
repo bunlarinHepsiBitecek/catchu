@@ -84,6 +84,7 @@ protocol ShareDataProtocols: class {
     func nextToFinalSharePage()
     func selectedPostAttachmentTypeManagement(returned : PostAttachmentView)
     func clearPostAttachmentType()
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes)
     
 }
 
@@ -116,6 +117,7 @@ extension ShareDataProtocols {
     func nextToFinalSharePage() {}
     func selectedPostAttachmentTypeManagement(returned : PostAttachmentView) {}
     func clearPostAttachmentType() {}
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes) {}
     
 }
 

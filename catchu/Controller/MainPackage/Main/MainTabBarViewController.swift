@@ -76,7 +76,7 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     func addTransitionToPresentationOfShareViews() {
         
         let transition = CATransition()
-        transition.duration = 0.5
+        transition.duration = Constants.AnimationValues.aminationTime_03
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromTop
         transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)

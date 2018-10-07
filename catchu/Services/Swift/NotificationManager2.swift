@@ -98,6 +98,8 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
         
         print("setContentOfLocalNotification starts")
         
+//        print("share.shared.text : \(Share.shared.text)")
+        
         let content = UNMutableNotificationContent()
         
         content.title = "CatchU"
@@ -108,11 +110,11 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
         
         //let url = Bundle.main.url(forResource: "8771", withExtension: "jpg")
         
-        if let attachment = UNNotificationAttachment.create(identifier: "image", image: Share.shared.tempImageView.image!, options: nil) {
-            
-            content.attachments = [attachment] as! [UNNotificationAttachment]
-            
-        }
+//        if let attachment = UNNotificationAttachment.create(identifier: "image", image: Share.shared.tempImageView.image!, options: nil) {
+//            
+//            content.attachments = [attachment] as! [UNNotificationAttachment]
+//            
+//        }
         
         return content
         
