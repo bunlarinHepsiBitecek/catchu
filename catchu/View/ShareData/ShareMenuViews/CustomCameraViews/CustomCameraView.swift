@@ -440,28 +440,6 @@ extension CustomCameraView : UIGestureRecognizerDelegate {
             
             self.delegate.setCapturedImage(inputImage: image, cameraPosition: cameraPosition)
             
-//            delegate.setCapturedImage(inputImage: image, cameraPosition: <#T##CameraPosition#>)
-            
-//            let capturedView = CustomCameraCapturedImageView(image: image, cameraPosition: self.customCamera.currentCameraPosition!)
-//            capturedView.activationManager(granted: true, inputImage: image, cameraPosition: self.customCamera.currentCameraPosition!)
-//
-//            capturedView.translatesAutoresizingMaskIntoConstraints = false
-//
-//            UIView.transition(with: self.mainView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-//                self.mainView.addSubview(capturedView)
-//
-//                let safe = self.safeAreaLayoutGuide
-//
-//                NSLayoutConstraint.activate([
-//
-//                    capturedView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-//                    capturedView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-//                    capturedView.topAnchor.constraint(equalTo: safe.topAnchor),
-//                    capturedView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
-//
-//                    ])
-//            })
-            
         }
         
     }

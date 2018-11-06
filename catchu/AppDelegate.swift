@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         if #available(iOS 10.0, *) {
             let center  = UNUserNotificationCenter.current()
-            center.delegate = self as UNUserNotificationCenterDelegate
+            center.delegate = self
             center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
                 if error == nil{
                     DispatchQueue.main.async {
@@ -86,37 +86,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return directedByTWTR
     }
     
-    func initiateNotificationSettings() {
-        
-        UIApplication.shared.registerForRemoteNotifications()
-        
-        let center = UNUserNotificationCenter.current()
-        
-        center.delegate = self
-        
-    }
-    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
+        print("AppDelegate userNotificationCenter willPresent triggered")
         completionHandler([.alert, .sound, .badge])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
+        print("AppDelegate userNotificationCenter didReceive triggered")
+        
         completionHandler()
         
     }
     
-//    // Add a AWSMobileClient call in application:open url
-//    func application(_ application: UIApplication, open url: URL,
-//                     sourceApplication: String?, annotation: Any) -> Bool {
-//
-//        return AWSMobileClient.sharedInstance().interceptApplication(
-//            application, open: url,
-//            sourceApplication: sourceApplication,
-//            annotation: annotation)
-//
-//    }
     
 }
 

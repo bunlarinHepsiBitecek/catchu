@@ -215,4 +215,16 @@ class User {
         return user!
     }
     
+    func getREUSerList(inputUserList : [User]) -> [REUser] {
+        
+        var returList = [REUser]()
+        
+        for item in inputUserList {
+            returList.append(item.getUser())
+        }
+        
+        return returList
+        
+    }
+    
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -376,7 +376,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="DUW-Y9-yrf" secondAttribute="bottom" constant="0.67000000000000004" id="y0s-2h-s4K"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="68" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="separatorInset" minX="68" minY="0.0" maxX="10" maxY="0.0"/>
                                         <connections>
                                             <outlet property="friendImage" destination="0zg-eW-der" id="iNv-AL-Dqa"/>
                                             <outlet property="friendName" destination="oEs-xj-X15" id="faL-45-tZC"/>
@@ -1591,6 +1591,21 @@
             </objects>
             <point key="canvasLocation" x="7814" y="-401"/>
         </scene>
+        <!--Contact View Controller2-->
+        <scene sceneID="kB1-S9-li3">
+            <objects>
+                <viewController storyboardIdentifier="ContactViewController2" id="iKF-8H-mqB" customClass="ContactViewController2" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CfS-b3-x74">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="ffm-LQ-jGy"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3YM-V7-ptT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="850" y="695"/>
+        </scene>
         <!--Container Group View Controller-->
         <scene sceneID="gY2-64-H0x">
             <objects>
@@ -1599,7 +1614,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="564"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bqc-fl-bqs">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bqc-fl-bqs">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="564"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="scrollIndicatorInsets" minX="40" minY="0.0" maxX="40" maxY="0.0"/>
@@ -1691,11 +1706,12 @@
                                                 <constraint firstItem="8Ml-7T-1B1" firstAttribute="top" secondItem="XLl-0z-No7" secondAttribute="top" id="pqh-Li-kpp"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="68" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="separatorInset" minX="68" minY="0.0" maxX="10" maxY="0.0"/>
                                         <connections>
                                             <outlet property="groupDescription" destination="AbR-zn-bmO" id="3lL-ih-zt3"/>
                                             <outlet property="groupImage" destination="PWE-oz-jIC" id="Aif-iV-jIX"/>
                                             <outlet property="groupName" destination="QbO-pA-RwD" id="LMT-qr-IFE"/>
+                                            <outlet property="groupSelectedIcon" destination="5Y8-sP-Fi9" id="CHx-7w-dnG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -99,6 +99,8 @@ class REAWSManager: BackEndAPIInterface {
         var mediaCount = 0
         var compiletionCount = 0 {
             didSet {
+                
+                print("CompletionCount : \(compiletionCount), mediaCount : \(mediaCount)")
                 if compiletionCount == mediaCount {
                     self.sharePostRequest(share: share, completion: completion)
                 }
@@ -146,6 +148,7 @@ class REAWSManager: BackEndAPIInterface {
                         guard let data = item.toData() else { return }
                         guard let ext = item.media._extension else { return }
                         
+                        print("images index : \(index), uploadUrl : \(uploadUrl)")
                         UploadManager.shared.uploadFile(uploadUrl: uploadUrl, data: data, type: item.type, ext: ext) { (result) in
                             compiletionCount += 1
                         }
@@ -165,6 +168,7 @@ class REAWSManager: BackEndAPIInterface {
                         guard let data = item.toData() else { return }
                         guard let ext = item.media._extension else { return }
                         
+                        print("videos index : \(index), uploadUrl : \(uploadUrl)")
                         UploadManager.shared.uploadFile(uploadUrl: uploadUrl, data: data, type: item.type, ext: ext) { (result) in
                             compiletionCount += 1
                         }
@@ -457,7 +461,13 @@ extension REAWSManager {
         post.location = location
         post.attachments = attachments
         post.message = Share.shared.message
-        post.privacyType = PrivacyType.allFollowers.stringValue
+//        post.privacyType = PrivacyType.allFollowers.stringValue
+        post.privacyType = share.privacyType?.stringValue
+        post.groupid = share.groupid
+        
+        if let allowList = share.allowList {
+            post.allowList = User.shared.getREUSerList(inputUserList: allowList)
+        }
         
         // MARK: for custom person selected
         //        post.privacyType = PrivacyType.custom.stringValue
@@ -472,7 +482,7 @@ extension REAWSManager {
         guard let postRequest = REPostRequest() else { return }
         postRequest.post = post
         
-        let postid = Constants.CharacterConstants.EMPTY
+        let postid = Constants.AWS_PATH_EMPTY
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             if finished {

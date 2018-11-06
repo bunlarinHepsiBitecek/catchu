@@ -16,6 +16,9 @@ class ContactViewController: UIViewController {
     var childReferenceFriendContainerFriendController : ContainerFriendViewController?
     var childReferenceGroupContainerGroupController : ContainerGroupViewController?
     
+    weak var delegateShareDataProtocols : ShareDataProtocols!
+    weak var delegateContactProtocol : ContactsProtocols!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,6 +30,32 @@ class ContactViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func addTranstionToDismiss() {
+        
+        let transition = CATransition()
+        
+        transition.duration = Constants.AnimationValues.aminationTime_03
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromLeft
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        
+        if let window = self.view.window {
+            window.layer.add(transition, forKey: kCATransition)
+        }
+        
+    }
+    
+ }
+ 
+ extension ContactViewController : ViewPresentationProtocols {
+    
+    func dismissViewController() {
+        
+        addTranstionToDismiss()
+        self.dismiss(animated: false, completion: nil)
+        
     }
     
  }

@@ -10,6 +10,8 @@ import UIKit
 import Photos
 import AVFoundation
 
+import MobileCoreServices
+
 enum ImageProcessPickerType {
     case profilePicture
 }
@@ -122,7 +124,11 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         let picker = UIImagePickerController()
         
         picker.delegate = self
+//        picker.mediaTypes = [kUTTypeMovie as String
+//            ,kUTTypeVideo as String
+//            ,kUTTypeGIF   as String]
         picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+//        picker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
         picker.allowsEditing = true
         UIApplication.topViewController()?.present(picker, animated: true, completion: nil)
         
@@ -137,7 +143,6 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         picker.allowsEditing = true
         UIApplication.topViewController()?.present(picker, animated: true, completion: nil)
         
-        
     }
     
     
@@ -148,29 +153,6 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
 
         PermissionHandler.shared.delegate = self
         PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: inputPermissionType)
-        
-//        switch inputPermissionType {
-//        case .camera, .photoLibrary:
-//
-//            if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "PhotoLibraryPrePermissionViewController") as? PhotoLibraryPrePermissionViewController {
-//
-//                destinationViewControler.viewControllerFlowType = inputPermissionType
-//                destinationViewControler.delegate = self
-//                UIApplication.topViewController()?.present(destinationViewControler, animated: true, completion: nil)
-//
-//            }
-//
-//        case .cameraUnathorized, .photoLibraryUnAuthorized:
-//
-//            if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "MediaPermissionUnAuthorizedViewController") as? MediaPermissionUnAuthorizedViewController {
-//
-//                destinationViewControler.flowType = inputPermissionType
-//
-//                UIApplication.topViewController()?.present(destinationViewControler, animated: true, completion: nil)
-//
-//            }
-//
-//        }
         
     }
     

@@ -93,7 +93,11 @@ extension ShareMenuViews {
     
     func setupCameraGalleryMenuViewFrame() {
         
-        customCameraGalleryMenu = CameraGalleryMenuView(frame: CGRect(x: self.frame.width * 0, y: 0, width: self.frame.width, height: self.frame.height))
+//        customCameraGalleryMenu = CameraGalleryMenuView(frame: CGRect(x: self.frame.width * 0, y: 0, width: self.frame.width, height: self.frame.height))
+        
+        // to use override protocol funtions of this view itself
+        // specials functions for view
+        customCameraGalleryMenu = CameraGalleryMenuView(frame: CGRect(x: self.frame.width * 0, y: 0, width: self.frame.width, height: self.frame.height), inputDelegate: self)
         
         guard customCameraGalleryMenu != nil else {
             return
@@ -105,7 +109,7 @@ extension ShareMenuViews {
     
     func setupVideoMenuViewFrame() {
         
-        customVideoMenu = VideoMenuView(frame: CGRect(x: self.frame.width * 1, y: 0, width: self.frame.width, height: self.frame.height))
+        customVideoMenu = VideoMenuView(frame: CGRect(x: self.frame.width * 1, y: 0, width: self.frame.width, height: self.frame.height), delegate : self)
         
         guard customVideoMenu != nil else {
             return
@@ -145,11 +149,14 @@ extension ShareMenuViews {
     private func customVideoViewCaptureManagement() {
     
         // close camera session if it's running
+        disableCameraSession()
+        /*
         guard customCameraGalleryMenu != nil else {
             return
         }
         
         customCameraGalleryMenu!.checkIfCustomCameraSessionActive()
+        */
         
         // start camera session if it's stopping
         guard customVideoMenu != nil else {
@@ -172,6 +179,16 @@ extension ShareMenuViews {
             customTextMenu!.stopFocusingTextView()
         }
         
+    }
+    
+    private func disableCameraSession() {
+        
+        // close camera session if it's running
+        guard customCameraGalleryMenu != nil else {
+            return
+        }
+        
+        customCameraGalleryMenu!.checkIfCustomCameraSessionActive()
         
     }
     
@@ -181,7 +198,7 @@ extension ShareMenuViews {
 extension ShareMenuViews : UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scrollView.contentOffset.x : \(scrollView.contentOffset.x)")
+//        print("scrollView.contentOffset.x : \(scrollView.contentOffset.x)")
         delegate.resizeShareTypeSliderConstraint(input: scrollView.contentOffset.x)
     }
     
@@ -228,6 +245,37 @@ extension ShareMenuViews : ShareDataProtocols {
     func customVideoViewSessionManagement(inputIndex : Int) {
         
         menuViewCoordination(activeIndex: inputIndex)
+        
+    }
+    
+    func scrollableManagement(enabled: Bool) {
+        if enabled {
+            self.mainScrollView.isScrollEnabled = true
+        } else {
+            self.mainScrollView.isScrollEnabled = false
+        }
+    }
+    
+    func closeCameraOperations() {
+        
+        print("closeCameraOperations starts")
+        disableCameraSession()
+        
+    }
+    
+    func createSnapShotProcess() {
+        
+        if customCameraGalleryMenu != nil {
+            customCameraGalleryMenu!.callCreationOfSnapShot()
+        }
+        
+    }
+    
+    func checkAlphaValuesOfCustomEmbeddedViews() {
+        
+        if customCameraGalleryMenu != nil {
+            customCameraGalleryMenu!.getActiveCustomView()
+        }
         
     }
     

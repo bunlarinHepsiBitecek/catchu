@@ -17,6 +17,8 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
     
     public static let shared = NotificationManager2()
     
+    
+    
     func registerForNotification() {
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound]) { (granted, error) in
@@ -64,11 +66,7 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
     
     func x() {
         
-        let highFiveAction = UNNotificationAction(identifier: NotificationActions.HighFive.rawValue, title: "High Five", options: [])
         
-        let category = UNNotificationCategory(identifier: "wassup", actions: [highFiveAction], intentIdentifiers: [], options: [.customDismissAction])
-        
-        UNUserNotificationCenter.current().setNotificationCategories([category])
         
         UNUserNotificationCenter.current().add(createRequestForLocalNotification()) { (error) in
             
@@ -102,18 +100,30 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
         
         let content = UNMutableNotificationContent()
         
-        content.title = "CatchU"
+        content.title = "CatchU Post"
         content.subtitle = LocalizedConstants.Notification.CatchSomething
         if let message = Share.shared.message {
             content.body = message
         }
         
-        //let url = Bundle.main.url(forResource: "8771", withExtension: "jpg")
+        let repeatAction = UNNotificationAction(identifier:"repeat",
+                                                title:"Repeat",options:[])
+        let changeAction = UNTextInputNotificationAction(identifier:
+            "change", title: "Change Message", options: [])
         
-//        if let attachment = UNNotificationAttachment.create(identifier: "image", image: Share.shared.tempImageView.image!, options: nil) {
-//            
+        let highFiveAction = UNNotificationAction(identifier: NotificationActions.HighFive.rawValue, title: "High Five", options: [])
+        
+        let category = UNNotificationCategory(identifier: "wassup", actions: [repeatAction, highFiveAction], intentIdentifiers: [], options: [.customDismissAction])
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+        content.categoryIdentifier = "wassup"
+        
+        let url = Bundle.main.url(forResource: "8771", withExtension: "jpg")
+        
+//        if let attachment = UNNotificationAttachment.create(identifier: "image", image: UIImage(named: "8771.jpg")!, options: nil) {
+//
 //            content.attachments = [attachment] as! [UNNotificationAttachment]
-//            
+//
 //        }
         
         return content

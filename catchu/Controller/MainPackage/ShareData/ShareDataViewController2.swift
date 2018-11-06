@@ -36,6 +36,8 @@ class ShareDataViewController2: UIViewController {
         
         shareTypeSliderView.didSelectFirstCellForInitial()
         
+        emptyPostItemsObjects()
+        
     }
     
 }
@@ -122,6 +124,11 @@ extension ShareDataViewController2 {
             window.layer.add(transition, forKey: kCATransition)
         }
         
+    }
+    
+    func emptyPostItemsObjects() {
+        
+        PostItems.shared.clearPostItemsObjects()
         
     }
     
@@ -130,12 +137,12 @@ extension ShareDataViewController2 {
 // MARK: - ShareDataProtocols
 extension ShareDataViewController2: ShareDataProtocols {
     
-    func dismisViewController() {
+    func dismisViewController(sharply: Bool) {
+        
+        print("dismisViewController starts")
         
         if let destionation = LoaderController.shared.currentViewController() as? MainTabBarViewController {
-            
             destionation.selectedIndex = priorActiveTab
-            
         }
         
         guard delegate != nil else {
@@ -144,14 +151,18 @@ extension ShareDataViewController2: ShareDataProtocols {
         
         addTransitionToPresentationOfShareViews()
         delegate.tabBarHiddenManagement(hidden: false)
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
+        
+        if sharply {
+            self.dismiss(animated: true, completion: nil)
+        }
         
     }
     
     func nextToFinalSharePage() {
         
         print("nextToFinalSharePage start")
-        
+
         if let destination = UIStoryboard.init(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.FinalShareInfoViewController) as? FinalShareInfoViewController {
             
             addTransition()

@@ -89,6 +89,7 @@ struct LocalizedConstants {
             static let group = NSLocalizedString("Groups", comment: "")
             static let newGroup = NSLocalizedString("New Group", comment: "")
             static let add = NSLocalizedString("Add", comment: "")
+            static let done = NSLocalizedString("done", comment: "")
             static let makeGroupAdmin = NSLocalizedString("makeGroupAdmin", comment: "")
             static let RemoveFromGroup = NSLocalizedString("RemoveFromGroup", comment: "")
             static let gotoInfo = NSLocalizedString("gotoInfo", comment: "")
@@ -97,6 +98,7 @@ struct LocalizedConstants {
             static let enableAccessGallery = NSLocalizedString("enableAccessGallery", comment: "")
             static let enableAccessCamera = NSLocalizedString("enableAccessCamera", comment: "")
             static let enableAccessMicrophone = NSLocalizedString("enableAccessMicrophone", comment: "")
+            static let tryAgain = NSLocalizedString("tryAgain", comment: "")
             
         }
         
@@ -166,6 +168,9 @@ struct LocalizedConstants {
     struct Notification {
         
         static let CatchSomething = NSLocalizedString("CatchSomething", comment: "")
+        static let postSuccessMessage = NSLocalizedString("postSuccessMessage", comment: "")
+        static let postTitle = NSLocalizedString("postTitle", comment: "")
+        static let postFailedMessage = NSLocalizedString("postFailedMessage", comment: "")
         
     }
     
@@ -208,6 +213,20 @@ struct LocalizedConstants {
         
     }
     
+    struct PostAttachmentInformation {
+        
+        static let publicInformation = NSLocalizedString("publicInformation", comment: "")
+        static let onlyMeInformation = NSLocalizedString("onlyMeInformation", comment: "")
+        static let gettingGroup = NSLocalizedString("gettingGroup", comment: "")
+        static let gettingFriends = NSLocalizedString("gettingFriends", comment: "")
+        static let thereIsNothingToPost = NSLocalizedString("thereIsNothingToPost", comment: "")
+        static let saySomething = NSLocalizedString("saySomething", comment: "")
+        
+    }
+    
+    struct Cloud {
+        static let cloudFetching = NSLocalizedString("cloudFetching", comment: "")
+    }
     
     
 }

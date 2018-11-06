@@ -14,6 +14,7 @@ class PostAttachmentView: UIView {
     private var isSelected : Bool = false
     
     weak var delegate : ShareDataProtocols!
+    weak var delegateForViewController : ViewPresentationProtocols!
     
     lazy var containerView: UIView = {
         let temp = UIView()
@@ -83,6 +84,7 @@ class PostAttachmentView: UIView {
         temp.backgroundColor = UIColor.clear
         
         return temp
+        
     }()
     
     init(frame: CGRect, inputContainerSize : CGFloat) {
@@ -172,9 +174,10 @@ extension PostAttachmentView {
         
     }
     
-    func setDelegation(inputDelegate : ShareDataProtocols) {
+    func setDelegation(inputDelegate : ShareDataProtocols, inputViewControllerDelegate : ViewPresentationProtocols) {
         
         self.delegate = inputDelegate
+        self.delegateForViewController = inputViewControllerDelegate
         
     }
     
@@ -190,16 +193,79 @@ extension PostAttachmentView {
 //            }
 //        }
         
-        
     }
     
     func setTintColor() {
-        imageView.tintColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
-        labelObject.textColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
+        imageView.tintColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        labelObject.textColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+    }
+    
+    func setSelected(isSelected : Bool) {
+        self.isSelected = isSelected
+    }
+    
+    func returnSelectedInfo() -> Bool {
+        
+        return isSelected
+        
+    }
+    
+    func animationManager(type : PostAttachmentTypes) {
+        
+        print("animationManager starts")
+        
+        if isSelected {
+            setSelected(isSelected: false)
+            
+            if type == .onlyMe {
+                self.imageView.image = UIImage(named: "unlocked")?.withRenderingMode(.alwaysTemplate)
+            }
+            
+            delegate.deselectPostAttachmentAnimations()
+            
+            clearTintColor()
+            
+        } else {
+            setSelected(isSelected: true)
+            
+            if type == .onlyMe {
+                self.imageView.image = UIImage(named: "locked")?.withRenderingMode(.alwaysTemplate)
+            }
+            
+            delegate.selectedPostAttachmentAnimations(selectedAttachmentType: type) { (finish) in
+                if finish {
+                    self.delegateForViewController.directToContactsViewController(inputPostType: type)
+                }
+            }
+            
+            setTintColor()
+            
+            setPrivacy()
+            
+        }
+        
+    }
+    
+    func setPrivacy() {
+        
+        guard let type = postAttachmentType else { return }
+        
+        switch type {
+        case .friends:
+            PostItems.shared.privacyType = PrivacyType.custom
+        case .group:
+            PostItems.shared.privacyType = PrivacyType.group
+        case .onlyMe:
+            PostItems.shared.privacyType = PrivacyType.myself
+        case .publicPost:
+            PostItems.shared.privacyType = PrivacyType.everyone
+        }
+        
     }
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension PostAttachmentView : UIGestureRecognizerDelegate {
     
     func addGestureToContainer() {
@@ -223,12 +289,7 @@ extension PostAttachmentView : UIGestureRecognizerDelegate {
         
         print("type : \(postAttachmentType!)")
         
-//        delegate.clearPostAttachmentType()
-        delegate.selectedPostAttachmentAnimations(selectedAttachmentType: self.postAttachmentType!)
-        
-        self.setTintColor()
-        
-        delegate.selectedPostAttachmentTypeManagement(returned: self)
+        animationManager(type: postAttachmentType!)
         
     }
     

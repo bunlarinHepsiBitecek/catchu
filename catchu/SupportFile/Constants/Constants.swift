@@ -13,6 +13,7 @@ struct Constants {
     static let CATCHU = "CatchU"
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
+    static let AWS_PATH_EMPTY = "empty" // used for aws lambda path param empty
     
     struct UIDesignConstant {
         static let PlaceHolderColor: UIColor = UIColor.lightGray
@@ -73,7 +74,9 @@ struct Constants {
         static let aminationTime_05 : TimeInterval = 0.5
         static let aminationTime_03 : TimeInterval = 0.3
         static let aminationTime_02 : TimeInterval = 0.2
-        
+        static let aminationTime_01 : TimeInterval = 0.1
+        static let timeInterval_1 : TimeInterval = 1
+     
     }
     
     struct CameraZoomScale {
@@ -142,6 +145,7 @@ struct Constants {
         static let imageCollectionViewMinLineSpacing_01 : CGFloat = 1
         static let imageCollectionViewEdgeInsets_02 : CGFloat = 2
         static let imageCollectionViewMaxCellCount : CGFloat = 4
+        static let minimumLineSpacing_Zero : CGFloat = 0
     }
     
     struct FirebaseCallableFunctions {
@@ -203,6 +207,7 @@ struct Constants {
     struct ViewControllerIdentifiers {
         
         static let ContactViewController: String = "ContactViewController"
+        static let ContactViewController2: String = "ContactViewController2"
         static let FeedViewController: String = "FeedViewController"
         static let SearchViewController: String = "SearchViewController"
         static let GroupInformationViewController: String = "GroupInformationViewController"
@@ -212,6 +217,7 @@ struct Constants {
         static let ShareDataViewController: String = "ShareDataViewController"
         static let ShareDataViewController2: String = "ShareDataViewController2"
         static let FinalShareInfoViewController: String = "FinalShareInfoViewController"
+        static let FinalNoteViewController: String = "FinalNoteViewController"
         
     }
     
@@ -244,6 +250,7 @@ struct Constants {
             static let colorContainerCell : String = "colorContainerCell"
             static let selectedItemImageCell: String = "selectedItemImageCell"
             static let selectedItemVideoCell : String = "selectedItemVideoCell"
+            static let filterColorCell : String = "filterColorCell"
             
         }
         

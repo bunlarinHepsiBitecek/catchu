@@ -10,12 +10,14 @@ import UIKit
 
 class PhotoLibraryCollectionViewCell2: UICollectionViewCell {
     
+    weak var delegate : ImageHandlerProtocol!
+    
     lazy var containerView: UIView = {
         
         let temp = UIView()
         
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
 //        temp.layer.cornerRadius = 10
 //        temp.layer.shadowOffset = CGSize(width: 0, height: 2)
 //        temp.layer.shadowColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
@@ -100,7 +102,24 @@ extension PhotoLibraryCollectionViewCell2 : UIGestureRecognizerDelegate {
     
     @objc func openGallery(_ sender : UITapGestureRecognizer) {
         
+        selectionAnimation()
+        
+        ImageVideoPickerHandler.shared.delegate = delegate
         ImageVideoPickerHandler.shared.getPictureByGalery()
+        
+    }
+    
+    func selectionAnimation() {
+        
+        self.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, delay: 0, usingSpringWithDamping: 0.20, initialSpringVelocity: 6.0, options: UIViewAnimationOptions.allowUserInteraction, animations: {
+            
+            self.transform = CGAffineTransform.identity
+            
+        })
+        
+        self.layoutIfNeeded()
         
     }
     

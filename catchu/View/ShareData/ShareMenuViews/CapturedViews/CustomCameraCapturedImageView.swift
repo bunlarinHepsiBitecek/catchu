@@ -13,6 +13,11 @@ class CustomCameraCapturedImageView: UIView {
 
     private let capturedImage = UIImageView()
     private var gradientUploaded = false
+    private var deleteButtonEnlarged : Bool = false
+    private var deleteButtonShrinked : Bool = false
+    private var deleteButtonIntersectionDetected : Bool = false
+    
+    weak var delegateForShareMenuViews : ShareDataProtocols!
     
 //    weak var customAddingTextView : CustomAddingTextView!
     private var customAddingTextView : CustomAddingTextView?
@@ -102,20 +107,31 @@ class CustomCameraCapturedImageView: UIView {
         
     }()
     
-    /*
-    required init(image: UIImage, cameraPosition : CameraPosition) {
-        super.init(frame: .zero)
+    lazy var footerDeleteContainer: UIView = {
         
-        setupViews()
-        setupCloseButtonGesture()
-        downloadButtonGesture()
-        setupAddTextGestures()
-        addObserver()
+        let temp = UIView()
         
-        activationManager(granted : false, inputImage: image, cameraPosition : cameraPosition)
+        temp.layer.cornerRadius = 7
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
         
-    }*/
+        return temp
+        
+    }()
     
+    lazy var deleteButton: UIImageView = {
+        
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.image = UIImage(named: "garbage")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.isUserInteractionEnabled = true
+        
+        return temp
+    }()
+    
+    /*
     required init() {
         super.init(frame: .zero)
         
@@ -126,6 +142,22 @@ class CustomCameraCapturedImageView: UIView {
         
         initializeTextEditingView()
         activationManagerDefault(granted: false)
+        
+    }*/
+    
+    init(inputDelegate : ShareDataProtocols) {
+        super.init(frame: .zero)
+        
+        delegateForShareMenuViews = inputDelegate
+        
+        setupViews()
+        setupCloseButtonGesture()
+        downloadButtonGesture()
+        setupAddTextGestures()
+        
+        initializeTextEditingView()
+        activationManagerDefault(granted: false)
+        activationManagerOfDeleteButton(active: false, animated: false)
         
     }
     
@@ -138,37 +170,19 @@ class CustomCameraCapturedImageView: UIView {
 // MARK: - major functions
 extension CustomCameraCapturedImageView {
     
-//    func addObserver() {
-//
-//        NotificationCenter.default.addObserver(self, selector: #selector(CustomCameraCapturedImageView.setKeyboardHideProperties(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(CustomCameraCapturedImageView.setKeyboardShowProperties(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-//
-//    }
-//
-//    @objc func setKeyboardHideProperties(notification : Notification) {
-//
-//        print("setKeyboardHideProperties starts")
-//
-//    }
-//
-//    @objc func setKeyboardShowProperties(notification : Notification) {
-//
-//        print("setKeyboardHideProperties starts")
-//
-//    }
-    
     func setupViews() {
         
         self.addSubview(capturedImage)
         self.addSubview(menuContainerView)
         self.addSubview(footerContainerView)
+//        self.addSubview(footerDeleteContainer)
+        self.addSubview(deleteButton)
         
         self.menuContainerView.addSubview(closeButton)
-        self.menuContainerView.addSubview(addTextImage)
         self.menuContainerView.addSubview(addTextContainerView)
         self.addTextContainerView.addSubview(addTextImage)
-        
         self.footerContainerView.addSubview(downloadButton)
+//        self.footerDeleteContainer.addSubview(deleteButton)
         
         capturedImage.translatesAutoresizingMaskIntoConstraints = false
         capturedImage.contentMode = .scaleAspectFill
@@ -176,6 +190,7 @@ extension CustomCameraCapturedImageView {
         let safe = self.safeAreaLayoutGuide
         let safeMenuContainer = self.safeAreaLayoutGuide
         let safeAddTextContainer = self.addTextContainerView.safeAreaLayoutGuide
+        let safeDeleteContainer = self.footerDeleteContainer.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -209,10 +224,25 @@ extension CustomCameraCapturedImageView {
             footerContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             footerContainerView.heightAnchor.constraint(equalToConstant: 50),
             
+//            footerDeleteContainer.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+//            footerDeleteContainer.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+//            footerDeleteContainer.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+//            footerDeleteContainer.heightAnchor.constraint(equalToConstant: 50),
+            
             downloadButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -5),
             downloadButton.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 20),
             downloadButton.heightAnchor.constraint(equalToConstant: 40),
-            downloadButton.widthAnchor.constraint(equalToConstant: 40)
+            downloadButton.widthAnchor.constraint(equalToConstant: 40),
+            
+//            deleteButton.bottomAnchor.constraint(equalTo: safeDeleteContainer.bottomAnchor, constant: -5),
+//            deleteButton.centerXAnchor.constraint(equalTo: safeDeleteContainer.centerXAnchor),
+//            deleteButton.heightAnchor.constraint(equalToConstant: 40),
+//            deleteButton.widthAnchor.constraint(equalToConstant: 40)
+
+            deleteButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            deleteButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -10),
+            deleteButton.heightAnchor.constraint(equalToConstant: 30),
+            deleteButton.widthAnchor.constraint(equalToConstant: 30),
             
             ])
         
@@ -359,24 +389,35 @@ extension CustomCameraCapturedImageView {
     func menuAndFooterVisibiltyManagement(visibiltyVaule : Bool) {
         
         UIView.transition(with: menuContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+
+            self.menuFooterHiddenManagement(hidden: visibiltyVaule)
             
-            if visibiltyVaule {
-                self.menuContainerView.isHidden = true
-            } else {
-                self.menuContainerView.isHidden = false
-            }
+//            if visibiltyVaule {
+//                self.menuContainerView.isHidden = true
+//            } else {
+//                self.menuContainerView.isHidden = false
+//            }
             
         })
         
         UIView.transition(with: footerContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
             
-            if visibiltyVaule {
-                self.footerContainerView.isHidden = true
-            } else {
-                self.footerContainerView.isHidden = false
-            }
+            self.menuFooterHiddenManagement(hidden: visibiltyVaule)
+            
+//            if visibiltyVaule {
+//                self.footerContainerView.isHidden = true
+//            } else {
+//                self.footerContainerView.isHidden = false
+//            }
             
         })
+        
+    }
+    
+    func menuFooterHiddenManagement(hidden : Bool) {
+        
+        self.menuContainerView.isHidden = hidden
+        self.footerContainerView.isHidden = hidden
         
     }
     
@@ -402,6 +443,8 @@ extension CustomCameraCapturedImageView {
                 capturedImage.image = inputImage
             }
             
+//            saveCapturedImagesToSelectedItems(image : inputImage)
+            
         } else {
             self.alpha = 0
             
@@ -415,17 +458,13 @@ extension CustomCameraCapturedImageView {
         
         print("initializeTextEditingView starts")
         
-        customAddingTextView = CustomAddingTextView(delegate: self)
-        
-//        customAddingTextView!.delegate = self
-        
+        customAddingTextView = CustomAddingTextView(delegate: self, delegateForShareMenuViews: delegateForShareMenuViews, delegateOfCameraCapturedImageView: self)
+
         self.addSubview(customAddingTextView!)
         
         customAddingTextView!.translatesAutoresizingMaskIntoConstraints = false
         
         let safe = self.safeAreaLayoutGuide
-        
-//        menuAndFooterVisibiltyManagement(visibiltyVaule: true)
         
         NSLayoutConstraint.activate([
             
@@ -435,6 +474,136 @@ extension CustomCameraCapturedImageView {
             customAddingTextView!.topAnchor.constraint(equalTo: safe.topAnchor),
             
             ])
+        
+    }
+    
+    func saveCapturedImagesToSelectedItems(image : UIImage) {
+        
+        if PostItems.shared.selectedImageDictionary == nil {
+            PostItems.shared.selectedImageDictionary = Array<UIImage>()
+        }
+        
+        PostItems.shared.selectedImageDictionary!.append(image)
+        
+        print("")
+        
+    }
+    
+    func deleteCapturedImagesFromSelectedItems(image : UIImage) {
+        
+        if PostItems.shared.selectedImageDictionary != nil {
+            if let i = PostItems.shared.selectedImageDictionary!.firstIndex(of: image) {
+                PostItems.shared.selectedImageDictionary?.remove(at: i)
+                
+            }
+        }
+        
+    }
+    
+    func activationManagerOfDeleteButton(active : Bool, animated : Bool) {
+        
+        if animated {
+            UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+                /*
+                if active {
+                    self.footerDeleteContainer.alpha = 1
+                } else {
+                    self.footerDeleteContainer.alpha = 0
+                }*/
+                
+                if active {
+                    self.deleteButton.alpha = 1
+                } else {
+                    self.deleteButton.alpha = 0
+                }
+                
+            }
+        } else {
+            /*
+            if active {
+                self.footerDeleteContainer.alpha = 1
+            } else {
+                self.footerDeleteContainer.alpha = 0
+            }*/
+            
+            if active {
+                self.deleteButton.alpha = 1
+            } else {
+                self.deleteButton.alpha = 0
+            }
+            
+        }
+
+    }
+    
+    func setDelegationForSticker(inputDelegateView : CustomSticker2) {
+        
+        if customAddingTextView != nil {
+            customAddingTextView!.delegateForEditedView = inputDelegateView
+        }
+        
+    }
+    
+    func stickerVisibilityOperations(active : Bool) {
+        
+        guard let stickers = Stickers.shared.stickerArray else { return }
+        
+        for item in stickers {
+            item.activationManager(active: active)
+        }
+        
+    }
+    
+    func clearStickerFromCapturedArray() {
+        
+        if Stickers.shared.stickerArray != nil {
+        
+            for item in Stickers.shared.stickerArray! {
+                item.removeFromSuperview()
+            }
+            
+            Stickers.shared.emptyStickerArray()
+        }
+        
+    }
+    
+    func returnImage() -> UIImageView {
+        
+        return capturedImage
+        
+    }
+    
+    func enlargeDeleteButton(inputView : UIView, active : Bool) {
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+            
+            if active {
+                
+                if !self.deleteButtonEnlarged {
+                    inputView.transform = inputView.transform.scaledBy(x: 1.5, y: 1.5)
+                    self.deleteButtonEnlarged = true
+                    self.deleteButtonShrinked = false
+                }
+                
+            } else {
+                
+                if !self.deleteButtonShrinked {
+                    inputView.transform = .identity
+                    self.deleteButtonShrinked = true
+                    self.deleteButtonEnlarged = false
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    func returnCapturedImage() -> UIImage {
+        
+        guard let image = capturedImage.image else { return UIImage() }
+        
+        return image
         
     }
     
@@ -451,14 +620,18 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
         //        self.mainView.bringSubview(toFront: closeButton)
         
     }
-    
+
     @objc func dismissCustomCameraCapturedView(_ sender : UITapGestureRecognizer) {
         
         print("dismissCustomCameraCapturedView starts")
         
-//        self.removeFromSuperview()
+        clearStickerFromCapturedArray()
+
         self.activationManagerDefault(granted: false)
         
+        guard let image = capturedImage.image else { return }
+        
+        deleteCapturedImagesFromSelectedItems(image: image)
         
     }
     
@@ -531,6 +704,8 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
         print("startAddingTextView starts")
         print("customAddingTextView : \(customAddingTextView)")
         
+        stickerVisibilityOperations(active: false)
+        
         guard customAddingTextView != nil else {
             return
         }
@@ -546,12 +721,161 @@ extension CustomCameraCapturedImageView : ShareDataProtocols {
     func menuContainersHideManagement(inputValue: Bool) {
         
         menuAndFooterVisibiltyManagement(visibiltyVaule: inputValue)
+        activationManagerOfDeleteButton(active: inputValue, animated: true)
         
     }
     
     func returnTextViewScreenShot(inputScreenShot: UIImage) {
         
-        let scrollViewForTextScreenShot = UIScrollView(frame: .zero)
+        _ = UIScrollView(frame: .zero)
+        
+    }
+    
+    
+    func addTextSticker(inputView: UIView) {
+        
+        print("addTextSticker starts")
+        print("inputView.frame : \(inputView.frame)")
+        print("inputView.bounds : \(inputView.bounds)")
+        
+        var newTextView = UIView()
+        newTextView = inputView
+        
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+        newTextView.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        
+        self.addSubview(newTextView)
+        
+        let safe = self.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            newTextView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            newTextView.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+            newTextView.heightAnchor.constraint(equalToConstant: inputView.frame.height),
+            newTextView.widthAnchor.constraint(equalToConstant: inputView.frame.width)
+            
+            ])
+        
+    }
+    
+}
+
+extension CustomCameraCapturedImageView : StickerProtocols {
+    
+    func addTextStickerWithParameters(sticker: Sticker) {
+    
+        print("addTextStickerWithParameters starts")
+        
+        guard let stickerFrame = sticker.frame else { return }
+        
+        print("Sticker count : \(Stickers.shared.stickerArray?.count)")
+        
+        if Stickers.shared.stickerArray != nil {
+            print("NILLLLLLLL değil")
+            for item in Stickers.shared.stickerArray! {
+                print("--> : \(item.sticker.text)")
+            }
+        }
+        
+        let stickerView = CustomSticker2(frame: .zero, inputSticker: sticker)
+        
+        /* setting necessary delegations for protocols */
+        stickerView.setProtocols(delegateOfCapturedImageView: self, delegateForMenuViewOperations: delegateForShareMenuViews, delegateOfCustomAddingText: self)
+        
+//        setDelegationForSticker(inputDelegateView: stickerView)
+        
+        self.addSubview(stickerView)
+        
+        stickerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safe = self.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            stickerView.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+            stickerView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            stickerView.heightAnchor.constraint(equalToConstant: stickerFrame.height),
+            stickerView.widthAnchor.constraint(equalToConstant: stickerFrame.width)
+            
+            ])
+        
+        Stickers.shared.addStickerToArray(inputStickerView: stickerView)
+        
+        print("Sticker count : \(Stickers.shared.stickerArray?.count)")
+        
+        guard let items2 = Stickers.shared.stickerArray else { return }
+        
+        for item in items2 {
+            print("--> : \(item.sticker.text)")
+        }
+        
+    }
+    
+    func activateTextStickerEditigMode(inputSticker: Sticker, selfView : CustomSticker2) {
+        
+        if customAddingTextView != nil {
+            
+            customAddingTextView!.delegateForEditedView = selfView
+            
+            customAddingTextView!.activationManagementWithDelegations(granted: true)
+            customAddingTextView!.updateEditingTextView(inputSticker: inputSticker, editingMode: true)
+            stickerVisibilityOperations(active: false)
+        }
+        
+    }
+    
+    func customStickerActivationManager(active: Bool) {
+        
+        stickerVisibilityOperations(active: active)
+        
+    }
+    
+    func detectDeleteButtonIntersect(inputView : UIView) {
+        /*
+        if footerDeleteContainer.frame.intersects(inputView.frame) {
+            print("intersection detected!")
+            enlargeDeleteButton(inputView: deleteButton, active: true)
+            deleteButtonIntersectionDetected = true
+        } else {
+            enlargeDeleteButton(inputView: deleteButton, active: false)
+            deleteButtonIntersectionDetected = false
+        }*/
+        
+        if deleteButton.frame.intersects(inputView.frame) {
+            
+            print("intersection detected!")
+            enlargeDeleteButton(inputView: deleteButton, active: true)
+            deleteButtonIntersectionDetected = true
+            
+        } else {
+            enlargeDeleteButton(inputView: deleteButton, active: false)
+            deleteButtonIntersectionDetected = false
+        }
+        
+    }
+    
+    func stickerDeleteAnimationManager(active: Bool) {
+        
+        enlargeDeleteButton(inputView: deleteButton, active: active)
+        
+    }
+    
+    func deleteSticker(selectedSticker: CustomSticker2) {
+        
+        if deleteButtonIntersectionDetected {
+            selectedSticker.removeFromSuperview()
+            
+            if Stickers.shared.stickerArray != nil {
+                
+                if let i = Stickers.shared.stickerArray!.firstIndex(of: selectedSticker) {
+                    Stickers.shared.stickerArray!.remove(at: i)
+                }
+
+            }
+            
+        }
+        
         
     }
     

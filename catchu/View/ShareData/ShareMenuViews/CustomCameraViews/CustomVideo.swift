@@ -14,13 +14,20 @@ class CustomVideo: NSObject {
 
     var videoSession : AVCaptureSession?
     
+    var currentCameraPosition : CameraPosition?
+    
     var rearCamera: AVCaptureDevice?
     var rearCameraInput: AVCaptureDeviceInput?
+    
+    var frontCamera: AVCaptureDevice?
+    var frontCameraInput: AVCaptureDeviceInput?
     
     var audioDevice: AVCaptureDevice?
     var audioDeviceInput: AVCaptureDeviceInput?
     
     var previewLayer: AVCaptureVideoPreviewLayer?
+    
+    var flashMode = AVCaptureDevice.FlashMode.auto
     
     var videoFileOutput = AVCaptureMovieFileOutput()
     
@@ -64,6 +71,23 @@ extension CustomVideo {
                     
                 }
                 
+                if device.position == .front {
+                    self.frontCamera = device
+                    
+                    try device.lockForConfiguration()
+                    
+                    if device.isExposureModeSupported(.continuousAutoExposure) {
+                        device.exposureMode = .continuousAutoExposure
+                    }
+                    
+                    if device.isFocusModeSupported(.continuousAutoFocus) {
+                        device.focusMode = .continuousAutoFocus
+                    }
+                    
+                    device.unlockForConfiguration()
+                    
+                }
+                
             }
             
             let sessionForAudio = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInMicrophone], mediaType: AVMediaType.audio, position: .unspecified)
@@ -87,7 +111,7 @@ extension CustomVideo {
         /// - Throws: throws exceptions
         func configureDeviceInputs() throws {
             
-            guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
+            guard let videoSession = videoSession else { throw CustomVideoError.videoSessionIsMissing }
             
             if let rearCamera = self.rearCamera {
                 self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
@@ -96,17 +120,29 @@ extension CustomVideo {
                     
                     videoSession.addInput(self.rearCameraInput!)
                     
-                    videoFileOutput = AVCaptureMovieFileOutput()
-                    let totalSeconds = 60.0 //Total Seconds of capture time
-                    let timeScale: Int32 = 30 //FPS
+                    currentCameraPosition = .rear
                     
-                    let maxDuration = CMTimeMakeWithSeconds(totalSeconds, timeScale)
-                    
-                    videoFileOutput.maxRecordedDuration = maxDuration
-                    videoFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
+//                    videoFileOutput = AVCaptureMovieFileOutput()
+//                    let totalSeconds = 60.0 //Total Seconds of capture time
+//                    let timeScale: Int32 = 30 //FPS
+//
+//                    let maxDuration = CMTimeMakeWithSeconds(totalSeconds, timeScale)
+//
+//                    videoFileOutput.maxRecordedDuration = maxDuration
+//                    videoFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
                     
                 } else {
                     throw CustomVideoError.inputsAreInvalid
+                }
+                
+            } else if let frontCamera = self.frontCamera {
+              
+                self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
+                
+                if videoSession.canAddInput(frontCameraInput!) {
+                    videoSession.addInput(frontCameraInput!)
+                    
+                    currentCameraPosition = .front
                 }
                 
             } else {
@@ -125,13 +161,22 @@ extension CustomVideo {
                 
             }
             
+            videoFileOutput = AVCaptureMovieFileOutput()
+            let totalSeconds = 60.0 //Total Seconds of capture time
+            let timeScale: Int32 = 30 //FPS
+            
+            let maxDuration = CMTimeMakeWithSeconds(totalSeconds, timeScale)
+            
+            videoFileOutput.maxRecordedDuration = maxDuration
+            videoFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
+            
         }
         
         /// start video session
         ///
         /// - Throws: throw exceptions
         func configurePhotoOutput() throws {
-            guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
+            guard let videoSession = videoSession else { throw CustomVideoError.videoSessionIsMissing }
             
             if videoSession.canAddOutput(self.videoFileOutput) { videoSession.addOutput(self.videoFileOutput) }
             
@@ -165,7 +210,7 @@ extension CustomVideo {
     func displayPreviewForVideo(on view: UIView) throws {
         /* videoSession.isRunning control is removed */
 //        guard let videoSession = self.videoSession, videoSession.isRunning else { throw CustomVideoError.captureSessionIsMissing }
-        guard let videoSession = self.videoSession else { throw CustomVideoError.captureSessionIsMissing }
+        guard let videoSession = self.videoSession else { throw CustomVideoError.videoSessionIsMissing }
         
         print("displayPreviewForVideo starts")
         
@@ -184,7 +229,7 @@ extension CustomVideo {
     
     func enableVideoSession() throws {
         
-        guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
+        guard let videoSession = videoSession else { throw CustomVideoError.videoSessionIsMissing }
         
         print("videoSession is running : \(videoSession.isRunning)")
         print("preview connection : \(previewLayer?.connection)")
@@ -203,7 +248,7 @@ extension CustomVideo {
     
     func disableVideoSession() throws {
         
-        guard let videoSession = videoSession else { throw CustomVideoError.captureSessionIsMissing }
+        guard let videoSession = videoSession else { throw CustomVideoError.videoSessionIsMissing }
         
         print("videoSession is running : \(videoSession.isRunning)")
         
@@ -251,6 +296,85 @@ extension CustomVideo {
         
     }
     
+    
+    /// Switching camera position
+    ///
+    /// - Throws: if application crashes, throws exceptions
+    func switchCameras() throws {
+        
+        print("switchCameras starts")
+        print("currentCameraPosition : \(currentCameraPosition)")
+        print("self.videoSession : \(self.videoSession)")
+        print("videoSession.isRunning : \(videoSession!.isRunning)")
+        
+        guard let currentCameraPosition = currentCameraPosition, let videoSession = self.videoSession, videoSession.isRunning else { throw CustomVideoError.videoSessionIsMissing }
+        
+        videoSession.beginConfiguration()
+        
+        func switchToFrontCamera() throws {
+            
+            print("rearCameraInput : \(rearCameraInput)")
+            print("frontCamera : \(frontCamera)")
+            
+            guard let rearCameraInput = rearCameraInput, videoSession.inputs.contains(rearCameraInput), let frontCamera = frontCamera else { throw CustomVideoError.invalidOperation }
+            
+            // initialize front camera input
+            self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
+            
+            videoSession.removeInput(rearCameraInput)
+            
+            // in order not to cause crashes, close flash mode
+            flashMode = .off
+            
+            if videoSession.canAddInput(frontCameraInput!) {
+                videoSession.addInput(frontCameraInput!)
+                
+                self.currentCameraPosition = .front
+                
+            } else {
+                throw CustomVideoError.invalidOperation
+            }
+            
+        }
+        
+        func switchToRearCamera() throws {
+            
+            print("frontCameraInput : \(frontCameraInput)")
+            print("rearCamera : \(rearCamera)")
+            
+            guard let frontCameraInput = frontCameraInput, videoSession.inputs.contains(frontCameraInput), let rearCamera = rearCamera else { throw CustomVideoError.invalidOperation }
+            
+            // initialize rear camera input
+            self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
+            
+            videoSession.removeInput(frontCameraInput)
+            
+            // do not need for rear camera
+            //flashMode = .off
+            
+            if videoSession.canAddInput(rearCameraInput!) {
+                videoSession.addInput(rearCameraInput!)
+                
+                self.currentCameraPosition = .rear
+                
+            } else {
+                throw CustomVideoError.invalidOperation
+            }
+            
+            
+        }
+        
+        switch currentCameraPosition {
+        case .front:
+            try switchToRearCamera()
+        case .rear:
+            try switchToFrontCamera()
+        }
+        
+        videoSession.commitConfiguration()
+
+    }
+    
 }
 
 extension CustomVideo : AVCaptureFileOutputRecordingDelegate {
@@ -267,32 +391,12 @@ extension CustomVideo : AVCaptureFileOutputRecordingDelegate {
         
         self.delegate.directToCapturedVideoView(url: outputFileURL)
         
-        
-        
-        try? PHPhotoLibrary.shared().performChangesAndWait {
-
-            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
-
-        }
+//        try? PHPhotoLibrary.shared().performChangesAndWait {
+//
+//            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
+//
+//        }
         
     }
     
-    
-    
-    
 }
-
-//extension CustomVideo {
-//    
-//    enum CustomVideoError: Swift.Error {
-//        case captureSessionAlreadyRunning
-//        case captureSessionIsMissing
-//        case inputsAreInvalid
-//        case invalidOperation
-//        case noCamerasAvailable
-//        case noMicrophoneAvailable
-//        case unknown
-//        case previewLayerIsMissing
-//    }
-//    
-//}

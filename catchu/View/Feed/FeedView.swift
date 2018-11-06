@@ -53,10 +53,10 @@ class FeedView: BaseView {
         self.dataSource.delegate = self
         self.addSubview(tableView)
         NSLayoutConstraint.activate([
-            tableView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
-            tableView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
-            tableView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
-            tableView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
+            tableView.topAnchor.constraint(equalTo: safeTopAnchor),
+            tableView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: safeTrailingAnchor)
             ])
         
         setupRefreshControl()

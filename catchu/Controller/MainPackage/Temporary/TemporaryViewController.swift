@@ -12,18 +12,65 @@ import UserNotifications
 class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegate {
 
     @IBOutlet var testImage: UIImageView!
+    private var customFetch : CustomFetchView?
+    
+    var timer: Timer!
+    var progressCounter:Float = 0
+    let duration:Float = 10.0
+    var progressIncrement:Float = 0
+    
+    var takasi : CGFloat = 0.0
     
     var testBool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        addCustomFetchTemporary()
+        
         // Do any additional setup after loading the view.
         
     }
     
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//
+//        customFetch!.setupViews()
+//
+//    }
+    
     @IBAction func logoutButtonClick(_ sender: UIButton) {
         FirebaseManager.shared.logout()
+    }
+    
+    @IBAction func progressActivate(_ sender: Any) {
+        
+        takasi += 10
+        
+        customFetch!.setProgress(progress: takasi)
+        
+    }
+    
+    func addCustomFetchTemporary() {
+
+        customFetch = CustomFetchView()
+        
+        customFetch!.translatesAutoresizingMaskIntoConstraints = false
+        customFetch!.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        
+        self.view.addSubview(customFetch!)
+        
+        let safe = self.view.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            customFetch!.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 50),
+            customFetch!.topAnchor.constraint(equalTo: safe.topAnchor, constant: 50),
+            customFetch!.heightAnchor.constraint(equalToConstant: 100),
+            customFetch!.widthAnchor.constraint(equalToConstant: 100),
+            
+            ])
+        
     }
     
     func requestPermissionWithCompletionhandler(completion: ((Bool) -> (Void))? ) {

@@ -475,6 +475,71 @@ class APIGatewayManager {
             
         }
         
+    }
+    
+    func initiatePostOperations() {
+        
+        Share.shared.convertPostItemsToShare()
+        
+        afterPostOperations(granted: false)
+        
+//        REAWSManager.shared.createPost(share: Share.shared) { (result) in
+//
+//            switch (result) {
+//            case .success(let response):
+//
+//                if let error = response.error {
+//                    if error.code != 1 {
+//                        print("post operation is failed")
+//                        self.afterPostOperations(granted: false)
+//                    }
+//                }
+//
+//                self.afterPostOperations(granted: false)
+//
+//            default:
+//                self.afterPostOperations(granted: false)
+//                break;
+//            }
+//
+//        }
+        
+    }
+    
+    func afterPostOperations(granted : Bool) {
+        
+        print("afterPostOperations starts")
+        print("LoaderController.currentViewController() : \(LoaderController.currentViewController())")
+        
+        var imageAttachmentArray = [UIImage]()
+        
+        if !granted {
+            if let imageArray = PostItems.shared.selectedImageDictionary {
+                if let image = imageArray.first {
+                    
+                    imageAttachmentArray.append(image)
+                    imageAttachmentArray.append(image)
+                    
+                    print("image orientation : \(image.imageOrientation)")
+                    
+                    CustomNotificationManager.shared.sendNotification(inputTitle: LocalizedConstants.Notification.postTitle , inputSubTitle: Constants.CharacterConstants.EMPTY, inputMessage: LocalizedConstants.Notification.postFailedMessage, inputIdentifier: "postIdentifier", operationResult: granted, image: imageAttachmentArray) { (finish) in
+                        
+                        if finish {
+                            print("GOGOGOGOGOGOGOGOOG")
+                        }
+                    }
+                }
+            }
+            
+        } else {
+//            CustomNotificationManager.shared.sendNotification(inputTitle: LocalizedConstants.Notification.postTitle , inputSubTitle: Constants.CharacterConstants.EMPTY, inputMessage: LocalizedConstants.Notification.postSuccessMessage, inputIdentifier: "postIdentifier", operationResult: granted, image: UIImage()) { (finish) in
+//
+//                if finish {
+//                    print("GOGOGOGOGOGOGOGOOG 2")
+//                }
+//            }
+            
+        }
         
         
     }

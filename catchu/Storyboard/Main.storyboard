@@ -42,7 +42,7 @@
                                     <action selector="sendImage:" destination="rGg-cJ-mDB" eventType="touchUpInside" id="ymN-m0-JYG"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="8771.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="K39-gg-cXS">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="8771.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="K39-gg-cXS">
                                 <rect key="frame" x="162" y="432" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -70,6 +70,14 @@
                                 <state key="normal" title="Search"/>
                                 <connections>
                                     <action selector="searchBtnClicked:" destination="rGg-cJ-mDB" eventType="touchUpInside" id="2N3-5G-YdD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBM-KA-9o0">
+                                <rect key="frame" x="164" y="197" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="progressActivate:" destination="rGg-cJ-mDB" eventType="touchUpInside" id="Fr5-gI-mk1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1737,6 +1745,21 @@
             </objects>
             <point key="canvasLocation" x="-1292" y="-1126"/>
         </scene>
+        <!--Final Note View Controller-->
+        <scene sceneID="2Oe-TG-dC5">
+            <objects>
+                <viewController storyboardIdentifier="FinalNoteViewController" id="71H-DS-b5d" customClass="FinalNoteViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VYM-ts-1f3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="mQt-e4-n18"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PLG-23-zAz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5410.3999999999996" y="-1126.1083743842364"/>
+        </scene>
         <!--Final Share Info View Controller-->
         <scene sceneID="nzA-sx-umV">
             <objects>
@@ -1759,7 +1782,7 @@
                     <viewLayoutGuide key="safeArea" id="bJF-Cm-Uy6"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-6122" y="-1126"/>
+            <point key="canvasLocation" x="-4543" y="-1126"/>
         </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="2Dx-Yx-klv">

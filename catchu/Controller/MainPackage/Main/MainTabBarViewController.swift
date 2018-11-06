@@ -84,8 +84,6 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         
     }
     
-    
-    
 }
 
 extension MainTabBarViewController : TabBarControlProtocols {

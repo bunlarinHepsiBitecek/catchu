@@ -10,24 +10,33 @@ import UIKit
 
 class CustomAddingTextView: UIView {
     
-    private var leadingConstraintsOfTextView = NSLayoutConstraint()
-    private var trailingConstraintsOfTextView = NSLayoutConstraint()
-    private var topConstraintsOfTextView = NSLayoutConstraint()
+    private var bottomConstraintsOfTextView = NSLayoutConstraint()
     private var heigthConstraintsOfTextView = NSLayoutConstraint()
     
     private var bottomConstraintsOfColorPalette = NSLayoutConstraint()
     
-    private var heigthConstraintOfTextViewContainer = NSLayoutConstraint()
+//    private var heigthConstraintOfTextViewContainer = NSLayoutConstraint()
     private var heigthActivated : Bool = false
     private var tempSize : CGFloat = 0.0
-    private var tempSizeFlag : Bool = false
     
     private var keyboardHeigth : CGFloat?
+    private var lastScale:CGFloat = 1.0
     
-    weak var customColorPalette : ColorPaletteView!
+    private var customColorPalette : ColorPaletteView!
     
     weak var delegate : ShareDataProtocols!
-
+    weak var delegateForShareMenuViews : ShareDataProtocols!
+    weak var delegateOfCameraCapturedImageView : StickerProtocols!
+    weak var delegateForEditedView : StickerProtocols!
+    
+    var editingMode : Bool = false
+    
+    private var stickerFrame : CGRect?
+//    private var sticker = Sticker()
+    
+    private var defaultFontSize : CGFloat = 28
+    private var fontIncrement : CGFloat = 1
+    
     lazy var containerView: UIView = {
         
         let temp = UIView()
@@ -66,22 +75,12 @@ class CustomAddingTextView: UIView {
         
         let temp = UILabel()
         temp.isUserInteractionEnabled = true
-        temp.text = LocalizedConstants.TitleValues.ButtonTitle.add
+        temp.text = LocalizedConstants.TitleValues.ButtonTitle.done
         temp.font = UIFont.systemFont(ofSize: 17)
         temp.numberOfLines = 0
         temp.textAlignment = .center
         temp.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.translatesAutoresizingMaskIntoConstraints = false
-        
-        return temp
-        
-    }()
-    
-    lazy var textViewContainer: UIView = {
-        
-        let temp = UIView()
-        temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.backgroundColor = UIColor.clear
         
         return temp
         
@@ -93,7 +92,8 @@ class CustomAddingTextView: UIView {
         temp.backgroundColor = UIColor.clear
         temp.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.layer.cornerRadius = 7
-        temp.text = "erkut"
+//        temp.text = "erkut"
+//        temp.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
         
         temp.textAlignment = .center
         temp.font = UIFont.boldSystemFont(ofSize: 28)
@@ -112,26 +112,26 @@ class CustomAddingTextView: UIView {
         return temp
     }()
     
-    /*
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    lazy var closeButton: UIImageView = {
         
-        self.isOpaque = true
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.image = UIImage(named: "cancel_black")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.isUserInteractionEnabled = true
         
-        setupMajorSettings()
-        setupColorPaletteSettings()
-        addObservers()
-        addGestureToDoneButton()
-        
-        activationManagement(granted : false)
-        
-    }*/
+        return temp
+    }()
     
-    init(delegate : ShareDataProtocols) {
+    init(delegate : ShareDataProtocols, delegateForShareMenuViews : ShareDataProtocols, delegateOfCameraCapturedImageView : StickerProtocols) {
         super.init(frame: .zero)
+        
+        print("INITINITINITINIT")
         
         self.isOpaque = true
         self.delegate = delegate
+        self.delegateForShareMenuViews = delegateForShareMenuViews
+        self.delegateOfCameraCapturedImageView = delegateOfCameraCapturedImageView
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
@@ -139,8 +139,16 @@ class CustomAddingTextView: UIView {
         setupColorPaletteSettings()
         addObservers()
         addGestureToDoneButton()
+        setupCloseButtonGesture()
         
         activationManagementDefault(granted : false)
+        
+    }
+    
+    // remove observer
+    deinit {
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
     }
     
@@ -148,24 +156,12 @@ class CustomAddingTextView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func layoutSubviews() {
-//
-//        setHeigthConstraintsForTextView()
-//
-//    }
-    
 }
 
 // MARK: - major functions
 extension CustomAddingTextView {
     
     func setHeigthConstraintsForTextView() {
-        
-        print("setHeigthConstraintsForTextView starts")
-        print("keyboardHeigth : \(keyboardHeigth)")
-        print("containerView size : \(containerView.frame.height)")
-        print("menuContainerView size : \(menuContainerView.frame.height)")
-        print("self.frame.size : \(self.frame.height)")
         
         guard let keyboardHeigth = keyboardHeigth else { return }
         
@@ -175,10 +171,12 @@ extension CustomAddingTextView {
             
             print("textContainerFinalHeigth : \(textContainerFinalHeigth)")
             
-            heigthConstraintOfTextViewContainer = textViewContainer.heightAnchor.constraint(equalToConstant: textContainerFinalHeigth)
+            let safe = self.safeAreaLayoutGuide
             
-            heigthConstraintOfTextViewContainer.isActive = true
-
+            bottomConstraintsOfTextView = textView.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -keyboardHeigth)
+            
+            bottomConstraintsOfTextView.isActive = true
+            
         }
         
     }
@@ -189,20 +187,16 @@ extension CustomAddingTextView {
         
         self.addSubview(containerView)
         self.containerView.addSubview(menuContainerView)
+        self.menuContainerView.addSubview(closeButton)
         self.menuContainerView.addSubview(doneButton)
-        self.containerView.addSubview(textViewContainer)
-        self.textViewContainer.addSubview(textView)
+        self.addSubview(textView)
         self.doneButton.addSubview(doneLabel)
         
         let safe = self.safeAreaLayoutGuide
         let safeContainer = self.containerView.safeAreaLayoutGuide
         let safeDoneButton = self.doneButton.safeAreaLayoutGuide
-        let safeTextViewContainer = self.textViewContainer.safeAreaLayoutGuide
         let safeMenuContainer = self.menuContainerView.safeAreaLayoutGuide
         
-        leadingConstraintsOfTextView = textView.leadingAnchor.constraint(equalTo: safeTextViewContainer.leadingAnchor, constant: 30)
-        trailingConstraintsOfTextView = textView.trailingAnchor.constraint(equalTo: safeTextViewContainer.trailingAnchor, constant: -30)
-        topConstraintsOfTextView = textView.bottomAnchor.constraint(equalTo: safeTextViewContainer.bottomAnchor)
         heigthConstraintsOfTextView = textView.heightAnchor.constraint(equalToConstant: returnTextViewInitialHeight())
         
         NSLayoutConstraint.activate([
@@ -211,6 +205,11 @@ extension CustomAddingTextView {
             containerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             containerView.topAnchor.constraint(equalTo: safe.topAnchor),
+            
+            closeButton.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor, constant: 15),
+            closeButton.leadingAnchor.constraint(equalTo: safeMenuContainer.leadingAnchor, constant: 15),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
             
             menuContainerView.leadingAnchor.constraint(equalTo: safeContainer.leadingAnchor),
             menuContainerView.trailingAnchor.constraint(equalTo: safeContainer.trailingAnchor),
@@ -226,25 +225,16 @@ extension CustomAddingTextView {
             doneLabel.trailingAnchor.constraint(equalTo: safeDoneButton.trailingAnchor),
             doneLabel.bottomAnchor.constraint(equalTo: safeDoneButton.bottomAnchor),
             doneLabel.topAnchor.constraint(equalTo: safeDoneButton.topAnchor),
-
-            textViewContainer.leadingAnchor.constraint(equalTo: safeContainer.leadingAnchor),
-            textViewContainer.trailingAnchor.constraint(equalTo: safeContainer.trailingAnchor),
-            textViewContainer.topAnchor.constraint(equalTo: safeMenuContainer.bottomAnchor),
             
-            leadingConstraintsOfTextView,
-            trailingConstraintsOfTextView,
-            topConstraintsOfTextView,
-            heigthConstraintsOfTextView
-            
-//            textView.topAnchor.constraint(equalTo: safe.topAnchor, constant: 100),
-//            textView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-//            textView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-//            textView.heightAnchor.constraint(equalToConstant: 100)
+            textView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 30),
+            textView.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -30),
+//            textView.heightAnchor.constraint(equalToConstant: returnTextViewInitialHeight()),
+//            heigthConstraintsOfTextView
+            textView.topAnchor.constraint(equalTo: safeMenuContainer.bottomAnchor)
             
             ])
         
     }
-
     
     /// color palette view setups
     func setupColorPaletteSettings() {
@@ -281,15 +271,11 @@ extension CustomAddingTextView {
         
         textView.becomeFirstResponder()
         
-//        reloadInputViews()
-        
     }
     
     func stopFocusingTextField() {
         
         textView.resignFirstResponder()
-        
-//        reloadInputViews()
         
     }
     
@@ -308,10 +294,7 @@ extension CustomAddingTextView {
             print("keyboard heigth 3: \(keyboardSize.height)")
             
             keyboardHeigth = keyboardSize.height
-            
-            //            if self.frame.origin.y == 0{
-            //                self.frame.origin.y -= keyboardSize.height
-            //            }
+
         }
     }
     
@@ -329,60 +312,114 @@ extension CustomAddingTextView {
         
         if granted {
             self.alpha = 1
-            focusTextField()
+//            focusTextField()
         } else {
             self.alpha = 0
-            resignFirstResponder()
+//            stopFocusingTextField()
         }
         
     }
     
+    /// customAddingTextView activation manager functions, it controls alpha of view and editing mode
+    ///
+    /// - Parameters:
+    ///   - granted: if it's granted to be shown or not
+    ///   - editingMode: if view is used to be add new sticker or update one of those current sticker
     func activationManagementWithDelegations(granted : Bool) {
+        
+        print("activationManagementWithDelegations starts")
+        print("textView.text :\(textView.text)")
+        
+        initiateTextViewProperties()
         
         if granted {
             self.alpha = 1
             delegate.menuContainersHideManagement(inputValue: true)
             focusTextField()
+            
         } else {
             self.alpha = 0
             delegate.menuContainersHideManagement(inputValue: false)
-            resignFirstResponder()
+            stopFocusingTextField()
+            
         }
         
+        // the function below should run after menuContainersHideManagement
         setHeigthConstraintsForTextView()
-
+        
     }
     
-    func createScreenShot() {
-
-//        print("self.textView.bounds.size : \(self.textView.bounds.size)")
-//        print("self.textView.bounds : \(self.textView.bounds)")
-//        print("self.textView.frame : \(self.textView.frame)")
-//
-//        let scale = UIScreen.main.scale
-//
-//        UIGraphicsBeginImageContextWithOptions(self.textViewContainer.bounds.size, false, 0)
-//        self.textViewContainer.drawHierarchy(in: self.textViewContainer.bounds, afterScreenUpdates: false)
-//
-//        let copiedScreenShot = UIGraphicsGetImageFromCurrentImageContext()
-//
-//        UIGraphicsEndImageContext()
-//
-//        let temp = UIImageView(image: copiedScreenShot)
-//
-//        self.returnTextViewScreenShot(inputScreenShot: copiedScreenShot!)
-//
-////        UIGraphicsBeginImageContextWithOptions(self.textView.bounds.size, false, 0);
-////        self.textField.drawViewHierarchyInRect(self.textField.bounds, afterScreenUpdates: true)
-////        let copied = UIGraphicsGetImageFromCurrentImageContext();
-////        imageView.image = copied
-////        UIGraphicsEndImageContext();
+    func initiateTextViewProperties() {
         
+        self.textView.text = Constants.CharacterConstants.EMPTY
+        
+    }
+    
+    func updateEditingTextView(inputSticker : Sticker, editingMode : Bool) {
+    
+        self.editingMode = editingMode
+        
+        textView.text = inputSticker.text
+        textView.textColor = inputSticker.textColor
+        textView.font = inputSticker.font
+        
+        print("done")
+        
+    }
+    
+    func returnStickerObject() -> Sticker {
+        
+        let sticker = Sticker()
+        
+        sticker.text = textView.text
+        sticker.textColor = textView.textColor
+        sticker.font = textView.font
+        
+        if stickerFrame != nil {
+            sticker.frame = stickerFrame
+        }
+
+        return sticker
+        
+    }
+    
+    func doneButtonOperations() {
+        
+        if editingMode {
+
+            self.delegateForEditedView.updateTextSticker(inputSticker: returnStickerObject())
+
+            editingModeActivationManagement(active: false)
+
+        } else {
+
+            self.delegateOfCameraCapturedImageView.addTextStickerWithParameters(sticker: returnStickerObject())
+
+        }
+        
+        closingOperations()
+        
+    }
+    
+    func editingModeCloseOperations() {
+        
+        if editingMode {
+//            delegateForEditedView.customStickerActivationManager(active: true)
+//            delegateOfCameraCapturedImageView.customStickerActivationManager(active: true)
+            editingModeActivationManagement(active: false)
+        }
+        
+    }
+    
+    func editingModeActivationManagement(active : Bool) {
+        
+        self.editingMode = active
         
     }
     
 }
 
+// MARK: - ShareDataProtocols
 extension CustomAddingTextView : ShareDataProtocols {
     
     func updateSelectedColorFromPalette(inputView: UIView) {
@@ -393,44 +430,59 @@ extension CustomAddingTextView : ShareDataProtocols {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension CustomAddingTextView : UIGestureRecognizerDelegate {
     
     func addGestureToDoneButton() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomAddingTextView.closeView(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomAddingTextView.addTextSticker(_:)))
         tapGesture.delegate = self
         doneButton.addGestureRecognizer(tapGesture)
         doneLabel.addGestureRecognizer(tapGesture)
         
     }
     
+    @objc func addTextSticker(_ sender : UITapGestureRecognizer) {
+        
+        print("addTextSticker starts")
+        print("textView : \(textView.text)")
+        
+        doneButtonOperations()
+    }
+    
+    func setupCloseButtonGesture() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomAddingTextView.closeView(_:)))
+        tapGesture.delegate = self
+        closeButton.addGestureRecognizer(tapGesture)
+        
+    }
+    
     @objc func closeView(_ sender : UITapGestureRecognizer) {
         
         print("self : \(self)")
-        print("superview : \(self.superview)")
         
-        guard let superView = self.superview else { return }
+        self.closingOperations()
         
-        self.textView.resignFirstResponder()
+    }
+    
+    func closingOperations() {
         
-//        self.textView.removeFromSuperview()
+        initiateTextViewProperties()
+        editingModeCloseOperations()
+        
+        // make stickers visible again
+        delegateOfCameraCapturedImageView.customStickerActivationManager(active: true)
+        
         activationManagementWithDelegations(granted: false)
         
-        createScreenShot()
-        
         NotificationCenter.default.removeObserver(self)
-
-//        UIView.transition(with: superView, duration: 0.3, options: .transitionCrossDissolve, animations: {
-//
-//            self.delegate.menuContainersHideManagement(inputValue: false)
-//            self.removeFromSuperview()
-//
-//        })
         
     }
     
 }
 
+// MARK: - UITextViewDelegate
 extension CustomAddingTextView : UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
@@ -440,43 +492,16 @@ extension CustomAddingTextView : UITextViewDelegate {
         var newFrame = textView.frame
         newFrame.size = CGSize.init(width: CGFloat(fmaxf(Float(newSize.width), Float(fixedWidth))), height: newSize.height)
         
-        print("textView.font?.pointSize : \(textView.font?.pointSize)")
-        print("heigthConstraintsOfTextView.constant : \(heigthConstraintsOfTextView.constant)")
-        print("newFrame.height : \(newFrame.height)")
-        print("textViewContainer.frame.height : \(textViewContainer.frame.height)")
-        
-        guard let currentTextViewFont = textView.font else { return }
-        
-        if heigthConstraintsOfTextView.constant < textViewContainer.frame.height {
-            heigthConstraintsOfTextView.constant = newFrame.height
-
-            if heigthConstraintsOfTextView.constant > textViewContainer.frame.height {
-                heigthConstraintsOfTextView.constant = textViewContainer.frame.height
-            }
-
-        } else {
-
-            textView.isScrollEnabled = true
+        if (newFrame.height > textView.frame.size.height) {
+            textView.font = UIFont.systemFont(ofSize: defaultFontSize - fontIncrement)
+            fontIncrement += 1
             
-//            if newFrame.height > heigthConstraintsOfTextView.constant {
-//
-//                if currentTextViewFont.pointSize > 21 {
-//                    let newFont = currentTextViewFont.pointSize - 3
-//
-//                    textView.font = UIFont.systemFont(ofSize: newFont)
-//
-//                    leadingConstraintsOfTextView.constant += 15
-//                    trailingConstraintsOfTextView.constant -= 15
-//
-//                } else {
-//
-//                }
-//
-//            }
-
         }
-
+        
+        // set newFrame value
+        print("newFrame : \(newFrame)")
+        stickerFrame = newFrame
+        print("stickerFrame : \(stickerFrame)")
     }
-    
     
 }

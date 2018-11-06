@@ -26,6 +26,7 @@ class Group {
     var groupList : Array<Group> = []
     var groupSortedList : Array<Group> = []
     
+    
     init() {
         self.groupMembers = []
     }
@@ -61,11 +62,25 @@ class Group {
             
             let tempGroupObject = Group()
             
-            tempGroupObject.groupID = item.groupid!
-            tempGroupObject.groupName = item.name!
-            tempGroupObject.groupCreateDate = item.createAt!
-            tempGroupObject.groupPictureUrl = item.groupPhotoUrl!
-            tempGroupObject.adminUserID = item.groupAdmin!
+            if let groupid = item.groupid {
+                tempGroupObject.groupID = groupid
+            }
+            
+            if let name = item.name {
+                tempGroupObject.groupName = name
+            }
+            
+            if let createAt = item.createAt {
+                tempGroupObject.groupCreateDate = createAt
+            }
+            
+            if let groupPhotoUrl = item.groupPhotoUrl {
+                tempGroupObject.groupPictureUrl = groupPhotoUrl
+            }
+            
+            if let groupAdmin = item.groupAdmin {
+                tempGroupObject.adminUserID = groupAdmin
+            }
             
             self.groupList.append(tempGroupObject)
             

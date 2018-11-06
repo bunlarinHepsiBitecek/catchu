@@ -56,7 +56,7 @@ class ShareDataView: UIView {
         // if you dont stop location service, even if you remove view, because of no changes on location, update location service does not work
         LocationManager.shared.stopUpdateLocation()
         
-        delegate.dismisViewController()
+        delegate.dismisViewController(sharply: false)
         
     }
 }

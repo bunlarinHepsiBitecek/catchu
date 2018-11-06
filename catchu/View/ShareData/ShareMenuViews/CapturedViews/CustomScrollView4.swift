@@ -12,6 +12,8 @@ class CustomScrollView4: UIScrollView {
     
     // MARK: Class properties
     
+    weak var delegateShareData : ShareDataProtocols!
+    
     var imageView:UIImageView = UIImageView()
     var imageToDisplay:UIImage? = nil{
         didSet{
@@ -29,12 +31,6 @@ class CustomScrollView4: UIScrollView {
     
     
     // MARK : Class Functions
-    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        viewConfigurations()
-//    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         viewConfigurations()
@@ -51,6 +47,7 @@ class CustomScrollView4: UIScrollView {
         if (frame.origin.x < 0) { frame.origin.x = 0 }
         if (frame.origin.y < 0) { frame.origin.y = 0 }
         imageView.frame = frame
+        
     }
     
     func zoom() {
@@ -119,10 +116,15 @@ class CustomScrollView4: UIScrollView {
         return max(widthScale, heightScale)
     }
     
+    func zoomOrijinalSize() {
+        if (zoomScale <= 1.0) { setZoomScale(zoomScaleWithNoWhiteSpaces(), animated: true) }
+        else{ setZoomScale(minimumZoomScale, animated: true) }
+        updateLayout()
+    }
+    
 }
 
-
-
+// MARK: - UIScrollViewDelegate
 extension CustomScrollView4 : UIScrollViewDelegate{
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -133,31 +135,40 @@ extension CustomScrollView4 : UIScrollViewDelegate{
         updateLayout()
     }
     
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        gridView.isHidden = false
-//    }
-//    
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        gridView.isHidden = true
-//    }
-//    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        
-//        var frame:CGRect = gridView.frame;
-//        frame.origin.x = scrollView.contentOffset.x
-//        frame.origin.y = scrollView.contentOffset.y
-//        gridView.frame = frame
-//        
-//        switch scrollView.pinchGestureRecognizer!.state {
-//        case .changed:
-//            gridView.isHidden = false
-//            break
-//        case .ended:
-//            gridView.isHidden = true
-//            break
-//        default: break
-//        }
-//        
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        print("scrollViewDidScroll")
+        
+        print("scrollView.pinchGestureRecognizer : \(scrollView.pinchGestureRecognizer)")
+        
+        guard let state = scrollView.pinchGestureRecognizer?.state else { return }
+        
+        print("state : \(state.rawValue)")
+        print("check 1")
+        
+        switch state {
+        case .changed:
+            print("check 2")
+            delegateShareData.gridViewTriggerManagement(hidden: false)
+        case .ended:
+            print("check 3")
+            delegateShareData.gridViewTriggerManagement(hidden: true)
+        default:
+            print("check 4")
+            break
+        }
+        
+        print("check 5")
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        print("scrollViewDidEndDragging")
+        delegateShareData.gridViewTriggerManagement(hidden: true)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        print("scrollViewWillBeginDragging")
+        delegateShareData.gridViewTriggerManagement(hidden: false)
+    }
     
 }

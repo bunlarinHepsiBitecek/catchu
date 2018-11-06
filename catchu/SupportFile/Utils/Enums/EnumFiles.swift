@@ -124,8 +124,8 @@ enum ColorPalettes {
 }
 
 enum CustomVideoError: Swift.Error {
-    case captureSessionAlreadyRunning
-    case captureSessionIsMissing
+    case videoSessionAlreadyRunning
+    case videoSessionIsMissing
     case inputsAreInvalid
     case invalidOperation
     case noCamerasAvailable
@@ -160,5 +160,18 @@ enum PostAttachmentTypes {
     case friends
     case group
     case onlyMe
+}
+
+enum TransitionDirection {
+    case left
+    case rigth
+    case up
+    case down
+}
+
+enum NotificationIdentifiers : String {
+    case tryAgain = "tryAgain"
+    case allRigth = "allRigth"
+    case mainCategory = "mainCategory"
 }
 

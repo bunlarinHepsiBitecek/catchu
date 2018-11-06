@@ -11,15 +11,31 @@ import Photos
 
 protocol ViewPresentationProtocols : class {
     
-    func dismissLoginViews()
-    func dismissFinalShareViewController()
-    
+    func directToSaySometingPages()
+    func directToContactsViewController(inputPostType : PostAttachmentTypes)
+    func dismissViewController()
+    func sharpDismissViewController()
+
 }
 
 extension ViewPresentationProtocols {
     
-    func dismissLoginViews() {}
-    func dismissFinalShareViewController() {}
+    func directToSaySometingPages() {}
+    func directToContactsViewController(inputPostType : PostAttachmentTypes) {}
+    func dismissViewController() {}
+    func sharpDismissViewController() {}
+    
+}
+
+protocol ContactsProtocols : class {
+    
+    func returnSelectedContactProcess(selectedChoise : SegmentedButtonChoise)
+    
+}
+
+extension ContactsProtocols {
+    
+    func returnSelectedContactProcess(selectedChoise : SegmentedButtonChoise) {}
     
 }
 
@@ -56,7 +72,8 @@ extension PermissionProtocol {
 
 protocol ShareDataProtocols: class {
     
-    func dismisViewController()
+    func dismisViewController(sharply : Bool)
+    func closeViewControllerSharply()
     func resizeShareTypeSliderConstraint(input : CGFloat)
     func selectSliderTypeCell(inputIndexPath : IndexPath)
     func returnSliderWidth() -> CGFloat
@@ -72,7 +89,6 @@ protocol ShareDataProtocols: class {
     func returnTextViewScreenShot(inputScreenShot : UIImage)
     func makeVisibleCustomViews()
     func closeCameraOperations()
-    func closeVideoOperations()
     
     // new protocols for shareMenuViews
     func forceScrollMenuScrollView(selectedMenuIndex : Int)
@@ -84,12 +100,22 @@ protocol ShareDataProtocols: class {
     func nextToFinalSharePage()
     func selectedPostAttachmentTypeManagement(returned : PostAttachmentView)
     func clearPostAttachmentType()
-    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes)
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void)
+    func deselectPostAttachmentAnimations()
+    func scrollableManagement(enabled : Bool)
+    func gridViewTriggerManagement(hidden : Bool)
+    
+    func addTextSticker(inputView : UIView)
+    func createSnapShotProcess()
+    func checkAlphaValuesOfCustomEmbeddedViews()
+    func resetViewSettings()
     
 }
 
 extension ShareDataProtocols {
-    func dismisViewController() {}
+    
+    func dismisViewController(sharply : Bool) {}
+    func closeViewControllerSharply() {}
     func resizeShareTypeSliderConstraint(input : CGFloat) {}
     func selectSliderTypeCell(inputIndexPath : IndexPath) {}
     func returnSliderWidth() -> CGFloat { return 0 }
@@ -105,7 +131,6 @@ extension ShareDataProtocols {
     func returnTextViewScreenShot(inputScreenShot : UIImage) {}
     func makeVisibleCustomViews() {}
     func closeCameraOperations() {}
-    func closeVideoOperations() {}
     
     // new protocols for shareMenuViews
     func forceScrollMenuScrollView(selectedMenuIndex : Int) {}
@@ -117,7 +142,15 @@ extension ShareDataProtocols {
     func nextToFinalSharePage() {}
     func selectedPostAttachmentTypeManagement(returned : PostAttachmentView) {}
     func clearPostAttachmentType() {}
-    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes) {}
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {}
+    func deselectPostAttachmentAnimations() {}
+    func scrollableManagement(enabled : Bool) {}
+    func gridViewTriggerManagement(hidden : Bool) {}
+    
+    func addTextSticker(inputView : UIView) {}
+    func createSnapShotProcess() {}
+    func checkAlphaValuesOfCustomEmbeddedViews() {}
+    func resetViewSettings() {}
     
 }
 
@@ -130,6 +163,34 @@ protocol TabBarControlProtocols : class {
 extension TabBarControlProtocols {
     
     func tabBarHiddenManagement(hidden : Bool) {}
+    
+}
+
+protocol StickerProtocols : class {
+    
+    func addTextStickerWithParameters(sticker : Sticker)
+//    func activateTextStickerEditigMode(sticker : Sticker, customSticker : CustomSticker2)
+    func activateTextStickerEditigMode(inputSticker : Sticker, selfView : CustomSticker2)
+//    func updateTextSticker(customSticker : CustomSticker)
+    func updateTextSticker(inputSticker : Sticker)
+    func customStickerActivationManager(active : Bool)
+    func detectDeleteButtonIntersect(inputView : UIView)
+    func stickerDeleteAnimationManager(active : Bool)
+    func deleteSticker(selectedSticker : CustomSticker2)
+    
+}
+
+extension StickerProtocols {
+    
+    func addTextStickerWithParameters(sticker : Sticker) {}
+//    func activateTextStickerEditigMode(sticker : Sticker, customSticker : CustomSticker2) {}
+    func activateTextStickerEditigMode(inputSticker : Sticker, selfView : CustomSticker2) {}
+//    func updateTextSticker(customSticker : CustomSticker) {}
+    func updateTextSticker(inputSticker : Sticker) {}
+    func customStickerActivationManager(active : Bool) {}
+    func detectDeleteButtonIntersect(inputView : UIView) {}
+    func stickerDeleteAnimationManager(active : Bool) {}
+    func deleteSticker(selectedSticker : CustomSticker2) {}
     
 }
 

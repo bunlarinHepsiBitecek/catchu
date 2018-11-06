@@ -19,7 +19,9 @@ class FriendsTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+
+//        setupCellViewSettings()
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -28,4 +30,16 @@ class FriendsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+}
+
+// MARK: - major functions
+extension FriendsTableViewCell {
+    
+    func setupCellViewSettings() {
+        
+        self.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        self.layer.cornerRadius = 10
+        
+    }
+    
 }

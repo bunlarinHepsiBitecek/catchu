@@ -31,6 +31,10 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
     
     var boolenValueForCountColorManagement : Bool!
     
+    weak var delegateViewPresentationProtocols : ViewPresentationProtocols!
+    weak var delegateShareDataProtocols : ShareDataProtocols!
+    weak var delegateContact : ContactsProtocols!
+    
     func initializeView() {
         
         print("ContactView initialize")
@@ -67,6 +71,12 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
         }
     }
     
+    func setDelegate(inputDelegate : ViewPresentationProtocols, inputDelegateShareData : ShareDataProtocols, inputDelegateContactProtols : ContactsProtocols) {
+        self.delegateViewPresentationProtocols = inputDelegate
+        self.delegateShareDataProtocols = inputDelegateShareData
+        self.delegateContact = inputDelegateContactProtols
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -76,17 +86,24 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
 //        SectionBasedFriend.shared = SectionBasedFriend()
         SectionBasedFriend.shared.resetSectionBasedFriendSingleton()
         SectionBasedGroup.shared.resetSectionBasedGroupSingleton()
-        referenceMasterViewController.dismiss(animated: true, completion: nil)
+        
+//        referenceMasterViewController.dismiss(animated: true, completion: nil)
+        
+        delegateShareDataProtocols.resetViewSettings()
+        delegateViewPresentationProtocols.dismissViewController()
         
     }
     
     @IBAction func nextButtonClicked(_ sender: Any) {
         
         showNotification(title: "yarro", message: "yarro messaje")
+        print("SectionBasedFriend.shared.selectedUserArray.count : \(SectionBasedFriend.shared.selectedUserArray.count)")
+        print("------ : \(SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.count)")
         
         switch returnSegment() {
         case .friends:
             
+            delegateContact.returnSelectedContactProcess(selectedChoise: .friends)
             
             if SectionBasedFriend.shared.selectedUserArray.count > 0 {
                 
@@ -97,13 +114,13 @@ class ContactView: UIView, UNUserNotificationCenterDelegate {
             
             print("groups")
             
-            var image = UIImage()
+            delegateContact.returnSelectedContactProcess(selectedChoise: .groups)
             
-            image = SectionBasedGroup.shared.cachedGroupImages.object(forKey: NSString(string: "https://s3.amazonaws.com/catchumobilebucket/UserProfile/1.jpg"))!
-            
-            print("gectik")
-            
-            
+            if SectionBasedGroup.shared.selectedGroupList.count > 0 {
+             
+                referenceMasterViewController.dismiss(animated: true, completion: nil)
+                
+            }
             
         case .groupCreation:
 

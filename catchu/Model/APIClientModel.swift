@@ -66,6 +66,10 @@ class Media {
             self._extension = _extension
         }
     }
+    
+    init(inputExtension : String) {
+        self._extension = inputExtension
+    }
 }
 
 extension User: CustomStringConvertible {

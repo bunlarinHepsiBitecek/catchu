@@ -12,8 +12,12 @@ class CameraGalleryMenuView: UIView {
 
     var imageManagementView : ImageManagementView?
     
-    override init(frame: CGRect) {
+    weak var delegate : ShareDataProtocols!
+    
+    init(frame: CGRect, inputDelegate : ShareDataProtocols) {
         super.init(frame: frame)
+        
+        self.delegate = inputDelegate
         
         setupView()
     }
@@ -29,10 +33,12 @@ extension CameraGalleryMenuView {
     
     func setupView() {
 
-        // change self background color to clear
+        // change self background color to clear  
         self.backgroundColor = UIColor.clear
         
-        imageManagementView = ImageManagementView()
+        imageManagementView = ImageManagementView(frame: .zero, inputDelegate: self.delegate)
+        
+//        imageManagementView!.delegate = self.delegate
         
         self.addSubview(imageManagementView!)
 
@@ -64,5 +70,62 @@ extension CameraGalleryMenuView {
         customCameraObject.disableCustomCameraProcess()
         
     }
+    
+    func callCreationOfSnapShot() {
+        
+        guard imageManagementView != nil else {
+            return
+        }
+        
+        imageManagementView!.createNewImageWithStickers()
+        
+    }
+    
+    /// 1 - capturedImageView
+    /// 2 - croppedImageView
+    /// 3 - selectedImageContainer
+    func getActiveCustomView() {
+
+        PostItems.shared.emptySelectedImageArray()
+        
+        if let captureImageView = imageManagementView!.captureImageView {
+            print("captureImageView alpha : \(captureImageView.alpha)")
+            
+            if captureImageView.alpha == 1 {
+                if imageManagementView != nil {
+                    imageManagementView!.createNewImageWithStickers()
+                }
+                return
+            }
+            
+        }
+        
+        if let croppedImage = imageManagementView!.croppedImage {
+            print("croppedImage alpha : \(croppedImage.alpha)")
+         
+            if croppedImage.alpha == 1 {
+                if imageManagementView != nil {
+                    imageManagementView!.saveSelectedImageFromCroppedImage()
+                }
+                return
+            }
+            
+        }
+
+        if let customSelectedImageContainer = imageManagementView!.customSelectedImageContainer {
+            print("customSelectedImageContainer alpha : \(customSelectedImageContainer.alpha)")
+            
+            if customSelectedImageContainer.alpha == 1 {
+                if imageManagementView != nil {
+                    imageManagementView!.saveSelectedImageFromZoomView()
+                }
+                return
+            }
+            
+        }
+        
+    }
+    
+    
     
 }

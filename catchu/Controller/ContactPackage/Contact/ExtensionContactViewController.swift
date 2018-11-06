@@ -22,6 +22,7 @@ extension ContactViewController {
         contactView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(contactView)
         contactView.initializeView()
+        contactView.setDelegate(inputDelegate: self, inputDelegateShareData: delegateShareDataProtocols, inputDelegateContactProtols: delegateContactProtocol)
         
         print("contactView heightAnchor : \(contactView.heightAnchor)")
         

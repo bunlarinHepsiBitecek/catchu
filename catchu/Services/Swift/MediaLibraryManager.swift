@@ -99,7 +99,7 @@ class MediaLibraryManager {
         
         let fetchOptions: PHFetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit100
+//        fetchOptions.fetchLimit = Constants.MediaLibrary.ImageFetchLimit100
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         fetchResult.enumerateObjects({ (object, index, stop) -> Void in
             self.assets.append(object)
@@ -123,22 +123,23 @@ class MediaLibraryManager {
 //        options.resizeMode = .exact
         options.deliveryMode = .highQualityFormat
         //options.deliveryMode = (size == PHImageManagerMaximumSize) ? .highQualityFormat : .opportunistic
-      
-//        options.progressHandler = { (progress, error, stop, info) in
-//            
-//            if progressFlag {
-//                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.start, inputProgressValue: CGFloat(progress * 100))
-//                progressFlag = false
-//            }
-//
-//            if(progress == 1.0){
-//                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.stop, inputProgressValue: 100)
-//            } else {
-//                print("devammm : \(progress)")
-//
-//                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.progress, inputProgressValue: CGFloat(progress * 100))
-//            }
-//        }
+        
+        options.progressHandler = { (progress, error, stop, info) in
+            
+            if progressFlag {
+                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.start, inputProgressValue: CGFloat(progress * 100))
+                progressFlag = false
+            }
+
+            if(progress == 1.0){
+                print("bitttiiiiiiii")
+                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.stop, inputProgressValue: 100)
+            } else {
+                print("devammm : \(progress)")
+
+                self.delegateForShareDataProtocols.startingICloudDownloadAnimation(animation: CircleAnimationProcess.progress, inputProgressValue: CGFloat(progress * 100))
+            }
+        }
         
 //        cache.startCachingImages(for: assets, targetSize: size, contentMode: .aspectFill, options: options)
 //

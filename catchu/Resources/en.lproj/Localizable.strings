@@ -56,6 +56,7 @@
 "New Group" = "New Group";
 "Search Result" = "Search Result";
 "add" = "Add";
+"done" = "Done";
 "makeGroupAdmin" = "Make Group Admin";
 "RemoveFromGroup" = "Remove From Group";
 "gotoInfo" = "Info";
@@ -66,6 +67,7 @@
 "failed" = "Failed";
 "fetched" = "Fetched From ICloud";
 "fetching" = "Fetching From ICloud";
+"tryAgain" = "Try Again";
 
 
 // Location Services
@@ -88,6 +90,9 @@
 
 // notification variables
 "CatchSomething" = "You caught something :)";
+"postSuccessMessage" = "Posted Successfully ✅";
+"postTitle" = "CatchU Post";
+"postFailedMessage" = "Something goes wrong ❌";
 
 // AWS Error explanations
 "confirmationCodeRequired" = "Please enter confirmation code";
@@ -140,3 +145,14 @@
 "group" = "Group";
 "public" = "Public";
 "onlyMe" = "Only Me";
+
+"publicInformation" = "You share everyone";
+"onlyMeInformation" = "It's special for you";
+"thereIsNothingToPost" = "There is nothing to post!";
+"saySomething" = "Say something...";
+"gettingFriends" = "Getting Friends...";
+"gettingGroup" = "Getting Group...";
+
+// cloud
+"cloudFetching" = "Fetching from iCloud...";
+

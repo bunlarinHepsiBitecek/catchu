@@ -13,8 +13,19 @@ class GroupTableViewCell: UITableViewCell {
     @IBOutlet var groupImage: UIImageViewDesign!
     @IBOutlet var groupName: UILabel!
     @IBOutlet var groupDescription: UILabel!
+    @IBOutlet var groupSelectedIcon: UIImageViewDesign!
     
     var group = Group()
+    
+//    override var isSelected: Bool {
+//        didSet {
+//            if isSelected {
+//                print("selected")
+//            } else {
+//                print("deselected")
+//            }
+//        }
+//    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

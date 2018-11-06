@@ -45,6 +45,7 @@
 "New Group" = "Yeni Grup";
 "Search Result" = "Arama Sonuçları";
 "add" = "Add";
+"done" = "Bitti";
 "makeGroupAdmin" = "Grup Admini Yap";
 "RemoveFromGroup" = "Gruptan Çıkar";
 "gotoInfo" = "Bilgi";
@@ -55,6 +56,7 @@
 "failed" = "Opps 😭";
 "fetched" = "Fetched";
 "fetching" = "Fetching From ICloud";
+"tryAgain" = "Yeniden Deneyiniz! 🥰";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
@@ -73,6 +75,9 @@
 
 // notification variables
 "CatchSomething" = "Bir şey yakaladınız :)";
+"postSuccessMessage" = "Paylaşım Başarılı ✅";
+"postTitle" = "CatchU Paylaşım";
+"postFailedMessage" = "Bir sorun oluştu ❌";
 
 // AWS Error explanations
 "confirmationCodeRequired" = "Lütfen doğrulama kodunu giriniz!";
@@ -117,6 +122,14 @@
 "public" = "Herkese";
 "onlyMe" = "Bana Özel";
 
+"publicInformation" = "Herkese paylaştınız";
+"onlyMeInformation" = "Sadece size özel";
+"thereIsNothingToPost" = "Paylaşacak bir şey seçilmedi";
+"saySomething" = "Bir şeyler söyle...";
+"gettingFriends" = "Arkadaş Seçiliyor...";
+"gettingGroup" = "Grup Seçiliyor...";
 
+// cloud
+"cloudFetching" = "iCloud'dan çekiliyor...";
 
 

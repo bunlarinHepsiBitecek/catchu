@@ -56,6 +56,30 @@ class CustomVideoView: UIView {
         return temp
     }()
     
+    lazy var switchButtonContainer: UIView = {
+        
+        let temp = UIView()
+        temp.layer.cornerRadius = 30
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        
+        return temp
+    }()
+    
+    lazy var switchButton: UIImageView = {
+        
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.isUserInteractionEnabled = true
+        temp.image = UIImage(named: "rotate-1")?.withRenderingMode(.alwaysTemplate)
+        //        temp.image = UIImage(named: "switch_camera_default")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        
+        return temp
+        
+    }()
+    
     lazy var recordButton: UIView = {
         
         let temp = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
@@ -69,15 +93,33 @@ class CustomVideoView: UIView {
         return temp
     }()
     
+    lazy var flashButtonContainer: UIView = {
+        
+        let temp = UIView()
+        temp.layer.cornerRadius = 30
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        
+        return temp
+    }()
+    
+    lazy var flashButton: UIImageView = {
+        
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.isUserInteractionEnabled = true
+        temp.image = UIImage(named: "flash")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.tag = 1
+        
+        return temp
+        
+    }()
+    
     override init(frame: CGRect) {
         
         super.init(frame: .zero)
-        
-//        setupCloseButtonGesture()
-        
-        //        initalizeViews()
-        
-        //        disableCameraCaptureSession()
         
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         
@@ -111,6 +153,8 @@ class CustomVideoView: UIView {
         setupViews()
         initiateVideoProcess()
         setGestureToRecordButton()
+        setupGestureRecognizerForSwitchCamera()
+        setupGestureRecognizerForFlashButton()
         customVideoViewVisibilityManagement(inputValue: true)
         
     }
@@ -176,16 +220,6 @@ class CustomVideoView: UIView {
         
     }
     
-    func disableCameraCaptureSession() {
-        
-        guard delegate != nil else {
-            return
-        }
-        
-        delegate.closeCameraOperations()
-        
-    }
-    
     func initializeRequestProcess() {
         
         PermissionHandler.shared.delegateForShareData = self
@@ -198,16 +232,14 @@ class CustomVideoView: UIView {
         self.addSubview(mainView)
         self.mainView.addSubview(recordContainerView)
         self.mainView.addSubview(recordButton)
-//        self.mainView.addSubview(closeButton)
-        //        self.recordContainerView.addSubview(recordButton)
+        self.mainView.addSubview(switchButtonContainer)
+        self.switchButtonContainer.addSubview(switchButton)
+        self.mainView.addSubview(flashButtonContainer)
+        self.flashButtonContainer.addSubview(flashButton)
         
         let safe = self.safeAreaLayoutGuide
         let safeMainview = self.mainView.safeAreaLayoutGuide
-        let safeRecordView = self.recordContainerView.safeAreaLayoutGuide
-        
-        //        heigthConstraint = recordButton.heightAnchor.constraint(equalToConstant: 70)
-        //        widthConstraint = recordButton.widthAnchor.constraint(equalToConstant: 70)
-        //        bottomConstraints = recordButton.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -30)
+        let safeRecordButton = self.recordButton.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -223,25 +255,34 @@ class CustomVideoView: UIView {
             
             recordButton.centerXAnchor.constraint(equalTo: safeMainview.centerXAnchor),
             recordButton.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -35),
-            //            recordButton.centerYAnchor.constraint(equalTo: safeRecordView.centerYAnchor),
             recordButton.heightAnchor.constraint(equalToConstant: 60),
             recordButton.widthAnchor.constraint(equalToConstant: 60),
-            //            bottomConstraints!,
-            //            heigthConstraint!,
-            //            widthConstraint!
             
-//            closeButton.topAnchor.constraint(equalTo: safeMainview.topAnchor, constant: 15),
-//            closeButton.leadingAnchor.constraint(equalTo: safeMainview.leadingAnchor, constant: 15),
-//            closeButton.heightAnchor.constraint(equalToConstant: 30),
-//            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            switchButtonContainer.leadingAnchor.constraint(equalTo: safeRecordButton.trailingAnchor, constant: 20),
+            switchButtonContainer.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -35),
+            switchButtonContainer.heightAnchor.constraint(equalToConstant: 60),
+            switchButtonContainer.widthAnchor.constraint(equalToConstant: 60),
+            
+            switchButton.centerXAnchor.constraint(equalTo: switchButtonContainer.safeCenterXAnchor),
+            switchButton.centerYAnchor.constraint(equalTo: switchButtonContainer.safeCenterYAnchor),
+            switchButton.heightAnchor.constraint(equalToConstant: 30),
+            switchButton.widthAnchor.constraint(equalToConstant: 30),
+            
+            flashButtonContainer.trailingAnchor.constraint(equalTo: safeRecordButton.leadingAnchor, constant: -20),
+            flashButtonContainer.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -35),
+            flashButtonContainer.heightAnchor.constraint(equalToConstant: 60),
+            flashButtonContainer.widthAnchor.constraint(equalToConstant: 60),
+            
+            flashButton.centerXAnchor.constraint(equalTo: flashButtonContainer.safeCenterXAnchor),
+            flashButton.centerYAnchor.constraint(equalTo: flashButtonContainer.safeCenterYAnchor),
+            flashButton.heightAnchor.constraint(equalToConstant: 30),
+            flashButton.widthAnchor.constraint(equalToConstant: 30),
             
             ])
         
     }
     
     func initiateVideoProcess() {
-        
-        //        disableCameraCaptureSession()
         
         customVideo.delegate = self
         
@@ -321,6 +362,8 @@ class CustomVideoView: UIView {
     /// Record Button Animation Start
     func startRecordButtonAnimation() {
         
+        delegate.scrollableManagement(enabled: false)
+        
         recordStopFlag = false
         
         addCircle()
@@ -343,6 +386,8 @@ class CustomVideoView: UIView {
     
     /// Record Button Animation Stops
     func stopRecordButtonAnimation() {
+        
+        delegate.scrollableManagement(enabled: true)
         
         recordStopFlag = true
         
@@ -423,15 +468,11 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
             if touch.view == recordButton {
                 
                 if !recordStopFlag {
-                    
                     stopRecordButtonAnimation()
-                    
                 }
                 
             }
-            
         }
-        
     }
     
     func setGestureToRecordButton() {
@@ -480,14 +521,100 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
         
         print("dismissCustomCameraView starts")
         
-        guard customVideo != nil else {
-            return
-        }
-        
         do {
             try customVideo.enableVideoSession()
         } catch  {
             print("custom view is not enabled")
+        }
+        
+    }
+    
+    func setupGestureRecognizerForSwitchCamera() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomVideoView.switchCamera(_:)))
+        tapGesture.delegate = self
+        switchButton.addGestureRecognizer(tapGesture)
+        switchButtonContainer.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func switchCamera(_ sender : UITapGestureRecognizer) {
+        
+        print("switchCamera starts")
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_05) {
+            
+            self.switchButton.transform = self.switchButton.transform == CGAffineTransform(rotationAngle: CGFloat(Double.pi)) ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        }
+        
+        do {
+            try customVideo.switchCameras()
+        }
+            
+        catch {
+            print(error)
+        }
+        
+    }
+    
+    func setupGestureRecognizerForFlashButton() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomVideoView.flashManagement(_:)))
+        tapGesture.delegate = self
+        //        flashButton.addGestureRecognizer(tapGesture)
+        flashButtonContainer.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func flashManagement(_ sender : UITapGestureRecognizer) {
+        
+        print("flashManagement starts")
+        
+        print("customCamera flash : \(customVideo.flashMode)")
+        print("flash tag : \(flashButton.tag)")
+        
+        if flashButton.tag == 1 {
+            
+            UIView.transition(with: flashButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                
+                self.flashButton.image = UIImage(named: "flash")?.withRenderingMode(.alwaysTemplate)
+                self.flashButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                
+            }) { (result) in
+                
+                self.flashButton.tag = 2
+                self.customVideo.flashMode = .on
+                
+            }
+            
+        } else if flashButton.tag == 2 {
+            
+            UIView.transition(with: flashButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                
+                self.flashButton.image = UIImage(named: "flash-2")?.withRenderingMode(.alwaysTemplate)
+                self.flashButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                
+            }) { (result) in
+                
+                self.flashButton.tag = 3
+                self.customVideo.flashMode = .off
+                
+            }
+            
+        } else if flashButton.tag == 3 {
+            
+            UIView.transition(with: flashButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                
+                self.flashButton.image = UIImage(named: "flash-3")?.withRenderingMode(.alwaysTemplate)
+                self.flashButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                
+            }) { (result) in
+                
+                self.flashButton.tag = 1
+                self.customVideo.flashMode = .auto
+                
+            }
+            
         }
         
     }
@@ -514,7 +641,6 @@ extension CustomVideoView : PermissionProtocol {
         }
         
     }
-    
     
 }
 
@@ -554,6 +680,5 @@ extension CustomVideoView : ShareDataProtocols {
         initalizeViews()
         
     }
-    
     
 }

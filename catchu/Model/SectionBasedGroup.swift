@@ -12,6 +12,8 @@ class SectionBasedGroup {
     
     public static var shared = SectionBasedGroup()
     
+    private var _selectedGroupList : [Group] = []
+    
     private var _user : User
     private var _userGroupList : [Group] = []
     private var _userGroupSortedList : [Group] = []
@@ -22,6 +24,15 @@ class SectionBasedGroup {
     private var _groupSectionKeyData : Array<String>!
     
     private var _cachedGroupImages : NSCache<NSString, UIImage>!
+    
+    var selectedGroupList : [Group] {
+        get {
+            return _selectedGroupList
+        }
+        set {
+            _selectedGroupList = newValue
+        }
+    }
     
     var cachedGroupImages: NSCache<NSString, UIImage> {
         get {
@@ -103,6 +114,28 @@ class SectionBasedGroup {
         _groupNameInitialBasedDictionary = Dictionary<String, [Group]>()
         _groupSectionKeyData = Array<String>()
         _cachedGroupImages = NSCache<NSString, UIImage>()
+        
+    }
+    
+    func addGroupToSelectedGroupArray(inputGroup : Group) {
+        
+        selectedGroupList.append(inputGroup)
+        
+    }
+    
+    func emptySelectedGroupArray() {
+        
+        selectedGroupList.removeAll()
+        
+    }
+    
+    func removeGroupFromSelectedGroupArray(inputGroup : Group) {
+        
+        if let i = SectionBasedGroup.shared.selectedGroupList.firstIndex(where: { $0.groupID == inputGroup.groupID}) {
+            
+            SectionBasedGroup.shared.selectedGroupList.remove(at: i)
+            
+        }
         
     }
     

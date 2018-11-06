@@ -13,10 +13,11 @@ class VideoMenuView: UIView {
     var customVideoView : CustomVideoView?
     weak var delegate : ShareDataProtocols!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, delegate : ShareDataProtocols) {
         super.init(frame: frame)
         
         print("VideoMenuView starts")
+        self.delegate = delegate
         
         initializeCustomVideoView()
         
@@ -57,10 +58,6 @@ extension VideoMenuView {
             
             ])
         
-        //        DispatchQueue.main.async {
-        //            self.closeActiveCaptureSessions()
-        //        }
-        
     }
     
     func startVideoProcess() {
@@ -90,12 +87,3 @@ extension VideoMenuView {
     
 }
 
-extension VideoMenuView : ShareDataProtocols {
-    
-    func closeActiveCaptureSessions() {
-        
-        delegate.closeCameraOperations()
-        
-    }
-    
-}

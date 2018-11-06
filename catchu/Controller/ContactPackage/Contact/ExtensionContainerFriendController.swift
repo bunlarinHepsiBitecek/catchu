@@ -27,6 +27,8 @@ extension ContainerFriendViewController {
         print("PREPAREVIEWDIDLOADPROCESS STARTS")
         print("friendUsernameInitialBasedDictionary count : \(SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.count)")
         
+        // CRITICAL CRITICAL CRITICAL
+        SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.removeAll()
         SectionBasedFriend.shared.createInitialLetterBasedFriendDictionary()
         print("friendUsernameInitialBasedDictionary count : \(SectionBasedFriend.shared.friendUsernameInitialBasedDictionary.count)")
         
@@ -136,6 +138,7 @@ extension ContainerFriendViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //return SectionBasedFriend.shared.returnSectionNumber(index: section)
+        print("returnRowCount : \(returnRowCount(section: section))")
         return returnRowCount(section: section)
         
     }
@@ -314,11 +317,6 @@ extension ContainerFriendViewController: UICollectionViewDataSource, UICollectio
                 }
                 cell.selectedUser = SectionBasedFriend.shared.selectedUserArray[indexPath.row]
             })
-            
-        }
-        
-        if SectionBasedFriend.shared.selectedUserArray.count > 0 {
-        
             
         }
         

@@ -153,6 +153,13 @@ extension ShareTypeSliderView : UICollectionViewDelegate, UICollectionViewDataSo
         
     }
     
+    private func deletePostItems() {
+        
+        PostItems.shared.emptySelectedImageArray()
+        PostItems.shared.emptySelectedVideoArrays()
+        
+    }
+    
 }
 
 extension ShareTypeSliderView : UIGestureRecognizerDelegate {
@@ -168,7 +175,10 @@ extension ShareTypeSliderView : UIGestureRecognizerDelegate {
     
     @objc func closeView(_ sender : UITapGestureRecognizer) {
         
-        delegateForViewController.dismisViewController()
+        // disable if customCameraView session is running
+        self.deletePostItems()
+        delegateForFunction.closeCameraOperations()
+        delegateForViewController.dismisViewController(sharply: false)
         
     }
     
@@ -185,6 +195,8 @@ extension ShareTypeSliderView : UIGestureRecognizerDelegate {
         
         print("delegate : \(delegate)")
         
+//        delegateForFunction.createSnapShotProcess()
+        delegateForFunction.checkAlphaValuesOfCustomEmbeddedViews()
         delegateForViewController.nextToFinalSharePage()
         
     }

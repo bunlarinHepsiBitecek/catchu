@@ -17,38 +17,17 @@ class ImageManagementView: UIView {
     var customSelectedImageContainer : CustomScrollViewContainer?
     var croppedImage : CustomCroppedImage?
     
-    var customFetchView : CustomFetchView?
+    weak var delegate : ShareDataProtocols!
     
-//    lazy var customFetchView: CustomFetchView = {
-//
-//        let temp = CustomFetchView(progressInfo: CircleAnimationProcess.start, inputProgressValue: 0)
-//        temp.translatesAutoresizingMaskIntoConstraints = false
-//        temp.isUserInteractionEnabled = true
-//        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
-//
-//        return temp
-//    }()
+    /// iCloud fetching
+    var progressBar : CustomProgressBarLayer2?
+    private var progressBarAdded : Bool = false
     
-    var fetchFromIcloud : Bool = false
-    
+    /// photos from gallery
     public var photos = [PHAsset]()
 
     // collectionView for galery sections
     lazy var collectionViewForImageManagement: UICollectionView = {
-        
-        /*
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 6
-        layout.minimumInteritemSpacing = 6
-        layout.sectionInset = UIEdgeInsets(top: 6, left: 2, bottom: 6, right: 2)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.layer.cornerRadius = 10
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = true*/
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -75,6 +54,38 @@ class ImageManagementView: UIView {
         
     }()
     
+    lazy var progressViewContainer: UIView = {
+        
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8)
+        temp.layer.cornerRadius = 10
+        temp.alpha = 0
+        
+        return temp
+    }()
+    
+    lazy var labelContainer: UIView = {
+        
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        
+        return temp
+    }()
+    
+    lazy var iCloudFetchingInformation: UILabel = {
+        let temp = UILabel()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.text = LocalizedConstants.Cloud.cloudFetching
+        temp.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.contentMode = .center
+        temp.textAlignment = .center
+        
+        return temp
+    }()
+    
+    /*
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -86,44 +97,31 @@ class ImageManagementView: UIView {
         
         getPhotosFromGallery()
         
-//        setupFetchingView()
+    }*/
+    
+    init(frame: CGRect, inputDelegate : ShareDataProtocols) {
+        super.init(frame: frame)
+       
+        self.delegate = inputDelegate
+        
+        setupViews()
+        initializeCustomCameraView()
+        initializeCapturedImageView()
+        initializeSelectedImageView()
+        initializeCroppedImageView()
+        
+        getPhotosFromGallery()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func layoutSubviews() {
-//
-//        setupFetchingView()
-//
-//    }
-    
-    func setupFetchingView() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        let x = self.center.x
-        let y = self.center.y
-        let position = CGPoint(x: x, y: y)
-        
-        customFetchView = CustomFetchView(frame: CGRect(x: 0, y: 0, width: 200, height: 80))
-        
-        guard customFetchView != nil else {
-            return
-        }
-        
-        customFetchView!.center = position
-        
-        customFetchView!.layer.cornerRadius = 10
-        customFetchView!.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)
-        
-        self.addSubview(customFetchView!)
-        
-        activationManagerOfFetchView(activate: false)
-        
-//        let safe = self.safeAreaLayoutGuide
-//        
-//        customFetchView!.centerYAnchor.constraint(equalTo: safe.centerYAnchor).isActive = true
-//        customFetchView!.centerXAnchor.constraint(equalTo: safe.centerXAnchor).isActive = true
+        setupProgressBar()
         
     }
     
@@ -135,9 +133,13 @@ extension ImageManagementView {
     private func setupViews() {
         
         self.addSubview(collectionViewForImageManagement)
-//        self.addSubview(customFetchView)
+        self.addSubview(progressViewContainer)
+        self.progressViewContainer.addSubview(labelContainer)
+        self.labelContainer.addSubview(iCloudFetchingInformation)
         
         let safe = self.safeAreaLayoutGuide
+        let safeProgressViewContainer = self.progressViewContainer.safeAreaLayoutGuide
+        let safeLabelContainer = self.labelContainer.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -146,14 +148,41 @@ extension ImageManagementView {
             collectionViewForImageManagement.topAnchor.constraint(equalTo: safe.topAnchor),
             collectionViewForImageManagement.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             
-//            customFetchView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-//            customFetchView.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
-//            customFetchView.heightAnchor.constraint(equalToConstant: 80),
-//            customFetchView.widthAnchor.constraint(equalToConstant: 200)
+            progressViewContainer.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            progressViewContainer.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+            progressViewContainer.heightAnchor.constraint(equalToConstant: 100),
+            progressViewContainer.widthAnchor.constraint(equalToConstant: 200),
             
+            labelContainer.leadingAnchor.constraint(equalTo: safeProgressViewContainer.leadingAnchor),
+            labelContainer.trailingAnchor.constraint(equalTo: safeProgressViewContainer.trailingAnchor),
+            labelContainer.bottomAnchor.constraint(equalTo: safeProgressViewContainer.bottomAnchor),
+            labelContainer.heightAnchor.constraint(equalToConstant: 25),
+            
+            iCloudFetchingInformation.leadingAnchor.constraint(equalTo: safeLabelContainer.leadingAnchor),
+            iCloudFetchingInformation.trailingAnchor.constraint(equalTo: safeLabelContainer.trailingAnchor),
+            iCloudFetchingInformation.topAnchor.constraint(equalTo: safeLabelContainer.topAnchor),
+            iCloudFetchingInformation.bottomAnchor.constraint(equalTo: safeLabelContainer.bottomAnchor),
+   
             ])
         
-        
+    }
+    
+    func setupProgressBar() {
+        if !progressBarAdded {
+            
+            if progressViewContainer.frame.height > 0 && progressViewContainer.frame.width > 0 {
+                
+                let x = progressViewContainer.frame.width / 2
+                let y = progressViewContainer.frame.height / 2
+                let position = CGPoint(x: x, y: y)
+                
+                progressBar = CustomProgressBarLayer2(radius: 20, position: position, innerColor: #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), outerColor: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), lineWidth: 7)
+                progressViewContainer.layer.addSublayer(progressBar!)
+                
+                progressBarAdded = true
+                
+            }
+        }
     }
     
     private func getPhotosFromGallery() {
@@ -203,7 +232,7 @@ extension ImageManagementView {
     
     func initializeCapturedImageView() {
         
-        captureImageView = CustomCameraCapturedImageView()
+        captureImageView = CustomCameraCapturedImageView(inputDelegate: delegate)
         
         captureImageView!.translatesAutoresizingMaskIntoConstraints = false
         
@@ -231,6 +260,7 @@ extension ImageManagementView {
         customSelectedImageContainer!.setDelegate(delegate: self)
         
         customSelectedImageContainer!.translatesAutoresizingMaskIntoConstraints = false
+        customSelectedImageContainer!.clipsToBounds = true
         
         UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: {
             
@@ -253,6 +283,8 @@ extension ImageManagementView {
     func initializeCroppedImageView() {
         
         croppedImage = CustomCroppedImage()
+        
+        croppedImage!.delegate = self.delegate
         
         croppedImage!.translatesAutoresizingMaskIntoConstraints = false
         
@@ -284,7 +316,123 @@ extension ImageManagementView {
         
     }
     
+    func createNewImageWithStickers() {
+        
+        guard let captureImageView = captureImageView else { return }
+        
+        if let stickerArray = Stickers.shared.stickerArray {
+            if !stickerArray.isEmpty {
+                captureImageView.menuFooterHiddenManagement(hidden: true)
+                
+                UIGraphicsBeginImageContextWithOptions(captureImageView.bounds.size, captureImageView.isOpaque, 0.0)
+                
+                captureImageView.drawHierarchy(in: captureImageView.bounds, afterScreenUpdates: true)
+                let snapShot = UIGraphicsGetImageFromCurrentImageContext()
+                
+                UIGraphicsEndImageContext()
+                
+                captureImageView.menuFooterHiddenManagement(hidden: false)
+                captureImageView.saveCapturedImagesToSelectedItems(image: snapShot!)
+                
+            } else {
+                captureImageView.saveCapturedImagesToSelectedItems(image: captureImageView.returnCapturedImage())
+            }
+            
+        } else {
+            captureImageView.saveCapturedImagesToSelectedItems(image: captureImageView.returnCapturedImage())
+            
+        }
+        
+    }
     
+    func saveSelectedImageFromCroppedImage() {
+        
+        if let croppedImage = croppedImage {
+            
+            if PostItems.shared.selectedImageDictionary == nil {
+                PostItems.shared.selectedImageDictionary = Array<UIImage>()
+            }
+            
+            PostItems.shared.selectedImageDictionary!.append(croppedImage.returnImage())
+            
+        }
+        
+    }
+    
+    func saveSelectedImageFromZoomView() {
+        
+        if let customSelectedImageContainer = customSelectedImageContainer {
+            
+            if PostItems.shared.selectedImageDictionary == nil {
+                PostItems.shared.selectedImageDictionary = Array<UIImage>()
+            }
+            
+            PostItems.shared.selectedImageDictionary!.append(customSelectedImageContainer.returnImage())
+            
+        }
+        
+    }
+    
+}
+
+// MARK: - progressBar animation functions
+extension ImageManagementView {
+    
+    // MARK: icloud fetching management functions
+    func progressCustomProgressView(inputProgressValue: CGFloat) {
+        
+        print("progressCustomProgressView starts")
+        print("inputProgressValue : \(inputProgressValue)")
+        
+        if progressBar != nil {
+            
+            DispatchQueue.main.async {
+                self.progressBar!.progress = inputProgressValue
+            }
+            
+        }
+        
+    }
+    
+    func startCustomProgressView() {
+        
+        print("startCustomProgressView starts")
+        
+        if progressBar != nil {
+            activationManagerOfProgressContainerView(activate: true)
+        }
+        
+    }
+    
+    func stopCustomProgressView() {
+        
+        print("stopCustomProgressView starts")
+        
+        if progressBar != nil {
+            activationManagerOfProgressContainerView(activate: false)
+        }
+        
+    }
+    
+    func activationManagerOfProgressContainerView(activate : Bool) {
+        
+        if progressBar != nil {
+
+            DispatchQueue.main.async {
+                
+                UIView.animate(withDuration: 0.3, animations: {
+                    if activate {
+                        self.progressViewContainer.alpha = 1
+                    } else {
+                        self.progressViewContainer.alpha = 0
+                    }
+                })
+                
+            }
+            
+        }
+        
+    }
     
 }
 
@@ -304,6 +452,8 @@ extension ImageManagementView : UICollectionViewDelegate, UICollectionViewDataSo
         if indexPath.row == 0 {
             
             guard let cell = collectionViewForImageManagement.dequeueReusableCell(withReuseIdentifier: Constants.Collections.CollectionView.photoLibraryCell, for: indexPath) as? PhotoLibraryCollectionViewCell2 else { return UICollectionViewCell() }
+            
+            cell.delegate = self
             
             return cell
             
@@ -334,20 +484,38 @@ extension ImageManagementView : UICollectionViewDelegate, UICollectionViewDataSo
         // we need to pass first two cell
         if indexPath.row > 1 {
             
-            let cell = collectionViewForImageManagement.cellForItem(at: indexPath) as? ImageCollectionViewCell2
-            
-            let asset = self.photos[indexPath.item]
-            MediaLibraryManager.shared.imageFrom(asset: asset, size: PHImageManagerMaximumSize) { (image) in
-                DispatchQueue.main.async {
-                    
-                    UIView.animate(withDuration: 0.4) {
-                       
-                        self.startCropImageView(inputImage : image)
-                       
+            if let cell = collectionViewForImageManagement.cellForItem(at: indexPath) as? ImageCollectionViewCell2 {
+                
+                selectedCellAnimation(cell: cell)
+                
+                let asset = self.photos[indexPath.item]
+                MediaLibraryManager.shared.imageFrom(asset: asset, size: PHImageManagerMaximumSize) { (image) in
+                    DispatchQueue.main.async {
+                        
+                        UIView.animate(withDuration: 0.4) {
+                            
+                            self.startCropImageView(inputImage : image)
+                            
+                        }
                     }
                 }
             }
+            
         }
+        
+    }
+    
+    func selectedCellAnimation(cell : UICollectionViewCell) {
+        
+        cell.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, delay: 0, usingSpringWithDamping: 0.20, initialSpringVelocity: 6.0, options: UIViewAnimationOptions.allowUserInteraction, animations: {
+            
+            cell.transform = CGAffineTransform.identity
+            
+        })
+        
+        cell.layoutIfNeeded()
         
     }
     
@@ -404,70 +572,12 @@ extension ImageManagementView : ShareDataProtocols {
         case .start:
             print("start")
             startCustomProgressView()
-            
         case .stop:
             print("stop")
             stopCustomProgressView()
         case .progress:
             print("progress")
             progressCustomProgressView(inputProgressValue: inputProgressValue)
-        }
-        
-    }
-    
-    func progressCustomProgressView(inputProgressValue: CGFloat) {
-        
-        print("progressCustomProgressView starts")
-        print("inputProgressValue : \(inputProgressValue)")
-        
-        guard customFetchView != nil else {
-            return
-        }
-        
-        DispatchQueue.main.async {
-            self.customFetchView!.setProgress(progress: inputProgressValue)
-        }
-        
-        
-    }
-    
-    func stopCustomProgressView() {
-        
-        print("stopCustomProgressView starts")
-        
-        guard customFetchView != nil else {
-            return
-        }
-        
-        customFetchView!.setProgress(progress: 100)
-        activationManagerOfFetchView(activate: false)
-        
-    }
-    
-    func startCustomProgressView() {
-        
-        print("startCustomProgressView starts")
-        
-        UIView.transition(with: self, duration: Constants.AnimationValues.aminationTime_02, options: .transitionCrossDissolve, animations: {
-            
-            self.activationManagerOfFetchView(activate: true)
-            
-        })
-        
-    }
-    
-    func activationManagerOfFetchView(activate : Bool) {
-        
-        guard customFetchView != nil else {
-            return
-        }
-        
-        DispatchQueue.main.async {
-            if activate {
-                self.customFetchView!.alpha = 1
-            } else {
-                self.customFetchView!.alpha = 0
-            }
         }
         
     }
@@ -517,6 +627,21 @@ extension ImageManagementView : PermissionProtocol {
             CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .cameraUnathorized)
         default:
             return
+        }
+        
+    }
+    
+}
+
+// MARK: - ImageHandlerProtocol
+extension ImageManagementView : ImageHandlerProtocol {
+    
+    func returnImage(inputImage: UIImage) {
+        
+        UIView.animate(withDuration: 0.4) {
+            
+            self.startCropImageView(inputImage : inputImage)
+            
         }
         
     }

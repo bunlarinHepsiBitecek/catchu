@@ -74,18 +74,18 @@ class CustomProgressBarLayer2: CALayer {
         
         progressLabel = UILabel()
         
-        let size = CGSize(width: radius, height: radius)
-        let origin = CGPoint(x: position.x, y: position.y)
-        
-        progressLabel.frame = CGRect(origin: origin, size: size)
-        progressLabel.center = position
-        progressLabel.center.y = position.y
-        progressLabel.font = UIFont.boldSystemFont(ofSize: radius * 0.2)
-        progressLabel.text = "0%"
-        progressLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        progressLabel.textAlignment = .center
-        
-        insertSublayer(progressLabel.layer, at: 0)
+//        let size = CGSize(width: radius, height: radius)
+//        let origin = CGPoint(x: position.x, y: position.y)
+//        
+//        progressLabel.frame = CGRect(origin: origin, size: size)
+//        progressLabel.center = position
+//        progressLabel.center.y = position.y
+//        progressLabel.font = UIFont.boldSystemFont(ofSize: radius * 0.2)
+//        progressLabel.text = "0%"
+//        progressLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+//        progressLabel.textAlignment = .center
+//        
+//        insertSublayer(progressLabel.layer, at: 0)
         
         completedLabel = UILabel()
         

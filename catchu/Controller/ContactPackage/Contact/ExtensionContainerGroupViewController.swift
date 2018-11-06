@@ -69,16 +69,28 @@ extension ContainerGroupViewController: UITableViewDelegate, UITableViewDataSour
         
         cell.groupImage.image = nil
         
-        downloadImages(cell.group.groupPictureUrl!) { (result, resultImage) in
+        if selectedGroupIndexPath == indexPath {
+            cell.groupSelectedIcon.image = #imageLiteral(resourceName: "check-mark.png")
+        } else {
+            cell.groupSelectedIcon.image = nil
+        }
+        
+        if let groupPictureUrl = cell.group.groupPictureUrl {
             
-            if result {
-             
-                DispatchQueue.main.async {
-                    cell.groupImage.image = resultImage
+            downloadImages(groupPictureUrl) { (result, resultImage) in
+                
+                if result {
+                    
+                    DispatchQueue.main.async {
+                        cell.groupImage.image = resultImage
+                    }
+                    
                 }
                 
             }
-            
+
+        } else {
+            cell.groupImage.image = nil
         }
         
 //        cell.groupImage.loadImageUsingcell.group.groupPictureUrl!(cell.group.groupPictureUrl!: cell.group.groupPictureUrl!)
@@ -89,6 +101,111 @@ extension ContainerGroupViewController: UITableViewDelegate, UITableViewDataSour
         cell.accessoryType = .disclosureIndicator
         
         return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let cell = tableView.cellForRow(at: indexPath) as? GroupTableViewCell
+        
+        if let cell = cell {
+            
+            if let groupid = cell.group.groupID {
+                
+                if selectedGroupIndexPath == indexPath {
+                    
+                    cellSelectedIconManagement(indexPath: indexPath, iconManagement: .deselected, groupId: groupid)
+                    
+                    selectedGroupIndexPath = IndexPath()
+                    
+                    print("selectedGroupIndexPath.indices : \(selectedGroupIndexPath.indices)")
+                    print("deselected")
+                    print("selectedGroupIndexPath.indices.count :\(selectedGroupIndexPath.indices.count)")
+                    
+                    SectionBasedGroup.shared.removeGroupFromSelectedGroupArray(inputGroup: cell.group)
+                    
+                } else{
+                    
+                    if selectedGroupIndexPath.indices.count > 0 {
+                        let cell = tableView.cellForRow(at: selectedGroupIndexPath) as? GroupTableViewCell
+                        
+                        if let cell = cell {
+                            if let groupid = cell.group.groupID {
+                                cellSelectedIconManagement(indexPath: selectedGroupIndexPath, iconManagement: .deselected, groupId: groupid)
+                            }
+                        }
+                    }
+                    
+                    cellSelectedIconManagement(indexPath: indexPath, iconManagement: .selected, groupId: groupid)
+                    
+                    selectedGroupIndexPath = indexPath
+                    
+                    SectionBasedGroup.shared.addGroupToSelectedGroupArray(inputGroup: cell.group)
+                    
+                    print("selectedGroupIndexPath.indices : \(selectedGroupIndexPath.indices)")
+                    print("selected")
+                    print("selectedGroupIndexPath.indices.count :\(selectedGroupIndexPath.indices.count)")
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    // to select or deselect check icon inside each row of tableview
+    func cellSelectedIconManagement(indexPath : IndexPath, iconManagement : IconManagement, groupId : String) {
+        
+        print("cellSelectedIconManagement starts")
+        print("indexPath :\(indexPath)")
+        print("groupId : \(groupId)")
+        
+        switch iconManagement {
+        case .selected:
+            selectCellIcon(indexPath: indexPath)
+        case .deselected:
+            //deselectCellIcon(inputIndexPath: indexPath, userId: userId)
+            deselectCellIconForWithGroupID(groupId: groupId)
+        //tableView.reloadData()
+        default:
+            return
+        }
+        
+    }
+    
+    func selectCellIcon(indexPath : IndexPath) {
+        
+        let cell = tableView.cellForRow(at: indexPath) as! GroupTableViewCell
+        
+        UIView.transition(with: cell.groupSelectedIcon, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            
+            cell.groupSelectedIcon.image = #imageLiteral(resourceName: "check-mark.png")
+            
+        })
+        
+    }
+    
+    func deselectCellIconForWithGroupID(groupId : String) {
+        
+        print("deselectCellIconForWithGroupID starts")
+        print("groupId :\(groupId)")
+        
+        let tempCellArray : [UITableViewCell] = self.tableView.visibleCells
+        
+        for item in tempCellArray {
+            
+            let cell = item as! GroupTableViewCell
+            
+            if cell.group.groupID == groupId {
+                
+                UIView.transition(with: cell.groupSelectedIcon, duration: 0.3, options: .transitionCrossDissolve, animations: {
+                    cell.groupSelectedIcon.image = nil
+                })
+                
+                break
+            }
+            
+        }
         
     }
     
@@ -182,6 +299,12 @@ extension ContainerGroupViewController: UITableViewDelegate, UITableViewDataSour
         info.backgroundColor = UIColor.lightGray
         
         return [delete, info]
+        
+    }
+    
+    func deSelectGroup(indexPath : IndexPath) {
+        
+        let cell = tableView.cellForRow(at: indexPath)
         
     }
     
