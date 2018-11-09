@@ -10,8 +10,6 @@ import UIKit
 
 class FinalShareInfoViewController: UIViewController {
 
-    @IBOutlet var mainContainerView: UIView!
-    
     private var finalPageView : FinalSharePageView?
 //    private var transition : CATransition?
     

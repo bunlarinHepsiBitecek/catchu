@@ -300,6 +300,7 @@ extension CustomCapturedVideoView {
         }
         
         PostItems.shared.selectedVideoUrl!.append(recordedVideoURL)
+//        getScreenShotForRecordedVideo()
         
         print("PostItems.shared.selectedVideoUrl count : \(PostItems.shared.selectedVideoUrl?.count)")
         
@@ -310,10 +311,36 @@ extension CustomCapturedVideoView {
         if PostItems.shared.selectedVideoUrl != nil {
             if let i = PostItems.shared.selectedVideoUrl!.firstIndex(of: recordedVideoURL) {
                 PostItems.shared.selectedVideoUrl!.remove(at: i)
+                PostItems.shared.deleteVideoScreenShot(inputUrl: recordedVideoURL)
             }
             
         }
         
+    }
+    
+    func getScreenShotForRecordedVideo() {
+        
+        PostItems.shared.appendVideoScreenShot(inputURL: recordedVideoURL, inputImage: videoSnapshot(url: recordedVideoURL)!)
+        
+    }
+    
+    func videoSnapshot(url: URL) -> UIImage? {
+        
+        let asset = AVURLAsset(url: url)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        
+        let timestamp = CMTime(seconds: 1, preferredTimescale: 60)
+        
+        do {
+            let imageRef = try generator.copyCGImage(at: timestamp, actualTime: nil)
+            return UIImage(cgImage: imageRef)
+        }
+        catch let error as NSError
+        {
+            print("Image generation failed with error \(error)")
+            return nil
+        }
     }
     
     func changePlayStopView(playing : Bool) {

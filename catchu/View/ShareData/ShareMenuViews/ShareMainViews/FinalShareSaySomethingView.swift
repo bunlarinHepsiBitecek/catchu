@@ -250,9 +250,26 @@ extension FinalShareSaySomethingView : UIGestureRecognizerDelegate {
     @objc func post(_ sender : UITapGestureRecognizer) {
         
         PostItems.shared.setNote(inputString: noteTextView.text)
+        PostItems.shared.setSnapShotOfMessage(inputImage: getSnpaShotOfNote())
+        
         self.delegateForViewController.dismisViewController(sharply: true)
-
+    
         APIGatewayManager.shared.initiatePostOperations()
+        
+    }
+    
+    func getSnpaShotOfNote() -> UIImage {
+        
+        UIGraphicsBeginImageContextWithOptions(noteTextView.bounds.size, noteTextView.isOpaque, 0.0)
+        
+        noteTextView.drawHierarchy(in: noteTextView.bounds, afterScreenUpdates: true)
+        let snapShot = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        print("")
+        
+        return snapShot!
         
     }
     

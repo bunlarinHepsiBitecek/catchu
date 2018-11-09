@@ -41,7 +41,7 @@ public class REFriendList : AWSModel {
         
         for item in resultArray! {
             
-            item.displayProperties()
+//            item.displayProperties()
             
         }
         

@@ -57,6 +57,8 @@
 "fetched" = "Fetched";
 "fetching" = "Fetching From ICloud";
 "tryAgain" = "Yeniden Deneyiniz! 🥰";
+"follewers" = "Takipçiler";
+"follewings" = "Takiptesin";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";

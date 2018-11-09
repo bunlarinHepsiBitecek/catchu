@@ -70,8 +70,8 @@ class APIGatewayManager {
     func getUserProfileInfo(userid : String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-        
-            self.client.usersGet(authorization: tokenResult.token, userid: userid).continueWith { (task) -> Any? in
+    
+            self.client.usersGet(userid: userid, requestedUserid: userid, authorization: tokenResult.token).continueWith { (task) -> Any? in
                 
                 if task.error != nil {
                     
@@ -115,12 +115,12 @@ class APIGatewayManager {
         let inputREUserProfile = REUserProfile()
         let inputUserInfo = REUserProfileProperties()
         
-        inputUserInfo?.setUserProfileInformation(user: userObject)
+//        inputUserInfo?.setUserProfileInformation(user: userObject)
         
         inputREUserProfile?.userInfo = inputUserInfo
         inputREUserProfile?.requestType = requestType.rawValue
         
-        inputREUserProfile?.userInfo?.displayProperties()
+//        inputREUserProfile?.userInfo?.displayProperties()
         
         client.usersPost(authorization: "", body: inputREUserProfile!).continueWith { (task) -> Any? in
             
@@ -481,28 +481,29 @@ class APIGatewayManager {
         
         Share.shared.convertPostItemsToShare()
         
-        afterPostOperations(granted: false)
+//        afterPostOperations(granted: false)
         
-//        REAWSManager.shared.createPost(share: Share.shared) { (result) in
-//
-//            switch (result) {
-//            case .success(let response):
-//
-//                if let error = response.error {
-//                    if error.code != 1 {
-//                        print("post operation is failed")
-//                        self.afterPostOperations(granted: false)
-//                    }
-//                }
-//
-//                self.afterPostOperations(granted: false)
-//
-//            default:
-//                self.afterPostOperations(granted: false)
-//                break;
-//            }
-//
-//        }
+        REAWSManager.shared.createPost(share: Share.shared) { (result) in
+
+            switch (result) {
+            case .success(let response):
+
+                if let error = response.error {
+                    if error.code != 1 {
+                        print("post operation is failed")
+                        self.afterPostOperations(granted: false)
+                    }
+                }
+                
+                // if everything is ok, let get user informed
+                self.afterPostOperations(granted: true)
+
+            default:
+                self.afterPostOperations(granted: false)
+                break;
+            }
+
+        }
         
     }
     
@@ -518,26 +519,38 @@ class APIGatewayManager {
                 if let image = imageArray.first {
                     
                     imageAttachmentArray.append(image)
-                    imageAttachmentArray.append(image)
                     
-                    print("image orientation : \(image.imageOrientation)")
+                }
+            }
+            
+            if let videoScreenShot = PostItems.shared.selectedVideoScreenShootWithPlayButton {
+                if let imageObject = videoScreenShot.first {
                     
-                    CustomNotificationManager.shared.sendNotification(inputTitle: LocalizedConstants.Notification.postTitle , inputSubTitle: Constants.CharacterConstants.EMPTY, inputMessage: LocalizedConstants.Notification.postFailedMessage, inputIdentifier: "postIdentifier", operationResult: granted, image: imageAttachmentArray) { (finish) in
-                        
-                        if finish {
-                            print("GOGOGOGOGOGOGOGOOG")
-                        }
-                    }
+                    imageAttachmentArray.append(imageObject.value)
+                    
+                }
+            }
+            
+            if let noteSnapShot = PostItems.shared.messageScreenShot {
+                imageAttachmentArray.append(noteSnapShot)
+            }
+            
+            CustomNotificationManager.shared.sendNotification(inputTitle: LocalizedConstants.Notification.postTitle , inputSubTitle: Constants.CharacterConstants.EMPTY, inputMessage: LocalizedConstants.Notification.postFailedMessage, inputIdentifier: "postIdentifier", operationResult: granted, image: imageAttachmentArray) { (finish) in
+                
+                if finish {
+                    print("GOGOGOGOGOGOGOGOOG")
                 }
             }
             
         } else {
-//            CustomNotificationManager.shared.sendNotification(inputTitle: LocalizedConstants.Notification.postTitle , inputSubTitle: Constants.CharacterConstants.EMPTY, inputMessage: LocalizedConstants.Notification.postSuccessMessage, inputIdentifier: "postIdentifier", operationResult: granted, image: UIImage()) { (finish) in
-//
-//                if finish {
-//                    print("GOGOGOGOGOGOGOGOOG 2")
-//                }
-//            }
+            
+            // if post operation is succesfull
+            CustomNotificationManager.shared.sendNotification(inputTitle: LocalizedConstants.Notification.postTitle , inputSubTitle: Constants.CharacterConstants.EMPTY, inputMessage: LocalizedConstants.Notification.postSuccessMessage, inputIdentifier: "postIdentifier", operationResult: granted, image: []) { (finish) in
+
+                if finish {
+                    print("GOGOGOGOGOGOGOGOOG 2")
+                }
+            }
             
         }
         

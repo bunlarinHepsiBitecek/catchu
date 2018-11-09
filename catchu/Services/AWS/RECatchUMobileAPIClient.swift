@@ -498,21 +498,22 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
     /*
      
      
-     @param authorization
      @param userid
+     @param requestedUserid
+     @param authorization
      
      return type: REUserProfile
      */
-    public func usersGet(authorization: String, userid: String?) -> AWSTask<REUserProfile> {
+    public func usersGet(userid: String, requestedUserid: String, authorization: String) -> AWSTask<REUserProfile> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": authorization,
-            
-            ]
+            "userid": userid,
+            "Authorization": authorization
+        ]
         
         var queryParameters:[String:Any] = [:]
-        queryParameters["userid"] = userid
+        queryParameters["requestedUserid"] = requestedUserid
         
         let pathParameters:[String:Any] = [:]
         

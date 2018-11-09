@@ -22,27 +22,25 @@ public class REUserProfile : AWSModel {
     
     var error: REError?
     var userInfo: REUserProfileProperties?
-    var relationCountInfo: REUserProfile_relationCountInfo?
+    var relationInfo: REUserProfile_relationInfo?
     var requestType: String?
     
     public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
         var params:[AnyHashable : Any] = [:]
         params["error"] = "error"
         params["userInfo"] = "userInfo"
-        params["relationCountInfo"] = "relationCountInfo"
+        params["relationInfo"] = "relationInfo"
         params["requestType"] = "requestType"
         
         return params
     }
-    
     class func errorJSONTransformer() -> ValueTransformer{
         return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REError.self);
     }
     class func userInfoJSONTransformer() -> ValueTransformer{
         return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REUserProfileProperties.self);
     }
-    class func relationCountInfoJSONTransformer() -> ValueTransformer{
-        return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REUserProfile_relationCountInfo.self);
+    class func relationInfoJSONTransformer() -> ValueTransformer{
+        return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REUserProfile_relationInfo.self);
     }
-    
 }

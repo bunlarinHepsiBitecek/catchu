@@ -166,6 +166,18 @@ extension TabBarControlProtocols {
     
 }
 
+protocol NavigationControllerProtocols : class {
+    
+    func setNavigationTitle(input : String)
+    
+}
+
+extension NavigationControllerProtocols {
+    
+    func setNavigationTitle(input : String) {}
+    
+}
+
 protocol StickerProtocols : class {
     
     func addTextStickerWithParameters(sticker : Sticker)

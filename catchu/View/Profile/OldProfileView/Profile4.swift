@@ -52,7 +52,14 @@ class Profile4: UIView {
     }
     
     var dragDirection = Direction.UP
- 
+    
+    @IBAction func bas(_ sender: Any) {
+        UIView.animate(withDuration: 0.5) {
+            self.referenceOfProfile4ViewController.slideMenu?.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: 300)
+        }
+    
+    }
+    
 }
 
 extension Profile4: ImageHandlerProtocol {
@@ -119,7 +126,7 @@ extension Profile4: UIGestureRecognizerDelegate {
                     
                     LoaderController.shared.removeLoader()
                     
-                    User.shared.setUserProfileData(httpRequest: userProfileData)
+                    User.shared.convertReUserDataToUserObject(httpRequest: userProfileData)
                     
                     UIView.transition(with: self.profileUsername, duration: 0.5, options: .transitionCrossDissolve, animations: {
                         

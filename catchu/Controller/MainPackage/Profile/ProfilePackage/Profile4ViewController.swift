@@ -17,6 +17,8 @@ class Profile4ViewController: UIViewController {
     
     var referenceForMainTabBarController = MainTabBarViewController()
     
+    var slideMenu : SlideMenu?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,11 +30,30 @@ class Profile4ViewController: UIViewController {
         
         menubar4.setFirstItemSelected()
         
+//        addSlideMenu()
+        
+//        SlideMenuLoader.shared.createSlider(inputView: self.view)
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func addSlideMenu() {
+        
+        let heigth : CGFloat = 300
+        let y = UIScreen.main.bounds.height - heigth
+        
+        let width : CGFloat = 250
+        
+        slideMenu = SlideMenu(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: heigth))
+        
+        self.view.addSubview(slideMenu!)
+
+//        slideMenu?.frame = SlideMenu(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: heigth))
+        
     }
     
 }
@@ -63,6 +84,8 @@ extension Profile4ViewController {
     @objc func leftBarButtonPressed(_ tapGesture : UITapGestureRecognizer) {
         
         print("leftBarButtonPressed starts")
+        print("preferred size : \(self.preferredContentSize)")
+        SlideMenuLoader.shared.animateSlideMenu(active: true)
         
     }
     

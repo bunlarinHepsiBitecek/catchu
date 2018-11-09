@@ -106,6 +106,19 @@ class CustomCameraView: UIView {
         
     }()
     
+    lazy var exposureTouchesView: UIView = {
+        
+        let temp = UIView()
+        temp.backgroundColor = UIColor.clear
+        
+        temp.layer.borderWidth = 3
+        temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.layer.cornerRadius = 50
+        
+        
+        return temp
+    }()
+    
     var captureSession = AVCaptureSession()
     var captureDevice: AVCaptureDevice!
     
@@ -205,6 +218,7 @@ extension CustomCameraView {
         setupGestureRecognizerForFlashButton()
         setupGestureRecognizerForCameraShoot()
         setPinchZoom()
+        addTapGestureToMainView()
         
         // awaken customCamera object
         startCustomCameraProcess()
@@ -285,6 +299,8 @@ extension CustomCameraView {
         self.mainView.addSubview(closeButton)
         self.mainView.addSubview(cameraShootButton)
         
+        self.mainView.addSubview(exposureTouchesView)
+        
         let safe = self.safeAreaLayoutGuide
         let safeMain = self.mainView.safeAreaLayoutGuide
         let safeFlashContainer = self.flashButtonContainer.safeAreaLayoutGuide
@@ -339,6 +355,44 @@ extension CustomCameraView {
         } else {
             self.alpha = 0
         }
+        
+    }
+    
+    func activateExposureTouchesView(active : Bool) {
+        
+        if active {
+            exposureTouchesView.alpha = 1
+        } else {
+            exposureTouchesView.alpha = 0
+        }
+        
+    }
+    
+    func exposureAnimation(point : CGPoint) {
+        
+        exposureTouchesView.frame = CGRect(origin: point, size: CGSize(width: 100, height: 100))
+        exposureTouchesView.center = point
+        
+        activateExposureTouchesView(active: true)
+
+        exposureTouchesView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) // buton view kucultulur
+        
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
+            initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
+            options: UIViewAnimationOptions.allowUserInteraction,
+            animations: {
+                self.exposureTouchesView.transform = CGAffineTransform.identity
+                
+                
+        }, completion: { (finish) in
+            
+            self.activateExposureTouchesView(active: false)
+            
+        })
+        
+        self.exposureTouchesView.layoutIfNeeded()
         
     }
     
@@ -550,6 +604,27 @@ extension CustomCameraView : UIGestureRecognizerDelegate {
             customCamera.cameraZoomEnded(input: true, inputZoomEndedScale: sender.scale)
             
         }
+        
+    }
+    
+    func addTapGestureToMainView() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.setExposureToCustomCamera(_:)))
+        tapGesture.delegate = self
+        mainView.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func setExposureToCustomCamera(_ sender : UITapGestureRecognizer) {
+        
+        print("setExposureToCustomCamera triggered")
+        
+        print("sender.location(ofTouch: 1, in: self.mainView) : \(sender.location(ofTouch: 0, in: self.mainView))")
+        
+        let newPoint = sender.location(ofTouch: 0, in: self.mainView)
+        
+        exposureAnimation(point: newPoint)
+        customCamera.customSetExposurePoint(exposurePoint: newPoint)
         
     }
     

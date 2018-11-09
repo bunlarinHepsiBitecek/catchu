@@ -112,6 +112,8 @@ struct LocalizedConstants {
             static let failed = NSLocalizedString("failed", comment: "")
             static let fetched = NSLocalizedString("fetched", comment: "")
             static let fetching = NSLocalizedString("fetching", comment: "")
+            static let followers = NSLocalizedString("followers", comment: "")
+            static let following = NSLocalizedString("following", comment: "")
             
         }
     }

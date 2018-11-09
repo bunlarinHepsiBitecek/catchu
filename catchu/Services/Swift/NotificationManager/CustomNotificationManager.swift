@@ -19,6 +19,7 @@ class CustomNotificationManager: NSObject {
     var categoryIdentifier : String?
     var processFailed : Bool?
     var attachmentImageArray : [UIImage]?
+    var notificationAttachments : [UNNotificationAttachment]?
     
     var content = UNMutableNotificationContent()
     
@@ -30,6 +31,12 @@ class CustomNotificationManager: NSObject {
         self.categoryIdentifier = inputIdentifier
         self.processFailed = operationResult
         self.attachmentImageArray = image
+        
+        if self.notificationAttachments == nil {
+            self.notificationAttachments = [UNNotificationAttachment]()
+        } else {
+            self.notificationAttachments?.removeAll()
+        }
         
         UNUserNotificationCenter.current().delegate = self
         print("UNUserNotificationCenter.current().delegate : \(UNUserNotificationCenter.current().delegate)")
@@ -117,11 +124,15 @@ class CustomNotificationManager: NSObject {
                         let attachment = UNNotificationAttachment.create(identifier: identifier!, image: item.fixImageOrientation(), options: nil)
                         
                         if let attachment = attachment {
-                            content.attachments = [attachment]
+                            self.notificationAttachments?.append(attachment)
                             
                         }
                     }
                 }
+                
+                content.attachments = self.notificationAttachments!
+                
+                print("content.attachments.count : \(content.attachments.count)")
             }
         }
         

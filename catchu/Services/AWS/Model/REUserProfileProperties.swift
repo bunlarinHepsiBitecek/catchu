@@ -28,8 +28,9 @@ public class REUserProfileProperties : AWSModel {
     var birthday: String?
     var gender: String?
     var email: String?
-    var phone: String?
+    var phone: REPhone?
     var website: String?
+    var provider: REProvider?
     
     public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
         var params:[AnyHashable : Any] = [:]
@@ -43,39 +44,14 @@ public class REUserProfileProperties : AWSModel {
         params["email"] = "email"
         params["phone"] = "phone"
         params["website"] = "website"
+        params["provider"] = "provider"
         
         return params
     }
-    
-    func displayProperties() {
-    
-        print("displayProperties starts")
-        
-        print("name : \(self.name)")
-        print("userid :\(self.userid)")
-        print("username : \(self.username)")
-        print("profilePhotoUrl :\(self.profilePhotoUrl)")
-        print("isPrivateAccount :\(self.isPrivateAccount)")
-        print("birthday :\(self.birthday)")
-        print("gender :\(self.gender)")
-        print("email :\(self.email)")
-        print("phone :\(self.phone)")
-        print("website :\(self.website)")
+    class func phoneJSONTransformer() -> ValueTransformer{
+        return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REPhone.self);
     }
-    
-    func setUserProfileInformation(user : User) {
-        
-        print("setUserProfileInformation starts")
-        
-        name = user.name
-        userid = user.userid
-        username = user.username
-        birthday = user.userBirthday
-        gender = user.userGender
-        email = user.email
-        phone = user.userPhone
-        website = user.userWebsite
-        
+    class func providerJSONTransformer() -> ValueTransformer{
+        return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REProvider.self);
     }
-    
 }

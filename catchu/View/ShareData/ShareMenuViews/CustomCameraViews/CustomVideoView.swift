@@ -14,6 +14,8 @@ class CustomVideoView: UIView {
     
     let customVideo = CustomVideo()
     
+    var capturedVideoView : CustomCapturedVideoView?
+    
     var heigthConstraint : NSLayoutConstraint?
     var widthConstraint : NSLayoutConstraint?
     var bottomConstraints : NSLayoutConstraint?
@@ -650,24 +652,24 @@ extension CustomVideoView : ShareDataProtocols {
     
     func directToCapturedVideoView(url: URL) {
         
-        let capturedVideoView = CustomCapturedVideoView(outputFileURL: url)
+        capturedVideoView = CustomCapturedVideoView(outputFileURL: url)
         
-        capturedVideoView.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+        capturedVideoView?.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
         
         UIView.transition(with: mainView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
             
-            self.mainView.addSubview(capturedVideoView)
+            self.mainView.addSubview(self.capturedVideoView!)
             
-            capturedVideoView.translatesAutoresizingMaskIntoConstraints = false
+            self.capturedVideoView!.translatesAutoresizingMaskIntoConstraints = false
             
             let safe = self.mainView.safeAreaLayoutGuide
             
             NSLayoutConstraint.activate([
                 
-                capturedVideoView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-                capturedVideoView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-                capturedVideoView.topAnchor.constraint(equalTo: safe.topAnchor),
-                capturedVideoView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+                self.capturedVideoView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+                self.capturedVideoView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+                self.capturedVideoView!.topAnchor.constraint(equalTo: safe.topAnchor),
+                self.capturedVideoView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
                 
                 ])
             

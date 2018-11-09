@@ -198,7 +198,7 @@ extension ShareMenuViews {
 extension ShareMenuViews : UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        print("scrollView.contentOffset.x : \(scrollView.contentOffset.x)")
+        print("scrollView.contentOffset.x : \(scrollView.contentOffset.x)")
         delegate.resizeShareTypeSliderConstraint(input: scrollView.contentOffset.x)
     }
     
@@ -275,6 +275,12 @@ extension ShareMenuViews : ShareDataProtocols {
         
         if customCameraGalleryMenu != nil {
             customCameraGalleryMenu!.getActiveCustomView()
+        }
+        
+        if customVideoMenu != nil {
+            if let view = customVideoMenu?.customVideoView?.capturedVideoView {
+                view.getScreenShotForRecordedVideo()
+            }
         }
         
     }

@@ -107,7 +107,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         self.currentLocation = location
         
-        delegate.didUpdateLocation()
+        delegate?.didUpdateLocation()
         
     }
     

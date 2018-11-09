@@ -148,11 +148,12 @@ class User {
     }
     
     // set user profile data into singleton object
-    func setUserProfileData(httpRequest : REUserProfile) {
+    func convertReUserDataToUserObject(httpRequest : REUserProfile) {
         
-        print("setUserProfileData starts")
+        print("convertReUserDataToUserObject starts")
         
-        httpRequest.userInfo?.displayProperties()
+        print("httpRequest username : \(httpRequest.userInfo?.username)")
+        print("httpRequest name : \(httpRequest.userInfo?.name)")
         
         if let data = httpRequest.userInfo {
             if let name = data.name {
@@ -173,9 +174,9 @@ class User {
             if let email = data.email {
                 self.email = email
             }
-            if let phone = data.phone {
-                self.userPhone = phone
-            }
+//            if let phone = data.phone {
+//                self.userPhone = phone
+//            }
             if let website = data.website {
                 self.userWebsite = website
             }
@@ -183,7 +184,8 @@ class User {
                 isUserHasAPrivateAccount = isPrivateAccount.boolValue
             }
         }
-        if let dataRelation = httpRequest.relationCountInfo {
+        
+        if let dataRelation = httpRequest.relationInfo {
             self.userFollowingCount = dataRelation.followingCount
             self.userFollowerCount = dataRelation.followerCount
         }

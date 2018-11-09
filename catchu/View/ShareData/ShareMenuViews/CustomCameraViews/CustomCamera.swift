@@ -81,6 +81,12 @@ extension CustomCamera {
 //
 //                    camera.setExposureModeCustom(duration: AVCaptureDevice.currentExposureDuration, iso: clampedISO, completionHandler: nil)
 //
+                    print("camera.isExposurePointOfInterestSupported : \(camera.isExposurePointOfInterestSupported)")
+                    
+                    if camera.isExposurePointOfInterestSupported {
+                        
+                    }
+                    
                     camera.exposureMode = .continuousAutoExposure
                     camera.unlockForConfiguration()
                     
@@ -387,6 +393,92 @@ extension CustomCamera {
         }
         
     }
+    
+    func customSetExposurePoint(exposurePoint : CGPoint) {
+        
+        print("customSetExposurePoint starts")
+        print("exposurePoint : \(exposurePoint)")
+        
+        guard let currentCameraPosition = currentCameraPosition else { return }
+        
+        switch currentCameraPosition {
+        case .front:
+            guard let frontCamera = frontCamera else { return }
+            
+            print("frontCamera.isExposurePointOfInterestSupported : \(frontCamera.isExposurePointOfInterestSupported)")
+            
+            if !frontCamera.isExposurePointOfInterestSupported {
+                return
+            } else {
+                
+                print("frontCamera.exposurePointOfInterest : \(frontCamera.exposurePointOfInterest)")
+                
+                do {
+                    try frontCamera.lockForConfiguration()
+                    frontCamera.exposurePointOfInterest = exposurePoint
+                    frontCamera.exposureMode = .continuousAutoExposure
+                    frontCamera.unlockForConfiguration()
+                } catch {
+                    print("camera exposure goes wrong")
+                }
+                
+                print("frontCamera.exposurePointOfInterest : \(frontCamera.exposurePointOfInterest)")
+                
+            }
+            
+        case .rear:
+        
+            guard let rearCamera = rearCamera else { return }
+            
+            print("rearCamera.isExposurePointOfInterestSupported : \(rearCamera.isExposurePointOfInterestSupported)")
+            
+            if !rearCamera.isExposurePointOfInterestSupported {
+                return
+            } else {
+                
+                print("rearCamera.exposurePointOfInterest : \(rearCamera.exposurePointOfInterest)")
+                
+                do {
+                    try rearCamera.lockForConfiguration()
+                    rearCamera.exposurePointOfInterest = exposurePoint
+                    rearCamera.exposureMode = .continuousAutoExposure
+                    rearCamera.unlockForConfiguration()
+                } catch {
+                    print("camera exposure goes wrong")
+                }
+                
+                print("rearCamera.exposurePointOfInterest : \(rearCamera.exposurePointOfInterest)")
+            }
+        }
+        
+    }
+    
+    /*
+ 
+     let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .unspecified)
+     
+     let cameras = session.devices.compactMap { $0 }
+     
+     guard !cameras.isEmpty else { throw CustomCameraError.noCamerasAvailable }
+     
+     for camera in cameras {
+     
+     if camera.position == .front {
+     self.frontCamera = camera
+     
+     try camera.lockForConfiguration()
+     
+     //                    camera.automaticallyAdjustsVideoHDREnabled = true
+     //                    camera.isVideoHDREnabled = true
+     
+     print("camera.isFocusModeSupported(.continuousAutoFocus) : \(camera.isFocusModeSupported(.continuousAutoFocus))")
+     print("camera.isFocusModeSupported(.autoFocus) : \(camera.isFocusModeSupported(.autoFocus))")
+     
+     
+     //                    if camera.isFocusModeSupported(.continuousAutoFocus) {
+     //
+     
+ */
     
 }
 
