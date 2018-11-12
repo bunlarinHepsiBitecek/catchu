@@ -21,9 +21,9 @@ public enum ErrorType {
 class ErrorView: BaseView {
     
     var placement: Placement = .top
-    var delay: TimeInterval? { return 2.0 }
-    var showDuration: TimeInterval? { return 0.4 }
-    var hideDuration: TimeInterval? { return 0.2 }
+    var delay: TimeInterval? { return 4.0 }
+    var showDuration: TimeInterval? { return 0.8 }
+    var hideDuration: TimeInterval? { return 0.8 }
     
     public typealias AnimationCompletion = (_ completed: Bool) -> Void
     private let padding: CGFloat = 10

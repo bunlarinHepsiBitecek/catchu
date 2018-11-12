@@ -28,6 +28,7 @@ public class REPost : AWSModel {
     var distance: NSNumber?
     var isLiked: NSNumber?
     var likeCount: NSNumber?
+    var isCommentAllowed: NSNumber?
     var commentCount: NSNumber?
     var createAt: String?
     var user: REUser?
@@ -44,7 +45,8 @@ public class REPost : AWSModel {
 		params["location"] = "location"
 		params["distance"] = "distance"
 		params["isLiked"] = "isLiked"
-		params["likeCount"] = "likeCount"
+        params["likeCount"] = "likeCount"
+        params["isCommentAllowed"] = "isCommentAllowed"
 		params["commentCount"] = "commentCount"
 		params["createAt"] = "createAt"
 		params["user"] = "user"

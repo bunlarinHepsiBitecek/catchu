@@ -22,8 +22,8 @@ enum BackEndAPIError: Error {
     case serverError(error: Error)
 }
 
-enum NetworkResult<ModelResult> {
-    case success(ModelResult)
+enum NetworkResult<T> {
+    case success(T)
     case failure(BackEndAPIError)
 }
 
@@ -31,13 +31,18 @@ protocol BackEndAPIInterface {
     func createPost(share: Share, completion: @escaping (NetworkResult<REPostResponse>)-> Void)
     func getFeeds(page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void )
     func getUploadUrl(imageCount: Int, imageExtension: String, videoCount: Int, videoExtension: String, completion : @escaping (NetworkResult<REBucketUploadResponse>) -> Void )
-    func like(post: Post, comment: Comment, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
-    func unlike(post: Post, comment: Comment, compiletion: @escaping (NetworkResult<REBaseResponse>) -> Void)
+    func like(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
+    func unlike(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
+    func getlikeUsers(page: Int, perPage: Int, post: Post, commentid: String?, completion: @escaping (NetworkResult<REUserListResponse>) -> Void)
+    func requestRelationProcess(requestType : RequestType, userid : String, targetUserid : String, completion: @escaping (NetworkResult<REFriendRequestList>) -> Void)
+    func getCountries(userid: String, completion: @escaping (NetworkResult<RECountryListResponse>)-> Void)
+    func deleteUploadUrl(userid: String, delete: REBucketUploadResponse, completion: @escaping (NetworkResult<REBaseResponse>)-> Void)
 }
 
 class REAWSManager: BackEndAPIInterface {
     
     public static let shared = REAWSManager()
+    let apiClient = RECatchUMobileAPIClient.default()
     
     /// Handle AWS API Gateway errors
     ///
@@ -63,6 +68,8 @@ class REAWSManager: BackEndAPIInterface {
     func loginSync(user: User, completion : @escaping (NetworkResult<REBaseResponse>) -> Void ) {
         guard Reachability.networkConnectionCheck() else {return}
         
+        guard let ownerUserid = user.userid else { return }
+        
         guard let userReq = REUser() else { return }
         userReq.userid = user.userid
         userReq.name = user.name
@@ -76,10 +83,12 @@ class REAWSManager: BackEndAPIInterface {
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             if finished {
-                RECatchUMobileAPIClient.default().loginPost(authorization: tokenResult.token, body: baseRequest).continueWith { (task) -> Any? in
+                
+                self.apiClient.loginPost(userid: ownerUserid, authorization: tokenResult.token, body: baseRequest).continueWith { (task) -> Any? in
                     self.processExpectingData(task: task, completion: completion)
                     return nil
                 }
+                
             }
         }
         
@@ -90,16 +99,16 @@ class REAWSManager: BackEndAPIInterface {
     ///
     /// - Parameters:
     ///   - share: Share object contains message, images and videos
-    ///   - compiletion: A NetworkResult<REPostResponse>
+    ///   - completion: A NetworkResult<REPostResponse>
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func createPost(share: Share, completion: @escaping (NetworkResult<REPostResponse>)-> Void) {
         guard Reachability.networkConnectionCheck() else {return}
         
         var mediaCount = 0
-        var compiletionCount = 0 {
+        var completionCount = 0 {
             didSet {
-                if compiletionCount == mediaCount {
+                if completionCount == mediaCount {
                     self.sharePostRequest(share: share, completion: completion)
                 }
             }
@@ -147,7 +156,7 @@ class REAWSManager: BackEndAPIInterface {
                         guard let ext = item.media._extension else { return }
                         
                         UploadManager.shared.uploadFile(uploadUrl: uploadUrl, data: data, type: item.type, ext: ext) { (result) in
-                            compiletionCount += 1
+                            completionCount += 1
                         }
                     }
                 }
@@ -166,7 +175,7 @@ class REAWSManager: BackEndAPIInterface {
                         guard let ext = item.media._extension else { return }
                         
                         UploadManager.shared.uploadFile(uploadUrl: uploadUrl, data: data, type: item.type, ext: ext) { (result) in
-                            compiletionCount += 1
+                            completionCount += 1
                         }
                     }
                 }
@@ -205,7 +214,7 @@ class REAWSManager: BackEndAPIInterface {
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             if finished {
-                RECatchUMobileAPIClient.default().commonSignedurlGet(authorization: tokenResult.token, imagecount: imageCountStr, videocount: videoCountStr, videoextension: videoExtension, imageextension: imageExtension).continueWith { (task) -> Any? in
+                self.apiClient.commonSignedurlGet(authorization: tokenResult.token, imagecount: imageCountStr, videocount: videoCountStr, videoextension: videoExtension, imageextension: imageExtension).continueWith { (task) -> Any? in
                     self.processExpectingData(task: task, completion: completion)
                     return nil
                 }
@@ -243,7 +252,7 @@ class REAWSManager: BackEndAPIInterface {
         
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            RECatchUMobileAPIClient.default().postsGeolocationPost(authorization: tokenResult.token, body: baseRequest, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
+            self.apiClient.postsGeolocationPost(authorization: tokenResult.token, body: baseRequest, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
                 
                 print("\(#function) Result: \(task)")
                 self.processExpectingData(task: task, completion: completion)
@@ -260,28 +269,26 @@ class REAWSManager: BackEndAPIInterface {
     /// - Parameters:
     ///   - post: mandatory post for getting comments
     ///   - commentid: when giving commentid if exists gets comment of comments
-    ///   - compiletion: A [Comment]
+    ///   - completion: A [Comment]
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func getPostComments(post: Post, commentid: String, compiletion: @escaping (NetworkResult<RECommentListResponse>) -> Void) {
+    func getPostComments(post: Post, commentid: String, completion: @escaping (NetworkResult<RECommentListResponse>) -> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return }
+        guard let userid = User.shared.userid else { return }
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = User.shared.getUser()
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
-                RECatchUMobileAPIClient.default().postsPostidCommentsCommentidGetPost(postid: postid, commentid: commentid, body: baseRequest, authorization: tokenResult.token).continueWith { (task) -> Any? in
-                    
-                    print("\(#function) Result: \(task)")
-                    
-                    self.processExpectingData(task: task, completion: compiletion)
-                    
-                    return nil
-                }
+            self.apiClient.postsPostidCommentsCommentidGet(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                 
+                print("\(#function) Result: \(task)")
+                
+                self.processExpectingData(task: task, completion: completion)
+                
+                return nil
             }
         }
     }
@@ -294,17 +301,18 @@ class REAWSManager: BackEndAPIInterface {
     ///   - post: Post object
     ///   - repliedCommentid: When replied comment it contains replied comment's commentid
     ///   - comment: Contain message and user info
-    ///   - compiletion: A Comment
+    ///   - completion: A Comment
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func comment(post: Post, repliedCommentid: String, comment: Comment ,compiletion: @escaping (NetworkResult<RECommentResponse>) -> Void) {
+    func comment(post: Post, repliedCommentid: String?, comment: Comment ,completion: @escaping (NetworkResult<RECommentResponse>) -> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return } // postid is mandatory
+        guard let userid = User.shared.userid else { return } // userid is mandatory
         
         guard let message = comment.message, !message.isEmpty else { return } // message is mandatory
         
-        let commentid = repliedCommentid // optional
+        let commentid = repliedCommentid ?? Constants.AWS_PATH_EMPTY // optional
         
         guard let commentRequest = RECommentRequest() else { return }
         commentRequest.comment = REComment()
@@ -313,14 +321,14 @@ class REAWSManager: BackEndAPIInterface {
         commentRequest.comment!.user = User.shared.getUser()
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
+            print("Token: \(tokenResult.token)")
+            print("Userid: \(userid)")
+            
+            self.apiClient.postsPostidCommentsCommentidPost(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid, body: commentRequest).continueWith { (task) -> Any? in
                 
-                RECatchUMobileAPIClient.default().postsPostidCommentsCommentidAddPost(postid: postid, authorization: tokenResult.token, commentid: commentid, body: commentRequest).continueWith { (task) -> Any? in
-                    
-                    print("\(#function) Result: \(task)")
-                    self.processExpectingData(task: task, completion: compiletion)
-                    return nil
-                }
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
             }
         }
         
@@ -331,29 +339,27 @@ class REAWSManager: BackEndAPIInterface {
     ///
     /// - Parameters:
     ///   - post: Post object
-    ///   - comment: When like a comment it filled with liked comment
-    ///   - compiletion: A NetworkResult<REBaseResponse>
+    ///   - commentid: When like a comment it filled with liked commentid
+    ///   - completion: A NetworkResult<REBaseResponse>
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func like(post: Post, comment: Comment, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+    func like(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return } // postid is mandatory
+        guard let userid = User.shared.userid else { return }
         
-        let commentid = comment.commentid ?? "" // optional
+        let commentid = commentid ?? Constants.AWS_PATH_EMPTY
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = User.shared.getUser()
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
+            self.apiClient.postsPostidCommentsCommentidLikePost(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                 
-                RECatchUMobileAPIClient.default().postsPostidCommentsCommentidLikePost(postid: postid, authorization: tokenResult.token, commentid: commentid, body: baseRequest).continueWith { (task) -> Any? in
-                    
-                    print("\(#function) Result: \(task)")
-                    self.processExpectingData(task: task, completion: completion)
-                    return nil
-                }
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
             }
         }
         
@@ -364,36 +370,144 @@ class REAWSManager: BackEndAPIInterface {
     ///
     /// - Parameters:
     ///   - post: Post object
-    ///   - comment: When unlike a comment it filled with unliked comment
-    ///   - compiletion: A NetworkResult<REBaseResponse>
+    ///   - commentid: When unlike a comment it filled with unliked commentid
+    ///   - completion: A NetworkResult<REBaseResponse>
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func unlike(post: Post, comment: Comment, compiletion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+    func unlike(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
         guard let postid = post.postid else { return } // postid is mandatory
+        guard let userid = User.shared.userid else { return }
         
-        let commentid = comment.commentid ?? "" // optional
+        let commentid = commentid ?? Constants.AWS_PATH_EMPTY // optional
         
-        let baseReq = REBaseRequest()
-        baseReq?.user = User.shared.getUser()
+        guard let baseRequest = REBaseRequest() else { return }
+        baseRequest.user = User.shared.getUser()
         
-        guard let baseRequest = baseReq else { return }
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            self.apiClient.postsPostidCommentsCommentidLikeDelete(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            }
+        }
+    }
+    
+    
+    /// Get like user list a post or a comment
+    /// - Parameters:
+    ///   - page: Pagination purposel initial must be 1
+    ///   - perPage: Result list item count per page
+    ///   - post: Post object
+    ///   - commentid: When get comment likers then fill commentid
+    ///   - completion: A NetworkResult<REUserListResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func getlikeUsers(page: Int, perPage: Int, post: Post, commentid: String?, completion: @escaping (NetworkResult<REUserListResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
+        
+        guard let ownerUserid = User.shared.userid else { return }
+        guard let postid = post.postid else { return } // postid is mandatory
+        
+        let commentid = commentid ?? Constants.AWS_PATH_EMPTY
+        
+        guard let baseRequest = REBaseRequest() else { return }
+        baseRequest.user = User.shared.getUser()
+        
+        let pageStr = "\(page)"
+        let perPageStr = "\(perPage)"
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             if finished {
                 
-                RECatchUMobileAPIClient.default().postsPostidCommentsCommentidUnlikePost(postid: postid, commentid: commentid, body: baseRequest, authorization: tokenResult.token).continueWith { (task) -> Any? in
+                self.apiClient.postsPostidCommentsCommentidLikeGet(userid: ownerUserid, postid: postid, perPage: perPageStr, page: pageStr, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                     
                     print("\(#function) Result: \(task)")
-                    self.processExpectingData(task: task, completion: compiletion)
+                    self.processExpectingData(task: task, completion: completion)
                     return nil
                 }
             }
         }
-        
     }
     
+    /// The function below manages realtionship between authenticated user and the users registerd in catchu
+    ///
+    /// - Parameters:
+    ///   - requestType:
+    ///     makeFollowRequest : to request a follow from a user whose account is private
+    ///     acceptFollowRequest : to accept a follow request
+    ///     getRequestingFollowList : to get a list of request made by users
+    ///     createFollowDirectly : to create a follow with a user whose account is not private
+    ///     deleteFollow : to unfollow a user
+    ///     deletePendingFollowRequest : to withdraw a follow request
+    ///   - userid: requester userid
+    ///   - requestedUserid: requested userid
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func requestRelationProcess(requestType : RequestType, userid : String, targetUserid : String, completion: @escaping (NetworkResult<REFriendRequestList>) -> Void) {
+        
+        guard let friendRequest = REFriendRequest() else { return }
+        friendRequest.requestType = requestType.rawValue
+        friendRequest.requesterUserid = userid
+        friendRequest.requestedUserid = targetUserid
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            self.apiClient.followRequestPost(authorization: tokenResult.token, body: friendRequest).continueWith { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            }
+        }
+    }
+    
+    
+    
+    /// Return country code and phone dial code
+    ///
+    /// - Parameters:
+    ///   - userid: Login userid
+    ///   - completion: A NetworkResult<RECountryListResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func getCountries(userid: String, completion: @escaping (NetworkResult<RECountryListResponse>) -> Void) {
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            self.apiClient.commonCountriesGet(userid: userid, authorization: tokenResult.token).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+            
+        }
+    }
+    
+    
+    /// Delete S3 files
+    ///
+    /// - Parameters:
+    ///   - userid: Login user's userid
+    ///   - delete: Delete images and url list object, it return getUploadUrl
+    ///   - completion: NetworkResult<REBaseResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func deleteUploadUrl(userid: String, delete: REBucketUploadResponse, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, finished) in
+            
+            self.apiClient.commonSignedurlDelete(userid: userid, authorization: tokenResult.token, body: delete).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+        }
+    }
 }
 
 
@@ -457,8 +571,10 @@ extension REAWSManager {
         post.location = location
         post.attachments = attachments
         post.message = Share.shared.message
-        post.privacyType = PrivacyType.allFollowers.stringValue
+        post.privacyType = share.privacyType?.stringValue
+        post.groupid = share.groupid
         
+//        post.privacyType = PrivacyType.allFollowers.stringValue
         // MARK: for custom person selected
         //        post.privacyType = PrivacyType.custom.stringValue
         //        post.allowList = []
@@ -472,12 +588,12 @@ extension REAWSManager {
         guard let postRequest = REPostRequest() else { return }
         postRequest.post = post
         
-        let postid = Constants.CharacterConstants.EMPTY
+        let postid = Constants.AWS_PATH_EMPTY
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             if finished {
                 
-                RECatchUMobileAPIClient.default().postsPostidPost(postid: postid, authorization: tokenResult.token, body: postRequest).continueWith { (task) -> Any? in
+                self.apiClient.postsPostidPost(postid: postid, authorization: tokenResult.token, body: postRequest).continueWith { (task) -> Any? in
                     print("\(#function) Result: \(task)")
                     
                     self.processExpectingData(task: task, completion: completion)

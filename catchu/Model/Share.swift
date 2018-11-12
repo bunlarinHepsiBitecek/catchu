@@ -37,6 +37,8 @@ class Share {
     var images: [ShareMedia]?
     var videos: [ShareMedia]?
     var message: String?
+    var privacyType: PrivacyType?
+    var groupid: String?
     // MARK:
     
     var tempImageView = UIImageView() // use for notification
@@ -47,7 +49,6 @@ class Share {
     var videoScreenShot: UIImage?
     var location: CLLocation?
     var shareid: String?
-    var privacyType: String?
     var distance: Double?
     var user: User?
     

@@ -9,25 +9,6 @@
 import UIKit
 import AVKit
 
-class BaseCollectionCell: UICollectionViewCell {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupViews() {
-        
-    }
-    
-    static var identifier: String {
-        return String(describing: self)
-    }
-}
-
 class MediaViewImageCell: BaseCollectionCell {
     
     var item: MediaViewModelItem? {
@@ -136,7 +117,6 @@ class MediaViewVideoCell: BaseCollectionCell {
             player?.pause()
             playButton.setImage(UIImage(named: "play"), for: UIControlState())
         } else {
-//            player?.play()
             if #available(iOS 10.0, *) {
                 player?.playImmediately(atRate: 1.0)
             } else {
@@ -304,16 +284,17 @@ class MediaViewVideoCell: BaseCollectionCell {
     
     
     private func formatTimeText(duration: CMTime) -> String {
-        var remainingText = "00:00"
+        var seconds: Int = 0
+        var minutes: Int = 0
+        
         let durationSeconds = CMTimeGetSeconds(duration)
         
         if !durationSeconds.isNaN {
-            let seconds = Int(durationSeconds) % 60
-            let minutes = Int(durationSeconds) / 60
-            remainingText = "\(String(format: "%02d", minutes)):\(String(format: "%02d", seconds))"
+            seconds = Int(durationSeconds) % 60
+            minutes = Int(durationSeconds) / 60
         }
-        
-        return remainingText
+        // 00:00
+        return "\(String(format: "%02d", minutes)):\(String(format: "%02d", seconds))"
     }
     
 }

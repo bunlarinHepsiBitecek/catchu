@@ -8,9 +8,16 @@
 
 import UIKit
 
+fileprivate extension Selector {
+    static let replyComment = #selector(CommentViewCell.replyComment(_:))
+    static let like = #selector(CommentViewCell.like(_:))
+}
+
 class CommentViewCell: BaseTableCell {
     
     var item: CommentViewModelItem?
+    
+    private let padding: CGFloat = 10.0
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -55,7 +62,7 @@ class CommentViewCell: BaseTableCell {
         button.tintColor = UIColor.red
         
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
+        button.addTarget(self, action: .like, for: .touchUpInside)
         return button
     }()
     
@@ -87,7 +94,7 @@ class CommentViewCell: BaseTableCell {
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(replyComment))
+        let tap = UITapGestureRecognizer(target: self, action: .replyComment)
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tap)
         
@@ -101,16 +108,6 @@ class CommentViewCell: BaseTableCell {
         view.layer.cornerRadius = 10
         
         return view
-    }()
-    
-    lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [likeButton, likeCount, timeAgoLabel, reply])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.spacing = 10
-        stackView.distribution = .fillProportionally
-        return stackView
     }()
     
     lazy var containerView: UIView = {
@@ -130,56 +127,54 @@ class CommentViewCell: BaseTableCell {
     
     override func setupViews() {
         
-        self.bubbleView.addSubview(username)
-        self.bubbleView.addSubview(messageTextView)
-        self.containerView.addSubview(profileImageView)
-        self.containerView.addSubview(bubbleView)
-        self.containerView.addSubview(bottomStackView)
+        let customLayoutMargin = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        
+        let bottomStackView = UIStackView(arrangedSubviews: [likeButton, likeCount, timeAgoLabel, reply])
+        bottomStackView.alignment = .fill
+        bottomStackView.distribution = .fillProportionally
+        bottomStackView.spacing = padding
+        
+        let contentStackView = UIStackView(arrangedSubviews: [username, messageTextView, bottomStackView])
+        contentStackView.axis = .vertical
+        contentStackView.alignment = .leading
+        
+        let cellStackView = UIStackView(arrangedSubviews: [profileImageView, contentStackView])
+        cellStackView.translatesAutoresizingMaskIntoConstraints = false
+        cellStackView.alignment = .top
+        cellStackView.distribution = .fill
+        cellStackView.spacing = padding
+        cellStackView.layoutMargins = customLayoutMargin
+        cellStackView.isLayoutMarginsRelativeArrangement = true
+        
+        
+        self.containerView.addSubview(cellStackView)
         
         self.contentView.addSubview(containerView)
         
-        let contentLayout   = self.contentView.safeAreaLayoutGuide
-        let containerLayout = self.containerView.safeAreaLayoutGuide
-        
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentLayout.topAnchor, constant: 5),
-            containerView.bottomAnchor.constraint(equalTo: contentLayout.bottomAnchor, constant: -5),
-            containerView.leadingAnchor.constraint(equalTo: contentLayout.leadingAnchor, constant: 5),
-            containerView.trailingAnchor.constraint(equalTo: contentLayout.trailingAnchor, constant: -5),
-            ])
-        
-        NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: containerLayout.topAnchor, constant: 10),
-            profileImageView.leadingAnchor.constraint(equalTo: containerLayout.leadingAnchor, constant: 10),
+            containerView.topAnchor.constraint(equalTo: contentView.safeTopAnchor, constant: padding),
+            containerView.bottomAnchor.constraint(equalTo: contentView.safeBottomAnchor, constant: -padding),
+            containerView.leadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor, constant: padding),
+            containerView.trailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor, constant: -padding),
+            
             profileImageView.widthAnchor.constraint(equalToConstant: profileImageView.frame.width),
             profileImageView.heightAnchor.constraint(equalToConstant: profileImageView.frame.height),
             
-            bubbleView.topAnchor.constraint(equalTo: profileImageView.topAnchor),
-            bubbleView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
-            bubbleView.trailingAnchor.constraint(equalTo: containerLayout.trailingAnchor, constant: -10),
-            
-            username.topAnchor.constraint(equalTo: bubbleView.topAnchor),
-            username.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor),
-            username.trailingAnchor.constraint(equalTo: bubbleView.trailingAnchor),
-            
-            messageTextView.topAnchor.constraint(equalTo: username.bottomAnchor),
-            messageTextView.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor),
-            messageTextView.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor),
-            messageTextView.trailingAnchor.constraint(equalTo: bubbleView.trailingAnchor),
-            
-            bottomStackView.topAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: 5),
-            bottomStackView.bottomAnchor.constraint(equalTo: contentLayout.bottomAnchor, constant: -10),
-            bottomStackView.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor),
+            cellStackView.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor),
+            cellStackView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor),
+            cellStackView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor),
+            cellStackView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
             ])
         
     }
     
-    @objc func replyComment() {
+    @objc func replyComment(_ sender: Any) {
         guard let item = item as? CommentViewModelCommentItem else { return }
         guard let comment = item.comment else { return }
         
-        guard let commentView = self.commentView else { return }
-        commentView.replyComment(comment: comment)
+        // TODO: duzelt
+//        guard let commentView = self.commentView else { return }
+//        commentView.replyComment(comment: comment)
     }
     
     // MARK: trigger from ViewModel DataSource
@@ -218,7 +213,7 @@ class CommentViewCell: BaseTableCell {
         
     }
     
-    @objc func likeButtonClicked() {
+    @objc func like(_ sender: Any) {
         guard let item = item as? CommentViewModelCommentItem else {
             return
         }
@@ -233,7 +228,8 @@ class CommentViewCell: BaseTableCell {
             comment.isLiked = !isLiked
             likeCount -= 1
             self.likeButton.setImage(UIImage(named: "icon-like"), for: .normal)
-            REAWSManager.shared.unlike(post: relatedPost, comment: comment) { [weak self] result in
+            
+            REAWSManager.shared.unlike(post: relatedPost, commentid: comment.commentid) { [weak self] result in
                 self?.handleResult(result)
             }
         } else {
@@ -241,8 +237,7 @@ class CommentViewCell: BaseTableCell {
             likeCount += 1
             self.likeButton.setImage(UIImage(named: "icon-like-filled"), for: .normal)
             
-            
-            REAWSManager.shared.like(post: relatedPost, comment: comment) { [weak self] result in
+            REAWSManager.shared.like(post: relatedPost, commentid: comment.commentid) { [weak self] result in
                 self?.handleResult(result)
             }
         }
@@ -288,12 +283,12 @@ class CommentViewCell: BaseTableCell {
 extension CommentViewCell {
     
     /** Gets the owner CommentView of the cell */
-    var commentView: CommentView? {
-        var view = self.superview
-        while (view != nil && view!.isKind(of: CommentView.self) == false) {
-            view = view!.superview
-        }
-        return view as? CommentView
-    }
+//    var commentView: CommentView? {
+//        var view = self.superview
+//        while (view != nil && view!.isKind(of: CommentView.self) == false) {
+//            view = view!.superview
+//        }
+//        return view as? CommentView
+//    }
 }
 

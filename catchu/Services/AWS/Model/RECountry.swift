@@ -18,23 +18,18 @@ import Foundation
 import AWSCore
 
 @objcMembers
-public class REUserProfile_relationCountInfo : AWSModel {
+public class RECountry : AWSModel {
     
-    var followingCount: String?
-    var followerCount: String?
+    var code: String?
+    var name: String?
+    var dialCode: String?
     
    	public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
 		var params:[AnyHashable : Any] = [:]
-		params["followingCount"] = "followingCount"
-		params["followerCount"] = "followerCount"
+		params["code"] = "code"
+		params["name"] = "name"
+		params["dialCode"] = "dialCode"
 		
         return params
 	}
-    
-    func display() {
-        
-        print("following : \(followingCount)")
-        print("followers : \(followerCount)")
-        
-    }
 }

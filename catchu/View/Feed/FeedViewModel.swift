@@ -6,14 +6,12 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
-import Foundation
-
 enum FeedViewModelItemType {
     case post
     //    case advert
 }
 
-protocol FeedViewModelItem {
+protocol FeedViewModelItem: BaseViewModelItem {
     var type: FeedViewModelItemType { get }
     var id: String { get }
     var cellItems: [CellItem] { get }
@@ -32,7 +30,6 @@ protocol FeedViewModelDelegete: class {
     func apply(changes: CellChanges)
 }
 
-
 class FeedViewModelPostItem: FeedViewModelItem {
     var type: FeedViewModelItemType {
         return .post
@@ -45,6 +42,7 @@ class FeedViewModelPostItem: FeedViewModelItem {
     }
     var post: Post?
     var expanded = false
+    var currentPage: Int = 0
     
     init(post: Post?) {
         self.post = post
@@ -93,7 +91,7 @@ class FeedViewModelPostItem: FeedViewModelItem {
     }
 }
 
-class FeedViewModel: NSObject {
+class FeedViewModel: BaseViewModel {
     let sectionCount = 1
     var page = 1
     var perPage = 20
@@ -101,19 +99,28 @@ class FeedViewModel: NSObject {
     
     weak var delegate: FeedViewModelDelegete!
     
-    override init() {
-        super.init()
-        
+    override func setup() {
         LocationManager.shared.delegate = self
         LocationManager.shared.startUpdateLocation()
     }
     
     func refreshData() {
         LocationManager.shared.startUpdateLocation()
-//        self.loadData()
     }
     
     private func loadData() {
+        
+        // TODO: for test delete sil
+        if Constants.LOCALTEST {
+            LoaderController.shared.showLoader(style: .gray)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                LoaderController.shared.removeLoader()
+                self.populate(posts: [Post]())
+            })
+            return
+        }
+        // TODO: for test delete sil
+        
         LoaderController.shared.showLoader(style: .gray)
         REAWSManager.shared.getFeeds(page: page, perPage: perPage, radius: Constants.Map.Radius) { [weak self]
             result in
@@ -167,9 +174,7 @@ class FeedViewModel: NSObject {
         let cellChanges = DifferenceCalculator.calculate(oldItems: oldData, newItems: newData)
         
         self.items = newItems
-        if let delegate = self.delegate {
-            delegate.apply(changes: cellChanges)
-        }
+        delegate?.apply(changes: cellChanges)
         LoaderController.shared.removeLoader()
     }
     
@@ -194,6 +199,7 @@ extension FeedViewModel: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionCount
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }

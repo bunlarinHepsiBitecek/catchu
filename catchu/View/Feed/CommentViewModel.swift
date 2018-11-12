@@ -74,16 +74,12 @@ protocol CommentViewModelDelegate: class {
     func apply(changes: CellChanges)
 }
 
-class CommentViewModel: NSObject {
+class CommentViewModel: BaseViewModel {
     let sectionCount = 1
     var items = [CommentViewModelItem]()
     var post: Post?
     
     weak var delegate: CommentViewModelDelegate!
-    
-    override init() {
-        super.init()
-    }
     
     // MARK: call after push controller
     func loadData() {
@@ -94,7 +90,7 @@ class CommentViewModel: NSObject {
         
         LoaderController.shared.showLoader(style: .gray)
         // MARK: when set it get comment of comments
-        let commentid = ""
+        let commentid = Constants.AWS_PATH_EMPTY
         REAWSManager.shared.getPostComments(post: post, commentid: commentid) { [weak self] result  in
             LoaderController.shared.removeLoader()
             self?.handleResult(result)

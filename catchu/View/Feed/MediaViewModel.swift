@@ -27,7 +27,7 @@ class MediaViewModel: NSObject {
         guard let post = post else { return }
         guard let attachments = post.attachments else { return }
         
-        print("populate data: \(attachments.count)")
+        items.removeAll()
         
         for media in attachments {
             let mediaItem = MediaViewModelMediaItem(media: media)
@@ -88,6 +88,8 @@ extension MediaViewModel: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = items[indexPath.row]
         
+        print("collectionView: \(indexPath)")
+        
         switch item.type {
         case .image:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaViewImageCell.identifier, for: indexPath) as? MediaViewImageCell {
@@ -104,6 +106,5 @@ extension MediaViewModel: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         return UICollectionViewCell()
     }
-    
     
 }

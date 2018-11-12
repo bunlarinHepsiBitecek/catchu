@@ -21,8 +21,9 @@ class User {
     var profilePictureUrl: String?
     var userBirthday: String?
     var userGender: String?
-    var userPhone: String?
+    var phone: Phone?
     var userWebsite: String?
+    var followStatus: FollowStatus?
     
     var userFollowerCount: String?
     var userFollowingCount: String?
@@ -46,7 +47,7 @@ class User {
     
     init() {}
     
-    init(userid: String? = nil, username: String?  = nil, name: String?  = nil, email: String?  = nil, password: String?  = nil, provider: String?  = nil, providerID: String?  = nil) {
+    init(userid: String? = nil, username: String?  = nil, name: String?  = nil, email: String?  = nil, password: String?  = nil, provider: String?  = nil, providerID: String?  = nil, followStatus: FollowStatus? = nil) {
         self.userid     = userid
         self.username   = username
         self.name       = name
@@ -54,6 +55,7 @@ class User {
         self.password   = password
         self.provider   = provider
         self.providerID = providerID
+        self.followStatus = followStatus
     }
     
     init(user: REUser?) {
@@ -74,6 +76,9 @@ class User {
         if let isPrivateAccount = user.isPrivateAccount {
             self.isUserHasAPrivateAccount = isPrivateAccount.boolValue
         }
+        if let followStatus = user.followStatus {
+            self.followStatus = FollowStatus.convert(followStatus)
+        }
     }
     
     var nameCompare: String {
@@ -89,8 +94,6 @@ class User {
     }
     
     func appendElementIntoFriendListAWS(httpResult : REFriendList) {
-        
-        httpResult.displayProperties()
         
         for item in httpResult.resultArray! {
             
@@ -152,8 +155,6 @@ class User {
         
         print("setUserProfileData starts")
         
-        httpRequest.userInfo?.displayProperties()
-        
         if let data = httpRequest.userInfo {
             if let name = data.name {
                 self.name = name
@@ -174,7 +175,7 @@ class User {
                 self.email = email
             }
             if let phone = data.phone {
-                self.userPhone = phone
+                self.phone = Phone(phone: phone)
             }
             if let website = data.website {
                 self.userWebsite = website
@@ -183,9 +184,13 @@ class User {
                 isUserHasAPrivateAccount = isPrivateAccount.boolValue
             }
         }
-        if let dataRelation = httpRequest.relationCountInfo {
-            self.userFollowingCount = dataRelation.followingCount
-            self.userFollowerCount = dataRelation.followerCount
+        if let dataRelation = httpRequest.relationInfo {
+            if let followingCount = dataRelation.followingCount {
+                self.userFollowingCount = followingCount
+            }
+            if let followerCount = dataRelation.followerCount {
+                self.userFollowerCount = followerCount
+            }
         }
     }
     
@@ -200,19 +205,85 @@ class User {
 //        userGender = httpRequest.gender!
 //        email = httpRequest.email!
 //        userPhone = httpRequest.phone!
-        
     }
     
-    func getUser() -> REUser {
-        let user = REUser()
-        user?.userid = self.userid
-        user?.name = self.name
-        user?.username = self.username
-        user?.profilePhotoUrl = self.profilePictureUrl
+    func getUserProfile() -> REUserProfileProperties? {
+        guard let user = REUserProfileProperties() else { return nil }
+        user.userid = self.userid
+        user.name = self.name
+        user.username = self.username
+        user.birthday = self.userBirthday
+        user.gender = self.userGender
+        user.email = self.email
+        user.phone = self.phone?.getPhone()
+        user.website = self.userWebsite
+        return user
+    }
+    
+    func getUser() -> REUser? {
+        guard let user = REUser() else { return nil }
+        user.userid = self.userid
+        user.name = self.name
+        user.username = self.username
+        user.profilePhotoUrl = self.profilePictureUrl
         if let isUserHasAPrivateAccount = self.isUserHasAPrivateAccount {
-            user?.isPrivateAccount = NSNumber(booleanLiteral: isUserHasAPrivateAccount)
+            user.isPrivateAccount = NSNumber(booleanLiteral: isUserHasAPrivateAccount)
         }
-        return user!
+        
+        return user
     }
     
+}
+
+extension User {
+    
+    public enum FollowStatus {
+        case following
+        case pending
+        case own
+        case none
+        
+        internal var toString: String {
+            switch self {
+            case .following:
+                return LocalizedConstants.Like.Following
+            case .pending:
+                return LocalizedConstants.Like.Requested
+            case .own:
+                return ""
+            case .none:
+                return LocalizedConstants.Like.Follow
+            }
+        }
+        
+        static func convert(_ followStatus: String?) -> FollowStatus {
+            guard let followStatus = followStatus else { return .none }
+            
+            switch followStatus {
+            case Constants.Relation.Following:
+                return .following
+            case Constants.Relation.Pending:
+                return .pending
+            case Constants.Relation.Own:
+                return .own
+            default:
+                return FollowStatus.none
+            }
+        }
+        
+        func configure(_ button: UIButton) {
+            let title = self.toString
+            let titleColor: UIColor = self == .none ? UIColor.white : UIColor.black
+            let borderColor: UIColor = self == .none ? UIColor.blue : UIColor.lightGray
+            let backgroundColor: UIColor = self == .none ? UIColor.blue : UIColor.white
+            let alpha: CGFloat = self == .own ? 0 : 1
+            
+            button.setTitle(title, for: .normal)
+            button.setTitleColor(titleColor, for: .normal)
+            button.backgroundColor = backgroundColor
+            button.alpha = alpha
+            
+            button.layer.borderColor = borderColor.cgColor
+        }
+    }
 }

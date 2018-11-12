@@ -67,11 +67,10 @@ class APIGatewayManager {
     /// - Parameters:
     ///   - userid: authenticated userid
     ///   - completion: REUserProfile
-    func getUserProfileInfo(userid : String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
+    func getUserProfileInfo(userid : String, requestedUserid: String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-        
-            self.client.usersGet(authorization: tokenResult.token, userid: userid).continueWith { (task) -> Any? in
+            self.client.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token).continueWith { (task) -> Any? in
                 
                 if task.error != nil {
                     
@@ -112,17 +111,12 @@ class APIGatewayManager {
         print("updateUserProfileInformation starts")
         print("userObject : \(userObject)")
         
-        let inputREUserProfile = REUserProfile()
-        let inputUserInfo = REUserProfileProperties()
+        guard let userProfileRequest = REUserProfile() else { return }
         
-        inputUserInfo?.setUserProfileInformation(user: userObject)
+        userProfileRequest.userInfo = userObject.getUserProfile()
+        userProfileRequest.requestType = requestType.rawValue
         
-        inputREUserProfile?.userInfo = inputUserInfo
-        inputREUserProfile?.requestType = requestType.rawValue
-        
-        inputREUserProfile?.userInfo?.displayProperties()
-        
-        client.usersPost(authorization: "", body: inputREUserProfile!).continueWith { (task) -> Any? in
+        client.usersPost(authorization: "", body: userProfileRequest).continueWith { (task) -> Any? in
             
             if task.error != nil {
                 

@@ -9,6 +9,12 @@
 import UIKit
 
 
+enum ProviderType: String {
+    case firebase
+    case facebook
+    case twitter
+}
+
 enum MediaType: String {
     case image
     case video

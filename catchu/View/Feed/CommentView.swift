@@ -36,9 +36,10 @@ class CommentView: BaseView {
         return view
     }()
     
-    var repliedCommentid = ""
+    var repliedCommentid = Constants.CharacterConstants.SPACE
     
     override func setupView() {
+        super.setupView()
         
         // MARK: for inputAccessoryView and canBecomeFirstResponder with becomeFirstResponder
         self.tableView.keyboardDismissMode = .interactive
@@ -90,8 +91,8 @@ extension CommentView: CommentAccessoryViewDelegate {
         guard let user = comment.user else { return }
         // TODO: user objesi duzeltilecek
         //        guard let username = user.userName else { return }
-        let username = user.username
-        self.commentAccessoryView.messageTextView.text = "@\(username) "
+        let username = "@\(user.username)" ?? ""
+        self.commentAccessoryView.messageTextView.text = username
         self.commentAccessoryView.messageTextView.becomeFirstResponder()
         if let commentid = comment.commentid {
             self.repliedCommentid = commentid
@@ -115,13 +116,13 @@ extension CommentView: CommentAccessoryViewDelegate {
         // hide keyboard after send (just to show how accessory view behave when keyboard hides)
         self.commentAccessoryView.messageTextView.resignFirstResponder()
         
-        //        REAWSManager.shared.comment(post: post, repliedCommentid: selectedCommentid, comment: commentInfo) { (result) in
-        //            self.handleResult(result)
-        //        }
+        REAWSManager.shared.comment(post: post, repliedCommentid: repliedCommentid, comment: commentInfo) { (result) in
+            self.handleResult(result)
+        }
     }
     
     private func handleResult(_ result: NetworkResult<RECommentResponse>) {
-        self.repliedCommentid = ""
+        self.repliedCommentid = Constants.CharacterConstants.SPACE
         
         switch result {
         case .success(let response):

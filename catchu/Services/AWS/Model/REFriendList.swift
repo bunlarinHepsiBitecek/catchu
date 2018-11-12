@@ -36,15 +36,5 @@ public class REFriendList : AWSModel {
     class func resultArrayJSONTransformer() -> ValueTransformer{
         return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: REUserProfileProperties.self);
     }
-    
-    func displayProperties() {
-        
-        for item in resultArray! {
-            
-            item.displayProperties()
-            
-        }
-        
-    }
 }
 

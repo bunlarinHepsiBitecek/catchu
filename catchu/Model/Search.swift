@@ -51,9 +51,9 @@ class Search {
         }
     }
     
-    func appendElementIntoSearchArrayResult(httpResult : RESearchResult) {
+    func appendElementIntoSearchArrayResult(httpResult : REUserListResponse) {
         
-        for item in httpResult.resultArray! {
+        for item in httpResult.items! {
             
             let tempUser = User()
             
@@ -61,12 +61,18 @@ class Search {
             tempUser.username = item.username
             tempUser.name = item.name
             tempUser.profilePictureUrl = item.profilePhotoUrl
-            if let friendRelation = item.friendRelation {
-                tempUser.isUserHasAFriendRelation = friendRelation.boolValue
-            }
-            if let pendingFriendRequest = item.pendingFriendRequest {
-                tempUser.isUserHasPendingFriendRequest = pendingFriendRequest.boolValue
-            }
+            tempUser.followStatus = User.FollowStatus.convert(item.followStatus)
+            
+            tempUser.isUserHasAFriendRelation = (tempUser.followStatus == User.FollowStatus.following)
+            tempUser.isUserHasPendingFriendRequest = (tempUser.followStatus == User.FollowStatus.pending)
+            
+//            if let friendRelation = item.friendRelation {
+//                tempUser.isUserHasAFriendRelation = friendRelation.boolValue
+//            }
+//            if let pendingFriendRequest = item.pendingFriendRequest {
+//                tempUser.isUserHasPendingFriendRequest = pendingFriendRequest.boolValue
+//            }
+            
             if let isPrivateAccount = item.isPrivateAccount {
                 tempUser.isUserHasAPrivateAccount = isPrivateAccount.boolValue
             }

@@ -46,28 +46,33 @@ extension SearchView : UISearchBarDelegate {
         let client = RECatchUMobileAPIClient.default()
         let userid = User.shared.userid ?? ""
         
+        let page = 1
+        let perPage = 20
+        
+        let pageStr = "\(page)"
+        let perPageStr = "\(perPage)"
+        
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
-                client.searchGet(userid: userid, authorization: tokenResult.token, searchValue: input).continueWith { (taskRESearchResult) -> Any? in
+            
+            client.searchUsersGet(userid: userid, searchText: input, authorization: tokenResult.token, perPage: perPageStr, page: pageStr).continueWith { (taskRESearchResult) -> Any? in
+                
+                if taskRESearchResult.error != nil {
                     
-                    if taskRESearchResult.error != nil {
-                        
-                        print("error : \(taskRESearchResult.error?.localizedDescription)")
-                        
-                    } else {
-                        
-                        print("result : \(taskRESearchResult.result)")
-                        
-                        Search.shared.appendElementIntoSearchArrayResult(httpResult: taskRESearchResult.result!)
-                        
-                    }
+                    print("error : \(taskRESearchResult.error?.localizedDescription)")
                     
-                    completion(true)
+                } else {
                     
-                    return nil
+                    print("result : \(taskRESearchResult.result)")
+                    
+                    Search.shared.appendElementIntoSearchArrayResult(httpResult: taskRESearchResult.result!)
                     
                 }
+                
+                completion(true)
+                
+                return nil
+                
             }
         }
     }
