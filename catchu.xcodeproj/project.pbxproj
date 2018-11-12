@@ -19,7 +19,6 @@
 		451E9F132139366300185925 /* MediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E9F0C2139366300185925 /* MediaViewModel.swift */; };
 		451E9F142139366300185925 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E9F0D2139366300185925 /* MediaView.swift */; };
 		451E9F152139366300185925 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E9F0E2139366300185925 /* CachedImageView.swift */; };
-		451E9F172139366300185925 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E9F102139366300185925 /* FeedView.swift */; };
 		451E9F1B213937E300185925 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E9F19213937E300185925 /* FeedViewController.swift */; };
 		451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E9F1C213937F600185925 /* DropPinViewController.swift */; };
 		452001CA20CBB7AB00C1ED22 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452001C920CBB7AB00C1ED22 /* MapView.swift */; };
@@ -326,7 +325,6 @@
 		451E9F0C2139366300185925 /* MediaViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaViewModel.swift; sourceTree = "<group>"; };
 		451E9F0D2139366300185925 /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		451E9F0E2139366300185925 /* CachedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
-		451E9F102139366300185925 /* FeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		451E9F19213937E300185925 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		451E9F1C213937F600185925 /* DropPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropPinViewController.swift; sourceTree = "<group>"; };
 		452001C920CBB7AB00C1ED22 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -640,7 +638,6 @@
 		451E9F092139366300185925 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				451E9F102139366300185925 /* FeedView.swift */,
 				45E8B5F5215A9AAE005AD00A /* FeedViewModel.swift */,
 				451E9F0A2139366300185925 /* FeedViewCell.swift */,
 				45E8B5F1215A9857005AD00A /* CommentView.swift */,
@@ -1932,7 +1929,6 @@
 				A7E78036218F714800E76E3C /* ContactViewController2.swift in Sources */,
 				A77D98782159175F002F9A02 /* VideoMenuView.swift in Sources */,
 				A7928FD6217D2ADE0005D811 /* Sticker.swift in Sources */,
-				451E9F172139366300185925 /* FeedView.swift in Sources */,
 				A7348E13217222BC005FB900 /* FilterColorCollectionViewCell.swift in Sources */,
 				A7276D42211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift in Sources */,
 				A70B7728214AA2AA00494889 /* CustomPermissionViewController.swift in Sources */,
