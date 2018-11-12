@@ -415,9 +415,6 @@ extension FirebaseManager {
             }
             completion(false)
         }
+        }
     }
-    
-    static let pathMe_Friends = "me/friends"
-    static let parameterValueForFriends = "id, name, short_name, picture"
 }
-

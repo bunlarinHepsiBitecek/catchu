@@ -12,28 +12,6 @@ protocol FeedViewCellDelegate: class {
     func updateTableView(indexPath: IndexPath?)
 }
 
-class BaseTableCell: UITableViewCell {
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupViews() {
-        
-    }
-    
-    static var identifier: String {
-        return String(describing: self)
-    }
-    
-}
-
 class FeedViewCell: BaseTableCell {
     
     var item: FeedViewModelItem?

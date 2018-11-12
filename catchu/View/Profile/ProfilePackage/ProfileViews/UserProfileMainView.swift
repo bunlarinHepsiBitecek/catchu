@@ -343,7 +343,7 @@ extension UserProfileMainView {
         activateShadowView(active: true)
         
         if let userid = User.shared.userid {
-            APIGatewayManager.shared.getUserProfileInfo(userid: userid) { (reUserProfileResult, finish) in
+            APIGatewayManager.shared.getUserProfileInfo(userid: userid, requestedUserid: userid) { (reUserProfileResult, finish) in
                 if finish {
                     User.shared.convertReUserDataToUserObject(httpRequest: reUserProfileResult)
                     self.setUserDataToViews()

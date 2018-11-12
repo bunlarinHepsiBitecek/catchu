@@ -231,9 +231,9 @@ class User {
         user.username = self.username
         user.profilePhotoUrl = self.profilePictureUrl
         if let isUserHasAPrivateAccount = self.isUserHasAPrivateAccount {
-            user?.isPrivateAccount = NSNumber(booleanLiteral: isUserHasAPrivateAccount)
+            user.isPrivateAccount = NSNumber(booleanLiteral: isUserHasAPrivateAccount)
         }
-        return user!
+        return user
     }
     
     func getREUSerList(inputUserList : [User]) -> [REUser] {
@@ -241,7 +241,7 @@ class User {
         var returList = [REUser]()
         
         for item in inputUserList {
-            returList.append(item.getUser())
+            returList.append(item.getUser()!)
         }
         
         return returList
@@ -262,12 +262,6 @@ class User {
         
         return provider!
         
-    }
-    
-            user.isPrivateAccount = NSNumber(booleanLiteral: isUserHasAPrivateAccount)
-        }
-        
-        return user
     }
     
 }

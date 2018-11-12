@@ -87,6 +87,7 @@
 		458F0D742160CCDB00FC4701 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458F0D732160CCDB00FC4701 /* LoginViewController.swift */; };
 		45A496E7217F4D5100E6605B /* PhoneViewConfirmationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A496E6217F4D5100E6605B /* PhoneViewConfirmationController.swift */; };
 		45A496EB217F577E00E6605B /* FeedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A496EA217F577E00E6605B /* FeedMapView.swift */; };
+		45A8F9A521999229000CB357 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9A421999229000CB357 /* REProvider.swift */; };
 		45ABCA76215E27BD00CB52B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ABCA75215E27BD00CB52B9 /* LoginView.swift */; };
 		45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DE8216F4CDC0081C6F6 /* REProvider.swift */; };
 		45AE7DEB216F4D170081C6F6 /* REUserListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */; };
@@ -274,7 +275,6 @@
 		A7C1C35921986AD70096CEA6 /* ContactList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C35821986AD70096CEA6 /* ContactList.swift */; };
 		A7C1C35B21987C1A0096CEA6 /* FacebookContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C35A21987C1A0096CEA6 /* FacebookContactTableViewCell.swift */; };
 		A7C1C35E219884F00096CEA6 /* FacebookContactListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C35D219884F00096CEA6 /* FacebookContactListManager.swift */; };
-		A7C1C361219906B90096CEA6 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C35F219906B90096CEA6 /* REProvider.swift */; };
 		A7C1C362219906B90096CEA6 /* REProviderList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C360219906B90096CEA6 /* REProviderList.swift */; };
 		A7C4F1C8213BD27E00C76EEF /* PhotoSpecialScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C4F1C7213BD27B00C76EEF /* PhotoSpecialScrollView.swift */; };
 		A7C92D862150075400432D70 /* CustomCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C92D852150075400432D70 /* CustomCameraView.swift */; };
@@ -430,6 +430,7 @@
 		458F0D732160CCDB00FC4701 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		45A496E6217F4D5100E6605B /* PhoneViewConfirmationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewConfirmationController.swift; sourceTree = "<group>"; };
 		45A496EA217F577E00E6605B /* FeedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMapView.swift; sourceTree = "<group>"; };
+		45A8F9A421999229000CB357 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProvider.swift; sourceTree = "<group>"; };
 		45ABCA75215E27BD00CB52B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		45AE7DE8216F4CDC0081C6F6 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProvider.swift; sourceTree = "<group>"; };
 		45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REUserListResponse.swift; sourceTree = "<group>"; };
@@ -617,7 +618,6 @@
 		A7C1C35821986AD70096CEA6 /* ContactList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactList.swift; sourceTree = "<group>"; };
 		A7C1C35A21987C1A0096CEA6 /* FacebookContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookContactTableViewCell.swift; sourceTree = "<group>"; };
 		A7C1C35D219884F00096CEA6 /* FacebookContactListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookContactListManager.swift; sourceTree = "<group>"; };
-		A7C1C35F219906B90096CEA6 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = REProvider.swift; path = "../../../../../../Downloads/aws-apigateway-ios-swift/generated-src/REProvider.swift"; sourceTree = "<group>"; };
 		A7C1C360219906B90096CEA6 /* REProviderList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProviderList.swift; sourceTree = "<group>"; };
 		A7C4F1C7213BD27B00C76EEF /* PhotoSpecialScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSpecialScrollView.swift; sourceTree = "<group>"; };
 		A7C92D852150075400432D70 /* CustomCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraView.swift; sourceTree = "<group>"; };
@@ -1134,6 +1134,7 @@
 		A7276D33210F68EF00CAC67C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				45A8F9A421999229000CB357 /* REProvider.swift */,
 				4538A05C217725E20044A79D /* RECountry.swift */,
 				4538A05E217725F10044A79D /* RECountryListResponse.swift */,
 				45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */,
@@ -1150,7 +1151,6 @@
 				A708792421295C010012C7F6 /* REUserProfile_relationInfo.swift */,
 				454285B8214A96C600F68FAC /* REFollowInfo_resultArray_item.swift */,
 				A708792D212B25090012C7F6 /* REGroupRequest_groupParticipantArray_item.swift */,
-				A7C1C35F219906B90096CEA6 /* REProvider.swift */,
 				A7C1C360219906B90096CEA6 /* REProviderList.swift */,
 				A7EC57D0211B31EC0078F631 /* REError.swift */,
 				A7EC57C12118BC7A0078F631 /* REGroupRequest.swift */,
@@ -2037,6 +2037,7 @@
 				A70B7728214AA2AA00494889 /* CustomPermissionViewController.swift in Sources */,
 				A7087934212C597F0012C7F6 /* EditableProfileView.swift in Sources */,
 				A774ACA2213204FB00848B79 /* GroupInfoHeaderTableViewCell.swift in Sources */,
+				45A8F9A521999229000CB357 /* REProvider.swift in Sources */,
 				45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */,
 				A742407E214694C600E20A58 /* CustomCamera.swift in Sources */,
 				454815B8215EABB0009684E1 /* PasswordResetView.swift in Sources */,
@@ -2070,7 +2071,6 @@
 				A79A766920C5B55900FCE198 /* ExtensionContactViewController.swift in Sources */,
 				A71F65AD2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift in Sources */,
 				A75F081A213752B8001065AA /* GroupImageViewController.swift in Sources */,
-				A7C1C361219906B90096CEA6 /* REProvider.swift in Sources */,
 				A762B7582163BD1800DBB4EF /* FinalSharePageView.swift in Sources */,
 				A79A768420C656E100FCE198 /* ExtensionContainerFriendController.swift in Sources */,
 				A71F65A921664C2D002A7C5C /* FinalSharePageView.swift in Sources */,
@@ -2097,7 +2097,6 @@
 				A71CC35A215B4524002A2468 /* ImageCollectionViewCell2.swift in Sources */,
 				A7817AC42134BF7F00ECCF8C /* ParticipantSelectedCollectionViewCell.swift in Sources */,
 				4564E47620B9CBB2003B0D16 /* AlertViewSupport.swift in Sources */,
-				A7E2F84B2111EFD600214066 /* RESearchResult_resultArray_item.swift in Sources */,
 				A7E7803B219052C000E76E3C /* CustomPostAlert.swift in Sources */,
 				454285A8214A95E200F68FAC /* REBaseResponse.swift in Sources */,
 				A708791F21276CF00012C7F6 /* Item2CollectionViewCell.swift in Sources */,

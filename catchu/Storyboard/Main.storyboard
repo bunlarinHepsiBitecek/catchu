@@ -1879,10 +1879,10 @@
             </objects>
             <point key="canvasLocation" x="8847.2000000000007" y="-2139.1625615763546"/>
         </scene>
-        <!--Feed View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="2WX-Dd-wBD">
             <objects>
-                <viewController id="Zoe-ob-3sq" customClass="FeedViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Zoe-ob-3sq" customClass="HomeViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="42P-32-UfW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

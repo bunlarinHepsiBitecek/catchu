@@ -141,7 +141,7 @@ extension ShareDataViewController2: ShareDataProtocols {
         
         print("dismisViewController starts")
         
-        if let destionation = LoaderController.currentViewController() as? MainTabBarViewController {
+        if let destionation = LoaderController.shared.currentViewController() as? MainTabBarViewController {
             
             destionation.selectedIndex = priorActiveTab
         }

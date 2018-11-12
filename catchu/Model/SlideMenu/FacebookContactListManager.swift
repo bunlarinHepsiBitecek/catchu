@@ -47,10 +47,10 @@ class FacebookContactListManager {
         // richard userid : wPeXxNwNM4bOuDgTY51IAF9apbk2
         // sharon userid : semlX3xtOBfynq4rkWNcMpMKkT42
         
-        let parameterKey = FacebookPermissions.parameter_key
-        let parameterValue = FacebookPermissions.parameterValueForFriends
-        let method = FacebookPermissions.method
-        let path = FacebookPermissions.pathMe_Friends
+        let parameterKey = FirebaseManager.FacebookPermissions.parameter_key
+        let parameterValue = FirebaseManager.FacebookPermissions.parameterValueForFriends
+        let method = FirebaseManager.FacebookPermissions.method
+        let path = FirebaseManager.FacebookPermissions.pathMe_Friends
         
         print("FBSDKAccessToken.current()?.tokenString : \(FBSDKAccessToken.current()?.tokenString)")
         
