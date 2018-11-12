@@ -31,6 +31,7 @@ class BaseTableCell: UITableViewCell {
     static var identifier: String {
         return String(describing: self)
     }
+    
 }
 
 class FeedViewCell: BaseTableCell {

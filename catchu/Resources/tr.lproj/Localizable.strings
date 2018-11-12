@@ -59,6 +59,7 @@
 "tryAgain" = "Yeniden Deneyiniz! 🥰";
 "follewers" = "Takipçiler";
 "follewings" = "Takiptesin";
+"connectToFacebook" = "Facebook ile bağlan";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
@@ -134,4 +135,10 @@
 // cloud
 "cloudFetching" = "iCloud'dan çekiliyor...";
 
+// Slide Menu Constants
+"explorePeople" = "Kişi Keşfet";
+"facebook" = "facebook";
+"contacts" = "bağlantılar";
+"facebookFriendRequest" = "Facebook Arkadaşlarını Bul";
+"findFriendSuggestion" = "CatchU kullanan facebook arkadaşlarınızı bulmalısınız 😜";
 

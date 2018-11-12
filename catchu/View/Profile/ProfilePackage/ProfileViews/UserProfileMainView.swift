@@ -302,6 +302,8 @@ extension UserProfileMainView {
     
     func setUserDataToViews() {
         
+        print("self.userNameLabel : \(self.userNameLabel)")
+        
         DispatchQueue.main.async {
             
             UIView.transition(with: self.userNameLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {

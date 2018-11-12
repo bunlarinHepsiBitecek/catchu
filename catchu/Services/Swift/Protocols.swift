@@ -15,6 +15,7 @@ protocol ViewPresentationProtocols : class {
     func directToContactsViewController(inputPostType : PostAttachmentTypes)
     func dismissViewController()
     func sharpDismissViewController()
+    func directFromSlideMenu(inputSlideMenuType : SlideMenuViewTags)
 
 }
 
@@ -24,6 +25,7 @@ extension ViewPresentationProtocols {
     func directToContactsViewController(inputPostType : PostAttachmentTypes) {}
     func dismissViewController() {}
     func sharpDismissViewController() {}
+    func directFromSlideMenu(inputSlideMenuType : SlideMenuViewTags) {}
     
 }
 
@@ -204,6 +206,18 @@ extension StickerProtocols {
     func stickerDeleteAnimationManager(active : Bool) {}
     func deleteSticker(selectedSticker : CustomSticker2) {}
     
+}
+
+protocol SlideMenuProtocols : class {
+    
+    func animateSliderView(indexPath: IndexPath)
+    func scrollStick(inputConstant : CGFloat)
+    
+}
+
+extension SlideMenuProtocols {
+    func animateSliderView(indexPath: IndexPath) {}
+    func scrollStick(inputConstant : CGFloat) {}
 }
 
 

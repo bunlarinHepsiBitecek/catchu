@@ -175,3 +175,14 @@ enum NotificationIdentifiers : String {
     case mainCategory = "mainCategory"
 }
 
+enum SlideMenuViewTags {
+    case explore
+    case viewPendingFriendRequests
+    case manageGroupOperations
+    case settings
+}
+
+enum ExploreType {
+    case facebook
+    case contact
+}

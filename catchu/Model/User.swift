@@ -229,4 +229,20 @@ class User {
         
     }
     
+    func convertUserToProvider(inputUser : User) -> REProvider {
+        
+        let provider = REProvider()
+        
+        if let providerString = inputUser.provider {
+            provider?.providerType = providerString
+        }
+        
+        if let providerID = inputUser.providerID {
+            provider?.providerid = providerID
+        }
+        
+        return provider!
+        
+    }
+    
 }

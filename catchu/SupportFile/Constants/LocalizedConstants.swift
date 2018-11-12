@@ -99,6 +99,7 @@ struct LocalizedConstants {
             static let enableAccessCamera = NSLocalizedString("enableAccessCamera", comment: "")
             static let enableAccessMicrophone = NSLocalizedString("enableAccessMicrophone", comment: "")
             static let tryAgain = NSLocalizedString("tryAgain", comment: "")
+            static let connectToFacebook = NSLocalizedString("connectToFacebook", comment: "")
             
         }
         
@@ -230,5 +231,13 @@ struct LocalizedConstants {
         static let cloudFetching = NSLocalizedString("cloudFetching", comment: "")
     }
     
+    struct SlideMenu {
+        static let explorePeople = NSLocalizedString("explorePeople", comment: "")
+        static let facebook = NSLocalizedString("facebook", comment: "")
+        static let contacts = NSLocalizedString("contacts", comment: "")
+        static let facebookFriendRequest = NSLocalizedString("facebookFriendRequest", comment: "")
+        static let findFriendSuggestion = NSLocalizedString("findFriendSuggestion", comment: "")
+        
+    }
     
 }

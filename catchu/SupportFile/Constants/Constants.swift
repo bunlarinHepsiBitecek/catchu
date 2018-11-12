@@ -65,6 +65,12 @@ struct Constants {
             static let profilePicture_100 : CGFloat = 100
         }
         
+        struct BorderWidth {
+            static let borderWidth_2 : CGFloat = 2
+            static let borderWidth_4 : CGFloat = 4
+            static let borderWidth_5 : CGFloat = 5
+        }
+        
         struct CorderRadius {
             static let cornerRadius_75 : CGFloat = 75
             static let cornerRadius_61 : CGFloat = 61
@@ -73,17 +79,22 @@ struct Constants {
             static let cornerRadius_12 : CGFloat = 12
             static let cornerRadius_11 : CGFloat = 11
             static let cornerRadius_10 : CGFloat = 10
+            static let cornerRadius_5 : CGFloat = 5
+            static let cornerRadius_4 : CGFloat = 4
         }
         
         struct ViewSize {
             struct Width {
                 static let width_250 : CGFloat = 250
+                static let width_200 : CGFloat = 200
                 static let width_102 : CGFloat = 102
                 static let width_100 : CGFloat = 100
                 static let width_50 : CGFloat = 50
+                static let width_40 : CGFloat = 40
                 static let width_24 : CGFloat = 24
                 static let width_22 : CGFloat = 22
                 static let width_20 : CGFloat = 20
+                static let width_10 : CGFloat = 10
             }
             struct Height {
                 static let height_250 : CGFloat = 250
@@ -93,14 +104,20 @@ struct Constants {
                 static let height_102 : CGFloat = 102
                 static let height_100 : CGFloat = 100
                 static let height_50 : CGFloat = 50
+                static let height_40 : CGFloat = 40
                 static let height_24 : CGFloat = 24
                 static let height_22 : CGFloat = 22
                 static let height_20 : CGFloat = 20
+                static let height_10 : CGFloat = 10
+                static let height_2 : CGFloat = 2
             }
         }
         
         struct ConstraintValues {
             static let constraint_50 : CGFloat = 50
+            static let constraint_42 : CGFloat = 42
+            static let constraint_40 : CGFloat = 40
+            static let constraint_25 : CGFloat = 25
             static let constraint_20 : CGFloat = 20
             static let constraint_15 : CGFloat = 15
             static let constraint_10 : CGFloat = 10
@@ -271,6 +288,7 @@ struct Constants {
         static let ShareDataViewController2: String = "ShareDataViewController2"
         static let FinalShareInfoViewController: String = "FinalShareInfoViewController"
         static let FinalNoteViewController: String = "FinalNoteViewController"
+        static let ExplorePeopleViewController: String = "ExplorePeopleViewController"
         
     }
     
@@ -304,6 +322,7 @@ struct Constants {
             static let selectedItemImageCell: String = "selectedItemImageCell"
             static let selectedItemVideoCell : String = "selectedItemVideoCell"
             static let filterColorCell : String = "filterColorCell"
+            static let exploreChoiseCollectionViewCell : String = "exploreChoiseCollectionViewCell"
             
         }
         
@@ -320,7 +339,7 @@ struct Constants {
             static let groupCreateCell: String = "groupCreateCell"
             static let groupCreateHeaderCell: String = "groupCreateHeaderCell"
             static let slideMenuTableViewCell : String = "slideMenuTableViewCell"
-            
+            static let facebookContactTableViewCell : String = "facebookContactTableViewCell"
             
         }
         

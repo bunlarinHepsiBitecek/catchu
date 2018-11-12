@@ -13,11 +13,17 @@ class SlideMenu: UIView {
     private var userName : UILabel!
     private var userNameSurname : UILabel!
     private var profileViewLoaded : Bool = false
+    private var topViewGradientColorAdded : Bool = false
+    
+    private var slideMenuViewTypeArray : [SlideMenuViewTags] = [.explore, .viewPendingFriendRequests, .manageGroupOperations, .settings]
+    private var sliderMenuViewIcon : [UIImage] = [UIImage(named: "search")!, UIImage(named: "eye")!, UIImage(named: "group")!, UIImage(named: "settings")!]
+    private  var sliderMenuViewLabel : [String] = ["Explore People", "View Pending Request", "Manage Groups", "Settings"]
+    
+    weak var delegate : ViewPresentationProtocols!
     
     lazy var mainView: UIView = {
         
         let temp = UIView()
-//        temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
         return temp
@@ -26,11 +32,7 @@ class SlideMenu: UIView {
     lazy var topView: UIView = {
         
         let temp = UIView()
-//        temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        
-        temp.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        
         return temp
     }()
     
@@ -83,6 +85,8 @@ class SlideMenu: UIView {
     
     lazy var menuTableView: UITableView = {
         let temp = UITableView(frame: .zero, style: UITableViewStyle.grouped)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+//        temp.separatorStyle = .singleLine
         temp.dataSource = self
         temp.delegate = self
         
@@ -106,6 +110,7 @@ class SlideMenu: UIView {
         super.layoutSubviews()
 
         addShadowToProfileContainerView()
+        addGradientColorToTopView()
     }
     
 }
@@ -125,7 +130,7 @@ extension SlideMenu {
         print("self.frame : \(self.frame)")
         
         mainView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        topView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: Constants.StaticViewSize.ViewSize.Height.height_200)
+        topView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: Constants.StaticViewSize.ViewSize.Height.height_220)
         
         self.addSubview(mainView)
         self.mainView.addSubview(topView)
@@ -136,19 +141,20 @@ extension SlideMenu {
         self.profilePictureContainerView.addSubview(profilePictureView)
         self.topView.addSubview(stackView)
         
+        self.bodyView.addSubview(menuTableView)
+        
         let safe = self.safeAreaLayoutGuide
         let safeMain = self.mainView.safeAreaLayoutGuide
         let safeTopMain = self.topView.safeAreaLayoutGuide
+        let safeBodyView = self.bodyView.safeAreaLayoutGuide
         let safeProfilePictureContainerView = self.profilePictureContainerView.safeAreaLayoutGuide
         
         print("superview : \(self.superview)")
         print("superview : \(self.superview)")
         
-        
-        
         NSLayoutConstraint.activate([
             
-            profilePictureContainerView.topAnchor.constraint(equalTo: safeTopMain.topAnchor, constant: 10),
+            profilePictureContainerView.bottomAnchor.constraint(equalTo: safeTopMain.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_50),
             profilePictureContainerView.centerXAnchor.constraint(equalTo: safeTopMain.centerXAnchor),
             profilePictureContainerView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ImageViewSize.profilePicture_100),
             profilePictureContainerView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ImageViewSize.profilePicture_100),
@@ -158,13 +164,20 @@ extension SlideMenu {
             profilePictureView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ImageViewSize.profilePicture_100),
             profilePictureView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ImageViewSize.profilePicture_100),
             
-            stackView.leadingAnchor.constraint(equalTo: safeTopMain.leadingAnchor, constant: 10),
-            stackView.bottomAnchor.constraint(equalTo: safeTopMain.bottomAnchor, constant: -10),
+            stackView.leadingAnchor.constraint(equalTo: safeTopMain.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
+            stackView.bottomAnchor.constraint(equalTo: safeTopMain.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
             
             bodyView.leadingAnchor.constraint(equalTo: safeMain.leadingAnchor),
             bodyView.trailingAnchor.constraint(equalTo: safeMain.trailingAnchor),
             bodyView.topAnchor.constraint(equalTo: safeTopMain.bottomAnchor),
-            bodyView.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor),
+            //bodyView.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor),
+            bodyView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height),
+            
+            menuTableView.leadingAnchor.constraint(equalTo: safeBodyView.leadingAnchor),
+            menuTableView.trailingAnchor.constraint(equalTo: safeBodyView.trailingAnchor),
+            menuTableView.topAnchor.constraint(equalTo: safeBodyView.topAnchor),
+            //menuTableView.bottomAnchor.constraint(equalTo: safeBodyView.bottomAnchor),
+            menuTableView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height)
             
             ])
         
@@ -235,6 +248,27 @@ extension SlideMenu {
     
     }
     
+    func addGradientColorToTopView() {
+        
+        if topView.bounds.height > 0 {
+            if !topViewGradientColorAdded {
+                
+                let gradient = CAGradientLayer()
+                gradient.frame = topView.bounds
+                gradient.colors = [#colorLiteral(red: 0.137254902, green: 0.02745098039, blue: 0.3019607843, alpha: 1).cgColor, #colorLiteral(red: 0.8, green: 0.3254901961, blue: 0.2, alpha: 1).cgColor]
+                topView.layer.insertSublayer(gradient, at: 0)
+                
+                topViewGradientColorAdded = true
+            }
+        }
+        
+    }
+    
+    func setDelegate(delegate :ViewPresentationProtocols) {
+    
+        self.delegate = delegate
+        
+    }
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -273,24 +307,34 @@ extension SlideMenu : UIGestureRecognizerDelegate {
 extension SlideMenu : UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return slideMenuViewTypeArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = menuTableView.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.slideMenuTableViewCell, for: indexPath) as? SlideMenuTableViewCell else { return UITableViewCell() }
         
-        cell.textLabel?.text = "Deneme"
+        cell.setProperties(image: sliderMenuViewIcon[indexPath.row], slideMenuType: slideMenuViewTypeArray[indexPath.row], cellMenuString: sliderMenuViewLabel[indexPath.row])
         
         return cell
         
     }
     
-    
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+//        let cell = menuTableView.cellForRow(at: indexPath) as? SlideMenuTableViewCell
+        
+        guard let cell = menuTableView.cellForRow(at: indexPath) as? SlideMenuTableViewCell else { return }
+        
+        if let slideMenuType = cell.slideMenuType {
+            delegate.directFromSlideMenu(inputSlideMenuType: slideMenuType)
+        }
+        
+        
+    }
     
 }

@@ -554,6 +554,45 @@ class APIGatewayManager {
             
         }
         
+    }
+    
+    func initiateFacebookContactExploreProcess(userid : String, providerList : REProviderList, completion : @escaping (_ response : Bool) -> Void) {
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            if finished {
+                
+                guard let userid = User.shared.userid else { return }
+                
+                self.client.usersProvidersPost(userid: userid, authorization: tokenResult.token, body: providerList).continueWith(block: { (userListResponse) -> Any? in
+                    
+                    if userListResponse.error != nil {
+                        print("userListResponse.error : \(userListResponse.error)")
+                    } else {
+                        if let result = userListResponse.result {
+                            
+                            if let error = result.error {
+                                if error.code != 1 {
+                                    print("business error occured : \(result.error?.message)")
+                                }
+                            }
+                            
+                            if let resultItems = result.items {
+                                print("resultItems : \(resultItems)")
+                            }
+                            
+                        }
+                        
+                        completion(true)
+                    }
+                    
+                    return nil
+                    
+                })
+                
+            }
+            
+        }
         
     }
     

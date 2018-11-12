@@ -70,6 +70,7 @@
 "tryAgain" = "Try Again";
 "follewers" = "Followers";
 "follewings" = "Follewings";
+"connectToFacebook" = "Connect to Facebook";
 
 
 // Location Services
@@ -157,4 +158,11 @@
 
 // cloud
 "cloudFetching" = "Fetching from iCloud...";
+
+// Slide Menu Constants
+"explorePeople" = "Explore People";
+"facebook" = "facebook";
+"contacts" = "contacts";
+"facebookFriendRequest" = "Find Facebook Friend";
+"findFriendSuggestion" = "You should find facebook friend who is already here 😜";
 

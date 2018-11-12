@@ -19,6 +19,8 @@ class SlideMenuLoader: NSObject {
     
     public static let shared = SlideMenuLoader()
     
+    weak var delegate : ViewPresentationProtocols!
+    
     func createSlider(inputView : UIView) {
         
         let screen = UIScreen.main.bounds
@@ -48,7 +50,9 @@ class SlideMenuLoader: NSObject {
     
     func addSlideMenuView(inputFrame : CGRect, inputView : UIView) {
         
-        let width : CGFloat = Constants.StaticViewSize.ViewSize.Width.width_250
+        //let width : CGFloat = Constants.StaticViewSize.ViewSize.Width.width_250
+        //let width : CGFloat = inputView.frame.width - Constants.StaticViewSize.ViewSize.Width.width_100
+        let width : CGFloat = inputView.frame.width - (inputView.frame.width / 4)
         slideMenu = SlideMenu(frame: CGRect(x: -width, y: 0, width: width, height: inputView.frame.height))
         inputView.addSubview(slideMenu)
         
@@ -76,6 +80,14 @@ class SlideMenuLoader: NSObject {
             }
             
         }, completion: nil)
+        
+    }
+    
+    func setSlideMenuDelegation(delegate : ViewPresentationProtocols) {
+        
+        if slideMenu != nil {
+            slideMenu!.setDelegate(delegate: delegate)
+        }
         
     }
     

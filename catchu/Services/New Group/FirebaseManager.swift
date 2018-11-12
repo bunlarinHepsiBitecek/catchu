@@ -361,4 +361,6 @@ struct FacebookPermissions {
     static let parameter_key       = "fields"
     static let parameter_value     = "id, name, short_name, email"
     static let method              = "GET"
+    static let pathMe_Friends = "me/friends"
+    static let parameterValueForFriends = "id, name, short_name, picture"
 }

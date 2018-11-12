@@ -18,16 +18,22 @@ import Foundation
 import AWSCore
 
 @objcMembers
-public class REProvider : AWSModel {
+public class REUserListResponse : AWSModel {
     
-    var providerid: String?
-    var providerType: String?
+    var error: REError?
+    var items: [REUser]?
     
    	public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
 		var params:[AnyHashable : Any] = [:]
-		params["providerid"] = "providerid"
-		params["providerType"] = "providerType"
+		params["error"] = "error"
+		params["items"] = "items"
 		
         return params
+	}
+	class func errorJSONTransformer() -> ValueTransformer{
+	    return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REError.self);
+	}
+	class func itemsJSONTransformer() -> ValueTransformer{
+		return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: REUser.self);
 	}
 }

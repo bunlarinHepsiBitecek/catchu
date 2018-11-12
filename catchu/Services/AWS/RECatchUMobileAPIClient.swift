@@ -568,7 +568,30 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         return self.invokeHTTPRequest("POST", urlString: "/users/follow", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REFollowInfo.self) as! AWSTask<REFollowInfo>
     }
     
-    
+    /*
+     
+     
+     @param userid
+     @param authorization
+     @param body
+     
+     return type: REUserListResponse
+     */
+    public func usersProvidersPost(userid: String, authorization: String, body: REProviderList) -> AWSTask<REUserListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        let pathParameters:[String:Any] = [:]
+        
+        return self.invokeHTTPRequest("POST", urlString: "/users/providers", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REUserListResponse.self) as! AWSTask<REUserListResponse>
+    }
     
     
 }

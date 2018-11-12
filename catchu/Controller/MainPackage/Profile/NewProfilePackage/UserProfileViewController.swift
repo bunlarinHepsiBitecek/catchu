@@ -20,8 +20,6 @@ class UserProfileViewController: UIViewController {
 
         prepareViewController()
         
-        
-        
     }
     
 
@@ -35,6 +33,7 @@ extension UserProfileViewController {
         addBarButtons()
         addSwipeGestureRecognizer()
         addUserProfileMainView()
+        setDelegateToSlideMenuLoader(delegate: self)
         
     }
     
@@ -103,6 +102,11 @@ extension UserProfileViewController {
             
             ])
         
+    }
+    
+    func setDelegateToSlideMenuLoader(delegate : ViewPresentationProtocols) {
+        
+        SlideMenuLoader.shared.setSlideMenuDelegation(delegate: delegate)
         
     }
     
@@ -168,14 +172,60 @@ extension UserProfileViewController : UIGestureRecognizerDelegate {
         
     }
     
+    func gotoContactViewController() {
+        
+        if let destination = UIStoryboard(name: Constants.Storyboard.Name.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ContactViewController) as? ContactViewController {
+            
+            self.navigationController?.pushViewController(destination, animated: true)
+            
+        }
+        
+    }
+    
+    func gotoExplorePeopleViewController() {
+        
+        print("gotoExplorePeopleViewController starts")
+        print("User.provider : \(User.shared.provider)")
+        
+        FacebookContactListManager.shared.getFaceBookFriendList()
+        
+        if let destination = UIStoryboard(name: Constants.Storyboard.Name.Profile, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ExplorePeopleViewController) as? ExplorePeopleViewController {
+            
+            self.navigationController?.pushViewController(destination, animated: true)
+        }
+        
+    }
+    
 }
 
+// MARK: - NavigationControllerProtocols
 extension UserProfileViewController : NavigationControllerProtocols {
     
     func setNavigationTitle(input: String) {
-//        self.navigationItem.title = input
-//        self.navigationController?.title = input
         self.title = input
+    }
+    
+}
+
+// MARK: - ViewPresentationProtocols
+extension UserProfileViewController : ViewPresentationProtocols {
+    
+    func directFromSlideMenu(inputSlideMenuType: SlideMenuViewTags) {
+        
+        SlideMenuLoader.shared.animateSlideMenu(active: false)
+        
+        switch inputSlideMenuType {
+        case .manageGroupOperations:
+            gotoContactViewController()
+        case .explore:
+            gotoExplorePeopleViewController()
+            return
+        case .settings:
+            return
+        case .viewPendingFriendRequests:
+            return
+        }
+        
     }
     
 }
