@@ -157,6 +157,30 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
     /*
      
      
+     @param userid
+     @param authorization
+     
+     return type: RECountryListResponse
+     */
+    public func commonCountriesGet(userid: String, authorization: String) -> AWSTask<RECountryListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization
+        ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        let pathParameters:[String:Any] = [:]
+        
+        return self.invokeHTTPRequest("GET", urlString: "/common/countries", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: RECountryListResponse.self) as! AWSTask<RECountryListResponse>
+    }
+    
+    
+    /*
+     
+     
      @param authorization
      @param imagecount
      @param videocount
@@ -182,6 +206,32 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         let pathParameters:[String:Any] = [:]
         
         return self.invokeHTTPRequest("GET", urlString: "/common/signedurl", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REBucketUploadResponse.self) as! AWSTask<REBucketUploadResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param authorization
+     @param body
+     
+     return type: REBaseResponse
+     */
+    public func commonSignedurlDelete(userid: String, authorization: String, body: REBucketUploadResponse) -> AWSTask<REBaseResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        let pathParameters:[String:Any] = [:]
+        
+        return self.invokeHTTPRequest("DELETE", urlString: "/common/signedurl", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
     }
     
     
@@ -217,29 +267,12 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      return type: REFriendList
      */
-//    public func friendsGet(userid: String) -> AWSTask<REFriendList> {
-//        let headerParameters = [
-//            "Content-Type": "application/json",
-//            "Accept": "application/json",
-//
-//            ]
-//
-//        var queryParameters:[String:Any] = [:]
-//        queryParameters["userid"] = userid
-//
-//        let pathParameters:[String:Any] = [:]
-//
-//        return self.invokeHTTPRequest("GET", urlString: "/friends", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REFriendList.self) as! AWSTask<REFriendList>
-//    }
-    
     public func friendsGet(userid: String, authorization: String) -> AWSTask<REFriendList> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Authorization": authorization
         ]
-        
-        print("authorization : \(authorization)")
         
         var queryParameters:[String:Any] = [:]
         queryParameters["userid"] = userid
@@ -277,15 +310,17 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
     /*
      
      
+     @param userid
      @param authorization
      @param body
      
      return type: REBaseResponse
      */
-    public func loginPost(authorization: String, body: REBaseRequest) -> AWSTask<REBaseResponse> {
+    public func loginPost(userid: String, authorization: String, body: REBaseRequest) -> AWSTask<REBaseResponse> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
+            "userid": userid,
             "Authorization": authorization,
             
             ]
@@ -335,6 +370,45 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
     /*
      
      
+     @param userid
+     @param authorization
+     @param postid
+     @param catchType
+     @param longitude
+     @param perPage
+     @param latitude
+     @param radius
+     @param page
+     
+     return type: REPostListResponse
+     */
+    public func postsPostidGet(userid: String, authorization: String, postid: String, catchType: String?, longitude: String?, perPage: String?, latitude: String?, radius: String?, page: String?) -> AWSTask<REPostListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        var queryParameters:[String:Any] = [:]
+        queryParameters["catchType"] = catchType
+        queryParameters["longitude"] = longitude
+        queryParameters["perPage"] = perPage
+        queryParameters["latitude"] = latitude
+        queryParameters["radius"] = radius
+        queryParameters["page"] = page
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["postid"] = postid
+        
+        return self.invokeHTTPRequest("GET", urlString: "/posts/{postid}", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REPostListResponse.self) as! AWSTask<REPostListResponse>
+    }
+    
+    
+    /*
+     
+     
      @param postid
      @param authorization
      @param body
@@ -363,12 +437,11 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      @param postid
      @param authorization
-     @param commentid
      @param body
      
-     return type: RECommentResponse
+     return type: REBaseResponse
      */
-    public func postsPostidCommentsCommentidAddPost(postid: String, authorization: String, commentid: String, body: RECommentRequest) -> AWSTask<RECommentResponse> {
+    public func postsPostidPatch(postid: String, authorization: String, body: REPostRequest) -> AWSTask<REBaseResponse> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -380,91 +453,8 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         
         var pathParameters:[String:Any] = [:]
         pathParameters["postid"] = postid
-        pathParameters["commentid"] = commentid
         
-        return self.invokeHTTPRequest("POST", urlString: "/posts/{postid}/comments/{commentid}/add", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: RECommentResponse.self) as! AWSTask<RECommentResponse>
-    }
-    
-    
-    /*
-     
-     
-     @param postid
-     @param commentid
-     @param body
-     @param authorization
-     
-     return type: RECommentListResponse
-     */
-    public func postsPostidCommentsCommentidGetPost(postid: String, commentid: String, body: REBaseRequest, authorization: String?) -> AWSTask<RECommentListResponse> {
-        let headerParameters = [
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": authorization!
-        ]
-        
-        let queryParameters:[String:Any] = [:]
-        
-        var pathParameters:[String:Any] = [:]
-        pathParameters["postid"] = postid
-        pathParameters["commentid"] = commentid
-        
-        return self.invokeHTTPRequest("POST", urlString: "/posts/{postid}/comments/{commentid}/get", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: RECommentListResponse.self) as! AWSTask<RECommentListResponse>
-    }
-    
-    
-    /*
-     
-     
-     @param postid
-     @param authorization
-     @param commentid
-     @param body
-     
-     return type: REBaseResponse
-     */
-    public func postsPostidCommentsCommentidLikePost(postid: String, authorization: String, commentid: String, body: REBaseRequest) -> AWSTask<REBaseResponse> {
-        let headerParameters = [
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": authorization,
-            
-            ]
-        
-        let queryParameters:[String:Any] = [:]
-        
-        var pathParameters:[String:Any] = [:]
-        pathParameters["postid"] = postid
-        pathParameters["commentid"] = commentid
-        
-        return self.invokeHTTPRequest("POST", urlString: "/posts/{postid}/comments/{commentid}/like", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
-    }
-    
-    
-    /*
-     
-     
-     @param postid
-     @param commentid
-     @param body
-     @param authorization
-     
-     return type: REBaseResponse
-     */
-    public func postsPostidCommentsCommentidUnlikePost(postid: String, commentid: String, body: REBaseRequest, authorization: String?) -> AWSTask<REBaseResponse> {
-        let headerParameters = [
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": authorization!
-        ]
-        
-        let queryParameters:[String:Any] = [:]
-        
-        var pathParameters:[String:Any] = [:]
-        pathParameters["postid"] = postid
-        pathParameters["commentid"] = commentid
-        
-        return self.invokeHTTPRequest("POST", urlString: "/posts/{postid}/comments/{commentid}/unlike", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
+        return self.invokeHTTPRequest("PATCH", urlString: "/posts/{postid}", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
     }
     
     
@@ -472,26 +462,201 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      
      @param userid
+     @param postid
      @param authorization
-     @param searchValue
+     @param commentid
      
-     return type: RESearchResult
+     return type: RECommentListResponse
      */
-    public func searchGet(userid: String, authorization: String, searchValue: String) -> AWSTask<RESearchResult> {
+    public func postsPostidCommentsCommentidGet(userid: String, postid: String, authorization: String, commentid: String) -> AWSTask<RECommentListResponse> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["postid"] = postid
+        pathParameters["commentid"] = commentid
+        
+        return self.invokeHTTPRequest("GET", urlString: "/posts/{postid}/comments/{commentid}", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: RECommentListResponse.self) as! AWSTask<RECommentListResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param postid
+     @param authorization
+     @param commentid
+     @param body
+     
+     return type: RECommentResponse
+     */
+    public func postsPostidCommentsCommentidPost(userid: String, postid: String, authorization: String, commentid: String, body: RECommentRequest) -> AWSTask<RECommentResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["postid"] = postid
+        pathParameters["commentid"] = commentid
+        
+        return self.invokeHTTPRequest("POST", urlString: "/posts/{postid}/comments/{commentid}", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: RECommentResponse.self) as! AWSTask<RECommentResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param postid
+     @param perPage
+     @param page
+     @param authorization
+     @param commentid
+     
+     return type: REUserListResponse
+     */
+    public func postsPostidCommentsCommentidLikeGet(userid: String, postid: String, perPage: String, page: String, authorization: String, commentid: String) -> AWSTask<REUserListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
             "Authorization": authorization,
             
             ]
         
         var queryParameters:[String:Any] = [:]
-        queryParameters["userid"] = userid
-        queryParameters["searchValue"] = searchValue
+        queryParameters["perPage"] = perPage
+        queryParameters["page"] = page
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["postid"] = postid
+        pathParameters["commentid"] = commentid
+        
+        return self.invokeHTTPRequest("GET", urlString: "/posts/{postid}/comments/{commentid}/like", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REUserListResponse.self) as! AWSTask<REUserListResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param postid
+     @param authorization
+     @param commentid
+     
+     return type: REBaseResponse
+     */
+    public func postsPostidCommentsCommentidLikePost(userid: String, postid: String, authorization: String, commentid: String) -> AWSTask<REBaseResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["postid"] = postid
+        pathParameters["commentid"] = commentid
+        
+        return self.invokeHTTPRequest("POST", urlString: "/posts/{postid}/comments/{commentid}/like", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param postid
+     @param authorization
+     @param commentid
+     
+     return type: REBaseResponse
+     */
+    public func postsPostidCommentsCommentidLikeDelete(userid: String, postid: String, authorization: String, commentid: String) -> AWSTask<REBaseResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["postid"] = postid
+        pathParameters["commentid"] = commentid
+        
+        return self.invokeHTTPRequest("DELETE", urlString: "/posts/{postid}/comments/{commentid}/like", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param searchText
+     @param authorization
+     @param perPage
+     @param page
+     
+     return type: REUserListResponse
+     */
+    public func searchUsersGet(userid: String, searchText: String, authorization: String, perPage: String?, page: String?) -> AWSTask<REUserListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        var queryParameters:[String:Any] = [:]
+        queryParameters["perPage"] = perPage
+        queryParameters["page"] = page
+        queryParameters["searchText"] = searchText
         
         let pathParameters:[String:Any] = [:]
         
-        return self.invokeHTTPRequest("GET", urlString: "/search", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: RESearchResult.self) as! AWSTask<RESearchResult>
+        return self.invokeHTTPRequest("GET", urlString: "/search/users", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REUserListResponse.self) as! AWSTask<REUserListResponse>
+    }
+    
+    
+    /*
+     
+     
+     
+     return type: Empty
+     */
+    public func testPost() -> AWSTask<Empty> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        let pathParameters:[String:Any] = [:]
+        
+        return self.invokeHTTPRequest("POST", urlString: "/test", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: Empty.self) as! AWSTask<Empty>
     }
     
     
@@ -568,6 +733,7 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         return self.invokeHTTPRequest("POST", urlString: "/users/follow", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REFollowInfo.self) as! AWSTask<REFollowInfo>
     }
     
+    
     /*
      
      
@@ -592,6 +758,8 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         
         return self.invokeHTTPRequest("POST", urlString: "/users/providers", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REUserListResponse.self) as! AWSTask<REUserListResponse>
     }
+    
+    
     
     
 }

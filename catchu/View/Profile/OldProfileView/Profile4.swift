@@ -118,7 +118,7 @@ extension Profile4: UIGestureRecognizerDelegate {
         
         guard let userid = User.shared.userid else { return }
         
-        APIGatewayManager.shared.getUserProfileInfo(userid: userid) { (userProfileData, result) in
+        APIGatewayManager.shared.getUserProfileInfo(userid: userid, requestedUserid: userid) { (userProfileData, result) in
             
             if result {
                 

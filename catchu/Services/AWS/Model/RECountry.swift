@@ -18,23 +18,18 @@ import Foundation
 import AWSCore
 
 @objcMembers
-public class RESearchResult_error : AWSModel {
+public class RECountry : AWSModel {
     
-    var code: NSNumber?
-    var message: String?
+    var code: String?
+    var name: String?
+    var dialCode: String?
     
    	public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
 		var params:[AnyHashable : Any] = [:]
 		params["code"] = "code"
-		params["message"] = "message"
+		params["name"] = "name"
+		params["dialCode"] = "dialCode"
 		
         return params
 	}
-    
-    func displayProperties() {
-        
-        print("code : \(String(describing: self.code))")
-        print("message :\(String(describing: self.message))")
-        
-    }
 }

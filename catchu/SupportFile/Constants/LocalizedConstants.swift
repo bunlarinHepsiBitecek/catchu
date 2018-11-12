@@ -10,6 +10,7 @@ import Foundation
 
 struct LocalizedConstants {
     static let Ok = NSLocalizedString("OK", comment: "")
+    static let Cancel = NSLocalizedString("Cancel", comment: "")
     static let UnknownError = NSLocalizedString("UnknownError", comment: "")
     static let Error = NSLocalizedString("Error", comment: "")
     static let Warning = NSLocalizedString("Warning", comment: "")
@@ -54,21 +55,29 @@ struct LocalizedConstants {
     
     struct FirebaseError {
         
+        static let unknownError = NSLocalizedString("UnknownError", comment: "")
         static let SocialLoginError = NSLocalizedString("SocialLoginError", comment: "")
-        static let accountExistsWithDifferentCredential =   
-            NSLocalizedString("accountExistsWithDifferentCredential", comment: "")
-        static let credentialAlreadyInUse =
-            NSLocalizedString("credentialAlreadyInUse", comment: "")
-        static let emailAlreadyInUse =
-            NSLocalizedString("emailAlreadyInUse", comment: "")
-        static let invalidCredential =
-            NSLocalizedString("invalidCredential", comment: "")
-        static let invalidEmail =
-            NSLocalizedString("invalidEmail", comment: "")
-        static let userNotFound =
-            NSLocalizedString("userNotFound", comment: "")
-        static let unknownError = NSLocalizedString("unknownError", comment: "")
-    
+        static let AccountExistsWithDifferentCredential =
+            NSLocalizedString("AccountExistsWithDifferentCredential", comment: "")
+        static let CredentialAlreadyInUse =
+            NSLocalizedString("CredentialAlreadyInUse", comment: "")
+        static let EmailAlreadyInUse =
+            NSLocalizedString("EmailAlreadyInUse", comment: "")
+        static let InvalidCredential =
+            NSLocalizedString("InvalidCredential", comment: "")
+        static let InvalidEmail =
+            NSLocalizedString("InvalidEmail", comment: "")
+        static let UserNotFound =
+            NSLocalizedString("UserNotFound", comment: "")
+        
+        static let InvalidPhoneNumber =
+            NSLocalizedString("InvalidPhoneNumber", comment: "")
+        static let InvalidVerificationID =
+            NSLocalizedString("InvalidVerificationID", comment: "")
+        static let InvalidVerificationCode =
+            NSLocalizedString("InvalidVerificationCode", comment: "")
+        static let SessionExpiredForVerificationCode =
+            NSLocalizedString("SessionExpiredForVerificationCode", comment: "")
     }
     
     struct AWSError {
@@ -82,7 +91,7 @@ struct LocalizedConstants {
         
         struct ButtonTitle {
             
-            static let cancel = NSLocalizedString("cancel", comment: "")
+            static let cancel = NSLocalizedString("Cancel", comment: "")
             static let next = NSLocalizedString("next", comment: "")
             static let createGroup = NSLocalizedString("createGroup", comment: "")
             static let friend = NSLocalizedString("Friends", comment: "")
@@ -159,6 +168,7 @@ struct LocalizedConstants {
     }
     
     struct Feed {
+        static let NoPostFound = NSLocalizedString("NoPostFound", comment: "")
         static let CatchU = NSLocalizedString("CatchU", comment: "")
         static let Loading = NSLocalizedString("Loading", comment: "")
         static let More = NSLocalizedString("More", comment: "")
@@ -166,6 +176,15 @@ struct LocalizedConstants {
         static let AddComment = NSLocalizedString("AddComment", comment: "")
         static let Send = NSLocalizedString("Send", comment: "")
         static let Reply = NSLocalizedString("Reply", comment: "")
+    }
+    
+    struct Like {
+        static let Likes = NSLocalizedString("Likes", comment: "")
+        static let Loading = NSLocalizedString("Loading", comment: "")
+        static let Follow = NSLocalizedString("Follow", comment: "")
+        static let Following = NSLocalizedString("Following", comment: "")
+        static let Requested = NSLocalizedString("Requested", comment: "")
+        static let Unfollow = NSLocalizedString("Unfollow", comment: "")
     }
     
     struct Notification {
@@ -204,7 +223,13 @@ struct LocalizedConstants {
         static let Email = NSLocalizedString("Email", comment: "")
         static let Phone = NSLocalizedString("Phone", comment: "")
         static let Gender = NSLocalizedString("Gender", comment: "")
-        
+        static let Next = NSLocalizedString("Next", comment: "")
+        static let SelectCountry = NSLocalizedString("SelectCountry", comment: "")
+        static let AllCountries = NSLocalizedString("AllCountries", comment: "")
+        static let WillReceiveSMS = NSLocalizedString("WillReceiveSMS", comment: "")
+        static let Confirm          = NSLocalizedString("Confirm", comment: "")
+        static let ConfirmationCode = NSLocalizedString("ConfirmationCode", comment: "")
+        static let ResendConfirmationCode = NSLocalizedString("ResendConfirmationCode", comment: "")
     }
     
     struct PostAttachments {

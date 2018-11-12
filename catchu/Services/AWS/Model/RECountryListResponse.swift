@@ -18,33 +18,22 @@ import Foundation
 import AWSCore
 
 @objcMembers
-public class RESearchResult : AWSModel {
+public class RECountryListResponse : AWSModel {
     
     var error: REError?
-    var resultArray: [RESearchResult_resultArray_item]?
+    var items: [RECountry]?
     
    	public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
 		var params:[AnyHashable : Any] = [:]
 		params["error"] = "error"
-		params["resultArray"] = "resultArray"
+		params["items"] = "items"
 		
         return params
 	}
 	class func errorJSONTransformer() -> ValueTransformer{
-	    return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: RESearchResult_error.self);
+	    return ValueTransformer.awsmtl_JSONDictionaryTransformer(withModelClass: REError.self);
 	}
-	class func resultArrayJSONTransformer() -> ValueTransformer{
-		return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: RESearchResult_resultArray_item.self);
+	class func itemsJSONTransformer() -> ValueTransformer{
+		return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: RECountry.self);
 	}
-    
-    func displayProperties() {
-        
-        for item in resultArray! {
-            
-            item.displayProperties()
-            
-        }
-        
-    }
-    
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
-import Foundation
+import MapKit
 
 class Location {
     var locationid: String?
@@ -23,12 +23,20 @@ class Location {
         if let latitude = location.latitude {
             self.latitude = latitude.doubleValue
         }
-        if let longtitude = location.longitude {
-            self.longitude = longtitude.doubleValue
+        if let longitude = location.longitude {
+            self.longitude = longitude.doubleValue
         }
         if let radius = location.radius {
             self.radius = radius.doubleValue
         }
+    }
+    
+    func convertToCLLocation() -> CLLocationCoordinate2D? {
+        let location: CLLocationCoordinate2D? = nil
+        guard let latitude = self.latitude else { return location}
+        guard let longitude = self.longitude else { return location}
+        
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
 
@@ -40,6 +48,8 @@ class Media {
     var height: Int?
     var width: Int?
     var _extension: String?
+    
+    init() {}
     
     init(media: REMedia?) {
         guard let media = media else { return }
@@ -76,10 +86,11 @@ extension User: CustomStringConvertible {
     var description: String {
         var description = ""
         guard let userid = self.userid else { return description }
+        guard let name = self.name else { return description }
         guard let username = self.username else { return description }
         guard let profilePictureUrl = self.profilePictureUrl else { return description }
         
-        description = "\(userid), \(name), \(username)"
+        description = "\(userid), \(name), \(username), \(profilePictureUrl)"
         return description
     }
 }
@@ -93,6 +104,7 @@ class Post {
     var distance: Double?
     var isLiked: Bool?
     var likeCount: Int?
+    var isCommentAllowed: Bool?
     var commentCount: Int?
     var createAt: String?
     var user: User?
@@ -129,6 +141,9 @@ class Post {
         }
         if let likeCount = post.likeCount {
             self.likeCount = likeCount.intValue
+        }
+        if let isCommentAllowed = post.isCommentAllowed {
+            self.isCommentAllowed = isCommentAllowed.boolValue
         }
         if let commentCount = post.commentCount {
             self.commentCount = commentCount.intValue
@@ -189,6 +204,8 @@ class Comment {
     var replies: [Comment]?
     var createAt: String?
     var user: User?
+    
+    init() {}
     
     init(message: String?, user: User?) {
         guard let message = message else { return }
@@ -263,5 +280,42 @@ extension Comment: CustomStringConvertible {
         
         description = "\(commentid), \(message), \(likeCount), \(isLiked), \(replies.count), \(user.description)"
         return description
+    }
+}
+
+
+class Phone {
+    var countryCode: String?
+    var dialCode: String?
+    var phoneNumber: Int?
+    
+    init(phone: REPhone?) {
+        guard let phone = phone else { return }
+        self.countryCode = phone.countryCode
+        self.dialCode = phone.dialCode
+        if let phoneNumber = phone.phoneNumber {
+            self.phoneNumber = phoneNumber.intValue
+        }
+    }
+    
+    func getPhone() -> REPhone? {
+        guard let phone = REPhone() else { return nil }
+        phone.countryCode = self.countryCode
+        phone.dialCode = self.dialCode
+        if let phoneNumber = self.phoneNumber {
+            phone.phoneNumber = NSNumber(value: phoneNumber)
+        }
+        return phone
+    }
+}
+
+class Provider {
+    var providerid: String?
+    var providerType: String?
+    
+    init(provider: REProvider?) {
+        guard let provider = provider else { return }
+        self.providerid = provider.providerid
+        self.providerType = provider.providerType
     }
 }

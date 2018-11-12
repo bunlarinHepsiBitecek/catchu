@@ -54,7 +54,6 @@ class EditableProfileView: UIView {
     func initialize()  {
         
         setupDatePicker()
-//        setupGenderPicker()
         setupViewPropertyLabelText()
         setupBottomLineForViews()
         setCurrentValuesToView()
@@ -82,8 +81,8 @@ class EditableProfileView: UIView {
         if let email = User.shared.email {
             emailTextField.text = email
         }
-        if let phone = User.shared.userPhone {
-            phoneNumberTextField.text = phone
+        if let phone = User.shared.phone {
+            phoneNumberTextField.text = "\(phone)"
         }
         if let gender = User.shared.userGender {
             genderTextField.text = gender
@@ -276,16 +275,13 @@ extension EditableProfileView: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        genderPickerViewContainerHeightConstraints.constant = 150
-        
         if textField == genderTextField {
+            genderPickerViewContainerHeightConstraints.constant = 150
             
             UIView.transition(with: genderPickerViewContainer, duration: 0.4, options: .transitionCrossDissolve, animations: {
                 self.layoutIfNeeded()
             })
-
         }
-        
     }
     
     func checkInput() {

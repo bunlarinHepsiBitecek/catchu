@@ -8,13 +8,11 @@
 
 import UIKit
 
-class MediaView: UIView {
+class MediaView: BaseView {
     
-    var post: Post? {
+    var item: FeedViewModelItem? {
         didSet {
-            self.dataSource.populate(post: post)
-//            self.collectionView.reloadData()
-            self.pageControl.numberOfPages = self.dataSource.items.count
+            self.configure()
         }
     }
     
@@ -49,62 +47,89 @@ class MediaView: UIView {
         return pc
     }()
     
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        customization()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func customization() {
-        self.addSubview(collectionView)
+    override func setupView() {
+        //        self.addSubview(collectionView)
         
-        let safeLayout = self.safeAreaLayoutGuide
+        //        let safeLayout = self.safeAreaLayoutGuide
         
-        NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
-            self.collectionView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            self.collectionView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
-            ])
+        //        NSLayoutConstraint.activate([
+        //            self.collectionView.topAnchor.constraint(equalTo: safeLayout.topAnchor),
+        //            self.collectionView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
+        //            self.collectionView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
+        //            self.collectionView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor)
+        //            ])
+        //
+        //        // MARK: pagecontrol in a stack
+        //        let bottomControlsStackView = UIStackView(arrangedSubviews: [pageControl])
+        //        bottomControlsStackView.translatesAutoresizingMaskIntoConstraints = false
+        //        bottomControlsStackView.distribution = .fillEqually
+        //
+        //        self.addSubview(bottomControlsStackView)
+        //
+        //        NSLayoutConstraint.activate([
+        //            bottomControlsStackView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
+        //            bottomControlsStackView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
+        //            bottomControlsStackView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor),
+        //            ])
         
-        // MARK: pagecontrol in a stack
-        let bottomControlsStackView = UIStackView(arrangedSubviews: [pageControl])
+        let bottomControlsStackView = UIStackView(arrangedSubviews: [collectionView, pageControl])
         bottomControlsStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomControlsStackView.distribution = .fillEqually
+        bottomControlsStackView.distribution = .fill
+        bottomControlsStackView.alignment = .fill
+        bottomControlsStackView.axis = .vertical
         
         self.addSubview(bottomControlsStackView)
         
         NSLayoutConstraint.activate([
-            bottomControlsStackView.bottomAnchor.constraint(equalTo: safeLayout.bottomAnchor),
-            bottomControlsStackView.leadingAnchor.constraint(equalTo: safeLayout.leadingAnchor),
-            bottomControlsStackView.trailingAnchor.constraint(equalTo: safeLayout.trailingAnchor),
-            bottomControlsStackView.heightAnchor.constraint(equalToConstant: 20)
+            collectionView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.9),
+            pageControl.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1),
+            
+            bottomControlsStackView.topAnchor.constraint(equalTo: safeTopAnchor),
+            bottomControlsStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
+            bottomControlsStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            bottomControlsStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
             ])
+        
+    }
+    
+    func configure() {
+        guard let item = item as? FeedViewModelPostItem, let post = item.post else { return }
+        
+        self.dataSource.populate(post: post)
+        self.pageControl.numberOfPages = self.dataSource.items.count
+        self.pageControl.currentPage = item.currentPage
+        self.collectionView.reloadData()
+        
+        if self.dataSource.items.count > 0 {
+            let indexPath = IndexPath(row: item.currentPage, section: 0)
+            self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+        }
     }
     
 }
 
 extension MediaView: UICollectionViewDelegate {
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
-        let x = targetContentOffset.pointee.x
-        
-        pageControl.currentPage = Int(x / self.frame.width)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.frame.width, height: self.frame.height)
     }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+
+        let x = targetContentOffset.pointee.x
+        pageControl.currentPage = Int(x / self.frame.width)
+        
+        /// Store current scrolled page in referens Model
+        if let item = self.item as? FeedViewModelPostItem {
+            item.currentPage = pageControl.currentPage
+        }
+    }
+    
 }
 
 extension MediaView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width, height: self.frame.height)
     }
 }
 

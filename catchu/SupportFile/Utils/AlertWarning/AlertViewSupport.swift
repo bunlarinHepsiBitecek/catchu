@@ -18,15 +18,9 @@ struct AlertControllerInfo {
 
 class AlertViewManager : NSObject {
     
-    public class var shared : AlertViewManager {
-        struct Static {
-            static let instance : AlertViewManager = AlertViewManager()
-        }
-        return Static.instance
-    }
+    static let shared = AlertViewManager()
     
     private var alertControls = [AlertControllerInfo]()
-    
     
     func createAlert(title: String, message: String, preferredStyle: UIAlertControllerStyle, actionTitle: String, actionStyle: UIAlertActionStyle, completionHandler: ((UIAlertAction) -> Void)?) {
         
@@ -49,12 +43,6 @@ class AlertViewManager : NSObject {
         
         alertController.addAction(alertAction)
         
-//        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-//
-//            self.presentAlertController(alertController, presentingViewController: presentingViewController)
-//
-//        }
-        
         if selfDismiss {
             
             let when = DispatchTime.now() + Double(Int64(seconds))
@@ -76,10 +64,6 @@ class AlertViewManager : NSObject {
         alertController.addAction(alertActionLeft)
         alertController.addAction(alertActionRight)
         
-//        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-//
-//            self.presentAlertController(alertController, presentingViewController: presentingViewController)
-//        }
         guard let currentViewController = LoaderController.currentViewController() else {
             print("Current View controller can not be found for \(String(describing: self))")
             return
@@ -103,11 +87,6 @@ class AlertViewManager : NSObject {
             alertController.addAction(action)
         }
         
-//        if let app = UIApplication.shared.delegate, let window = app.window, let presentingViewController = window?.rootViewController {
-//
-//            self.presentAlertController(alertController, presentingViewController: presentingViewController)
-//
-//        }
         guard let currentViewController = LoaderController.currentViewController() else {
             print("Current View controller can not be found for \(String(describing: self))")
             return

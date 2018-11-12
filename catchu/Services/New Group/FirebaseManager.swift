@@ -50,7 +50,7 @@ class FirebaseManager {
         LoaderController.shared.showLoader(style: .gray)
         guard let email = user.email else { return }
         guard let password = user.password else { return }
-
+        
         Auth.auth().signIn(withEmail: email, password: password) { (userData, error) in
             if let error = error {
                 self.handleError(error: error)
@@ -67,6 +67,7 @@ class FirebaseManager {
                 let providerData = userData.user.providerData[0]
                 User.shared.providerID = userData.user.uid
                 User.shared.provider = providerData.providerID
+                self.signidUserSync(authData: userData)
             }
             LoaderController.shared.removeLoader()
         }
@@ -96,7 +97,7 @@ class FirebaseManager {
             } else {
                 guard let accessToken = FBSDKAccessToken.current().tokenString else {return}
                 
-                let req = FBSDKGraphRequest(graphPath: "me", parameters: [parameterKey: parameterValue], tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: method)
+                let req = FBSDKGraphRequest(graphPath: FacebookPermissions.me, parameters: [parameterKey: parameterValue], tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: method)
                 
                 req?.start(completionHandler: { (connection, result, error) in
                     if let error = error {
@@ -154,7 +155,8 @@ class FirebaseManager {
             }
             let providerData = user.providerData[0]
             User.shared.providerID = providerData.uid
-            User.shared.provider = providerData.providerID
+            User.shared.provider = getProviderType(providerData.providerID)
+            
             if let email = providerData.email {
                 User.shared.email = email
             }
@@ -164,9 +166,10 @@ class FirebaseManager {
                 // https://graph.facebook.com/10155522219482546/picture?type=large
                 
                 var orginalUrl = photoUrl.absoluteString
-                if (providerData.providerID.contains("facebook")) {
+                
+                if (User.shared.provider == ProviderType.facebook.rawValue ) {
                     orginalUrl = orginalUrl + "?type=large"
-                } else {
+                } else if (User.shared.provider == ProviderType.facebook.rawValue) {
                     orginalUrl = orginalUrl.replacingOccurrences(of: "_normal", with: "")
                 }
                 
@@ -179,8 +182,18 @@ class FirebaseManager {
                 self?.handleResult(result)
                 LoaderController.shared.removeLoader()
             }
-            
         }
+    }
+    
+    private func getProviderType(_ provider: String) -> String {
+        var providerType = ProviderType.firebase.rawValue
+        
+        if provider.contains(ProviderType.facebook.rawValue) {
+            providerType = ProviderType.facebook.rawValue
+        } else if provider.contains(ProviderType.twitter.rawValue) {
+            providerType = ProviderType.twitter.rawValue
+        }
+        return providerType
     }
         
     func handleResult(_ result: NetworkResult<REBaseResponse>) {
@@ -213,41 +226,33 @@ class FirebaseManager {
         guard let email = user.email else { return }
         guard let password = user.password else { return }
         
-        Auth.auth().createUser(withEmail: email, password: password) { (userData, error) in
+        Auth.auth().createUser(withEmail: email, password: password) { (authData, error) in
             
-            if error != nil {
+            if let error = error {
                 
                 if let errorCode = error as NSError? {
+                    self.handleFirebaseError(error: errorCode)
+                }
+            }
+            
+            if let authData = authData {
+                
+                if let userID = authData.user.uid as String? {
                     
-                    if let firebaseErrorCode = Firebase.AuthErrorCode(rawValue: errorCode.code){
-                        let functionName = String(#function.split(separator: "(")[0])
-                        self.handleFirebaseErrorCodes(errorCode: firebaseErrorCode, functionName)
-                    }
+                    print("userID : \(userID)")
+                    User.shared.userid = userID
+                    //                        CloudFunctionsManager.shared.createUserProfileModel()
                     
                 }
                 
-            } else {
-                
-                if let userData = userData {
-                    
-                    if let userID = userData.user.uid as String? {
-                        
-                        print("userID : \(userID)")
-                        User.shared.userid = userID
-//                        CloudFunctionsManager.shared.createUserProfileModel()
-                        
-                    }
-                    
-                    // TODO: new feature check
-                    guard let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest() else { return }
-                    changeRequest.displayName = user.username
-                    changeRequest.commitChanges { (error) in
-                        if let error = error {
-                            print("Firebase changeRequest error: \(error)")
-                        }
+                // TODO: new feature check
+                guard let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest() else { return }
+                changeRequest.displayName = user.username
+                changeRequest.commitChanges { (error) in
+                    if let error = error {
+                        print("Firebase changeRequest error: \(error)")
                     }
                 }
-                
             }
             
             LoaderController.shared.removeLoader()
@@ -260,47 +265,45 @@ class FirebaseManager {
             if errorCode.code == 1 { // no Error
                 return
             }
-            if let firebaseErrorCode = Firebase.AuthErrorCode(rawValue: errorCode.code){
-                let functionName = String(#function.split(separator: "(")[0])
-                self.handleFirebaseErrorCodes(errorCode: firebaseErrorCode, functionName)
-            }
+            self.handleFirebaseError(error: errorCode)
         }
     }
     
-    func handleFirebaseErrorCodes(errorCode: AuthErrorCode,_ callerFunctionName: String) {
+    func handleFirebaseError(error: NSError) {
+        guard let firebaseErrorCode = Firebase.AuthErrorCode(rawValue: error.code) else { return }
         
-        switch errorCode {
+        var errorTitle = LocalizedConstants.Error
+        var errorMessage = error.localizedDescription
+        
+        switch firebaseErrorCode {
         case .accountExistsWithDifferentCredential:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.accountExistsWithDifferentCredential, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            
+            errorMessage = LocalizedConstants.FirebaseError.AccountExistsWithDifferentCredential
         case .credentialAlreadyInUse:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.credentialAlreadyInUse, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            
+            errorMessage = LocalizedConstants.FirebaseError.CredentialAlreadyInUse
         case .emailAlreadyInUse:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.emailAlreadyInUse, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            
+            errorMessage = LocalizedConstants.FirebaseError.EmailAlreadyInUse
         case .invalidCredential:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.invalidCredential, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            
-        case .invalidEmail:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.invalidEmail, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-            
+            errorMessage = LocalizedConstants.FirebaseError.InvalidCredential
+        case .invalidEmail, .missingEmail:
+            errorMessage = LocalizedConstants.FirebaseError.InvalidEmail
         case .userNotFound:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.userNotFound, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-        
+            errorMessage = LocalizedConstants.FirebaseError.UserNotFound
+        case .invalidPhoneNumber, .missingPhoneNumber:
+            errorMessage = LocalizedConstants.FirebaseError.InvalidPhoneNumber
+        case .invalidVerificationID, .missingVerificationID:
+            errorMessage = LocalizedConstants.FirebaseError.InvalidVerificationID
+        case .invalidVerificationCode, .missingVerificationCode:
+            errorMessage = LocalizedConstants.FirebaseError.InvalidVerificationCode
+        case .sessionExpired:
+            errorMessage = LocalizedConstants.FirebaseError.SessionExpiredForVerificationCode
         default:
-            AlertViewManager.shared.createAlert(title: LocalizedConstants.Error, message: LocalizedConstants.FirebaseError.unknownError, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
-//            let className = type(of: self)
-//            let className = ""
-//            let eventName = className + "_" + callerFunctionName
-//            Analytics.logEvent(eventName, parameters: [
-//                "email": User.shared.email,
-//                "password": User.shared.password])
+            errorTitle = LocalizedConstants.Error
+            errorMessage = error.localizedDescription
         }
-        
+        AlertViewManager.shared.createAlert(title: errorTitle, message: errorMessage, preferredStyle: .alert, actionTitle: LocalizedConstants.Ok, actionStyle: .default, completionHandler: nil)
     }
     
-    typealias TokenCompletion = (_ tokenResult : AuthTokenResult, _ finished : Bool) -> Void
+    typealias TokenCompletion = (_ tokenResult: AuthTokenResult, _ finished: Bool) -> Void
     
     func getIdToken(completion : @escaping TokenCompletion) {
         
@@ -326,7 +329,6 @@ class FirebaseManager {
     func checkUserLoggedIn() -> Bool {
         if let currentUser = Auth.auth().currentUser {
             User.shared.userid = currentUser.uid
-            print("User.shared.userID : \(User.shared.userid)")
             return true
         } else {
             return false
@@ -335,6 +337,20 @@ class FirebaseManager {
 }
 
 extension FirebaseManager {
+    
+    struct FacebookPermissions {
+        static let me                  = "me"
+        static let email               = "email"
+        static let name                = "name"
+        static let id                  = "id"
+        static let public_profile      = "public_profile"
+        static let user_friends        = "user_friends"
+        static let parameter_key       = "fields"
+        static let parameter_value     = "id, name, short_name, email"
+        static let method              = "GET"
+        static let pathMe_Friends = "me/friends"
+        static let parameterValueForFriends = "id, name, short_name, picture"
+    }
     
     func parseFacebookGraph(data: NSDictionary) {
 //        User.shared.username = "" // no longer return username
@@ -351,16 +367,57 @@ extension FirebaseManager {
     }
 }
 
-
-struct FacebookPermissions {
-    static let email               = "email"
-    static let name                = "name"
-    static let id                  = "id"
-    static let public_profile      = "public_profile"
-    static let user_friends        = "user_friends"
-    static let parameter_key       = "fields"
-    static let parameter_value     = "id, name, short_name, email"
-    static let method              = "GET"
+extension FirebaseManager {
+    
+    typealias PhoneCompletion = (_ verificationId: String) -> Void
+    typealias ConfirmationCompletion = (_ success: Bool) -> Void
+    
+    func phoneSendSMSVerification(phoneNum: String, completion : @escaping PhoneCompletion) {
+        
+        // for test
+        if let settings = Auth.auth().settings {
+            print("Test Phone Setting var")
+            settings.isAppVerificationDisabledForTesting = true
+        }
+        
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNum, uiDelegate: nil) { (verificationID, error) in
+            
+            if let error = error {
+                self.handleError(error: error)
+                return
+            }
+            
+            if let verificationId = verificationID {
+                print("Successfully verificationId: \(verificationId)")
+                completion(verificationId)
+            }
+        }
+    }
+    
+    func phoneSMSConfirmation(verificationId: String, verificationCode: String, completion : @escaping ConfirmationCompletion) {
+        
+        // This test verification code is specified for the given test phone number in the developer console.
+//        let testVerificationCode = "123456"
+        
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationId, verificationCode: verificationCode)
+        
+        print("credential.provider: \(credential.provider)")
+        
+        Auth.auth().signInAndRetrieveData(with: credential) { (authData, error) in
+            if let error = error {
+                self.handleError(error: error)
+                completion(false)
+                return
+            if let authData = authData {
+                print("Userid: \(authData.user.uid)")
+                print("phoneNumber: \(authData.user.phoneNumber)")
+                completion(true)
+            }
+            completion(false)
+        }
+    }
+    
     static let pathMe_Friends = "me/friends"
     static let parameterValueForFriends = "id, name, short_name, picture"
 }
+

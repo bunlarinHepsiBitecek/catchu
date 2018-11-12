@@ -41,41 +41,34 @@ class FeedViewCell: BaseTableCell {
     
     weak var delegate: FeedViewCellDelegate!
     
-    private var shadowLayer: CAShapeLayer!
-    private let padding: CGFloat = 10.0
+//    private var shadowLayer: CAShapeLayer!
+    private let padding = Constants.Feed.Padding
+    private let dimension = Constants.Feed.ImageWidthHeight
     
     lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         
-//        view.layer.shadowColor = UIColor.lightGray.cgColor
-//        view.layer.shadowOpacity = 0.8
-//        view.layer.shadowOffset = CGSize(width: 0, height: 5) // for CGSize.zero
-//        view.layer.shadowRadius = 7
-//        view.layer.cornerRadius = 15
+        view.layer.shadowColor = UIColor.lightGray.cgColor
+        view.layer.shadowOpacity = 0.8
+        view.layer.shadowOffset = CGSize(width: 0, height: 5) // for CGSize.zero
+        view.layer.shadowRadius = 7
+        view.layer.cornerRadius = 15
         
         return view
     }()
     
     lazy var mediaView: MediaView = {
-        let view = MediaView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 250))
-        view.backgroundColor = UIColor.orange
+        let view = MediaView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
-    lazy var footerView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 120))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        return view
-    }()
-    
     //we use lazy properties for each view
     lazy var profileImageView: UIImageView = {
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
         imageView.contentMode = UIViewContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
@@ -83,6 +76,7 @@ class FeedViewCell: BaseTableCell {
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
         return imageView
     }()
     
@@ -132,9 +126,9 @@ class FeedViewCell: BaseTableCell {
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "icon-like"), for: UIControlState())
-        
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(likeButtonClick), for: .touchUpInside)
+        button.addTarget(self, action: #selector(likePost), for: .touchUpInside)
+        
         return button
     }()
     
@@ -164,6 +158,11 @@ class FeedViewCell: BaseTableCell {
         imageView.image = UIImage(named: "icon-like")
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(viewLikeUsers(tapGestureRecognizer:)))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tap)
+        
         return imageView
     }()
     
@@ -176,7 +175,6 @@ class FeedViewCell: BaseTableCell {
         let tap = UITapGestureRecognizer(target: self, action: #selector(viewComments(tapGestureRecognizer:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tap)
-        
         
         return imageView
     }()
@@ -196,31 +194,71 @@ class FeedViewCell: BaseTableCell {
         label.textColor = UIColor.lightGray
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "120 m"
         return label
+    }()
+    
+    lazy var locationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "icon-location"), for: UIControlState())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(showLocation(_:)), for: .touchUpInside)
+        
+        return button
     }()
     
     
     override func setupViews() {
         super.setupViews()
         
-        self.containerView.addSubview(profileImageView)
-        self.containerView.addSubview(name)
-        self.containerView.addSubview(username)
-        self.containerView.addSubview(likeButton)
-        self.containerView.addSubview(statusTextView)
-        self.containerView.addSubview(mediaView)
-        self.containerView.addSubview(footerView)
+        // MARK : It use in stack for lean view to right
+        let spacer = UIView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
-        footerView.addSubview(timeAgoLabel)
-        footerView.addSubview(distanceLabel)
-        footerView.addSubview(likeCountLabel)
-        footerView.addSubview(commentCountLabel)
-        footerView.addSubview(likeIcon)
-        footerView.addSubview(commentIcon)
-        footerView.addSubview(moreButton)
+        // MARK : horizontal right
+        likeButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
+        let customLayoutMargin = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
+        let nameStackView = UIStackView(arrangedSubviews: [name, username])
+        nameStackView.axis = .vertical
+        
+        let headerStackView = UIStackView(arrangedSubviews: [profileImageView, nameStackView, likeButton])
+        headerStackView.axis = .horizontal
+        headerStackView.alignment = .center
+        headerStackView.distribution = .fill
+        headerStackView.spacing = padding
+        
+        let mediaStackView = UIStackView(arrangedSubviews: [mediaView])
+        mediaStackView.layoutMargins = UIEdgeInsets(top: 0, left: -padding, bottom: 0, right: -padding)
+        mediaStackView.isLayoutMarginsRelativeArrangement = true
+        
+        let locationStackView = UIStackView(arrangedSubviews: [distanceLabel, locationButton])
+        locationStackView.alignment = .fill
+        locationStackView.distribution = .equalSpacing
+        locationStackView.spacing = padding
+        
+//        let timeDistanceStackView = UIStackView(arrangedSubviews: [timeAgoLabel, distanceLabel])
+        let timeDistanceStackView = UIStackView(arrangedSubviews: [timeAgoLabel, locationStackView])
+        timeDistanceStackView.alignment = .fill
+        timeDistanceStackView.distribution = .equalCentering
+        
+        let likeCommentStackView = UIStackView(arrangedSubviews: [likeIcon, likeCountLabel, commentIcon, commentCountLabel, spacer, moreButton])
+        likeCommentStackView.alignment = .fill
+        likeCommentStackView.distribution = .fill
+        likeCommentStackView.spacing = padding/2
+        likeCommentStackView.setCustomSpacing(padding, after: likeCountLabel)
+        
+        let containerStackView = UIStackView(arrangedSubviews: [headerStackView, statusTextView, mediaStackView, timeDistanceStackView, likeCommentStackView,])
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        containerStackView.axis = .vertical
+        containerStackView.alignment = .fill
+        containerStackView.distribution = .fill
+        containerStackView.layoutMargins = customLayoutMargin
+        containerStackView.isLayoutMarginsRelativeArrangement = true
+        containerStackView.setCustomSpacing(padding, after: mediaStackView)
+        containerStackView.setCustomSpacing(padding, after: timeDistanceStackView)
+        
+        self.containerView.addSubview(containerStackView)
         // now add container view to content view for UITableViewAutomaticDimension
         self.contentView.addSubview(self.containerView)
         
@@ -232,66 +270,13 @@ class FeedViewCell: BaseTableCell {
             containerView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor, constant: padding),
             containerView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor, constant: -padding),
             
-            //pin profileImage
-            profileImageView.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor, constant: padding),
-            profileImageView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor, constant: padding),
             profileImageView.widthAnchor.constraint(equalToConstant: profileImageView.frame.width),
             profileImageView.heightAnchor.constraint(equalToConstant: profileImageView.frame.height),
             
-            //pin name
-            name.safeTopAnchor.constraint(equalTo: profileImageView.safeTopAnchor),
-            name.safeLeadingAnchor.constraint(equalTo: profileImageView.safeTrailingAnchor, constant: padding),
-            name.safeTrailingAnchor.constraint(equalTo: likeButton.safeLeadingAnchor, constant: -padding),
-            
-            //pin username
-            username.safeTopAnchor.constraint(equalTo: name.safeBottomAnchor),
-            username.safeLeadingAnchor.constraint(equalTo: name.safeLeadingAnchor),
-            username.safeTrailingAnchor.constraint(equalTo: name.safeTrailingAnchor),
-            
-            //layout addButton
-            likeButton.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor, constant: padding),
-            likeButton.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor, constant: -padding),
-            likeButton.widthAnchor.constraint(equalToConstant: 50),
-            likeButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            // pin statustext
-            statusTextView.safeTopAnchor.constraint(equalTo: username.safeBottomAnchor),
-            statusTextView.safeLeadingAnchor.constraint(equalTo: username.safeLeadingAnchor),
-            statusTextView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
-            
-            mediaView.safeTopAnchor.constraint(equalTo: statusTextView.safeBottomAnchor),
-            mediaView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor),
-            mediaView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
-            mediaView.heightAnchor.constraint(equalToConstant: mediaView.frame.height),
-            
-            footerView.safeTopAnchor.constraint(equalTo: mediaView.safeBottomAnchor, constant: padding),
-            footerView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor, constant: -padding),
-            footerView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor, constant: padding),
-            footerView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor, constant: -padding),
-            
-            timeAgoLabel.safeTopAnchor.constraint(equalTo: footerView.safeTopAnchor),
-            timeAgoLabel.safeLeadingAnchor.constraint(equalTo: footerView.safeLeadingAnchor),
-            
-            distanceLabel.safeTopAnchor.constraint(equalTo: footerView.safeTopAnchor),
-            distanceLabel.safeTrailingAnchor.constraint(equalTo: footerView.safeTrailingAnchor),
-            
-            likeCountLabel.safeTopAnchor.constraint(equalTo: timeAgoLabel.safeBottomAnchor, constant: padding),
-            likeCountLabel.safeBottomAnchor.constraint(equalTo: footerView.safeBottomAnchor),
-            likeCountLabel.safeLeadingAnchor.constraint(equalTo: footerView.safeLeadingAnchor),
-            likeIcon.safeBottomAnchor.constraint(equalTo: likeCountLabel.safeBottomAnchor),
-            likeIcon.safeLeadingAnchor.constraint(equalTo: likeCountLabel.safeTrailingAnchor, constant: 5),
-            likeIcon.widthAnchor.constraint(equalToConstant: 17),
-            likeIcon.heightAnchor.constraint(equalToConstant: 17),
-            
-            commentCountLabel.safeBottomAnchor.constraint(equalTo: likeCountLabel.safeBottomAnchor),
-            commentCountLabel.safeLeadingAnchor.constraint(equalTo: likeIcon.safeTrailingAnchor, constant: 20),
-            commentIcon.safeBottomAnchor.constraint(equalTo: commentCountLabel.safeBottomAnchor),
-            commentIcon.safeLeadingAnchor.constraint(equalTo: commentCountLabel.safeTrailingAnchor, constant: 5),
-            commentIcon.widthAnchor.constraint(equalToConstant: 17),
-            commentIcon.heightAnchor.constraint(equalToConstant: 17),
-            
-            moreButton.safeBottomAnchor.constraint(equalTo: footerView.safeBottomAnchor),
-            moreButton.safeTrailingAnchor.constraint(equalTo: footerView.safeTrailingAnchor),
+            containerStackView.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor),
+            containerStackView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor),
+            containerStackView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
+            containerStackView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor),
             ])
         
 
@@ -300,23 +285,23 @@ class FeedViewCell: BaseTableCell {
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
         
-         /// Custom cell subview actual size zero in layoutSubviews(), so override layoutIfNeeded
-        if shadowLayer == nil {
-            let cornerRadius: CGFloat = 15.0
-            
-            shadowLayer = CAShapeLayer()
-            
-            shadowLayer.path = UIBezierPath(roundedRect: containerView.bounds, cornerRadius: cornerRadius).cgPath
-            shadowLayer.fillColor = UIColor.white.cgColor
-            
-            shadowLayer.shadowColor = UIColor.lightGray.cgColor
-            shadowLayer.shadowPath = shadowLayer.path
-            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-            shadowLayer.shadowOpacity = 0.8
-            shadowLayer.shadowRadius = 7
-            
-            containerView.layer.insertSublayer(shadowLayer, at: 0)
-        }
+        /// Custom cell subview actual size zero in layoutSubviews(), so override layoutIfNeeded
+//        if shadowLayer == nil {
+//            let cornerRadius: CGFloat = 15.0
+//
+//            shadowLayer = CAShapeLayer()
+//
+//            shadowLayer.path = UIBezierPath(roundedRect: containerView.bounds, cornerRadius: cornerRadius).cgPath
+//            shadowLayer.fillColor = UIColor.white.cgColor
+//
+//            shadowLayer.shadowColor = UIColor.lightGray.cgColor
+//            shadowLayer.shadowPath = shadowLayer.path
+//            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+//            shadowLayer.shadowOpacity = 0.8
+//            shadowLayer.shadowRadius = 7
+//
+//            containerView.layer.insertSublayer(shadowLayer, at: 0)
+//        }
     }
     
     func configure(item: FeedViewModelItem, indexPath: IndexPath) {
@@ -326,11 +311,24 @@ class FeedViewCell: BaseTableCell {
         
         // MARK: Post value converter
         if let post = item.post {
-            self.mediaView.post = post
+//            self.mediaView.post = post
+            self.mediaView.item = item
+            if let attachments = post.attachments {
+                self.mediaView.isHidden = attachments.count > 0 ? false : true
+            } else {
+                self.mediaView.isHidden = true
+            }
+            
+            print("\(indexPath) MediaView hide: \(self.mediaView.isHidden)")
             
             if let message = post.message {
+                statusTextView.isHidden = message.isEmpty
                 statusTextViewReadMore(expanded: item.expanded, text: message)
+            } else {
+                statusTextView.isHidden = true
             }
+            print("statusTextView.isHidden: \(statusTextView.isHidden)")
+            
             if let isLiked = post.isLiked {
                 let buttonImage = isLiked ? UIImage(named: "icon-like-filled") : UIImage(named: "icon-like")
                 self.likeButton.setImage(buttonImage, for: .normal)
@@ -352,7 +350,7 @@ class FeedViewCell: BaseTableCell {
                     self.profileImageView.setImageInitialPlaceholder(name, circular: true)
                 }
                 if let username = user.username {
-                    self.username.text = username
+                    self.username.text = "@\(username)"
                 }
                 if let profilePictureUrl = user.profilePictureUrl {
                     self.profileImageView.loadAndCacheImage(url: profilePictureUrl)
@@ -373,7 +371,7 @@ class FeedViewCell: BaseTableCell {
         }
     }
     
-    @objc func likeButtonClick() {
+    @objc func likePost() {
         
         guard let item = item as? FeedViewModelPostItem else {
             return
@@ -384,14 +382,12 @@ class FeedViewCell: BaseTableCell {
         guard let isLiked = post.isLiked else { return }
         guard var likeCount = post.likeCount else { return }
         
-        let comment = Comment(comment: REComment()) // empty, no need
-        
         if isLiked {
             post.isLiked = !isLiked
             likeCount -= 1
             post.likeCount = likeCount
             self.likeButton.setImage(UIImage(named: "icon-like"), for: .normal)
-            REAWSManager.shared.unlike(post: post, comment: comment) { (result) in
+            REAWSManager.shared.unlike(post: post, commentid: nil) { (result) in
                 // result true
             }
         } else {
@@ -400,7 +396,7 @@ class FeedViewCell: BaseTableCell {
             post.likeCount = likeCount
             self.likeButton.setImage(UIImage(named: "icon-like-filled"), for: .normal)
             
-            REAWSManager.shared.like(post: post, comment: comment) { (result) in
+            REAWSManager.shared.like(post: post, commentid: nil) { (result) in
                 // result true
             }
         }
@@ -425,8 +421,42 @@ class FeedViewCell: BaseTableCell {
         guard let post = item.post else { return }
         
         let commentViewController = CommentViewController()
-        commentViewController.commentView.dataSource.post = post
+        commentViewController.dataSource.post = post
         LoaderController.pushViewController(controller: commentViewController)
+    }
+    
+    @objc func viewLikeUsers(tapGestureRecognizer: UITapGestureRecognizer) {
+        guard let item = self.item as? FeedViewModelPostItem else { return }
+        guard let post = item.post else { return }
+        guard let likeCount = post.likeCount else { return }
+        
+        if likeCount == 0 {
+            return
+        }
+        
+        let likeViewController = LikeViewController()
+        likeViewController.likeView.configure(post: post)
+        LoaderController.pushViewController(controller: likeViewController)
+    }
+    
+    @objc func showLocation(_ sender: UIButton) {
+        guard let item = self.item as? FeedViewModelPostItem else { return }
+        guard let post = item.post else { return }
+        guard let location = post.location else { return }
+        
+        
+        let feedMapView = FeedMapView()
+        feedMapView.location = location.convertToCLLocation()
+        feedMapView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(feedMapView)
+        
+        NSLayoutConstraint.activate([
+            feedMapView.safeCenterXAnchor.constraint(equalTo: safeCenterXAnchor),
+            feedMapView.safeCenterYAnchor.constraint(equalTo: safeCenterYAnchor),
+            feedMapView.widthAnchor.constraint(equalToConstant: 300),
+            feedMapView.heightAnchor.constraint(equalToConstant: 400),
+            ])
+        
     }
     
 }

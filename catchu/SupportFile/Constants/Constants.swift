@@ -9,11 +9,21 @@
 import UIKit
 
 struct Constants {
+    // https://picsum.photos/45/45/?random
     static let LOCALTEST = false
     static let CATCHU = "CatchU"
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
     static let AWS_PATH_EMPTY = "empty" // used for aws lambda path param empty
+    
+    struct Bundle {
+        struct Path {
+            static let Country = "Catchu.bundle/Data/countryCodes"
+        }
+        struct FileType {
+            static let Json = "json"
+        }
+    }
     
     struct UIDesignConstant {
         static let PlaceHolderColor: UIColor = UIColor.lightGray
@@ -171,12 +181,21 @@ struct Constants {
     }
     
     struct Feed {
+        static let Padding: CGFloat = 10.0
+        static let ImageWidthHeight: CGFloat = 50
         static let ReadMoreCaracterCount: Int = 120
         static let ReadMoreFont: UIFont = UIFont.systemFont(ofSize: 14)
         static let ReadMoreColor: UIColor = UIColor.lightGray
         static let ReadMoreUnderlineColor: UIColor = UIColor.clear
         static let DefaultImageExtension: String = "jpg"
         static let DefaultVideoExtension: String = "mov"
+    }
+    
+    struct Relation {
+        static let Follow = "FOLLOW"
+        static let Following = "FOLLOWING"
+        static let Pending = "PENDING"
+        static let Own = "OWN"
     }
     
     struct Segue {
@@ -191,10 +210,6 @@ struct Constants {
     struct Storyboard {
         struct ID {
             static let MainTabBarViewController = "MainTabBarViewController"
-            static let LoginViewController      = "LoginViewController"
-            static let ConfirmationViewController = "ConfirmationViewController"
-            static let FeedViewController = "FeedViewController"
-            
         }
         
         struct Name {
@@ -265,6 +280,54 @@ struct Constants {
         }
         
     }
+    
+//    struct FirebaseCallableFunctions {
+//
+//        static let createUserProfile = "createUserProfile"
+//        static let updateUserProfile = "updateUserProfile"
+//        static let getFriends = "getFriends"
+//        static let setNewShareData = "setNewShareData"
+//        static let getShareDataByUserNameAndShareID = "getShareDataByUserNameAndShareID"
+//        static let getShareDataByShareID = "getShareDataByShareID"
+//    }
+    
+//    struct FirebaseModelConstants {
+//
+//        struct UserModelConstants {
+//
+//            static let userID: String = "userId"
+//            static let userName: String = "userName"
+//            static let email: String = "email"
+//
+//        }
+//
+//        struct ShareModelConstants {
+//
+//            static let shareId: String = "shareId"
+//            static let imageUrl : String = "imageUrl"
+//            static let textScreenShotUrl : String = "textScreenShotUrl"
+//            static let videoScreenShotUrl : String = "videoScreenShotUrl"
+//            static let Text: String = "text"
+//            static let imageUrlSmall : String = "imageUrlSmall"
+//        }
+        
+//        struct PathNames {
+//
+//            static let Media = "Media"
+//            static let Share = "Share"
+//            static let TextScreenShots = "TextScreenShots"
+//            static let Images = "Images"
+//
+//        }
+//
+//        struct ModelNames {
+//
+//            static let GeoFire = "GeoFire"
+//            static let GeoFireModel = "GeoFireModel"
+//            static let ShareData    = "ShareData"
+//        }
+//
+//    }
     
     struct StoryBoardID {
         

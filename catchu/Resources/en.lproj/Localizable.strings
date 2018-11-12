@@ -37,19 +37,23 @@
 "DefaultError" = "Something went wrong, please try again 😜";
 
 // Error explanation retrieved from Firebase.AuthErrorCode
+"UnknownError" = "Unknown Error";
 "SocialLoginError" = "Cann't get information";
-"accountExistsWithDifferentCredential" = "Account exists with different credentials";
-"credentialAlreadyInUse" = "Credential is already in use";
-"emailAlreadyInUse" = "Email is already in use";
-"invalidCredential" = "Wrong password or username information";
-"invalidEmail" = "Wrong password or username information";
-"userNotFound" = "User not found";
-"unknownError" = "Unknown Error";
+"AccountExistsWithDifferentCredential" = "Account exists with different credentials";
+"CredentialAlreadyInUse" = "Credential is already in use";
+"EmailAlreadyInUse" = "Email is already in use";
+"InvalidCredential" = "Wrong password or username information";
+"InvalidEmail" = "Wrong password or username information";
+"UserNotFound" = "User not found";
+"InvalidPhoneNumber" = "Phone number is invalid. Please try again.";
+"InvalidVerificationID" = "The SMS verification code is invalid. Please resend the verification code SMS and be sure to use the verification code sended.";
+"InvalidVerificationCode" = "The SMS verification code is invalid. Please resend the verification code SMS and be sure to use the verification code sended.";
+"SessionExpiredForVerificationCode" = "The SMS verification code is expored. Please resend the verification code SMS and be sure to use the verification code sended.";
 
 // Button or Label promt values
 "addParticipantOrGroup" = "Add Participant or Group";
 "addParticipant" = "Add Participant";
-"cancel" = "Cancel";
+"Cancel" = "Cancel";
 "next" = "Next";
 "Friends" = "Friends";
 "Groups" = "Groups";
@@ -125,8 +129,13 @@
 "Email" = "Email";
 "Phone" = "Phone";
 "Gender" = "Gender";
+"Next" = "Next";
+"SelectCountry" = "Select Country";
+"AllCountries" = "All Countries";
+"WillReceiveSMS" = "You will receive confirmation SMS after next button click.";
 
 //Feed
+"NoPostFound" = "No post found nearby your current location";
 "CatchU" = "CatchU";
 "Loading" = "Loading...";
 "More" = "more";
@@ -134,6 +143,14 @@
 "AddComment" = "Add a comment...";
 "Send" = "Send";
 "Reply" = "Reply";
+
+// Like
+"Likes" = "Likes";
+"Loading" = "Loading...";
+"Follow" = "Follow";
+"Following" = "Following";
+"Requested" = "Requested";
+"Unfollow" = "Unfollow";
 
 // Permission Statements
 "topicLabelForCamera" = "Please Allow Access to Camera";

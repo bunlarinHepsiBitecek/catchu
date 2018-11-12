@@ -141,7 +141,7 @@ extension ShareView: UINavigationControllerDelegate, UIImagePickerControllerDele
             imagePicker.sourceType = .camera;
             imagePicker.allowsEditing = false
             
-            LoaderController.shared.currentViewController().present(imagePicker, animated: true, completion: nil)
+            LoaderController.currentViewController()?.present(imagePicker, animated: true, completion: nil)
         } else {
             AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Library.CameraNotAvaliableTitle, message: LocalizedConstants.Library.CameraNotAvaliable, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
         }
@@ -162,11 +162,11 @@ extension ShareView: UINavigationControllerDelegate, UIImagePickerControllerDele
             self.accessPhotos()
         }
         
-        LoaderController.shared.currentViewController().dismiss(animated:true, completion: nil)
+        LoaderController.currentViewController()?.dismiss(animated:true, completion: nil)
     }
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        LoaderController.shared.currentViewController().dismiss(animated: true, completion: nil)
+        LoaderController.currentViewController()?.dismiss(animated: true, completion: nil)
     }
 }
 

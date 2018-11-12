@@ -85,3 +85,40 @@ extension UIView {
         return centerYAnchor
     }
 }
+
+
+extension UIViewController {
+    
+    /// An extension add child view controller and move parent
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func add(_ child: UIViewController) {
+        addChildViewController(child)
+        view.addSubview(child.view)
+        child.didMove(toParentViewController: self)
+    }
+    
+    /// An extension remove from parent view and viewcontroller
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func remove() {
+        guard parent != nil else {
+            return
+        }
+        willMove(toParentViewController: nil)
+        removeFromParentViewController()
+        view.removeFromSuperview()
+    }
+    
+    /// An extension add child view controller to containerview
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func addChildViewController(to containerView: UIView, _ child: UIViewController) {
+        /// view controller view to containerview
+        addChildViewController(child)
+        child.view.frame = containerView.bounds
+        containerView.addSubview(child.view)
+        child.didMove(toParentViewController: self)
+    }
+    
+}
