@@ -17,6 +17,8 @@ class ExplorePeopleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print("ExplorePeopleViewController starts")
+        
         prepareViewDidLoadOperations()
         
     }
@@ -36,6 +38,10 @@ extension ExplorePeopleViewController {
     
     func addViews() {
         
+        print("takasi")
+        print("self.view.frame : \(self.view.frame)")
+        
+//        exploreView = ExploreView(frame: CGRect(x: 0, y: 300, width: self.view.frame.width, height: 200))
         exploreView = ExploreView()
         exploreView?.translatesAutoresizingMaskIntoConstraints = false
         
@@ -59,9 +65,13 @@ extension ExplorePeopleViewController {
         self.navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.sizeToFit()
         
-        definesPresentationContext = true
+        // bunu yazmassak navigation bar içerisinde gelmiyor
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        definesPresentationContext = false
         
     }
     

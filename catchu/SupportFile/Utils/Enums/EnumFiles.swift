@@ -155,6 +155,10 @@ enum DelegationErrors: Swift.Error {
     case CustomCameraViewIsNil
 }
 
+enum FacebookThrowableErrors: Swift.Error {
+    case GraphRequestCreationFailed
+}
+
 enum CircleAnimationProcess {
     case start
     case stop
@@ -169,6 +173,13 @@ enum PostAttachmentTypes {
 }
 
 enum TransitionDirection {
+    case left
+    case rigth
+    case up
+    case down
+}
+
+enum PanDirections {
     case left
     case rigth
     case up

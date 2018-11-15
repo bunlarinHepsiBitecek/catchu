@@ -93,7 +93,6 @@
 		45AE7DEB216F4D170081C6F6 /* REUserListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */; };
 		45AE7DED216F813B0081C6F6 /* REProviderList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEC216F813B0081C6F6 /* REProviderList.swift */; };
 		45AE7DEF216F8CFD0081C6F6 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEE216F8CFD0081C6F6 /* Base.swift */; };
-		45AE7DF1216F8D790081C6F6 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF0216F8D790081C6F6 /* LikeView.swift */; };
 		45AE7DF3216F8E4D0081C6F6 /* LikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF2216F8E4D0081C6F6 /* LikeViewModel.swift */; };
 		45AE7DF5216F8E710081C6F6 /* LikeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF4216F8E710081C6F6 /* LikeViewCell.swift */; };
 		45AE7DF7216F99FA0081C6F6 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF6216F99FA0081C6F6 /* LikeViewController.swift */; };
@@ -320,6 +319,7 @@
 		A7F35DA22116F173005DA851 /* TakasiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F35DA12116F173005DA851 /* TakasiViewController.swift */; };
 		A7F8F1DA21490F6A00EE45B6 /* CustomCapturedVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8F1D921490F6A00EE45B6 /* CustomCapturedVideoView.swift */; };
 		A7F8F1DC214944EA00EE45B6 /* microphoneMain.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A7F8F1DB214944E800EE45B6 /* microphoneMain.jpeg */; };
+		A7F95F86219B20E700F9E8D9 /* UserProfileTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F95F85219B20E700F9E8D9 /* UserProfileTopView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -436,7 +436,6 @@
 		45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REUserListResponse.swift; sourceTree = "<group>"; };
 		45AE7DEC216F813B0081C6F6 /* REProviderList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProviderList.swift; sourceTree = "<group>"; };
 		45AE7DEE216F8CFD0081C6F6 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
-		45AE7DF0216F8D790081C6F6 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		45AE7DF2216F8E4D0081C6F6 /* LikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewModel.swift; sourceTree = "<group>"; };
 		45AE7DF4216F8E710081C6F6 /* LikeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewCell.swift; sourceTree = "<group>"; };
 		45AE7DF6216F99FA0081C6F6 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
@@ -663,6 +662,7 @@
 		A7F35DA12116F173005DA851 /* TakasiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakasiViewController.swift; sourceTree = "<group>"; };
 		A7F8F1D921490F6A00EE45B6 /* CustomCapturedVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCapturedVideoView.swift; sourceTree = "<group>"; };
 		A7F8F1DB214944E800EE45B6 /* microphoneMain.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = microphoneMain.jpeg; sourceTree = "<group>"; };
+		A7F95F85219B20E700F9E8D9 /* UserProfileTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTopView.swift; sourceTree = "<group>"; };
 		B5C3AD71002450E40F97C224 /* Pods-catchu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catchu.release.xcconfig"; path = "Pods/Target Support Files/Pods-catchu/Pods-catchu.release.xcconfig"; sourceTree = "<group>"; };
 		C4E2B569C5CB5CFE69BDDBCF /* Pods-catchu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catchu.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catchu/Pods-catchu.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -717,7 +717,6 @@
 				4535481421523C6C00FC81F5 /* CommentAccessoryView.swift */,
 				451E9F0E2139366300185925 /* CachedImageView.swift */,
 				45354812214E6CCB00FC81F5 /* DifferenceCalculator.swift */,
-				45AE7DF0216F8D790081C6F6 /* LikeView.swift */,
 				45AE7DF2216F8E4D0081C6F6 /* LikeViewModel.swift */,
 				45AE7DF4216F8E710081C6F6 /* LikeViewCell.swift */,
 				4538A06221772E530044A79D /* CountryViewModel.swift */,
@@ -1274,6 +1273,7 @@
 			isa = PBXGroup;
 			children = (
 				A72AF220219483FE0050B685 /* UserProfileMainView.swift */,
+				A7F95F85219B20E700F9E8D9 /* UserProfileTopView.swift */,
 			);
 			path = ProfileViews;
 			sourceTree = "<group>";
@@ -2070,6 +2070,7 @@
 				A7D3E06A2183705B006F813E /* Stickers.swift in Sources */,
 				A79A766920C5B55900FCE198 /* ExtensionContactViewController.swift in Sources */,
 				A71F65AD2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift in Sources */,
+				A7F95F86219B20E700F9E8D9 /* UserProfileTopView.swift in Sources */,
 				A75F081A213752B8001065AA /* GroupImageViewController.swift in Sources */,
 				A762B7582163BD1800DBB4EF /* FinalSharePageView.swift in Sources */,
 				A79A768420C656E100FCE198 /* ExtensionContainerFriendController.swift in Sources */,
@@ -2126,7 +2127,6 @@
 				45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */,
 				A71F65AF2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift in Sources */,
 				A7E2F847211131CC00214066 /* UIButtonCustomDesign.swift in Sources */,
-				45AE7DF1216F8D790081C6F6 /* LikeView.swift in Sources */,
 				458AAB302186425400F85A9B /* Dynamic.swift in Sources */,
 				A7E2F85C2114A6F700214066 /* REUserProfile_resultArray_item.swift in Sources */,
 				A774AC9A21319B3700848B79 /* GroupBridgeNavigationController.swift in Sources */,

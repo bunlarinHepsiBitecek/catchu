@@ -196,6 +196,19 @@ class User {
                 self.userFollowerCount = followerCount
             }
         }
+        
+        if let userInfo = httpRequest.userInfo {
+            if let providerData = userInfo.provider {
+                if let providerType = providerData.providerType {
+                    self.provider = providerType
+                }
+                
+                if let providerID = providerData.providerid {
+                    self.providerID = providerID
+                }
+            }
+        }
+        
     }
     
     func setUserProfileProperties(httpRequest : REUserProfileProperties) {

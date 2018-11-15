@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/New Group/FirebaseManager.swift"
-            timestampString = "563676448.3800679"
+            timestampString = "563802976.178802"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "150"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/New Group/FirebaseManager.swift"
-            timestampString = "563676448.381294"
+            timestampString = "563802976.1792361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "139"
@@ -74,11 +74,11 @@
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/New%20Group/FirebaseManager.swift"
-                  timestampString = "563706944.772333"
+                  timestampString = "563851601.870208"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "139"
-                  endingLineNumber = "139"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
                   offsetFromSymbolStart = "137">
                </Location>
                <Location
@@ -89,11 +89,11 @@
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/New%20Group/FirebaseManager.swift"
-                  timestampString = "563706944.774001"
+                  timestampString = "563851601.871929"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "140"
-                  endingLineNumber = "140"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
                   offsetFromSymbolStart = "54">
                </Location>
             </Locations>
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/New Group/FirebaseManager.swift"
-            timestampString = "563676448.381668"
+            timestampString = "563802976.179545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "107"
@@ -122,45 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/New Group/FirebaseManager.swift"
-            timestampString = "563676448.382041"
+            timestampString = "563802976.1798511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "178"
             endingLineNumber = "178"
             landmarkName = "signidUserSync(authData:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "catchu.FirebaseManager.(signidUserSync in _5F2E29094627D9FAF5D1CF8464D8A6E4)(authData: Swift.Optional&lt;__C.FIRAuthDataResult&gt;) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/New%20Group/FirebaseManager.swift"
-                  timestampString = "563706944.781545"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "178"
-                  endingLineNumber = "178"
-                  offsetFromSymbolStart = "5936">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (catchu.NetworkResult&lt;catchu.REBaseResponse&gt;) -&gt; () in catchu.FirebaseManager.(signidUserSync in _5F2E29094627D9FAF5D1CF8464D8A6E4)(authData: Swift.Optional&lt;__C.FIRAuthDataResult&gt;) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/New%20Group/FirebaseManager.swift"
-                  timestampString = "563706944.783219"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "178"
-                  endingLineNumber = "178"
-                  offsetFromSymbolStart = "53">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -170,13 +138,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/AWS/REAWSManager.swift"
-            timestampString = "563676448.382376"
+            timestampString = "563809516.3697571"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "64"
             endingLineNumber = "64"
-            landmarkName = "loginSync(user:completion:)"
-            landmarkType = "7">
+            landmarkName = "REAWSManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -186,45 +154,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/AWS/REAWSManager.swift"
-            timestampString = "563676448.386416"
+            timestampString = "563809516.369861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "77"
             endingLineNumber = "77"
             landmarkName = "loginSync(user:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "catchu.REAWSManager.loginSync(user: catchu.User, completion: (catchu.NetworkResult&lt;catchu.REBaseResponse&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/AWS/REAWSManager.swift"
-                  timestampString = "563706944.79092"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "77"
-                  endingLineNumber = "77"
-                  offsetFromSymbolStart = "590">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.FIRAuthTokenResult, Swift.Bool) -&gt; () in catchu.REAWSManager.loginSync(user: catchu.User, completion: (catchu.NetworkResult&lt;catchu.REBaseResponse&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/AWS/REAWSManager.swift"
-                  timestampString = "563706944.79255"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "78"
-                  endingLineNumber = "78"
-                  offsetFromSymbolStart = "71">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -234,43 +170,107 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/Services/AWS/REAWSManager.swift"
-            timestampString = "563676448.386511"
+            timestampString = "563809516.369958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "loginSync(user:completion:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/Profile/ProfilePackage/SlideMenu/ExploreViews/ExploreMenus.swift"
+            timestampString = "563728818.677667"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "tata()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/Profile/ProfilePackage/SlideMenu/ExploreViews/FacebookContactRequestView.swift"
+            timestampString = "563809516.370073"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "startGettingFacebookFriends(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/Profile/ProfilePackage/SlideMenu/ExploreViews/FacebookContactList.swift"
+            timestampString = "563970526.850934"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
+            landmarkName = "dataLoadTrigger()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CapturedViews/CustomScrollView4.swift"
+            timestampString = "563851601.496418"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "CustomScrollView4"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.FIRAuthTokenResult, Swift.Bool) -&gt; () in catchu.REAWSManager.loginSync(user: catchu.User, completion: (catchu.NetworkResult&lt;catchu.REBaseResponse&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "catchu.CustomScrollView4.delegateShareData.getter : weak Swift.Optional&lt;catchu.ShareDataProtocols&gt;"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/AWS/REAWSManager.swift"
-                  timestampString = "563706944.7968121"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/CapturedViews/CustomScrollView4.swift"
+                  timestampString = "563851601.906705"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "79"
-                  endingLineNumber = "79"
-                  offsetFromSymbolStart = "110">
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "123">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.AWSTask&lt;catchu.REBaseResponse&gt;) -&gt; Swift.Optional&lt;Any&gt; in closure #1 (__C.FIRAuthTokenResult, Swift.Bool) -&gt; () in catchu.REAWSManager.loginSync(user: catchu.User, completion: (catchu.NetworkResult&lt;catchu.REBaseResponse&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "catchu.CustomScrollView4.delegateShareData.setter : weak Swift.Optional&lt;catchu.ShareDataProtocols&gt;"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/Services/AWS/REAWSManager.swift"
-                  timestampString = "563706944.798439"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/CapturedViews/CustomScrollView4.swift"
+                  timestampString = "563851601.908353"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "80"
-                  endingLineNumber = "80"
-                  offsetFromSymbolStart = "42">
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "137">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -281,13 +281,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Model/SlideMenu/FacebookContactListManager.swift"
-            timestampString = "563710044.515955"
+            filePath = "catchu/View/Profile/ProfilePackage/ProfileViews/UserProfileTopView.swift"
+            timestampString = "563970526.8510211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "converFacebookContactListToProvider()"
+            startingLineNumber = "463"
+            endingLineNumber = "463"
+            landmarkName = "checkFollower_Following_Counts()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

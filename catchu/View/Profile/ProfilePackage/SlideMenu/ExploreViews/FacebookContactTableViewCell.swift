@@ -52,11 +52,28 @@ class FacebookContactTableViewCell: BaseTableCell {
         
     }
     
-    func setProperties(image : UIImage, slideMenuType: SlideMenuViewTags, cellMenuString : String) {
+    func setProperties(imageUrl : String, cellMenuString : String) {
         
         self.contactName.text = cellMenuString
-        self.contactImageView.image = image
+        self.contactImageView.setImagesFromCacheOrFirebaseForFriend(imageUrl)
         
+    }
+    
+    func setProperties(user : User) {
+        
+        self.contactName.text = user.username
+        
+        if let profilePictureUrl = user.profilePictureUrl {
+            self.contactImageView.setImagesFromCacheOrFirebaseForFriend(profilePictureUrl)
+        }
+        
+        
+    }
+    
+    func initializeProperties() {
+        
+        self.contactName.text = Constants.CharacterConstants.EMPTY
+        self.contactImageView.image = nil
     }
 
 }

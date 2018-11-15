@@ -306,6 +306,20 @@ extension UserProfileMainView {
         
         DispatchQueue.main.async {
             
+            if let name = User.shared.name {
+                self.userNameLabel.text = name
+            }
+            if let profilePictureURL = User.shared.profilePictureUrl {
+                self.profileImageView.setImagesFromCacheOrFirebaseForFriend(profilePictureURL)
+            }
+            if let followerCount = User.shared.userFollowerCount {
+                self.followerCount.text = followerCount
+            }
+            if let followingCount = User.shared.userFollowingCount {
+                self.followingCount.text = followingCount
+            }
+            
+            /*
             UIView.transition(with: self.userNameLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {
                 if let name = User.shared.name {
                     self.userNameLabel.text = name
@@ -328,7 +342,7 @@ extension UserProfileMainView {
                 if let followingCount = User.shared.userFollowingCount {
                     self.followingCount.text = followingCount
                 }
-            })
+            })*/
             
             if let userName = User.shared.username {
                 self.delegateNavigation.setNavigationTitle(input: userName)

@@ -9,6 +9,8 @@
 import UIKit
 
 class FacebookContactRequestView: UIView {
+    
+    weak var delegate : SlideMenuProtocols!
 
     lazy var containerView: UIView = {
         let temp = UIView()
@@ -73,11 +75,20 @@ class FacebookContactRequestView: UIView {
         return temp
     }()
     
+    /*
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         initializeViewSettings()
         
+    }
+    */
+    
+    init(frame: CGRect, delegate : SlideMenuProtocols) {
+        super.init(frame: frame)
+        self.delegate = delegate
+        
+        initializeViewSettings()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -156,7 +167,16 @@ extension FacebookContactRequestView {
     
     @objc func startGettingFacebookFriends(_ sender : UIButton) {
         
+        print("startGettingFacebookFriends starts")
         
+        FacebookContactListManager.shared.initiateFacebookContactListProcess { (finish) in
+            
+            if finish {
+                self.delegate.dismissView(active: false)
+                self.delegate.dataLoadTrigger()
+            }
+            
+        }
         
     }
     

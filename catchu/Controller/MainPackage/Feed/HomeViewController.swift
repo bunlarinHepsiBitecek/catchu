@@ -58,8 +58,7 @@ class HomeViewController: BaseViewController {
         self.view.addSubview(containerView)
         self.view.addSubview(menuTabView)
 
-        addChildViewController(to: containerView, pageViewController)
-
+        addChild(to: containerView, pageViewController)
 
         NSLayoutConstraint.activate([
             menuTabView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),

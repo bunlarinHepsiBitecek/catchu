@@ -97,10 +97,12 @@ struct Constants {
             struct Width {
                 static let width_250 : CGFloat = 250
                 static let width_200 : CGFloat = 200
+                static let width_150 : CGFloat = 150
                 static let width_102 : CGFloat = 102
                 static let width_100 : CGFloat = 100
                 static let width_50 : CGFloat = 50
                 static let width_40 : CGFloat = 40
+                static let width_30 : CGFloat = 30
                 static let width_24 : CGFloat = 24
                 static let width_22 : CGFloat = 22
                 static let width_20 : CGFloat = 20
@@ -115,6 +117,7 @@ struct Constants {
                 static let height_100 : CGFloat = 100
                 static let height_50 : CGFloat = 50
                 static let height_40 : CGFloat = 40
+                static let height_30 : CGFloat = 30
                 static let height_24 : CGFloat = 24
                 static let height_22 : CGFloat = 22
                 static let height_20 : CGFloat = 20
@@ -124,9 +127,13 @@ struct Constants {
         }
         
         struct ConstraintValues {
+            static let constraint_200 : CGFloat = 200
+            static let constraint_100 : CGFloat = 100
+            static let constraint_90 : CGFloat = 90
             static let constraint_50 : CGFloat = 50
             static let constraint_42 : CGFloat = 42
             static let constraint_40 : CGFloat = 40
+            static let constraint_30 : CGFloat = 30
             static let constraint_25 : CGFloat = 25
             static let constraint_20 : CGFloat = 20
             static let constraint_15 : CGFloat = 15

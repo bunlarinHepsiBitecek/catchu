@@ -76,6 +76,10 @@ class REAWSManager: BackEndAPIInterface {
         userReq.username = user.username
         userReq.email = user.email
         userReq.profilePhotoUrl = user.profilePictureUrl
+        guard let provider = REProvider() else { return }
+        provider.providerType = user.provider
+        provider.providerid = user.providerID
+        userReq.provider = provider
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = userReq
@@ -91,7 +95,6 @@ class REAWSManager: BackEndAPIInterface {
                 
             }
         }
-        
         
     }
     

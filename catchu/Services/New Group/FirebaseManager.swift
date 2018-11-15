@@ -177,7 +177,9 @@ class FirebaseManager {
                 print("profile image url: \(orginalUrl)")
                 print("provider: \(User.shared.provider ?? "")")
                 print("providerId: \(User.shared.providerID ?? "")")
+                print("userid : \(User.shared.userid)")
             }
+            
             REAWSManager.shared.loginSync(user: User.shared) { [weak self] result in
                 self?.handleResult(result)
                 LoaderController.shared.removeLoader()
@@ -329,6 +331,7 @@ class FirebaseManager {
     func checkUserLoggedIn() -> Bool {
         if let currentUser = Auth.auth().currentUser {
             User.shared.userid = currentUser.uid
+            print("userid :\(User.shared.userid)")
             return true
         } else {
             return false
@@ -348,7 +351,8 @@ extension FirebaseManager {
         static let parameter_key       = "fields"
         static let parameter_value     = "id, name, short_name, email"
         static let method              = "GET"
-        static let pathMe_Friends = "me/friends"
+        static let method_GET          = "GET"
+        static let path_Me_Friends = "me/friends"
         static let parameterValueForFriends = "id, name, short_name, picture"
     }
     
@@ -410,7 +414,7 @@ extension FirebaseManager {
                 return
             if let authData = authData {
                 print("Userid: \(authData.user.uid)")
-                print("phoneNumber: \(authData.user.phoneNumber)")
+//                print("phoneNumber: \(authData.user.phoneNumber)")
                 completion(true)
             }
             completion(false)

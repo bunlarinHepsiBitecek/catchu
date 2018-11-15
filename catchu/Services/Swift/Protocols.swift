@@ -212,13 +212,25 @@ protocol SlideMenuProtocols : class {
     
     func animateSliderView(indexPath: IndexPath)
     func scrollStick(inputConstant : CGFloat)
+    func dismissView(active : Bool)
+    func dataLoadTrigger() 
     
 }
 
 extension SlideMenuProtocols {
     func animateSliderView(indexPath: IndexPath) {}
     func scrollStick(inputConstant : CGFloat) {}
+    func dismissView(active : Bool) {}
+    func dataLoadTrigger() {}
+
 }
 
+protocol UserProfileViewProtocols : class {
+    func pullToViewDown()
+}
+
+extension UserProfileViewProtocols {
+    func pullToViewDown() {}
+}
 
 

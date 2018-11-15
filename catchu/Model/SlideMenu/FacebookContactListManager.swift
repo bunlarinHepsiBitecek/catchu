@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKCoreKit
+import FBSDKLoginKit
 
 struct ExpandableSection {
 
@@ -22,6 +23,34 @@ class FacebookContactListManager {
     
     var twoDimensionalList : [ExpandableSection]?
     var facebookFriendArray : [User]?
+    
+    func returnFacebookFriendArrayExist() -> Bool {
+        if let array = FacebookContactListManager.shared.facebookFriendArray {
+            if array.count > Constants.NumericConstants.INTEGER_ZERO {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return false
+    }
+    
+    func returnUser(index : Int) -> User {
+        if let array = FacebookContactListManager.shared.facebookFriendArray {
+            return array[index]
+        }
+        
+        return User()
+    }
+    
+    func returnFacebookArrayCount() -> Int {
+        if let array = FacebookContactListManager.shared.facebookFriendArray {
+            return array.count
+        } else {
+            return Constants.NumericConstants.INTEGER_ZERO
+        }
+    }
     
     func returnTwoDimensionalListCount() -> Int {
         if let list = FacebookContactListManager.shared.twoDimensionalList {
@@ -41,42 +70,78 @@ class FacebookContactListManager {
         }
     }
     
-    func getFaceBookFriendList() {
+    func initiateGetFacebookFriendListByLoggedIn(completion : @escaping (_ finish : Bool) -> Void) {
         
-        // ulrich userid : O7u29FKbqtRzREARgmZSA1GOZa72
-        // richard userid : wPeXxNwNM4bOuDgTY51IAF9apbk2
-        // sharon userid : semlX3xtOBfynq4rkWNcMpMKkT42
+        guard let currentViewController = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
+        }
         
-        let parameterKey = FirebaseManager.FacebookPermissions.parameter_key
-        let parameterValue = FirebaseManager.FacebookPermissions.parameterValueForFriends
-        let method = FirebaseManager.FacebookPermissions.method
-        let path = FirebaseManager.FacebookPermissions.pathMe_Friends
+        let facebook = FBSDKLoginManager()
+        let permissinList = [FirebaseManager.FacebookPermissions.email, FirebaseManager.FacebookPermissions.public_profile, FirebaseManager.FacebookPermissions.user_friends]
         
-        print("FBSDKAccessToken.current()?.tokenString : \(FBSDKAccessToken.current()?.tokenString)")
-        
-        let graphRequest = FBSDKGraphRequest(graphPath: path, parameters: [parameterKey : parameterValue], tokenString: FBSDKAccessToken.current()?.tokenString, version: nil, httpMethod: method)
-        
-        graphRequest?.start(completionHandler: { (connection, data, error) in
+        facebook.logIn(withReadPermissions: permissinList, from: currentViewController) { (loginResult, error) in
+            
             if error != nil {
                 if let error = error as NSError? {
-                    print("error info : \(error.localizedDescription)")
+                    print("error : \(error.localizedDescription)")
                 }
             } else {
-                if let data = data as? NSDictionary {
-                    self.parseGraphRequestData(data: data)
-                    
+                if let result = loginResult {
+                    if result.isCancelled {
+                        return
+                    } else {
+                        if let accessToken = result.token {
+                            print("accessToken from result          : \(accessToken.tokenString)")
+                            
+                            self.startGraphRequestForFacebookFriends(token: accessToken.tokenString, completion: completion)
+                            
+                        }
+                    }
                 }
             }
-        })
+        }
         
     }
     
-    func parseGraphRequestData(data : NSDictionary) {
+    func startGraphRequestForFacebookFriends(token : String, completion : @escaping (_ finish : Bool) -> Void) {
+        
+        print("startGraphRequestForFacebookFriends starts")
+        
+        let request = FBSDKGraphRequest(graphPath: FirebaseManager.FacebookPermissions.path_Me_Friends, parameters: [FirebaseManager.FacebookPermissions.parameter_key : FirebaseManager.FacebookPermissions.parameter_value], tokenString: token, version: nil, httpMethod: FirebaseManager.FacebookPermissions.method_GET)
+        
+        // try catch bloguna sokmak gerekiyor
+        
+        if let graphRequestForFriends = request {
+            graphRequestForFriends.start(completionHandler: { (connection, data, error) in
+                if error != nil {
+                    if let error = error as NSError? {
+                        print("error : \(error.localizedDescription)")
+                    }
+                } else {
+                    if let data = data as? NSDictionary {
+//                        self.parseGraphRequestData(data: data, completion: { (finish) in
+//                            completion(finish)
+//                        })
+                        
+                        self.parseGraphRequestData(data: data, completion: completion)
+                    }
+                }
+            })
+        } else {
+            print("Facebook Graph Request can not be created")
+        }
+        
+    }
+    
+    func parseGraphRequestData(data : NSDictionary, completion : @escaping (_ finish : Bool) -> Void) {
         print("parseGraphRequestData starts")
         print("data : \(data)")
         
-        if facebookFriendArray == nil {
-            facebookFriendArray = [User]()
+        if FacebookContactListManager.shared.facebookFriendArray == nil {
+            FacebookContactListManager.shared.facebookFriendArray = [User]()
+        } else {
+            FacebookContactListManager.shared.facebookFriendArray?.removeAll()
         }
         
         if let data = data["data"] as? NSArray {
@@ -103,9 +168,12 @@ class FacebookContactListManager {
                     facebookFriendArray!.append(user)
                 }
             }
+            
+            completion(true)
+            
         }
         
-        converFacebookContactListToProvider()
+        //converFacebookContactListToProvider()
         
         print("facebookFriends array count : \(facebookFriendArray!.count)")
     }
@@ -133,6 +201,44 @@ class FacebookContactListManager {
                 
             }
         }
+        
+    }
+    
+    func initiateFacebookContactListProcess(completion : @escaping (_ finish : Bool) -> Void) {
+        
+        print("initiateFacebookContactListProcess starts")
+        
+        if let token = FBSDKAccessToken.current() {
+            print("token.tokenString : \(token.tokenString)")
+            print("token.isExpired : \(token.isExpired)")
+            print("token expire date : \(token.expirationDate)")
+            
+            if token.isExpired {
+                initiateGetFacebookFriendListByLoggedIn(completion: completion)
+            } else {
+                startGraphRequestForFacebookFriends(token: token.tokenString, completion: completion)
+            }
+        } else {
+            initiateGetFacebookFriendListByLoggedIn(completion: completion)
+        }
+        
+    }
+    
+    
+    /// Ask facebook access token expire or not
+    ///
+    /// - Returns: if FBSDKAccessToken is expired, returns true. Otherwise returns false. Also, if user can have no access to facebook, access token would be nil. Therefore function returns true to make client trigger a direct request to facebook servers to start a login process.
+    func askAccessTokenExpire() -> Bool {
+        
+        if let token = FBSDKAccessToken.current() {
+            if token.isExpired {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return true
         
     }
     
