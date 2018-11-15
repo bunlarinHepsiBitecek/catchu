@@ -6,6 +6,7 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
+
 class MenuTabViewCell: BaseCollectionCell {
     
     var item: MenuTabViewModelItem?
@@ -17,7 +18,7 @@ class MenuTabViewCell: BaseCollectionCell {
         label.textColor = ConstanstViews.PageView.TabView.DefaultColor
         label.numberOfLines = 1
         label.textAlignment = .center
-        
+
         return label
     }()
     
@@ -41,6 +42,7 @@ class MenuTabViewCell: BaseCollectionCell {
             cellStackView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor),
             cellStackView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor)
             ])
+        
     }
     
     override func prepareForReuse() {

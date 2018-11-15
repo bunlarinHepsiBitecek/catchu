@@ -88,13 +88,15 @@
 		45A496E7217F4D5100E6605B /* PhoneViewConfirmationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A496E6217F4D5100E6605B /* PhoneViewConfirmationController.swift */; };
 		45A496EB217F577E00E6605B /* FeedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A496EA217F577E00E6605B /* FeedMapView.swift */; };
 		45A8F9A521999229000CB357 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9A421999229000CB357 /* REProvider.swift */; };
+		45A8F9A9219B2B91000CB357 /* SearcViewControllerNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9A8219B2B91000CB357 /* SearcViewControllerNew.swift */; };
+		45A8F9AD219C3B91000CB357 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9AC219C3B91000CB357 /* SearchViewModel.swift */; };
 		45ABCA76215E27BD00CB52B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ABCA75215E27BD00CB52B9 /* LoginView.swift */; };
 		45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DE8216F4CDC0081C6F6 /* REProvider.swift */; };
 		45AE7DEB216F4D170081C6F6 /* REUserListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */; };
 		45AE7DED216F813B0081C6F6 /* REProviderList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEC216F813B0081C6F6 /* REProviderList.swift */; };
 		45AE7DEF216F8CFD0081C6F6 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DEE216F8CFD0081C6F6 /* Base.swift */; };
 		45AE7DF3216F8E4D0081C6F6 /* LikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF2216F8E4D0081C6F6 /* LikeViewModel.swift */; };
-		45AE7DF5216F8E710081C6F6 /* LikeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF4216F8E710081C6F6 /* LikeViewCell.swift */; };
+		45AE7DF5216F8E710081C6F6 /* UserViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF4216F8E710081C6F6 /* UserViewCell.swift */; };
 		45AE7DF7216F99FA0081C6F6 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DF6216F99FA0081C6F6 /* LikeViewController.swift */; };
 		45BCD9F221414FDE00541729 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BCD9F121414FDE00541729 /* CommentViewController.swift */; };
 		45BFD56E219097F500CA8C0E /* CatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BFD56D219097F500CA8C0E /* CatchViewController.swift */; };
@@ -431,13 +433,15 @@
 		45A496E6217F4D5100E6605B /* PhoneViewConfirmationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewConfirmationController.swift; sourceTree = "<group>"; };
 		45A496EA217F577E00E6605B /* FeedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMapView.swift; sourceTree = "<group>"; };
 		45A8F9A421999229000CB357 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProvider.swift; sourceTree = "<group>"; };
+		45A8F9A8219B2B91000CB357 /* SearcViewControllerNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearcViewControllerNew.swift; sourceTree = "<group>"; };
+		45A8F9AC219C3B91000CB357 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		45ABCA75215E27BD00CB52B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		45AE7DE8216F4CDC0081C6F6 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProvider.swift; sourceTree = "<group>"; };
 		45AE7DEA216F4D160081C6F6 /* REUserListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REUserListResponse.swift; sourceTree = "<group>"; };
 		45AE7DEC216F813B0081C6F6 /* REProviderList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProviderList.swift; sourceTree = "<group>"; };
 		45AE7DEE216F8CFD0081C6F6 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		45AE7DF2216F8E4D0081C6F6 /* LikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewModel.swift; sourceTree = "<group>"; };
-		45AE7DF4216F8E710081C6F6 /* LikeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewCell.swift; sourceTree = "<group>"; };
+		45AE7DF4216F8E710081C6F6 /* UserViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewCell.swift; sourceTree = "<group>"; };
 		45AE7DF6216F99FA0081C6F6 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
 		45BCD9F121414FDE00541729 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 		45BFD56D219097F500CA8C0E /* CatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatchViewController.swift; sourceTree = "<group>"; };
@@ -718,7 +722,7 @@
 				451E9F0E2139366300185925 /* CachedImageView.swift */,
 				45354812214E6CCB00FC81F5 /* DifferenceCalculator.swift */,
 				45AE7DF2216F8E4D0081C6F6 /* LikeViewModel.swift */,
-				45AE7DF4216F8E710081C6F6 /* LikeViewCell.swift */,
+				45AE7DF4216F8E710081C6F6 /* UserViewCell.swift */,
 				4538A06221772E530044A79D /* CountryViewModel.swift */,
 				4538A066217754FD0044A79D /* CountryViewCell.swift */,
 				4538A06C21788CB70044A79D /* PhoneViewModel.swift */,
@@ -728,6 +732,7 @@
 				45BFD5752191A50D00CA8C0E /* MenuTabViewModel.swift */,
 				45BFD57321919BA600CA8C0E /* MenuTabViewCell.swift */,
 				450E8B3821948FD400C5576D /* TabPageViewModel.swift */,
+				45A8F9AC219C3B91000CB357 /* SearchViewModel.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -1214,6 +1219,7 @@
 				A7276D3D21107A9900CAC67C /* ExtensionSearchViewController.swift */,
 				A7276D3F2110935800CAC67C /* ContainerSearchResultViewController.swift */,
 				A7276D41211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift */,
+				45A8F9A8219B2B91000CB357 /* SearcViewControllerNew.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1967,7 +1973,7 @@
 				A71CC358215B44F7002A2468 /* PhotoCollectionViewCell2.swift in Sources */,
 				45BFD57221919A2700CA8C0E /* MenuTabView.swift in Sources */,
 				45E870062180ADCD009DE1BC /* REPhone.swift in Sources */,
-				45AE7DF5216F8E710081C6F6 /* LikeViewCell.swift in Sources */,
+				45AE7DF5216F8E710081C6F6 /* UserViewCell.swift in Sources */,
 				45354813214E6CCB00FC81F5 /* DifferenceCalculator.swift in Sources */,
 				452001CF20CC354F00C1ED22 /* MediaLibraryManager.swift in Sources */,
 				45E8B5F4215A9A79005AD00A /* CommentViewModel.swift in Sources */,
@@ -2036,6 +2042,7 @@
 				A7276D42211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift in Sources */,
 				A70B7728214AA2AA00494889 /* CustomPermissionViewController.swift in Sources */,
 				A7087934212C597F0012C7F6 /* EditableProfileView.swift in Sources */,
+				45A8F9A9219B2B91000CB357 /* SearcViewControllerNew.swift in Sources */,
 				A774ACA2213204FB00848B79 /* GroupInfoHeaderTableViewCell.swift in Sources */,
 				45A8F9A521999229000CB357 /* REProvider.swift in Sources */,
 				45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */,
@@ -2100,6 +2107,7 @@
 				4564E47620B9CBB2003B0D16 /* AlertViewSupport.swift in Sources */,
 				A7E7803B219052C000E76E3C /* CustomPostAlert.swift in Sources */,
 				454285A8214A95E200F68FAC /* REBaseResponse.swift in Sources */,
+				45A8F9AD219C3B91000CB357 /* SearchViewModel.swift in Sources */,
 				A708791F21276CF00012C7F6 /* Item2CollectionViewCell.swift in Sources */,
 				A710F423213FEDA300ECC5DA /* ShareDataMapView.swift in Sources */,
 				451E9F122139366300185925 /* MediaViewCell.swift in Sources */,

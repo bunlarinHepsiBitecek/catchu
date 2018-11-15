@@ -111,7 +111,6 @@ extension UserProfileViewController {
         addPanGestureToTopView()
         addContainerView()
         setDelegateToSlideMenuLoader(delegate: self)
-        
     }
     
     func addBarButtons() {
