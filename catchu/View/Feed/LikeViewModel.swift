@@ -14,7 +14,7 @@ class LikeViewModel: BaseViewModel {
     let sectionCount = 1
     var page = 1
     var perPage = 20
-    var items = [LikeViewModelItem]()
+    var items = [ViewModelItem]()
     
     var post: Post?
     var comment: Comment?
@@ -22,8 +22,8 @@ class LikeViewModel: BaseViewModel {
     weak var delegate: LikeViewModelDelegete!
     
     func loadData() {
-        guard let post = self.post else { return }
-        let comment = self.comment ?? Comment()
+//        guard let post = self.post else { return }
+//        let comment = self.comment ?? Comment()
 //        LoaderController.shared.showLoader(style: .gray)
 //        REAWSManager.shared.getlikeUsers(page: page, perPage: perPage, post: post, comment: comment) { [weak self] result in
 //            print("\(#function) working and get data")
@@ -65,13 +65,10 @@ class LikeViewModel: BaseViewModel {
     
     private func populate(users: [User]) {
         for user in users {
-            let likeItem = LikeViewModelLikeItem(user: user)
+            let likeItem = ViewModelUser(user: user)
             items.append(likeItem)
         }
-        
-        if let delegate = self.delegate {
-            delegate.updateTableView()
-        }
+        delegate?.updateTableView()
     }
     
     func dummyData() {
@@ -134,51 +131,62 @@ class LikeViewModel: BaseViewModel {
     }
 }
 
-enum LikeViewModelItemType {
-    case like
-}
-
-protocol LikeViewModelItem {
-    var type: LikeViewModelItemType { get }
-}
-
-class LikeViewModelLikeItem: LikeViewModelItem {
-    var type: LikeViewModelItemType {
-        return .like
-    }
-    
+class ViewModelUser: ViewModelItem {
     var user: User?
     
     init(user: User?) {
         self.user = user
     }
     
-}
-
-
-extension LikeViewModel: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionCount
-    }
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.row]
+    func sendRequestProcess() {
+        guard let user = self.user else { return }
+        guard let targetUserid = user.userid else { return }
+        let requestType = findRequestType()
+        if requestType == .defaultRequest {
+            return
+        }
         
-        switch item.type {
-        case .like:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: LikeViewCell.identifier, for: indexPath) as? LikeViewCell {
-                
-                cell.configure(item: item)
-                
-                return cell
-            }
-            return UITableViewCell()
+        guard let userid = User.shared.userid else { return }
+        
+        REAWSManager.shared.requestRelationProcess(requestType: requestType, userid: userid, targetUserid: targetUserid) { [weak self] resut in
+            self?.handleResult(resut)
         }
     }
     
+    func findRequestType() -> RequestType {
+        guard let user = self.user else { return .defaultRequest }
+        guard let followStatus = user.followStatus else { return .defaultRequest}
+        let isPrivateAccount = user.isUserHasAPrivateAccount ?? false
+        
+        switch followStatus {
+        case .none:
+            return isPrivateAccount ? .followRequest : .createFollowDirectly
+        case .following:
+            return .deleteFollow
+        case .pending:
+            return .deletePendingFollowRequest
+        default:
+            return .defaultRequest
+        }
+    }
+    
+    private func handleResult(_ result: NetworkResult<REFriendRequestList>) {
+        switch result {
+        case .success(let response):
+            if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                print("Lambda Error: \(error)")
+                return
+            }
+            
+        case .failure(let apiError):
+            switch apiError {
+            case .serverError(let error):
+                print("Server error: \(error)")
+            case .connectionError(let error) :
+                print("Connection error: \(error)")
+            case .missingDataError:
+                print("Missing Data Error")
+            }
+        }
+    }
 }

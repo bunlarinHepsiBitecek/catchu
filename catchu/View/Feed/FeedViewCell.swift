@@ -413,7 +413,7 @@ class FeedViewCell: BaseTableCell {
         }
         
         let likeViewController = LikeViewController()
-        likeViewController.likeView.configure(post: post)
+        likeViewController.configure(post: post)
         LoaderController.pushViewController(controller: likeViewController)
     }
     

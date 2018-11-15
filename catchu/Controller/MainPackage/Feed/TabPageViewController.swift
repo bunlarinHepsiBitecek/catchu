@@ -18,8 +18,19 @@ struct TabPageViewConfigurator {
 class TabPageViewController: UIPageViewController {
     
     var selectedIndex: Int = 0
-    lazy var menuTabView = MenuTabView()
     let configurator: TabPageViewConfigurator = TabPageViewConfigurator()
+    
+    lazy var menuTabView: MenuTabView = {
+        let view = MenuTabView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     var items = [UIViewController]() {
         didSet {
@@ -50,19 +61,7 @@ class TabPageViewController: UIPageViewController {
         self.delegate = self
         
         scrollToPage(selectedIndex)
-        
-        if configurator.isTabInside {
-            menuTabView.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(menuTabView)
-            
-            NSLayoutConstraint.activate([
-                menuTabView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
-                menuTabView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
-                menuTabView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
-                menuTabView.heightAnchor.constraint(equalToConstant: configurator.tabHeight),
-                ])
-        }
-        
+        menuTabView.selectTabViewCollectionCell(selectedIndex)
     }
     
     /// find scroll view in pageviewcontroller and set delegate
@@ -76,22 +75,19 @@ class TabPageViewController: UIPageViewController {
     private func scrollToPage(_ index: Int) {
         let direction: UIPageViewControllerNavigationDirection = self.selectedIndex > index ? .reverse : .forward
         
-        // set selectedIndex the end of animation completion
-        setViewControllers([items[index]], direction: direction, animated: true) { [weak self] (_) in
-            self?.selectedIndex = index
+        if direction == .forward {
+            for tempIndex in selectedIndex...index {
+                self.setViewControllers([items[tempIndex]], direction: direction, animated: true) { [weak self](_) in
+                    self?.selectedIndex = tempIndex
+                }
+            }
+        } else {
+            for tempIndex in (index...selectedIndex).reversed() {
+                self.setViewControllers([items[tempIndex]], direction: direction, animated: true) { [weak self](_) in
+                    self?.selectedIndex = tempIndex
+                }
+            }
         }
-        
-//        print("selectedIndex: \(selectedIndex) - gelenIndex: \(index)")
-//        while self.selectedIndex != index {
-//            let tempIndex: Int = direction == .reverse ? selectedIndex - 1 : selectedIndex + 1
-//
-//            print("tempIndex: \(tempIndex)")
-//            setViewControllers([items[tempIndex]], direction: direction, animated: true) { [weak self] (_) in
-//                print("selectedIndex yeni degeri ni aldi")
-//                self?.selectedIndex = tempIndex
-//            }
-//        }
-        
     }
     
     private func setupBinds() {
@@ -111,7 +107,6 @@ extension TabPageViewController: UIPageViewControllerDelegate, UIPageViewControl
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let index = findCurrentIndex() {
             selectedIndex = index
-//            menuTabView.selectTabViewCell(index: selectedIndex)
         }
     }
 
@@ -156,11 +151,12 @@ extension TabPageViewController: UIPageViewControllerDelegate, UIPageViewControl
 extension TabPageViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let defaultWidthSize = CGFloat(selectedIndex) * view.frame.width
+        let selectedWidthSize = CGFloat(selectedIndex) * view.frame.width
         
-        let scrollOffsetX = scrollView.contentOffset.x + defaultWidthSize - view.frame.width
+        let scrollOffsetX = scrollView.contentOffset.x + selectedWidthSize - view.frame.width
         
-//        print("x: \(scrollView.contentOffset.x) last: \(scrollOffsetX) - index: \(index) - selectedIndex: \(selectedIndex)")
+        print("selected: \(selectedIndex) - scrollOffsetX: \(scrollOffsetX)")
+        
         self.menuTabView.scrollBarIndicator(contentOffsetX: scrollOffsetX, currentIndex: selectedIndex)
     }
     

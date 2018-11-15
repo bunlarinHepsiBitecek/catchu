@@ -31,21 +31,4 @@ public class RERelationProperties : AWSModel {
         return params
 	}
     
-    var _friendRelation: NSNumber {
-        get {
-            return friendRelation!
-        }
-        set {
-            friendRelation = newValue
-        }
-    }
-    
-    var _pendingFriendRequest: NSNumber {
-        get {
-            return pendingFriendRequest!
-        }
-        set {
-            pendingFriendRequest = newValue
-        }
-    }
 }

@@ -1,5 +1,5 @@
 //
-//  LikeViewCell.swift
+//  UserViewCell.swift
 //  catchu
 //
 //  Created by Remzi YILDIRIM on 10/11/18.
@@ -8,25 +8,16 @@
 
 import UIKit
 
-class LikeViewCell: BaseTableCell {
+class UserViewCell: BaseTableCell, ConfigurableCell {
     
-    var item: LikeViewModelItem?
+    var item: ViewModelUser?
     
     private let padding = Constants.Feed.Padding
     private let dimension = Constants.Feed.ImageWidthHeight
     
-    let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     lazy var profileImageView: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
         imageView.contentMode = UIViewContentMode.scaleAspectFill
-//        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -39,7 +30,7 @@ class LikeViewCell: BaseTableCell {
     
     let name: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.text = "catchuname"
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +40,7 @@ class LikeViewCell: BaseTableCell {
     
     let username: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
         label.textColor = UIColor.lightGray
         label.text = "catchuuser"
         label.numberOfLines = 1
@@ -60,12 +51,9 @@ class LikeViewCell: BaseTableCell {
     
     lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
-//        if let titleLabel = button.titleLabel {
-//            titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-//        }
-        
-        button.setTitle(LocalizedConstants.Like.Loading, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(LocalizedConstants.Like.Loading, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         button.addTarget(self, action: #selector(followProcess(_:)), for: .touchUpInside)
         
         button.layer.borderWidth = 0.5
@@ -78,7 +66,7 @@ class LikeViewCell: BaseTableCell {
     override func setupViews() {
         super.setupViews()
         
-        let layoutMargin = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        let layoutMargin = UIEdgeInsets(top: padding/2, left: padding, bottom: padding/2, right: padding)
         
         let nameStackView = UIStackView(arrangedSubviews: [name, username])
         nameStackView.axis = .vertical
@@ -96,31 +84,25 @@ class LikeViewCell: BaseTableCell {
         cellStackView.layoutMargins = layoutMargin
         cellStackView.isLayoutMarginsRelativeArrangement = true
         
-        self.containerView.addSubview(cellStackView)
-        
-        self.contentView.addSubview(containerView)
+        self.contentView.addSubview(cellStackView)
         
         NSLayoutConstraint.activate([
             profileImageView.widthAnchor.constraint(equalToConstant: profileImageView.frame.width),
             profileImageView.heightAnchor.constraint(equalToConstant: profileImageView.frame.height),
             
-            containerView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor),
-            containerView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor),
-            containerView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor),
-            containerView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor),
-            
-            cellStackView.safeTopAnchor.constraint(equalTo: containerView.safeTopAnchor),
-            cellStackView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor),
-            cellStackView.safeLeadingAnchor.constraint(equalTo: containerView.safeLeadingAnchor),
-            cellStackView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
+            cellStackView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor),
+            cellStackView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor),
+            cellStackView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor),
+            cellStackView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor),
             ])
     }
     
-    func configure(item: LikeViewModelItem) {
-        self.item = item
-        guard let item = item as? LikeViewModelLikeItem else { return }
+    func configure(item: ViewModelItem) {
+        guard let item = item as? ViewModelUser else { return }
         guard let user = item.user else { return }
         
+        self.item = item
+
         if let name = user.name {
             self.name.text = name
             self.profileImageView.setImageInitialPlaceholder(name, circular: true)
@@ -135,16 +117,11 @@ class LikeViewCell: BaseTableCell {
             self.profileImageView.loadAndCacheImage(url: profilePictureUrl)
         }
     }
-
-    
-//    @objc func followProcess(_ sender: UIButton) {
-//
-//    }
     
     @objc func followProcess(_ sender: UIButton) {
-        guard let item = item as? LikeViewModelLikeItem else { return }
+        guard let item = self.item else { return }
         guard let user = item.user else { return }
-        let requestType = findRequestType(targetUser: user)
+        let requestType = item.findRequestType()
         if requestType == .defaultRequest {
             return
         }
@@ -156,23 +133,7 @@ class LikeViewCell: BaseTableCell {
                 return
             }
         }
-        sendRequestProcess()
-    }
-    
-    private func sendRequestProcess() {
-        guard let item = item as? LikeViewModelLikeItem else { return }
-        guard let user = item.user else { return }
-        guard let targetUserid = user.userid else { return }
-        let requestType = findRequestType(targetUser: user)
-        if requestType == .defaultRequest {
-            return
-        }
-        
-        guard let userid = User.shared.userid else { return }
-        
-        REAWSManager.shared.requestRelationProcess(requestType: requestType, userid: userid, targetUserid: targetUserid) { [weak self] resut in
-            self?.handleResult(resut)
-        }
+        self.item?.sendRequestProcess()
     }
     
     func unfollowAlertControll(image: UIImage? = nil, message: String? = nil) {
@@ -203,7 +164,7 @@ class LikeViewCell: BaseTableCell {
         }
         
         let unfollowAction = UIAlertAction(title: LocalizedConstants.Like.Unfollow, style: .destructive) { (action) in
-            self.sendRequestProcess()
+            self.item?.sendRequestProcess()
         }
         let cancelAction = UIAlertAction(title: LocalizedConstants.Cancel, style: .cancel, handler: nil)
         actionSheetController.addAction(unfollowAction)
@@ -214,44 +175,5 @@ class LikeViewCell: BaseTableCell {
             return
         }
         currentController.present(actionSheetController, animated: true, completion: nil)
-    }
-}
-
-extension LikeViewCell {
-    
-    private func findRequestType(targetUser: User) -> RequestType {
-        guard let followStatus = targetUser.followStatus else { return .defaultRequest}
-        let isPrivateAccount = targetUser.isUserHasAPrivateAccount ?? false
-        
-        switch followStatus {
-        case .none:
-            return isPrivateAccount ? .followRequest : .createFollowDirectly
-        case .following:
-            return .deleteFollow
-        case .pending:
-            return .deletePendingFollowRequest
-        default:
-            return .defaultRequest
-        }
-    }
-    
-    private func handleResult(_ result: NetworkResult<REFriendRequestList>) {
-        switch result {
-        case .success(let response):
-            if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
-                print("Lambda Error: \(error)")
-                return
-            }
-            
-        case .failure(let apiError):
-            switch apiError {
-            case .serverError(let error):
-                print("Server error: \(error)")
-            case .connectionError(let error) :
-                print("Connection error: \(error)")
-            case .missingDataError:
-                print("Missing Data Error")
-            }
-        }
     }
 }

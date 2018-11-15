@@ -166,14 +166,14 @@ class SearchResultTableViewCell: UITableViewCell {
     // function below decides button titles after updating nodes in neo4j
     func requestButtonVisualManagement(httpResult : REFriendRequestList) {
         
-        if (httpResult.updatedUserRelationInfo?._friendRelation.boolValue)! {
+        if (httpResult.updatedUserRelationInfo?.friendRelation?.boolValue)! {
            
             UIView.transition(with: self.friendRequestButton, duration: 0.3, options: .allowAnimatedContent, animations: {
                 self.friendRequestButton.setTitle(LocalizedConstants.Contact.friends, for: .normal)
                 self.blackTones()
             })
             
-        } else if (httpResult.updatedUserRelationInfo?._pendingFriendRequest.boolValue)! {
+        } else if (httpResult.updatedUserRelationInfo?.pendingFriendRequest?.boolValue)! {
             
             UIView.transition(with: self.friendRequestButton, duration: 0.3, options: .allowAnimatedContent, animations: {
                 self.friendRequestButton.setTitle(LocalizedConstants.Contact.requested, for: .normal)
@@ -193,16 +193,16 @@ class SearchResultTableViewCell: UITableViewCell {
     
     func updateUserRelationInfo(httpResult : REFriendRequestList) {
         
-        print("httpResult.updatedUserRelationInfo?._friendRelation.boolValue : \(httpResult.updatedUserRelationInfo?._friendRelation.boolValue)")
-        print("httpResult.updatedUserRelationInfo?._pendingFriendRequest.boolValue : \(httpResult.updatedUserRelationInfo?._pendingFriendRequest.boolValue)")
+        print("httpResult.updatedUserRelationInfo?._friendRelation.boolValue : \(httpResult.updatedUserRelationInfo?.friendRelation?.boolValue)")
+        print("httpResult.updatedUserRelationInfo?._pendingFriendRequest.boolValue : \(httpResult.updatedUserRelationInfo?.pendingFriendRequest?.boolValue)")
         
         if let result = httpResult.updatedUserRelationInfo {
             
-            if let resultFollowRelation = result._friendRelation as? NSNumber {
+            if let resultFollowRelation = result.friendRelation as? NSNumber {
                 self.searchResultUser.isUserHasAFriendRelation = resultFollowRelation.boolValue
             }
             
-            if let resultPendingRequestRelation = result._pendingFriendRequest as? NSNumber {
+            if let resultPendingRequestRelation = result.pendingFriendRequest as? NSNumber {
                 self.searchResultUser.isUserHasPendingFriendRequest = resultPendingRequestRelation.boolValue
             }
             

@@ -12,8 +12,12 @@ class HomeViewController: BaseViewController {
     
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.searchBarStyle = .prominent
+//        searchBar.searchBarStyle = .default
+        searchBar.sizeToFit()
         searchBar.delegate = self
+        
+        searchBar.barStyle = .blackTranslucent
+        searchBar.placeholder = "Search"
         return searchBar
     }()
     
@@ -21,7 +25,7 @@ class HomeViewController: BaseViewController {
         super.viewDidLoad()
         
         setupContainer()
-        setupSearchView()
+        setupSearchViewBar()
     }
 
     func setupContainer() {
@@ -33,39 +37,27 @@ class HomeViewController: BaseViewController {
         let catchVC1 = CatchViewController()
         catchVC1.view.backgroundColor = .yellow
         catchVC1.title = "Catch"
-        let catchVC2 = CatchViewController()
-        catchVC2.view.backgroundColor = .red
-        catchVC2.title = "Catch 2"
-        let catchVC3 = CatchViewController()
-        catchVC3.view.backgroundColor = .green
-        catchVC3.title = "Catch 3"
         
         var items = [UIViewController]()
         items.append(feedVC1)
         items.append(catchVC1)
-//        items.append(catchVC2)
-//        items.append(catchVC3)
         
         pageViewController.items = items
         
         let menuTabView = pageViewController.menuTabView
-        menuTabView.translatesAutoresizingMaskIntoConstraints = false
         menuTabView.backgroundColor = .clear
 
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        let containerView = pageViewController.containerView
 
         self.view.addSubview(containerView)
         self.view.addSubview(menuTabView)
-
-        addChildViewController(to: containerView, pageViewController)
-
+        
+        addChild(to: containerView, pageViewController)
 
         NSLayoutConstraint.activate([
             menuTabView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
             menuTabView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
             menuTabView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
-            menuTabView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             menuTabView.heightAnchor.constraint(equalToConstant: 30),
 
             containerView.safeTopAnchor.constraint(equalTo: menuTabView.safeBottomAnchor),
@@ -75,13 +67,15 @@ class HomeViewController: BaseViewController {
             ])
     }
     
-    func setupSearchView() {
+    func setupSearchViewBar() {
         self.navigationItem.titleView = searchBar
+        let leftBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(buttonActionLeft))
+        self.navigationItem.leftBarButtonItem = leftBarButton
     }
     
-    
-    func frameForContentController() -> CGRect {
-        return self.view.bounds
+    @objc func buttonActionLeft() {
+        let likeVC = LikeViewController()
+        self.navigationController?.pushViewController(likeVC, animated: true)
     }
     
     func containerAddChildViewController(_ childViewController: UIViewController, containerView: UIView) {
@@ -94,12 +88,10 @@ class HomeViewController: BaseViewController {
 
 extension HomeViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("textDidChange: \(searchText)")
-    }
-    
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         print("searchBarShouldBeginEditing")
+        let searcVC = SearcViewControllerNew()
+        self.navigationController?.pushViewController(searcVC, animated: true)
         return false
     }
 }

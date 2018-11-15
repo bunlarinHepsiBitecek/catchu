@@ -298,6 +298,8 @@ extension UserProfileMainView {
             
             ])
         
+        
+        
     }
     
     func setUserDataToViews() {
@@ -398,6 +400,5 @@ extension UserProfileMainView {
         }
         
     }
-    
     
 }

@@ -69,38 +69,46 @@ class BaseViewModel: NSObject {
 
 protocol BaseViewModelItem {}
 
-protocol ReusableCell {
-    static var reuseIdentifier: String { get }
-}
 
-extension ReusableCell {
-    static var reuseIdentifier: String {
-        return String(describing: self)
-    }
-}
-
-protocol ConfigurableItem: ReusableCell {
-    func configure(cell: UITableViewCell)
-}
+protocol ViewModel {}
+protocol ViewModelItem {}
 
 protocol ConfigurableCell {
-    associatedtype T
-    var item: T? { get set }
-    func configure(item: T)
+    func configure(item: ViewModelItem)
 }
 
-class TableCellConfigurator<CellType: ConfigurableCell & UITableViewCell, T>: ConfigurableItem where CellType.T == T {
-    
-    let item: T
-    
-    init(item: T) {
-        self.item = item
-    }
-    
-    func configure(cell: UITableViewCell) {
-        (cell as! CellType).configure(item: item)
-    }
-}
+//protocol ReusableCell {
+//    static var reuseIdentifier: String { get }
+//}
+//
+//extension ReusableCell {
+//    static var reuseIdentifier: String {
+//        return String(describing: self)
+//    }
+//}
+//
+//protocol ConfigurableItem: ReusableCell {
+//    func configure(cell: UITableViewCell)
+//}
+//
+//protocol ConfigurableCell {
+//    associatedtype T
+//    var item: T? { get set }
+//    func configure(item: T)
+//}
+//
+//class TableCellConfigurator<CellType: ConfigurableCell & UITableViewCell, T>: ConfigurableItem where CellType.T == T {
+//
+//    let item: T
+//
+//    init(item: T) {
+//        self.item = item
+//    }
+//
+//    func configure(cell: UITableViewCell) {
+//        (cell as! CellType).configure(item: item)
+//    }
+//}
 
 
 

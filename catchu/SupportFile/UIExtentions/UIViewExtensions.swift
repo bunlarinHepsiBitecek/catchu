@@ -113,12 +113,11 @@ extension UIViewController {
     /// An extension add child view controller to containerview
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func addChildViewController(to containerView: UIView, _ child: UIViewController) {
+    func addChild(to containerView: UIView, _ child: UIViewController) {
         /// view controller view to containerview
         addChildViewController(child)
         child.view.frame = containerView.bounds
         containerView.addSubview(child.view)
         child.didMove(toParentViewController: self)
     }
-    
 }

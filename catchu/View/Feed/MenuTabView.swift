@@ -89,19 +89,28 @@ class MenuTabView: BaseView {
             lastContentOffsetX = frame.width
         }
         
+        let maxIndex = viewModel.items.count - 1
+        let minIndex = 0
+        
         print("lastContentOffsetX: \(lastContentOffsetX) - \(barIndicatorView.frame.midX)")
         barIndicatorViewLeadingConstraint.constant = lastContentOffsetX
         
-        print("frame.width: \(frame.width)- multi: \(multiplier)")
         print("midx: \(barIndicatorView.frame.midX) - frameWidth: \(frame.width * multiplier) - currentIndex: \(currentIndex)")
         
-        let selectIndex = Int(barIndicatorView.frame.midX / (frame.width * multiplier))
+        var selectIndex = Int(barIndicatorView.frame.midX / (frame.width * multiplier))
         
-        print("selectIndex: \(selectIndex)")
-        selectTabViewCell(index: selectIndex)
+        if selectIndex > maxIndex {
+            selectIndex = maxIndex
+        }
+        
+        if selectIndex < minIndex {
+            selectIndex = minIndex
+        }
+        
+        selectTabViewCollectionCell(selectIndex)
     }
     
-    func selectTabViewCell(index: Int) {
+    func selectTabViewCollectionCell(_ index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
     }

@@ -34,7 +34,6 @@ extension UserProfileViewController {
         addSwipeGestureRecognizer()
         addUserProfileMainView()
         setDelegateToSlideMenuLoader(delegate: self)
-        
     }
     
     func addBarButtons() {
@@ -109,6 +108,7 @@ extension UserProfileViewController {
         SlideMenuLoader.shared.setSlideMenuDelegation(delegate: delegate)
         
     }
+    
     
 }
 

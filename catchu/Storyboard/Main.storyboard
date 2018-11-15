@@ -1604,6 +1604,10 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <textInputTraits key="textInputTraits" keyboardAppearance="alert" textContentType="name"/>
+                                    <scopeButtonTitles>
+                                        <string>Title</string>
+                                        <string>Title</string>
+                                    </scopeButtonTitles>
                                     <connections>
                                         <outlet property="delegate" destination="vq9-kS-o0Q" id="i86-ao-v7F"/>
                                     </connections>

@@ -33,10 +33,11 @@ protocol BackEndAPIInterface {
     func getUploadUrl(imageCount: Int, imageExtension: String, videoCount: Int, videoExtension: String, completion : @escaping (NetworkResult<REBucketUploadResponse>) -> Void )
     func like(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
     func unlike(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
-    func getlikeUsers(page: Int, perPage: Int, post: Post, commentid: String?, completion: @escaping (NetworkResult<REUserListResponse>) -> Void)
+    func getLikeUsers(page: Int, perPage: Int, post: Post, commentid: String?, completion: @escaping (NetworkResult<REUserListResponse>) -> Void)
     func requestRelationProcess(requestType : RequestType, userid : String, targetUserid : String, completion: @escaping (NetworkResult<REFriendRequestList>) -> Void)
     func getCountries(userid: String, completion: @escaping (NetworkResult<RECountryListResponse>)-> Void)
     func deleteUploadUrl(userid: String, delete: REBucketUploadResponse, completion: @escaping (NetworkResult<REBaseResponse>)-> Void)
+    func searchUsersGet(searchText: String, page: Int, perPage: Int, completion: @escaping (NetworkResult<REUserListResponse>)-> Void)
 }
 
 class REAWSManager: BackEndAPIInterface {
@@ -76,6 +77,10 @@ class REAWSManager: BackEndAPIInterface {
         userReq.username = user.username
         userReq.email = user.email
         userReq.profilePhotoUrl = user.profilePictureUrl
+        guard let provider = REProvider() else { return }
+        provider.providerType = user.provider
+        provider.providerid = user.providerID
+        userReq.provider = provider
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = userReq
@@ -283,7 +288,7 @@ class REAWSManager: BackEndAPIInterface {
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = User.shared.getUser()
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, finished) in
             self.apiClient.postsPostidCommentsCommentidGet(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                 
                 print("\(#function) Result: \(task)")
@@ -322,7 +327,7 @@ class REAWSManager: BackEndAPIInterface {
         commentRequest.comment!.message = message
         commentRequest.comment!.user = User.shared.getUser()
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
             print("Token: \(tokenResult.token)")
             print("Userid: \(userid)")
             
@@ -356,7 +361,7 @@ class REAWSManager: BackEndAPIInterface {
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = User.shared.getUser()
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
             self.apiClient.postsPostidCommentsCommentidLikePost(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                 
                 print("\(#function) Result: \(task)")
@@ -387,7 +392,7 @@ class REAWSManager: BackEndAPIInterface {
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = User.shared.getUser()
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
             self.apiClient.postsPostidCommentsCommentidLikeDelete(userid: userid, postid: postid, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                 
                 print("\(#function) Result: \(task)")
@@ -407,7 +412,7 @@ class REAWSManager: BackEndAPIInterface {
     ///   - completion: A NetworkResult<REUserListResponse>
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func getlikeUsers(page: Int, perPage: Int, post: Post, commentid: String?, completion: @escaping (NetworkResult<REUserListResponse>) -> Void) {
+    func getLikeUsers(page: Int, perPage: Int, post: Post, commentid: String?, completion: @escaping (NetworkResult<REUserListResponse>) -> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
         guard let ownerUserid = User.shared.userid else { return }
@@ -421,15 +426,12 @@ class REAWSManager: BackEndAPIInterface {
         let pageStr = "\(page)"
         let perPageStr = "\(perPage)"
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.postsPostidCommentsCommentidLikeGet(userid: ownerUserid, postid: postid, perPage: perPageStr, page: pageStr, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
                 
-                self.apiClient.postsPostidCommentsCommentidLikeGet(userid: ownerUserid, postid: postid, perPage: perPageStr, page: pageStr, authorization: tokenResult.token, commentid: commentid).continueWith { (task) -> Any? in
-                    
-                    print("\(#function) Result: \(task)")
-                    self.processExpectingData(task: task, completion: completion)
-                    return nil
-                }
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
             }
         }
     }
@@ -455,7 +457,7 @@ class REAWSManager: BackEndAPIInterface {
         friendRequest.requesterUserid = userid
         friendRequest.requestedUserid = targetUserid
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
             
             self.apiClient.followRequestPost(authorization: tokenResult.token, body: friendRequest).continueWith { (task) -> Any? in
                 
@@ -477,7 +479,7 @@ class REAWSManager: BackEndAPIInterface {
     /// - Author: Remzi Yildirim
     func getCountries(userid: String, completion: @escaping (NetworkResult<RECountryListResponse>) -> Void) {
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
             
             self.apiClient.commonCountriesGet(userid: userid, authorization: tokenResult.token).continueWith(block: { (task) -> Any? in
                 
@@ -509,6 +511,35 @@ class REAWSManager: BackEndAPIInterface {
                 return nil
             })
         }
+    }
+    
+    
+    /// Search name and username withing giving searchText
+    ///
+    /// - Parameters:
+    ///   - searchText: searched Text
+    ///   - page: Pagination purposel initial must be 1
+    ///   - perPage: Result list item count per page
+    ///   - completion: NetworkResult<REBaseResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func searchUsersGet(searchText: String, page: Int, perPage: Int, completion: @escaping (NetworkResult<REUserListResponse>) -> Void) {
+
+        guard let userid = User.shared.userid else { return }
+        
+        let pageStr = "\(page)"
+        let perPageStr = "\(perPage)"
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.searchUsersGet(userid: userid, searchText: searchText, authorization: tokenResult.token, perPage: perPageStr, page: pageStr).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+            
+        }
+        
     }
 }
 
@@ -580,17 +611,6 @@ extension REAWSManager {
         if let allowList = share.allowList {
             post.allowList = User.shared.getREUSerList(inputUserList: allowList)
         }
-        
-//        post.privacyType = PrivacyType.allFollowers.stringValue
-        // MARK: for custom person selected
-        //        post.privacyType = PrivacyType.custom.stringValue
-        //        post.allowList = []
-        //        let user1 = REShare_allowList_item()
-        //        let user2 = REShare_allowList_item()
-        //        user1?.userid = "us-east-1:ea155b84-4f97-49f0-8559-5b20d507bdfa"
-        //        user2?.userid = "us-east-1:8a22a451-af0d-48cb-8e6b-f0ed3316449b"
-        //        share?.allowList?.append(user1!)
-        //        share?.allowList?.append(user2!)
         
         guard let postRequest = REPostRequest() else { return }
         postRequest.post = post

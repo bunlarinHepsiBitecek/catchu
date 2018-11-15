@@ -303,10 +303,11 @@ extension User {
         }
         
         func configure(_ button: UIButton) {
+            let facebookColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
             let title = self.toString
             let titleColor: UIColor = self == .none ? UIColor.white : UIColor.black
-            let borderColor: UIColor = self == .none ? UIColor.blue : UIColor.lightGray
-            let backgroundColor: UIColor = self == .none ? UIColor.blue : UIColor.white
+            let borderColor: UIColor = self == .none ? facebookColor : UIColor.lightGray
+            let backgroundColor: UIColor = self == .none ? facebookColor : UIColor.white
             let alpha: CGFloat = self == .own ? 0 : 1
             
             button.setTitle(title, for: .normal)
