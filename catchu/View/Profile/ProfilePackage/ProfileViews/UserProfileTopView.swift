@@ -55,7 +55,6 @@ class UserProfileTopView: UIView {
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        temp.layer.cornerRadius = 100
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_12
         return temp
         

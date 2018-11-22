@@ -12,9 +12,13 @@ target 'catchu' do
   pod 'AWSAPIGateway'
   pod 'AWSS3'
   
-  pod 'Firebase/Auth'
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'TwitterKit'
+  
+  pod 'Firebase/Auth'
+  pod 'Firebase/Core'
+  pod 'Firebase/DynamicLinks'
+  
   
 end

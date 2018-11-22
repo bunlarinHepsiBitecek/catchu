@@ -313,6 +313,8 @@ class Provider {
     var providerid: String?
     var providerType: String?
     
+    init() {}
+    
     init(provider: REProvider?) {
         guard let provider = provider else { return }
         self.providerid = provider.providerid

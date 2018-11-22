@@ -75,7 +75,9 @@
 "follewers" = "Followers";
 "follewings" = "Follewings";
 "connectToFacebook" = "Connect to Facebook";
-
+"connectToContacts" = "Connect Contacts";
+"invite" = "Invite";
+"post" = "Post";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";
@@ -90,6 +92,7 @@
 "enableAccessGallery" = "Enable Gallery Access";
 "enableAccessCamera" = "Enable Camera Access";
 "enableAccessMicrophone" = "Enable Microphone Access";
+"enableAccessContacts"   = "Enable Contact Access";
 
 // Share
 "MissingData"                 = "Missing Data";
@@ -165,9 +168,11 @@
 "group" = "Group";
 "public" = "Public";
 "onlyMe" = "Only Me";
+"allFollowers" = "Followers";
 
 "publicInformation" = "You share everyone";
 "onlyMeInformation" = "It's special for you";
+"allFollowersInformation" = "You share all followers";
 "thereIsNothingToPost" = "There is nothing to post!";
 "saySomething" = "Say something...";
 "gettingFriends" = "Getting Friends...";
@@ -182,4 +187,13 @@
 "contacts" = "contacts";
 "facebookFriendRequest" = "Find Facebook Friend";
 "findFriendSuggestion" = "You should find facebook friend who is already here 😜";
+"contactFriendRequest" = "Connect Your Contacts";
+"contactFriendSuggestion" = "You can find people you know on CatchU and follow them ☺️";
+"activePeopleOnCatchU" = "Active People On CatchU : ";
+"invitePeopleOncatchU" = "Invite People           : ";
+"inviteFriendTitle" = "Invite Friend";
+"inviteFriendInformation" = "Choise a phone to send invitations";
+
+
+
 

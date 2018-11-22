@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import MessageUI
+import FirebaseDynamicLinks
 
 class ExplorePeopleViewController: UIViewController {
 
     private var searchController = UISearchController(searchResultsController: nil)
-    
     private var exploreView : ExploreView?
+    private var messageController : MFMessageComposeViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,14 @@ class ExplorePeopleViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let img = UIImage()
+        self.navigationController?.navigationBar.shadowImage = img
+        self.navigationController?.navigationBar.setBackgroundImage(img, for: UIBarMetrics.default)
+        
+    }
 }
 
 // MARK: - major functions
@@ -42,7 +52,7 @@ extension ExplorePeopleViewController {
         print("self.view.frame : \(self.view.frame)")
         
 //        exploreView = ExploreView(frame: CGRect(x: 0, y: 300, width: self.view.frame.width, height: 200))
-        exploreView = ExploreView()
+        exploreView = ExploreView(frame: .zero, delegate: self)
         exploreView?.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(exploreView!)
@@ -77,6 +87,12 @@ extension ExplorePeopleViewController {
     
     func setViewControllerSettings() {
         
+//        let navigationBar = navigationController!.navigationBar
+//        navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+//        navigationBar.shadowImage = UIImage()
+//
+//        navigationBar.clipsToBounds = true
+        
         self.title = LocalizedConstants.SlideMenu.explorePeople
         
     }
@@ -90,5 +106,55 @@ extension ExplorePeopleViewController : UISearchResultsUpdating {
         print("updateSearchResults starts")
     }
     
+}
+
+// MARK: - UserProfileViewProtocols
+extension ExplorePeopleViewController : UserProfileViewProtocols {
+    
+    func presentMessageController(phoneNumber: String) {
+        
+        print("MFMessageComposeViewController.canSendText() : \(MFMessageComposeViewController.canSendText())")
+        
+        if MFMessageComposeViewController.canSendText() {
+            
+            messageController = MFMessageComposeViewController()
+            messageController!.body = "https://f2wrp.app.goo.gl/ZEcd"
+            messageController!.recipients = [phoneNumber]
+            messageController!.delegate = self
+            messageController!.messageComposeDelegate = self
+            
+            self.present(messageController!, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func showAlertAction(alertController: UIAlertController) {
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
     
 }
+
+// MARK: - UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate
+extension ExplorePeopleViewController : UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        print("messageComposeViewController didFinishWith starts")
+        
+        switch result {
+        case .cancelled:
+            messageController?.dismiss(animated: true, completion: nil)
+            
+        case .failed:
+            messageController?.dismiss(animated: true, completion: nil)
+            
+        case .sent:
+            messageController?.dismiss(animated: true, completion: nil)
+        }
+        
+    }
+    
+}
+

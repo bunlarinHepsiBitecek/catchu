@@ -30,9 +30,11 @@ class FacebookContactList: UIView {
         temp.delegate = self
         temp.dataSource = self
         
-        temp.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        temp.rowHeight = UITableViewAutomaticDimension
+        temp.tableFooterView = UIView()
+        temp.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
-        temp.register(FacebookContactTableViewCell.self, forCellReuseIdentifier: Constants.Collections.TableView.facebookContactTableViewCell)
+        temp.register(UserViewCell.self, forCellReuseIdentifier: Constants.Collections.TableView.facebookContactTableViewCell)
         
         return temp
     }()
@@ -59,7 +61,6 @@ extension FacebookContactList {
         
         addViews()
         addRequestView()
-        
         
     }
     
@@ -124,22 +125,53 @@ extension FacebookContactList {
         print("initiateFacebookContackListFlow starts")
         
         if FacebookContactListManager.shared.returnFacebookFriendArrayExist() {
-            activateFacebookRequestView(active: false)
+            
+            UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+                self.activateFacebookRequestView(active: false)
+            }
+            
         } else {
             
-            // if access token is expired, make requestView is active. RequestView has a facebook connect button to estabklish an updated connection between cliend and facebook server
+            // if access token is expired, make requestView is active. RequestView has a facebook connect button to establish an updated connection between cliend and facebook server
             // otherwise (else), trigger a direct graphRequest to get a list of facebook friend via current accessToken.
             if FacebookContactListManager.shared.askAccessTokenExpire() {
                 activateFacebookRequestView(active: true)
             } else {
                 FacebookContactListManager.shared.initiateFacebookContactListProcess { (finish) in
                     if finish {
-                        self.activateFacebookRequestView(active: false)
-                        self.tableViewFacebookContactList.reloadData()
+                        FacebookContactListManager.shared.getFacebookFriendsExistedInCatchU(completion: { (finish) in
+                            if finish {
+                                
+                                DispatchQueue.main.async {
+                                    self.activateFacebookRequestView(active: false)
+                                    
+                                    UIView.transition(with: self.tableViewFacebookContactList, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+                                        self.tableViewFacebookContactList.reloadData()
+                                    })
+                                }
+                            }
+                        })
                     }
                 }
             }
         }
+    }
+    
+    func getViewModelUser(index : Int) -> ViewModelUser {
+        
+        switch FacebookContactListManager.shared.returnViewModelUser(index: index) {
+        case .success(let data):
+            /*
+            if let user = data.user {
+                return ViewModelUser(user: user)
+            }*/
+            return data
+        default:
+            return ViewModelUser(user: User())
+        }
+        
+        return ViewModelUser(user: User())
+        
     }
     
 }
@@ -147,33 +179,22 @@ extension FacebookContactList {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension FacebookContactList : UITableViewDataSource, UITableViewDelegate {
     
-    /*
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return FacebookContactListManager.shared.returnTwoDimensionalListCount()
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //return FacebookContactListManager.shared.returnFacebookArrayCount()
+        return FacebookContactListManager.shared.returnFacebookViewModelUserArray()
         
-        return FacebookContactListManager.shared.returnExpandableSectionContactListItemCount(index: section)
-        
-    }*/
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FacebookContactListManager.shared.returnFacebookArrayCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableViewFacebookContactList.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.facebookContactTableViewCell, for: indexPath) as? FacebookContactTableViewCell else { return UITableViewCell()
+        guard let cell = tableViewFacebookContactList.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.facebookContactTableViewCell, for: indexPath) as? UserViewCell else { return UITableViewCell()
         }
         
-        cell.initializeProperties()
-        cell.setProperties(user: FacebookContactListManager.shared.returnUser(index: indexPath.row))
+        cell.configure(item: getViewModelUser(index: indexPath.row))
         
         return cell
         
     }
-    
     
 }
 
@@ -187,8 +208,15 @@ extension FacebookContactList : SlideMenuProtocols {
     
     func dataLoadTrigger() {
         
-        tableViewFacebookContactList.reloadData()
+        UIView.transition(with: self.tableViewFacebookContactList, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+            self.tableViewFacebookContactList.reloadData()
+        })
         
     }
+}
+
+// MARK: - ViewModelItem
+extension FacebookContactList : ViewModelItem {
+    
 }
 

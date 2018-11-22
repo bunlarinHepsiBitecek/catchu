@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import Contacts
 
 protocol ViewPresentationProtocols : class {
     
@@ -227,10 +228,28 @@ extension SlideMenuProtocols {
 
 protocol UserProfileViewProtocols : class {
     func pullToViewDown()
+    func showAlertAction(alertController : UIAlertController)
+    func presentMessageController(phoneNumber : String)
+    func triggerInviteMessageProcess(contactData : CNContact)
 }
 
 extension UserProfileViewProtocols {
     func pullToViewDown() {}
+    func showAlertAction(alertController : UIAlertController) {}
+    func presentMessageController(phoneNumber : String) {}
+    func triggerInviteMessageProcess(contactData : CNContact) {}
+}
+
+protocol PostViewProtocols : class  {
+    func dismissPostView()
+    func triggerContentCheckAnimation()
+    func initiateAlertControllerProcess(postContentType : PostContentType)
+}
+
+extension PostViewProtocols {
+    func dismissPostView() {}
+    func triggerContentCheckAnimation() {}
+    func initiateAlertControllerProcess(postContentType : PostContentType) {}
 }
 
 

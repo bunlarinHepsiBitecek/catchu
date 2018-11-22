@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum ConnectionResult<T> {
+    case success(T)
+    case failure(REError)
+}
+
 class APIGatewayManager {
     
     public static var shared = APIGatewayManager()
@@ -549,8 +554,61 @@ class APIGatewayManager {
         }
         
     }
+
     
-    func initiateFacebookContactExploreProcess(userid : String, providerList : REProviderList, completion : @escaping (_ response : Bool) -> Void) {
+    /// used for syns facebook friends and catchU followers
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - providerList: facebook friends list
+    ///   - completion: user list retrieved from api gateway stored in neo4j
+    /// - Author: Erkut Bas
+    func initiateFacebookContactExploreProcess(userid : String, providerList : REProviderList, completion : @escaping (ConnectionResult<REUserListResponse>) -> ()) {
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        
+            if finished {
+                
+                guard let userid = User.shared.userid else { return }
+                
+                self.client.usersProvidersPost(userid: userid, authorization: tokenResult.token, body: providerList).continueWith(block: { (userListResponse) -> Any? in
+                    
+                    if userListResponse.error != nil {
+                        print("userListResponse.error : \(userListResponse.error)")
+                    } else {
+                        if let result = userListResponse.result {
+                            
+                            if let error = result.error {
+                                if error.code != 1 {
+                                    completion(.failure(error))
+                                }
+                            }
+                            
+                            completion(.success(result))
+                            
+                        }
+                        
+                    }
+                 
+                    return nil
+                    
+                })
+                
+            }
+            
+        }
+        
+    }
+    
+    
+    /// used for syns device contact list - friends and catchU followers
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - providerList: device contact list
+    ///   - completion: user list retrieved from api gateway stored in neo4j
+    /// - Author: Erkut Bas
+    func initiateDeviceContactListExploreOnCatchU(userid : String, providerList : REProviderList, completion : @escaping (ConnectionResult<REUserListResponse>) -> ()) {
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
@@ -567,17 +625,14 @@ class APIGatewayManager {
                             
                             if let error = result.error {
                                 if error.code != 1 {
-                                    print("business error occured : \(result.error?.message)")
+                                    completion(.failure(error))
                                 }
                             }
                             
-                            if let resultItems = result.items {
-                                print("resultItems : \(resultItems)")
-                            }
+                            completion(.success(result))
                             
                         }
                         
-                        completion(true)
                     }
                     
                     return nil

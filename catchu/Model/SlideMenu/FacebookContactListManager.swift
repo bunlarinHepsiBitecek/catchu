@@ -17,12 +17,50 @@ struct ExpandableSection {
     
 }
 
+enum ReturnResult<T> {
+    case success(T)
+    case failure(User)
+}
+
 class FacebookContactListManager {
     
     public static let shared = FacebookContactListManager()
     
     var twoDimensionalList : [ExpandableSection]?
     var facebookFriendArray : [User]?
+    var facebookFriendsViewModelArray : [ViewModelUser]?
+    
+    func appendViewModeItem(viewModelUser : ViewModelUser) {
+        
+        if FacebookContactListManager.shared.facebookFriendsViewModelArray == nil {
+           FacebookContactListManager.shared.facebookFriendsViewModelArray = [ViewModelUser]()
+        }
+        
+        FacebookContactListManager.shared.facebookFriendsViewModelArray?.append(viewModelUser)
+        
+    }
+    
+    func emptyViewModelUserArray() {
+        if FacebookContactListManager.shared.facebookFriendsViewModelArray != nil {
+            FacebookContactListManager.shared.facebookFriendsViewModelArray?.removeAll()
+        }
+        
+    }
+    
+    func emptyFacebookFriendArray() {
+        if FacebookContactListManager.shared.facebookFriendArray != nil {
+            FacebookContactListManager.shared.facebookFriendArray?.removeAll()
+        }
+        
+    }
+    
+    func appendNewUserToFacebookFriendArray(user : User) {
+        if FacebookContactListManager.shared.facebookFriendArray == nil {
+            FacebookContactListManager.shared.facebookFriendArray = [User]()
+        }
+        
+        FacebookContactListManager.shared.facebookFriendArray?.append(user)
+    }
     
     func returnFacebookFriendArrayExist() -> Bool {
         if let array = FacebookContactListManager.shared.facebookFriendArray {
@@ -36,12 +74,29 @@ class FacebookContactListManager {
         return false
     }
     
+    func returnViewModelUser(index : Int) -> ReturnResult<ViewModelUser> {
+        
+        if let viewModelUserArray = FacebookContactListManager.shared.facebookFriendsViewModelArray {
+            return .success(viewModelUserArray[index])
+        }
+        
+        return .failure(User())
+    }
+    
     func returnUser(index : Int) -> User {
         if let array = FacebookContactListManager.shared.facebookFriendArray {
             return array[index]
         }
         
         return User()
+    }
+    
+    func returnFacebookViewModelUserArray() -> Int {
+        if let array = FacebookContactListManager.shared.facebookFriendsViewModelArray {
+            return array.count
+        } else {
+            return Constants.NumericConstants.INTEGER_ZERO
+        }
     }
     
     func returnFacebookArrayCount() -> Int {
@@ -141,7 +196,7 @@ class FacebookContactListManager {
         if FacebookContactListManager.shared.facebookFriendArray == nil {
             FacebookContactListManager.shared.facebookFriendArray = [User]()
         } else {
-            FacebookContactListManager.shared.facebookFriendArray?.removeAll()
+            emptyFacebookFriendArray()
         }
         
         if let data = data["data"] as? NSArray {
@@ -150,7 +205,7 @@ class FacebookContactListManager {
                     print("friend_id : \(friendData["id"])")
                     
                     let user = User()
-                    user.provider = "facebook"
+                    user.provider = ProviderType.facebook.rawValue
                     
                     if let id = friendData["id"] { user.providerID = String(describing: id) }
                     if let name = friendData["name"] { user.name = String(describing: name) }
@@ -165,7 +220,7 @@ class FacebookContactListManager {
                         }
                     }
                     
-                    facebookFriendArray!.append(user)
+                    appendNewUserToFacebookFriendArray(user: user)
                 }
             }
             
@@ -178,7 +233,7 @@ class FacebookContactListManager {
         print("facebookFriends array count : \(facebookFriendArray!.count)")
     }
     
-    func converFacebookContactListToProvider() {
+    func getFacebookFriendsExistedInCatchU(completion : @escaping(_ finish : Bool) -> Void) {
         
         let providerList = REProviderList()
         
@@ -193,11 +248,35 @@ class FacebookContactListManager {
         }
         
         if let userid = User.shared.userid {
-            APIGatewayManager.shared.initiateFacebookContactExploreProcess(userid: User.shared.userid!, providerList: providerList!) { (finish) in
+            
+            APIGatewayManager.shared.initiateFacebookContactExploreProcess(userid: userid, providerList: providerList!) { (result) in
                 
-                if finish {
-                    print("Bitti")
+                switch result {
+                case .success(let data):
+                    self.updateFacebookFriendArray(userListResponse: data)
+                    completion(true)
+                case .failure(let error):
+                    print("error : \(error.message)")
                 }
+                
+            }
+            
+        }
+        
+    }
+    
+    func updateFacebookFriendArray(userListResponse : REUserListResponse) {
+        print("updateFacebookFriendArray starts")
+        
+        emptyFacebookFriendArray()
+        
+        if let array = userListResponse.items {
+            for item in array {
+                let user = User(user: item)
+                appendNewUserToFacebookFriendArray(user: user)
+                
+                let viewModelUser = ViewModelUser(user: user)
+                appendViewModeItem(viewModelUser: viewModelUser)
                 
             }
         }

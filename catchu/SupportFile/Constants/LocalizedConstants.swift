@@ -109,6 +109,10 @@ struct LocalizedConstants {
             static let enableAccessMicrophone = NSLocalizedString("enableAccessMicrophone", comment: "")
             static let tryAgain = NSLocalizedString("tryAgain", comment: "")
             static let connectToFacebook = NSLocalizedString("connectToFacebook", comment: "")
+            static let connectToContacts = NSLocalizedString("connectToContacts", comment: "")
+            static let enableAccessContacts = NSLocalizedString("enableAccessContacts", comment: "")
+            static let invite = NSLocalizedString("invite", comment: "")
+            static let post = NSLocalizedString("post", comment: "")
             
         }
         
@@ -238,6 +242,8 @@ struct LocalizedConstants {
         static let group = NSLocalizedString("group", comment: "")
         static let publicInfo = NSLocalizedString("public", comment: "")
         static let onlyMe = NSLocalizedString("onlyMe", comment: "")
+        static let allFollowers = NSLocalizedString("allFollowers", comment: "")
+        
         
     }
     
@@ -245,6 +251,7 @@ struct LocalizedConstants {
         
         static let publicInformation = NSLocalizedString("publicInformation", comment: "")
         static let onlyMeInformation = NSLocalizedString("onlyMeInformation", comment: "")
+        static let allFollowersInformation = NSLocalizedString("allFollowersInformation", comment: "")
         static let gettingGroup = NSLocalizedString("gettingGroup", comment: "")
         static let gettingFriends = NSLocalizedString("gettingFriends", comment: "")
         static let thereIsNothingToPost = NSLocalizedString("thereIsNothingToPost", comment: "")
@@ -262,6 +269,12 @@ struct LocalizedConstants {
         static let contacts = NSLocalizedString("contacts", comment: "")
         static let facebookFriendRequest = NSLocalizedString("facebookFriendRequest", comment: "")
         static let findFriendSuggestion = NSLocalizedString("findFriendSuggestion", comment: "")
+        static let contactFriendRequest = NSLocalizedString("contactFriendRequest", comment: "")
+        static let contactFriendSuggestion = NSLocalizedString("contactFriendSuggestion", comment: "")
+        static let activePeopleOnCatchU = NSLocalizedString("activePeopleOnCatchU", comment: "")
+        static let invitePeopleOncatchU = NSLocalizedString("invitePeopleOncatchU", comment: "")
+        static let inviteFriendTitle = NSLocalizedString("inviteFriendTitle", comment: "")
+        static let inviteFriendInformation = NSLocalizedString("inviteFriendInformation", comment: "")
         
     }
     

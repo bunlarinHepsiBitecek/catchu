@@ -84,7 +84,7 @@ extension CustomMapView {
         
         self.layer.cornerRadius = 10
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-        self.layer.shadowColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.layer.shadowRadius = 5
         self.layer.shadowOpacity = 0.8

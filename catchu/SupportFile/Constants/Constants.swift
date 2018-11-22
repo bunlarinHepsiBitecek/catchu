@@ -76,6 +76,7 @@ struct Constants {
         }
         
         struct BorderWidth {
+            static let borderWidth_1 : CGFloat = 1
             static let borderWidth_2 : CGFloat = 2
             static let borderWidth_4 : CGFloat = 4
             static let borderWidth_5 : CGFloat = 5
@@ -86,6 +87,13 @@ struct Constants {
             static let cornerRadius_61 : CGFloat = 61
             static let cornerRadius_51 : CGFloat = 51
             static let cornerRadius_50 : CGFloat = 50
+            static let cornerRadius_40 : CGFloat = 40
+            static let cornerRadius_35 : CGFloat = 35
+            static let cornerRadius_30 : CGFloat = 30
+            static let cornerRadius_28 : CGFloat = 28
+            static let cornerRadius_25 : CGFloat = 25
+            static let cornerRadius_23 : CGFloat = 23
+            static let cornerRadius_15 : CGFloat = 15
             static let cornerRadius_12 : CGFloat = 12
             static let cornerRadius_11 : CGFloat = 11
             static let cornerRadius_10 : CGFloat = 10
@@ -97,10 +105,17 @@ struct Constants {
             struct Width {
                 static let width_250 : CGFloat = 250
                 static let width_200 : CGFloat = 200
+                static let width_180 : CGFloat = 180
                 static let width_150 : CGFloat = 150
                 static let width_102 : CGFloat = 102
                 static let width_100 : CGFloat = 100
+                static let width_80 : CGFloat = 80
+                static let width_70 : CGFloat = 70
+                static let width_60 : CGFloat = 60
+                static let width_56 : CGFloat = 56
                 static let width_50 : CGFloat = 50
+                static let width_48 : CGFloat = 48
+                static let width_44 : CGFloat = 44
                 static let width_40 : CGFloat = 40
                 static let width_30 : CGFloat = 30
                 static let width_24 : CGFloat = 24
@@ -113,9 +128,17 @@ struct Constants {
                 static let height_220 : CGFloat = 220
                 static let height_200 : CGFloat = 200
                 static let height_180 : CGFloat = 180
+                static let height_150 : CGFloat = 150
+                static let height_110 : CGFloat = 110
                 static let height_102 : CGFloat = 102
                 static let height_100 : CGFloat = 100
+                static let height_80 : CGFloat = 80
+                static let height_70 : CGFloat = 70
+                static let height_60 : CGFloat = 60
+                static let height_56 : CGFloat = 56
                 static let height_50 : CGFloat = 50
+                static let height_48 : CGFloat = 48
+                static let height_44 : CGFloat = 44
                 static let height_40 : CGFloat = 40
                 static let height_30 : CGFloat = 30
                 static let height_24 : CGFloat = 24
@@ -130,6 +153,7 @@ struct Constants {
             static let constraint_200 : CGFloat = 200
             static let constraint_100 : CGFloat = 100
             static let constraint_90 : CGFloat = 90
+            static let constraint_70 : CGFloat = 70
             static let constraint_50 : CGFloat = 50
             static let constraint_42 : CGFloat = 42
             static let constraint_40 : CGFloat = 40
@@ -359,6 +383,7 @@ struct Constants {
         static let FinalShareInfoViewController: String = "FinalShareInfoViewController"
         static let FinalNoteViewController: String = "FinalNoteViewController"
         static let ExplorePeopleViewController: String = "ExplorePeopleViewController"
+        static let PostViewController: String = "PostViewController"
         
     }
     
@@ -410,6 +435,8 @@ struct Constants {
             static let groupCreateHeaderCell: String = "groupCreateHeaderCell"
             static let slideMenuTableViewCell : String = "slideMenuTableViewCell"
             static let facebookContactTableViewCell : String = "facebookContactTableViewCell"
+            static let contactSyncedTableViewCell : String = "contactSyncedTableViewCell"
+            static let contactTableViewCell : String = "contactTableViewCell"
             
         }
         

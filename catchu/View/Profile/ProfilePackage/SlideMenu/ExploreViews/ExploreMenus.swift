@@ -13,6 +13,7 @@ class ExploreMenus: UIView {
     private var selfFrameCalculated : Bool = false
     
     weak var delegate : SlideMenuProtocols!
+    weak var delegateFromExploreViewController : UserProfileViewProtocols!
     
     private var facebookContactList : FacebookContactList?
     private var contactList : ContactList?
@@ -37,9 +38,10 @@ class ExploreMenus: UIView {
         
     }
     
-    init(frame: CGRect, delegate : SlideMenuProtocols) {
+    init(frame: CGRect, delegate : SlideMenuProtocols, delegateUserProfile : UserProfileViewProtocols) {
         super.init(frame: frame)
         self.delegate = delegate
+        self.delegateFromExploreViewController = delegateUserProfile
         
     }
     
@@ -75,7 +77,7 @@ extension ExploreMenus {
         facebookContactList = FacebookContactList()
         facebookContactList?.translatesAutoresizingMaskIntoConstraints = false
         
-        contactList = ContactList()
+        contactList = ContactList(frame: .zero, delegate: delegateFromExploreViewController)
         contactList?.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(mainScrollView)
@@ -173,7 +175,8 @@ extension ExploreMenus {
         print("addContactList starts")
         print("self.frame.width : \(self.frame.width)")
         
-        contactList = ContactList(frame: CGRect(x: self.frame.width, y: 0, width: self.frame.width, height: self.frame.height))
+//        contactList = ContactList(frame: CGRect(x: self.frame.width, y: 0, width: self.frame.width, height: self.frame.height))
+        contactList = ContactList(frame: CGRect(x: self.frame.width, y: 0, width: self.frame.width, height: self.frame.height), delegate: delegateFromExploreViewController)
 //        contactList = ContactList()
 //        contactList!.translatesAutoresizingMaskIntoConstraints = false
 ////        contactList!.frame = CGRect(x: self.frame.width, y: 0, width: 0, height: 0)

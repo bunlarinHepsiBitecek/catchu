@@ -34,7 +34,7 @@ class ExploreViewSlider: UIView {
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        collectionView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        collectionView.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
         
         collectionView.register(ExploreChoiseCollectionViewCell.self, forCellWithReuseIdentifier: Constants.Collections.CollectionView.exploreChoiseCollectionViewCell)
         

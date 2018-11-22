@@ -34,13 +34,13 @@ class ExploreChoiseCollectionViewCell: UICollectionViewCell {
     
     override var isHighlighted: Bool {
         didSet {
-            choiseLabel.textColor = isHighlighted ? UIColor.black : UIColor.gray
+            choiseLabel.textColor = isHighlighted ? UIColor.black : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         }
     }
     
     override var isSelected: Bool {
         didSet {
-            choiseLabel.textColor = isSelected ? UIColor.black : UIColor.gray
+            choiseLabel.textColor = isSelected ? UIColor.black : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         }
     }
     

@@ -59,8 +59,7 @@ class PostAttachmentView: UIView {
         temp.font = UIFont.systemFont(ofSize: 10)
         temp.textAlignment = .center
         
-        temp.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
+        temp.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         
         return temp
         
@@ -158,7 +157,7 @@ extension PostAttachmentView {
     func setImage(inputImage : UIImage) {
         
         imageView.image = inputImage.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        imageView.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         
     }
     
@@ -174,6 +173,10 @@ extension PostAttachmentView {
         
     }
     
+    func setDelegationOfPostAttachmentView(delegate : ShareDataProtocols) {
+        self.delegate = delegate
+    }
+    
     func setDelegation(inputDelegate : ShareDataProtocols, inputViewControllerDelegate : ViewPresentationProtocols) {
         
         self.delegate = inputDelegate
@@ -183,8 +186,8 @@ extension PostAttachmentView {
     
     func clearTintColor() {
         
-        imageView.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        labelObject.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        imageView.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        labelObject.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         
 //        if let postType = postAttachmentType {
 //            if postType == .onlyMe {
@@ -196,8 +199,8 @@ extension PostAttachmentView {
     }
     
     func setTintColor() {
-        imageView.tintColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        labelObject.textColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        imageView.tintColor = #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1)
+        labelObject.textColor = #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1)
     }
     
     func setSelected(isSelected : Bool) {
@@ -234,7 +237,7 @@ extension PostAttachmentView {
             
             delegate.selectedPostAttachmentAnimations(selectedAttachmentType: type) { (finish) in
                 if finish {
-                    self.delegateForViewController.directToContactsViewController(inputPostType: type)
+                    //self.delegateForViewController.directToContactsViewController(inputPostType: type)
                 }
             }
             
@@ -259,7 +262,37 @@ extension PostAttachmentView {
             PostItems.shared.privacyType = PrivacyType.myself
         case .publicPost:
             PostItems.shared.privacyType = PrivacyType.everyone
+        case .allFollowers:
+            PostItems.shared.privacyType = PrivacyType.allFollowers
         }
+        
+    }
+    
+    func animationManagement() {
+        
+        imageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        UIView.animate(withDuration: 0.2) {
+            self.imageView.transform = CGAffineTransform.identity
+        }
+        
+        print("menuSelectionManagement starts")
+        print("self.tag : \(self.tag)")
+        
+        print("type : \(postAttachmentType!)")
+        
+        animationManager(type: postAttachmentType!)
+        
+    }
+    
+    func triggerFirstSelection(postType : PostAttachmentTypes) {
+        
+        print("triggerFirstSelection starts")
+        print("type : \(postAttachmentType!)")
+        self.postAttachmentType = postType
+        print("type : \(postAttachmentType!)")
+        
+        animationManagement()
         
     }
     
@@ -277,20 +310,7 @@ extension PostAttachmentView : UIGestureRecognizerDelegate {
     }
     
     @objc func menuSelectionManagement(_ sender : UITapGestureRecognizer) {
-
-        imageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        
-        UIView.animate(withDuration: 0.2) {
-            self.imageView.transform = CGAffineTransform.identity
-        }
-        
-        print("menuSelectionManagement starts")
-        print("self.tag : \(self.tag)")
-        
-        print("type : \(postAttachmentType!)")
-        
-        animationManager(type: postAttachmentType!)
-        
+        animationManagement()
     }
     
 }

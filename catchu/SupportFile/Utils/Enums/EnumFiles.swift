@@ -8,11 +8,22 @@
 
 import UIKit
 
-
 enum ProviderType: String {
     case firebase
     case facebook
     case twitter
+    case phone
+}
+
+enum ContactRequestType {
+    case enableSettings
+    case fetchContact
+}
+
+enum PostContentType {
+    case camera
+    case video
+    case note
 }
 
 enum MediaType: String {
@@ -170,6 +181,7 @@ enum PostAttachmentTypes {
     case friends
     case group
     case onlyMe
+    case allFollowers
 }
 
 enum TransitionDirection {

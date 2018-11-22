@@ -71,6 +71,7 @@ class FacebookContactRequestView: UIView {
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_5
         temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
         temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.connectToFacebook, for: .normal)
+        temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
         temp.addTarget(self, action: #selector(FacebookContactRequestView.startGettingFacebookFriends(_:)), for: .touchUpInside)
         return temp
     }()
@@ -172,10 +173,13 @@ extension FacebookContactRequestView {
         FacebookContactListManager.shared.initiateFacebookContactListProcess { (finish) in
             
             if finish {
-                self.delegate.dismissView(active: false)
-                self.delegate.dataLoadTrigger()
+                FacebookContactListManager.shared.getFacebookFriendsExistedInCatchU(completion: { (finish) in
+                    if finish {
+                        self.delegate.dismissView(active: false)
+                        self.delegate.dataLoadTrigger()
+                    }
+                })
             }
-            
         }
         
     }

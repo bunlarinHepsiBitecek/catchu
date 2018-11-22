@@ -82,8 +82,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: Twitter log-in - Completed sign-in but not being redirected to my app
     func application(_ application:UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
 //        let directedByGGL =  GIDSignIn.sharedInstance().handle(url as URL!, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
-        let directedByTWTR =  TWTRTwitter.sharedInstance().application(application, open: url, options: options)
-        return directedByTWTR
+        
+        print("I have received a URL through custom url scheme : \(url.absoluteString)")
+        
+        if let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url) {
+            self.handleIncomingDynamicLink(dynamicLink)
+            return true
+        } else {
+            // handle twitter sign in
+            let directedByTWTR =  TWTRTwitter.sharedInstance().application(application, open: url, options: options)
+            return directedByTWTR
+        }
+        
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -100,12 +110,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    
-    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Pass device token to auth
         Auth.auth().setAPNSToken(deviceToken, type: .prod)
     }
+    
+    func handleIncomingDynamicLink(_ dynamicLink : DynamicLink) {
+        
+        guard let url = dynamicLink.url else {
+            print("that's weird, my dynamicLink has no url!")
+            return
+        }
+        
+        print("Your incoming link paramater is : \(dynamicLink.url?.absoluteString)")
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let queryItems = components.queryItems else { return }
+        
+        for queryItem in queryItems {
+            print("parameter : \(queryItem.name) has a value of : \(queryItem.value ?? "")")
+            
+        }
+        
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        
+        if let incomingUrl = userActivity.webpageURL {
+            print("incomingUrl is : \(incomingUrl)")
+            
+            let linkHandled = DynamicLinks.dynamicLinks().handleUniversalLink(incomingUrl) { (dynamicLink, error) in
+                
+                guard error == nil else {
+                    
+                    print("Found error : \(error?.localizedDescription)")
+                    return
+                    
+                }
+                
+                if let dynamicLink = dynamicLink {
+                    self.handleIncomingDynamicLink(dynamicLink)
+                }
+                
+            }
+            
+            if linkHandled {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return false
+    }
+    
+
     
 }
 

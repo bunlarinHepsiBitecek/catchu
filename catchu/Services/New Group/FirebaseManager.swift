@@ -20,6 +20,7 @@ class FirebaseManager {
         do
         {
             try Auth.auth().signOut()
+            FBSDKLoginManager().logOut()
             redirectSignin()
         } catch let error as NSError {
             print(error.localizedDescription)

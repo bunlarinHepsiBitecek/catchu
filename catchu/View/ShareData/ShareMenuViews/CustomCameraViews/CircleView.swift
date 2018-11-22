@@ -12,6 +12,12 @@ class CircleView: UIView {
 
     var circleLayer: CAShapeLayer!
     
+    private var second = 0
+    private var timer = Timer()
+    private var isTimerRunning : Bool = false
+    
+    weak var delegate : PostViewProtocols!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
@@ -43,6 +49,10 @@ class CircleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setColor(inputColor : CGColor) {
+        circleLayer.strokeColor = inputColor
+    }
+    
     func animateCircle(duration: TimeInterval) {
         // We want to animate the strokeEnd property of the circleLayer
         let animation = CABasicAnimation(keyPath: "strokeEnd")
@@ -70,4 +80,44 @@ class CircleView: UIView {
         circleLayer.strokeEnd = 1.0
         
     }
+    
+    func animateCircleWithDelegation(duration : TimeInterval, delegate: PostViewProtocols) {
+        
+        self.delegate = delegate
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        
+        animation.duration = duration
+        second = Int(duration)
+        
+        animation.fromValue = 0
+        animation.toValue = 1
+        
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        
+        circleLayer.strokeEnd = 1.0
+        
+        circleLayer.add(animation, forKey: "animateCircle")
+        
+        runTimer()
+        
+    }
+    
+    func runTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(CircleView.updateTimer)), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateTimer() {
+        second -= 1
+        
+        if second <= 0 {
+            timer.invalidate()
+            stop()
+            delegate.triggerContentCheckAnimation()
+            
+        }
+        
+    }
+    
+    
 }

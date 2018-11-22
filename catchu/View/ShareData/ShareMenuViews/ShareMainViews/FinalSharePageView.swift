@@ -388,6 +388,8 @@ extension FinalSharePageView {
             informationLabel.text = LocalizedConstants.PostAttachmentInformation.publicInformation
         case .onlyMe:
             informationLabel.text = LocalizedConstants.PostAttachmentInformation.onlyMeInformation
+        case .allFollowers:
+            informationLabel.text = LocalizedConstants.PostAttachmentInformation.allFollowersInformation
         }
         
     }
@@ -566,6 +568,8 @@ extension FinalSharePageView : ShareDataProtocols {
         case .onlyMe:
             returned.setImage(inputImage: UIImage(named: "locked")!)
             print(".")
+        case .allFollowers:
+            break
         }
         
     }

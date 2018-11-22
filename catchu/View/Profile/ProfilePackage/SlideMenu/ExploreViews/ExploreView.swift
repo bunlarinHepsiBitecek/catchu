@@ -13,6 +13,8 @@ class ExploreView: UIView {
     private var exploreType : ExploreViewSlider?
     private var exploreMenus : ExploreMenus?
     
+    weak var delegate : UserProfileViewProtocols!
+    
     lazy var mainView: UIView = {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +39,15 @@ class ExploreView: UIView {
         super.init(frame: frame)
         
         initiateViewSettings()
+    }
+    
+    init(frame: CGRect, delegate : UserProfileViewProtocols) {
+        super.init(frame: frame)
+        
+        self.delegate = delegate
+        
+        initiateViewSettings()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -116,7 +127,9 @@ extension ExploreView {
     
     func addExploreMenusWithFrames() {
         
-        exploreMenus = ExploreMenus(frame: .zero, delegate: exploreType!)
+        //exploreMenus = ExploreMenus(frame: .zero, delegate: exploreType!, delegateSlideMenu : delegate)
+        
+        exploreMenus = ExploreMenus(frame: .zero, delegate: exploreType!, delegateUserProfile: delegate)
         exploreMenus?.translatesAutoresizingMaskIntoConstraints = false
         
         let safeBodyView = self.bodyView.safeAreaLayoutGuide
