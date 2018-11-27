@@ -11,6 +11,8 @@ import UIKit
 class SaySomethingView: UIView {
     
     weak var delegate : PostViewProtocols!
+    weak var delegateCameraImageVideoHandlerProtocol : CameraImageVideoHandlerProtocol!
+    
     private var circleViewForCamera : CircleView?
     private var circleViewForVideo : CircleView?
     private var circleViewForNote : CircleView?
@@ -21,6 +23,10 @@ class SaySomethingView: UIView {
     
     private var keyboardActive : Bool = false
     
+    private var maxFontSize : CGFloat = 28
+    private var minFontSize : CGFloat = 18
+    private var fontIncrement : CGFloat = 1
+    
     private var leadingConstraintsOfPostTargetStackview = NSLayoutConstraint()
     
     lazy var containerView: UIView = {
@@ -28,7 +34,8 @@ class SaySomethingView: UIView {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        //temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.backgroundColor = UIColor.clear
         
         return temp
         
@@ -61,7 +68,7 @@ class SaySomethingView: UIView {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.backgroundColor = UIColor.clear
         
         return temp
         
@@ -114,6 +121,7 @@ class SaySomethingView: UIView {
         temp.alignment = .fill
         temp.axis = .horizontal
         temp.distribution = .fillEqually
+        temp.backgroundColor = UIColor.clear
         
         return temp
     }()
@@ -258,18 +266,21 @@ class SaySomethingView: UIView {
         let temp = UITextView()
         temp.backgroundColor = UIColor.clear
         temp.textColor = UIColor.lightGray
-        temp.layer.cornerRadius = 10
         temp.text = LocalizedConstants.PostAttachmentInformation.saySomething
         temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
-        temp.textAlignment = .left
+        temp.textAlignment = .justified
         temp.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.light)
         //        temp.font = UIFont.boldSystemFont(ofSize: 28)
         temp.isScrollEnabled = false
         temp.textContainer.lineBreakMode = .byWordWrapping
         temp.textContainer.widthTracksTextView = true
+        temp.isScrollEnabled = false
+        temp.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        temp.dataDetectorTypes = UIDataDetectorTypes.link
         
         // keyboard settings
+        temp.autocorrectionType = .no
         temp.keyboardAppearance = .dark
         temp.keyboardType = .alphabet
         temp.keyboardDismissMode = .interactive
@@ -360,17 +371,17 @@ extension SaySomethingView {
             topView.leadingAnchor.constraint(equalTo: safeContainer.leadingAnchor),
             topView.trailingAnchor.constraint(equalTo: safeContainer.trailingAnchor),
             topView.topAnchor.constraint(equalTo: safeContainer.topAnchor),
-            topView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_80),
+            topView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_70),
             
             footerView.leadingAnchor.constraint(equalTo: safeContainer.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: safeContainer.trailingAnchor),
-            footerView.bottomAnchor.constraint(equalTo: safeContainer.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
-            footerView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_110),
+            footerView.bottomAnchor.constraint(equalTo: safeContainer.bottomAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_80),
             
-            attachmentContainerView.leadingAnchor.constraint(equalTo: safeFooterView.leadingAnchor, constant: 10),
-            attachmentContainerView.trailingAnchor.constraint(equalTo: safeFooterView.trailingAnchor, constant: -10),
-            attachmentContainerView.bottomAnchor.constraint(equalTo: safeStackViewForButtons.topAnchor, constant: -5),
-            attachmentContainerView.heightAnchor.constraint(equalToConstant: 44),
+            attachmentContainerView.leadingAnchor.constraint(equalTo: safeFooterView.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
+            attachmentContainerView.trailingAnchor.constraint(equalTo: safeFooterView.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
+            attachmentContainerView.bottomAnchor.constraint(equalTo: safeStackViewForButtons.topAnchor),
+            attachmentContainerView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_44),
             
             bodyView.leadingAnchor.constraint(equalTo: safeContainer.leadingAnchor),
             bodyView.trailingAnchor.constraint(equalTo: safeContainer.trailingAnchor),
@@ -384,11 +395,15 @@ extension SaySomethingView {
             
             stackViewForButtons.leadingAnchor.constraint(equalTo: safeFooterView.leadingAnchor, constant: Constants.StaticViewSize.ViewSize.Height.height_10),
             stackViewForButtons.trailingAnchor.constraint(equalTo: safeFooterView.trailingAnchor, constant: -Constants.StaticViewSize.ViewSize.Height.height_10),
-            stackViewForButtons.bottomAnchor.constraint(equalTo: safeFooterView.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
+            stackViewForButtons.bottomAnchor.constraint(equalTo: safeFooterView.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_5),
             stackViewForButtons.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_30),
             
             stackContentContainer.centerYAnchor.constraint(equalTo: safeTopView.centerYAnchor),
             stackContentContainer.leadingAnchor.constraint(equalTo: safeTopView.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
+            
+            /*
+            stackContentContainer.bottomAnchor.constraint(equalTo: safeTopView.bottomAnchor),
+            stackContentContainer.leadingAnchor.constraint(equalTo: safeTopView.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),*/
             
             cameraContainer.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_60),
             videoContainer.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_60),
@@ -414,6 +429,7 @@ extension SaySomethingView {
             noteImageView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_44),
             
             mapContainer.centerYAnchor.constraint(equalTo: safeTopView.centerYAnchor),
+            //mapContainer.bottomAnchor.constraint(equalTo: safeTopView.bottomAnchor),
             mapContainer.trailingAnchor.constraint(equalTo: safeTopView.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_5),
             mapContainer.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_60),
             mapContainer.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_60),
@@ -478,30 +494,77 @@ extension SaySomethingView {
         
         print("initiatePostProcess starts")
         
-        startCircleAnimation()
+        //startCircleAnimation()
+        
+        guard let circleViewForCamera = circleViewForCamera else { return }
         
     }
     
     func addCircleToContainers() {
         
+        addCircleViewToCameraContainer()
+        addCircleViewToVideoContainer()
+        addCircleViewToNoteContainer()
+        
+    }
+    
+    func addCircleViewToCameraContainer() {
         // Create a new CircleView for camera container
         circleViewForCamera = CircleView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_60, height: Constants.StaticViewSize.ViewSize.Height.height_60))
-        circleViewForCamera?.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
         
         cameraContainer.addSubview(circleViewForCamera!)
-        
+    }
+    
+    func addCircleViewToVideoContainer() {
         // Create a new CircleView for video container
         circleViewForVideo = CircleView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_60, height: Constants.StaticViewSize.ViewSize.Height.height_60))
-        circleViewForVideo?.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
         
         videoContainer.addSubview(circleViewForVideo!)
-        
+    }
+    
+    func addCircleViewToNoteContainer() {
         // Create a new CircleView note container
         circleViewForNote = CircleView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_60, height: Constants.StaticViewSize.ViewSize.Height.height_60))
-        circleViewForNote?.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
         
         noteContainer.addSubview(circleViewForNote!)
+    }
+    
+    func contentAnimationManagement(postContentType : PostContentType, active : Bool) {
         
+        switch postContentType {
+        case .camera:
+            guard let circleViewForCamera = circleViewForCamera else { return }
+            
+            if active {
+                circleViewForCamera.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
+                circleViewForCamera.animateCircleWithDelegation(duration: 1, delegate: self)
+            } else {
+                //circleViewForCamera.setColor(inputColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+                circleViewForCamera.animateCircleWithDelegationToBack(duration: 1, delegate: self)
+
+            }
+            
+        case .video:
+            guard let circleViewForVideo = circleViewForVideo else { return }
+            
+            if active {
+                circleViewForVideo.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
+            } else {
+                circleViewForVideo.setColor(inputColor: UIColor.clear.cgColor)
+            }
+            
+            circleViewForVideo.animateCircleWithDelegation(duration: 1, delegate: self)
+        case .note:
+            guard let circleViewForNote = circleViewForNote else { return }
+            
+            if active {
+                circleViewForNote.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
+            } else {
+                circleViewForNote.setColor(inputColor: UIColor.clear.cgColor)
+            }
+            
+            circleViewForNote.animateCircleWithDelegation(duration: 1, delegate: self)
+        }
     }
     
     func startCircleAnimation() {
@@ -741,6 +804,51 @@ extension SaySomethingView {
         addGestureToVideoContent()
     }
     
+    func scrollManagementOfSaySomethingTextView(active : Bool) {
+        saySomethingTextView.isScrollEnabled = active
+    }
+    
+    func startPhotoPickerProcess() {
+        
+        if PostItems.shared.returnSelectedImageArrayCount() > 0 {
+            AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .update, delegate: self)
+        } else {
+            AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .select, delegate: self)
+        }
+        
+    }
+    
+    func startVideoPickerProcess() {
+        
+        if PostItems.shared.returnSelectedVideoArrayCount() > 0 {
+            AlertControllerManager.shared.startActionSheetManager(type: .video, operationType: .update, delegate: self)
+        } else {
+            AlertControllerManager.shared.startActionSheetManager(type: .video, operationType: .select, delegate: self)
+        }
+        
+    }
+    
+    func setCameraGalleryPermissionDelegation(delegate : CameraImageVideoHandlerProtocol) {
+        self.delegateCameraImageVideoHandlerProtocol = delegate
+    }
+    
+    func initiateOpenImageGallery() {
+        CameraImagePickerManager.shared.openImageGallery(delegate: delegateCameraImageVideoHandlerProtocol)
+    }
+    
+    func initiateOpenSystemCamera() {
+        CameraImagePickerManager.shared.openSystemCamera(delegate: delegateCameraImageVideoHandlerProtocol)
+    }
+    
+    func initiateVideoGallery() {
+        CameraImagePickerManager.shared.openVideoGallery(delegate: delegateCameraImageVideoHandlerProtocol)
+    }
+    
+    func initiateVideoView() {
+        print("delegate : \(delegate)")
+        delegateCameraImageVideoHandlerProtocol.initiateVideoViewPermissionProcess()
+    }
+    
 }
 
 // MARK: - UITextViewDelegate
@@ -758,6 +866,46 @@ extension SaySomethingView : UITextViewDelegate {
             textView.text = LocalizedConstants.PostAttachmentInformation.saySomething
             textView.textColor = UIColor.lightGray
         }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+        let fixedWidth = textView.frame.size.width
+        let newSize = textView.sizeThatFits(CGSize.init(width: fixedWidth, height: .infinity))
+        var newFrame = textView.frame
+        newFrame.size = CGSize.init(width: CGFloat(fmaxf(Float(newSize.width), Float(fixedWidth))), height: newSize.height)
+        
+        if (newFrame.height > textView.frame.size.height) {
+            
+            let newFontSize = maxFontSize - fontIncrement
+            
+            if newFontSize > minFontSize {
+                textView.font = UIFont.systemFont(ofSize: maxFontSize - fontIncrement)
+                fontIncrement += 1
+            } else {
+                scrollManagementOfSaySomethingTextView(active: true)
+            }
+        }
+
+    }
+    
+    func contentActiveCheckIconAnimationManagement(postContentType : PostContentType, active : Bool) {
+        
+        switch postContentType {
+        case .camera:
+            guard let cameraContentActive = cameraContentActive else { return }
+            if active {
+                cameraContentActive.activationManager(active: true)
+            } else {
+                cameraContentActive.activationManager(active: false)
+            }
+        case .video:
+            return
+        case .note:
+            return
+        }
+        
+        
     }
     
 }
@@ -793,8 +941,7 @@ extension SaySomethingView : UIGestureRecognizerDelegate {
     
     @objc func initiateCameraContentSelectionProcess(_ sender : UITapGestureRecognizer) {
         startAnimationForCameraContent()
-        
-        //delegate.initiateAlertControllerProcess(postContentType: .camera)
+        startPhotoPickerProcess()
     }
     
     func addGestureToVideoContent() {
@@ -805,8 +952,7 @@ extension SaySomethingView : UIGestureRecognizerDelegate {
     
     @objc func initiateVideoContentSelectionProcess(_ sender : UITapGestureRecognizer) {
         startAnimationForVideoContent()
-        
-        //delegate.initiateAlertControllerProcess(postContentType: .video)
+        startVideoPickerProcess()
     }
     
 }
@@ -908,12 +1054,41 @@ extension SaySomethingView : ShareDataProtocols {
 // MARK: - PostViewProtocols
 extension SaySomethingView : PostViewProtocols {
     
-    func triggerContentCheckAnimation() {
+    func triggerContentCheckAnimation(active : Bool) {
         
-        guard let x = cameraContentActive else { return }
-        
-        x.activationManager(active: true)
+        contentActiveCheckIconAnimationManagement(postContentType: .camera, active: active)
         
     }
     
 }
+
+// MARK: - ActionSheetProtocols
+extension SaySomethingView : ActionSheetProtocols {
+    
+    func returnOperations(selectedProcessType: ActionButtonOperation) {
+        
+        print("returnOperations starts")
+        print("selectedProcessType : \(selectedProcessType)")
+        
+        switch selectedProcessType {
+        case .cameraOpen:
+            self.initiateOpenSystemCamera()
+        case .imageGalleryOpen:
+            self.initiateOpenImageGallery()
+        case .selectedImageUpdate:
+            delegateCameraImageVideoHandlerProtocol.updateProcessOfCapturedImage()
+        case .selectedImageDelete:
+            PostItems.shared.emptySelectedImageArray()
+            contentAnimationManagement(postContentType: .camera, active: false)
+        case .videoGalleryOpen:
+            self.initiateVideoGallery()
+        case .videoOpen:
+            self.initiateVideoView()
+        default:
+            return
+        }
+        
+    }
+    
+}
+

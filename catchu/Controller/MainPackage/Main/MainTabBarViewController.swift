@@ -89,7 +89,7 @@ extension MainTabBarViewController : UITabBarControllerDelegate {
         if tabBarController.selectedIndex == 2 {
             
             add_PostViewController()
-            //add_ShareDataViewController2()
+//            add_ShareDataViewController2()
             
         } else {
             selectedIndexInfo = tabBarController.selectedIndex

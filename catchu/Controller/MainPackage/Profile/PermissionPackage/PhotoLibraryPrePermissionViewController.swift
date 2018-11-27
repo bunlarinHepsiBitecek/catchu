@@ -97,7 +97,7 @@ extension PhotoLibraryPrePermissionViewController {
         PHPhotoLibrary.requestAuthorization { (authorizationStatus) in
             
             DispatchQueue.main.async {
-                self.delegate.returnPermissionResult(status: authorizationStatus)
+                //self.delegate.returnPermissionResult(status: authorizationStatus, permissionType: permissionType)
             }
             
         }

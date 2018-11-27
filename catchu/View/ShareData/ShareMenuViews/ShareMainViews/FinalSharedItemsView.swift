@@ -147,7 +147,7 @@ class FinalSharedItemsView: UIView {
         
         print("FinalSharedItemsView starts")
         print("video COUNT : \(PostItems.shared.selectedVideoUrl?.count)")
-        print("image COUNT : \(PostItems.shared.selectedImageDictionary?.count)")
+        print("image COUNT : \(PostItems.shared.selectedImageArray?.count)")
         
     }
     
@@ -251,7 +251,7 @@ extension FinalSharedItemsView {
         if section == 0 {
             
             if imageArrayExists {
-                if let imagesArray = PostItems.shared.selectedImageDictionary {
+                if let imagesArray = PostItems.shared.selectedImageArray {
                     totalCount += imagesArray.count
                     imageArrayCount = imagesArray.count
                 }
@@ -284,7 +284,7 @@ extension FinalSharedItemsView {
         print("returnSectionCount starts")
         var totalCount = 0
         
-        if let imagesArray = PostItems.shared.selectedImageDictionary {
+        if let imagesArray = PostItems.shared.selectedImageArray {
             if imagesArray.count > 0 {
                 totalCount += 1
                 imageArrayExists = true
@@ -306,8 +306,8 @@ extension FinalSharedItemsView {
     
     func checkDataCount() {
         
-        if PostItems.shared.selectedImageDictionary != nil {
-            if PostItems.shared.selectedImageDictionary!.count > 0 {
+        if PostItems.shared.selectedImageArray != nil {
+            if PostItems.shared.selectedImageArray!.count > 0 {
                 activateInformationLabel(active: false)
             }
         }

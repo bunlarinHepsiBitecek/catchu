@@ -93,6 +93,7 @@ struct Constants {
             static let cornerRadius_28 : CGFloat = 28
             static let cornerRadius_25 : CGFloat = 25
             static let cornerRadius_23 : CGFloat = 23
+            static let cornerRadius_20 : CGFloat = 20
             static let cornerRadius_15 : CGFloat = 15
             static let cornerRadius_12 : CGFloat = 12
             static let cornerRadius_11 : CGFloat = 11
@@ -133,6 +134,7 @@ struct Constants {
                 static let height_102 : CGFloat = 102
                 static let height_100 : CGFloat = 100
                 static let height_80 : CGFloat = 80
+                static let height_75 : CGFloat = 75
                 static let height_70 : CGFloat = 70
                 static let height_60 : CGFloat = 60
                 static let height_56 : CGFloat = 56

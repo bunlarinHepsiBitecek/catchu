@@ -278,4 +278,17 @@ struct LocalizedConstants {
         
     }
     
+    struct ActionSheetTitles {
+        
+        static let cameraGalleryTitle = NSLocalizedString("cameraGalleryTitle", comment: "")
+        static let cameraGalleryExplanation = NSLocalizedString("cameraGalleryExplanation", comment: "")
+        static let videoGalleryTitle = NSLocalizedString("videoGalleryTitle", comment: "")
+        static let viodeGalleryExplanation = NSLocalizedString("viodeGalleryExplanation", comment: "")
+        static let camera = NSLocalizedString("camera", comment: "")
+        static let video = NSLocalizedString("video", comment: "")
+        static let gallery = NSLocalizedString("gallery", comment: "")
+        static let update = NSLocalizedString("update", comment: "")
+        static let delete = NSLocalizedString("delete", comment: "")
+    }
+    
 }

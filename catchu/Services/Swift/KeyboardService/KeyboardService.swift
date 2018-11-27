@@ -30,6 +30,7 @@ class KeyboardService: NSObject {
     
     private func observeKeyboard() {
         let field = UITextField()
+        field.autocorrectionType = .no
         UIApplication.shared.windows.first?.addSubview(field)
         field.becomeFirstResponder()
         field.resignFirstResponder()

@@ -64,7 +64,7 @@ class Share {
         print("convertPostItemsToShare starts")
         
         // images
-        if let imageArray = PostItems.shared.selectedImageDictionary {
+        if let imageArray = PostItems.shared.selectedImageArray {
             
             if let image = imageArray.first {
                 let tempShareMedia = ShareMedia(media: Media(inputExtension: "jpeg"), type: .image, image: image, localUrl: nil)

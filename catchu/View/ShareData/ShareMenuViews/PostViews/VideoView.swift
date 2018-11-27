@@ -1,31 +1,52 @@
 //
-//  CustomVideoView.swift
+//  VideoView.swift
 //  catchu
 //
-//  Created by Erkut Baş on 9/11/18.
+//  Created by Erkut Baş on 11/27/18.
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
 import UIKit
-import AVFoundation
-import Photos
 
-class CustomVideoView: UIView {
-    
+class VideoView: UIView {
+
     let customVideo = CustomVideo()
     
-    var capturedVideoView : CustomCapturedVideoView?
+    //private var capturedVideoView : CustomCapturedVideoView?
+    private var capturedVideoView : CapturedVideoView?
     
-    var heigthConstraint : NSLayoutConstraint?
-    var widthConstraint : NSLayoutConstraint?
-    var bottomConstraints : NSLayoutConstraint?
+    private var heigthConstraint : NSLayoutConstraint?
+    private var widthConstraint : NSLayoutConstraint?
+    private var bottomConstraints : NSLayoutConstraint?
     
-    var circleLayer: CAShapeLayer!
-    var circleView : CircleView?
+    private var circleLayer: CAShapeLayer!
+    private var circleView : CircleView?
     
-    var recordStopFlag : Bool = false
+    private var recordStopFlag : Bool = false
+    private var bluerEffectAdded : Bool = false
+    
+    private var second = 0
+    private var timer = Timer()
+    private var isTimerRunning : Bool = false
     
     weak var delegate : ShareDataProtocols!
+    
+    lazy var mainView: UIView = {
+        
+        let temp = UIView(frame: .zero)
+        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        
+        return temp
+    }()
+    
+    lazy var topMenuContainer: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.backgroundColor = UIColor.clear
+        return temp
+    }()
     
     lazy var closeButton: UIImageView = {
         
@@ -38,13 +59,73 @@ class CustomVideoView: UIView {
         return temp
     }()
     
-    lazy var mainView: UIView = {
-        
-        let temp = UIView(frame: .zero)
-        temp.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+    lazy var countTimerContainer: UIView = {
+        let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.backgroundColor = UIColor.clear
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
+        return temp
+    }()
+    
+    lazy var blurView: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let temp = UIVisualEffectView(effect: effect)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
+        temp.layer.masksToBounds = true
+        return temp
+    }()
+    
+    lazy var stackViewCounterObjects: UIStackView = {
+        
+        let temp = UIStackView(arrangedSubviews: [minuteLabel, semiColonLabel, secondLabel])
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.alignment = .fill
+        temp.axis = .horizontal
+        temp.distribution = .fillProportionally
         
         return temp
+    }()
+    
+    var minuteLabel: UILabel = {
+        
+        let temp = UILabel()
+        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.textAlignment = .center
+        temp.contentMode = .center
+        temp.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        temp.text = "00"
+        
+        return temp
+        
+    }()
+    
+    var semiColonLabel: UILabel = {
+        
+        let temp = UILabel()
+        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.textAlignment = .center
+        temp.contentMode = .center
+        temp.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        temp.text = ":"
+        
+        return temp
+        
+    }()
+    
+    var secondLabel: UILabel = {
+        
+        let temp = UILabel()
+        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.textAlignment = .center
+        temp.contentMode = .center
+        temp.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        temp.text = "00"
+        
+        return temp
+        
     }()
     
     lazy var recordContainerView: UIView = {
@@ -52,9 +133,19 @@ class CustomVideoView: UIView {
         let temp = UIView(frame: .zero)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.75)
-        temp.layer.cornerRadius = 30
+        //temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.75)
+        temp.backgroundColor = UIColor.clear
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_30
         
+        return temp
+    }()
+    
+    lazy var blurViewForRecordContainer: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let temp = UIVisualEffectView(effect: effect)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_30
+        temp.layer.masksToBounds = true
         return temp
     }()
     
@@ -120,118 +211,34 @@ class CustomVideoView: UIView {
     }()
     
     override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        super.init(frame: .zero)
-        
-        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        
-        switch cameraAuthorizationStatus{
-        case .authorized:
-            
-        let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
-            
-            switch statusForMicrophone {
-            case .granted:
-                initalizeViews()
-                
-            default:
-                microphonePermissionProcess(inputStatus: statusForMicrophone)
-            }
-            
-        default:
-            videoCameraPermissionProcess(status: cameraAuthorizationStatus)
-        }
-        
-        
+        initializeView()
+        initiateVideoProcess()
+        activationManager(active: false)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
-    func initalizeViews() {
-        
-        setupViews()
-        initiateVideoProcess()
-        setGestureToRecordButton()
-        setupGestureRecognizerForSwitchCamera()
-        setupGestureRecognizerForFlashButton()
-        customVideoViewVisibilityManagement(inputValue: true)
-        
+}
+
+
+// MARK: - major functions
+extension VideoView {
+    
+    private func initializeView() {
+        addViews()
+        setupGestureRecognizers()
     }
     
-    func customVideoViewVisibilityManagement(inputValue : Bool) {
-        
-        if inputValue {
-            self.alpha = 1
-        } else {
-            self.alpha = 0
-        }
-        
-    }
-    
-    func startVideo() {
-        
-        customVideoViewVisibilityManagement(inputValue: true)
-        
-        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        
-        switch cameraAuthorizationStatus{
-        case .authorized:
-            
-            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
-            
-            switch statusForMicrophone {
-            case .granted:
-                //                initiateVideoProcess()
-                startVideoProcess()
-                
-                
-            default:
-                microphonePermissionProcess(inputStatus: statusForMicrophone)
-            }
-            
-        default:
-            videoCameraPermissionProcess(status: cameraAuthorizationStatus)
-        }
-        
-    }
-    
-    func startVideoProcess() {
-        
-        //        customVideoViewVisibilityManagement(inputValue: false)
-        
-        do {
-            try customVideo.enableVideoSession()
-        } catch  {
-            print("customVideo session can not be enabled")
-        }
-        
-    }
-    
-    func stopVideo() {
-        
-        customVideoViewVisibilityManagement(inputValue: false)
-        
-        do {
-            try customVideo.disableVideoSession()
-        } catch  {
-            print("customVideo session can not be disabled")
-        }
-        
-    }
-    
-    func initializeRequestProcess() {
-        
-        PermissionHandler.shared.delegateForShareData = self
-        PermissionHandler.shared.gotoRequestProcessViewControllers(inputPermissionType: .microphone)
-        
-    }
-    
-    func setupViews() {
+    private func addViews() {
         
         self.addSubview(mainView)
+        self.mainView.addSubview(topMenuContainer)
+        self.topMenuContainer.addSubview(closeButton)
+        self.topMenuContainer.addSubview(countTimerContainer)
         self.mainView.addSubview(recordContainerView)
         self.mainView.addSubview(recordButton)
         self.mainView.addSubview(switchButtonContainer)
@@ -242,6 +249,7 @@ class CustomVideoView: UIView {
         let safe = self.safeAreaLayoutGuide
         let safeMainview = self.mainView.safeAreaLayoutGuide
         let safeRecordButton = self.recordButton.safeAreaLayoutGuide
+        let safeTopMenuContainer = self.topMenuContainer.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -249,6 +257,11 @@ class CustomVideoView: UIView {
             mainView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             mainView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             mainView.topAnchor.constraint(equalTo: safe.topAnchor),
+            
+            topMenuContainer.leadingAnchor.constraint(equalTo: safeMainview.leadingAnchor),
+            topMenuContainer.trailingAnchor.constraint(equalTo: safeMainview.trailingAnchor),
+            topMenuContainer.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_50),
+            topMenuContainer.topAnchor.constraint(equalTo: safeMainview.topAnchor, constant: UIApplication.shared.statusBarFrame.height),
             
             recordContainerView.centerXAnchor.constraint(equalTo: safeMainview.centerXAnchor),
             recordContainerView.bottomAnchor.constraint(equalTo: safeMainview.bottomAnchor, constant: -35),
@@ -280,52 +293,42 @@ class CustomVideoView: UIView {
             flashButton.heightAnchor.constraint(equalToConstant: 30),
             flashButton.widthAnchor.constraint(equalToConstant: 30),
             
+            closeButton.centerYAnchor.constraint(equalTo: safeTopMenuContainer.centerYAnchor),
+            closeButton.leadingAnchor.constraint(equalTo: safeTopMenuContainer.leadingAnchor, constant: 15),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            
+            countTimerContainer.trailingAnchor.constraint(equalTo: safeTopMenuContainer.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
+            countTimerContainer.centerYAnchor.constraint(equalTo: safeTopMenuContainer.centerYAnchor),
+            countTimerContainer.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_40),
+            countTimerContainer.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_80),
+            
             ])
         
+        addBlurEffectToCountTimer()
+        addBlurEffectToRecordButton()
+        addCounterTimerStackOnBlurEffectView()
     }
     
-    func initiateVideoProcess() {
-        
-        customVideo.delegate = self
-        
-        func configureCustomVideo() {
-            customVideo.prepare { (error) in
-                if let error = error {
-                    print(error)
-                }
-                
-                print("initiateVideoProcess starts")
-                
-                try? self.customVideo.displayPreviewForVideo(on: self.mainView)
-            }
-        }
-        
-        configureCustomVideo()
-        
-        
+    private func setupGestureRecognizers() {
+        setupCloseButtonGesture()
     }
     
-    func adjustRecordButtonBorders(input : RecordStatus) {
+    private func adjustRecordButtonBorders(input : RecordStatus) {
         
         switch input {
         case .active:
-            
             print("activeeeeee")
-            
         case .passive:
-            
             print("passiveeeee")
-            
             if !recordStopFlag {
-                
                 stopRecordButtonAnimation()
-                
             }
         }
         
     }
     
-    func addCircle() {
+    private func addCircle() {
         
         let diceRoll = CGFloat(Int(arc4random_uniform(7))*50)
         var circleWidth = CGFloat(110)
@@ -344,27 +347,25 @@ class CustomVideoView: UIView {
         
     }
     
-    func startCircleAnimation() {
+    private func startCircleAnimation() {
         
         guard let circleView = circleView else { return }
         
-        circleView.animateCircle(duration: 20)
+        circleView.animateCircle(duration: 15)
         
     }
     
-    func stopCircleAnimation() {
+    private func stopCircleAnimation() {
         
         guard let circleView = circleView else { return }
         
-        circleView.stop(directionBack: false)
+        circleView.stop()
         
     }
     
     
     /// Record Button Animation Start
-    func startRecordButtonAnimation() {
-        
-        delegate.scrollableManagement(enabled: false)
+    private func startRecordButtonAnimation() {
         
         recordStopFlag = false
         
@@ -387,9 +388,7 @@ class CustomVideoView: UIView {
     }
     
     /// Record Button Animation Stops
-    func stopRecordButtonAnimation() {
-        
-        delegate.scrollableManagement(enabled: true)
+    private func stopRecordButtonAnimation() {
         
         recordStopFlag = true
         
@@ -412,43 +411,166 @@ class CustomVideoView: UIView {
         
     }
     
-    func videoCameraPermissionProcess(status : AVAuthorizationStatus) {
+    private func initiateVideoProcess() {
         
-        switch status {
-        case .notDetermined:
-            // mainview lazy var oldugundan dolayı henuz o ayaga kalkmadan ona add subview yapılamıyor.
-            //CustomPermissionViewController.shared.createAuthorizationView(inputView: mainView, permissionType: .camera)
-            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .camera, delegate: self)
-        case .denied, .restricted:
-            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .cameraUnathorized, delegate: self)
-        default:
-            break
+        customVideo.delegate = self
+        
+        func configureCustomVideo() {
+            customVideo.prepare { (error) in
+                if let error = error {
+                    print(error)
+                }
+                
+                print("initiateVideoProcess starts")
+                
+                try? self.customVideo.displayPreviewForVideo(on: self.mainView)
+            }
+        }
+        
+        configureCustomVideo()
+        
+    }
+    
+    private func startVideoProcess() {
+        print("\(#function) starts")
+        do {
+            try customVideo.enableVideoSession()
+        } catch let error as CustomVideoError {
+            print("error : \(error)")
+        }
+        catch  {
+            print("customVideo session can not be enabled")
         }
         
     }
     
-    func microphonePermissionProcess(inputStatus : AVAudioSessionRecordPermission) {
-        
-        switch inputStatus {
-        case .undetermined:
-            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .microphone, delegate: self)
-        default:
-            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .microphoneUnAuthorizated, delegate: self)
+    private func stopVideoProcess() {
+        print("\(#function) starts")
+        do {
+            try customVideo.disableVideoSession()
+        } catch let error as CustomVideoError {
+            print("error : \(error)")
+        }catch  {
+            print("customVideo session can not be disabled")
         }
+        
+    }
+    
+    func activationManager(active : Bool) {
+
+        if active {
+            startVideoProcess()
+        } else {
+            stopVideoProcess()
+        }
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+            
+            if active {
+                self.alpha = 1
+            } else {
+                self.alpha = 0
+            }
+            
+        }
+        
+    }
+    
+    private func addBlurEffectToCountTimer() {
+        
+        countTimerContainer.insertSubview(blurView, at: 0)
+        
+        let safe = self.countTimerContainer.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            blurView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            blurView.topAnchor.constraint(equalTo: safe.topAnchor),
+            blurView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            ])
+        
+    }
+    
+    private func addBlurEffectToRecordButton() {
+        
+        recordContainerView.insertSubview(blurViewForRecordContainer, at: 0)
+        
+        let safe = self.recordContainerView.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            blurViewForRecordContainer.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            blurViewForRecordContainer.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            blurViewForRecordContainer.topAnchor.constraint(equalTo: safe.topAnchor),
+            blurViewForRecordContainer.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            ])
+        
+    }
+    
+    private func addCounterTimerStackOnBlurEffectView() {
+        
+        countTimerContainer.addSubview(stackViewCounterObjects)
+        
+        let safe = self.countTimerContainer.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            stackViewCounterObjects.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            stackViewCounterObjects.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            stackViewCounterObjects.topAnchor.constraint(equalTo: safe.topAnchor),
+            stackViewCounterObjects.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            ])
+        
+    }
+    
+    private func runTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(VideoView.setCounterTimeValue)), userInfo: nil, repeats: true)
+    }
+    
+    private func stopTimer() {
+        timer.invalidate()
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_02) {
+            self.second = 0
+        }
+    }
+    
+    @objc func setCounterTimeValue() {
+        print("\(#function) starts")
+        
+        second += 1
+        self.secondLabel.text = "\(self.second)"
         
     }
     
 }
 
 // MARK: - UIGestureRecognizerDelegate
-extension CustomVideoView : UIGestureRecognizerDelegate {
+extension VideoView : UIGestureRecognizerDelegate {
+    
+    func setupCloseButtonGesture() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(VideoView.dismissVideoView(_:)))
+        tapGesture.delegate = self
+        closeButton.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func dismissVideoView(_ sender : UITapGestureRecognizer) {
+        
+        self.activationManager(active: false)
+        
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let touch = touches.first {
             
             if touch.view == recordButton {
-                
+                runTimer()
                 startRecordButtonAnimation()
                 
             }
@@ -467,6 +589,7 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
                 
                 if !recordStopFlag {
                     stopRecordButtonAnimation()
+                    stopTimer()
                 }
                 
             }
@@ -484,45 +607,12 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
     @objc func startRecordAnimation(_ sender : UILongPressGestureRecognizer)  {
         
         if sender.state == .began {
-            
-            print("long press begins")
-            
-            //            customVideo.startRecording()
-            //
-            //            addCircle()
-            
             adjustRecordButtonBorders(input: .active)
             
-            
-            
         } else if sender.state == .ended {
-            
             print("long press finishes")
-            
             adjustRecordButtonBorders(input: .passive)
             
-            //            customVideo.stopRecording()
-        }
-        
-    }
-    
-    func setupCloseButtonGesture() {
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.dismissCustomCameraView(_:)))
-        tapGesture.delegate = self
-        closeButton.addGestureRecognizer(tapGesture)
-        self.mainView.bringSubview(toFront: closeButton)
-        
-    }
-    
-    @objc func dismissCustomCameraView(_ sender : UITapGestureRecognizer) {
-        
-        print("dismissCustomCameraView starts")
-        
-        do {
-            try customVideo.enableVideoSession()
-        } catch  {
-            print("custom view is not enabled")
         }
         
     }
@@ -619,38 +709,15 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
     
 }
 
-extension CustomVideoView : PermissionProtocol {
-    
-    func returnPermissinResultBoolValue(result: Bool) {
-        
-        if result {
-            
-            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
-            
-            switch statusForMicrophone {
-            case .granted:
-                //                initalizeViews()
-                startVideo()
-                
-            default:
-                microphonePermissionProcess(inputStatus: statusForMicrophone)
-            }
-            
-        }
-        
-    }
-    
-}
-
-
 // MARK: - ShareDataProtocols
-extension CustomVideoView : ShareDataProtocols {
+extension VideoView : ShareDataProtocols {
     
     func directToCapturedVideoView(url: URL) {
         
-        capturedVideoView = CustomCapturedVideoView(outputFileURL: url)
+        //capturedVideoView = CustomCapturedVideoView(outputFileURL: url)
+        capturedVideoView = CapturedVideoView(outputFileURL: url, delegate: self)
         
-        capturedVideoView?.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+        capturedVideoView?.backgroundColor = UIColor.clear
         
         UIView.transition(with: mainView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
             
@@ -675,8 +742,20 @@ extension CustomVideoView : ShareDataProtocols {
     
     func initiateCustomVideo() {
         
-        initalizeViews()
+        //initalizeViews()
         
     }
     
 }
+
+// MARK: - PostViewProtocols
+extension VideoView : PostViewProtocols {
+
+    func activationProcessOfVideoView(active: Bool) {
+        
+        self.activationManager(active: active)
+        
+    }
+    
+}
+

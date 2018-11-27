@@ -12,6 +12,7 @@ import MapKit
 class CustomMapView: UIView {
 
     private var mapView : MKMapView!
+    private var mapViewBottomCornerRadiuesDone : Bool = false
     
     var zoom: CLLocationDegrees = Constants.Map.ZoomDegree
     
@@ -85,10 +86,23 @@ extension CustomMapView {
         self.layer.cornerRadius = 10
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
         self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        self.layer.shadowOffset = CGSize(width: 0, height: 2)
-        self.layer.shadowRadius = 5
+        self.layer.shadowOffset = CGSize(width: 0, height: 5)
+//        self.layer.shadowOffset = .zero
+        self.layer.shadowRadius = 10
         self.layer.shadowOpacity = 0.8
         
+        if mapView.frame.height > 0 {
+            if !mapViewBottomCornerRadiuesDone {
+                let rectShape = CAShapeLayer()
+                rectShape.bounds = mapView.frame
+                rectShape.position = mapView.center
+                rectShape.path = UIBezierPath(roundedRect: mapView.bounds, byRoundingCorners: [.bottomLeft , .bottomRight], cornerRadii: CGSize(width: 25, height: 25)).cgPath
+                
+                mapView.layer.mask = rectShape
+                
+                mapViewBottomCornerRadiuesDone = true
+            }
+        }
     }
     
     func setMapViewSettings() {

@@ -1,36 +1,45 @@
 //
-//  CustomCameraCapturedImageView.swift
+//  CapturedImageView.swift
 //  catchu
 //
-//  Created by Erkut Baş on 9/10/18.
+//  Created by Erkut Baş on 11/23/18.
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
 import UIKit
 import Photos
 
-class CustomCameraCapturedImageView: UIView {
+class CapturedImageView: UIView {
 
     private let capturedImage = UIImageView()
-    private var gradientUploaded = false
     private var deleteButtonEnlarged : Bool = false
     private var deleteButtonShrinked : Bool = false
     private var deleteButtonIntersectionDetected : Bool = false
     
-    weak var delegateForShareMenuViews : ShareDataProtocols!
+    private var stickerManagementView : StickerManagementView?
     
-//    weak var customAddingTextView : CustomAddingTextView!
-    private var customAddingTextView : CustomAddingTextView?
-    
-//    private var customAddingTextView : CustomAddingTextView?
+    weak var delegatePostViewProtocol : PostViewProtocols!
     
     var activityIndicator: UIActivityIndicatorView!
     var labelText : UILabel?
     
+    lazy var mainContainerView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        return temp
+    }()
+    
+    lazy var contentContainerView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        return temp
+    }()
+    
     lazy var menuContainerView : UIView = {
         
         let temp = UIView()
-        temp.layer.cornerRadius = 7
         temp.isUserInteractionEnabled = true
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.backgroundColor = UIColor.clear
@@ -43,7 +52,6 @@ class CustomCameraCapturedImageView: UIView {
         
         let temp = UIView()
         
-        temp.layer.cornerRadius = 7
         temp.isUserInteractionEnabled = true
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.backgroundColor = UIColor.clear
@@ -73,6 +81,34 @@ class CustomCameraCapturedImageView: UIView {
         return temp
     }()
     
+    lazy var commitButton: UIButton = {
+        let temp = UIButton(type: UIButtonType.system)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        
+        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
+        //temp.titleLabel?.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        temp.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        temp.backgroundColor = UIColor.clear
+        temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        temp.addTarget(self, action: #selector(commitProcess(_:)), for: .touchUpInside)
+        
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
+        
+        return temp
+        
+    }()
+    
+    lazy var blurView: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let temp = UIVisualEffectView(effect: effect)
+        temp.isUserInteractionEnabled = false
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
+        temp.layer.masksToBounds = true
+        return temp
+    }()
+    
     lazy var saveProcessView: UIView = {
         
         let temp = UIView()
@@ -84,7 +120,7 @@ class CustomCameraCapturedImageView: UIView {
     }()
     
     lazy var addTextContainerView : UIView = {
-
+        
         let temp = UIView()
         temp.layer.cornerRadius = 30
         temp.isUserInteractionEnabled = true
@@ -132,30 +168,30 @@ class CustomCameraCapturedImageView: UIView {
     }()
     
     /*
-    required init() {
-        super.init(frame: .zero)
-        
-        setupViews()
-        setupCloseButtonGesture()
-        downloadButtonGesture()
-        setupAddTextGestures()
-        
-        initializeTextEditingView()
-        activationManagerDefault(granted: false)
-        
-    }*/
+     required init() {
+     super.init(frame: .zero)
+     
+     setupViews()
+     setupCloseButtonGesture()
+     downloadButtonGesture()
+     setupAddTextGestures()
+     
+     initializeTextEditingView()
+     activationManagerDefault(granted: false)
+     
+     }*/
     
-    init(inputDelegate : ShareDataProtocols) {
+    init(inputDelegate : PostViewProtocols) {
         super.init(frame: .zero)
         
-        delegateForShareMenuViews = inputDelegate
+        delegatePostViewProtocol = inputDelegate
         
         setupViews()
         setupCloseButtonGesture()
         downloadButtonGesture()
         setupAddTextGestures()
         
-        initializeTextEditingView()
+        initializeStickerManagementView()
         activationManagerDefault(granted: false)
         activationManagerOfDeleteButton(active: false, animated: false)
         
@@ -168,40 +204,57 @@ class CustomCameraCapturedImageView: UIView {
 }
 
 // MARK: - major functions
-extension CustomCameraCapturedImageView {
+extension CapturedImageView {
     
     func setupViews() {
         
-        self.addSubview(capturedImage)
-        self.addSubview(menuContainerView)
-        self.addSubview(footerContainerView)
-//        self.addSubview(footerDeleteContainer)
-        self.addSubview(deleteButton)
+        self.addSubview(mainContainerView)
+        self.mainContainerView.addSubview(contentContainerView)
+        self.contentContainerView.addSubview(capturedImage)
+        self.contentContainerView.addSubview(menuContainerView)
+        self.contentContainerView.addSubview(footerContainerView)
+        self.contentContainerView.addSubview(deleteButton)
         
         self.menuContainerView.addSubview(closeButton)
         self.menuContainerView.addSubview(addTextContainerView)
         self.addTextContainerView.addSubview(addTextImage)
         self.footerContainerView.addSubview(downloadButton)
-//        self.footerDeleteContainer.addSubview(deleteButton)
+        self.footerContainerView.addSubview(commitButton)
         
         capturedImage.translatesAutoresizingMaskIntoConstraints = false
         capturedImage.contentMode = .scaleAspectFill
         
         let safe = self.safeAreaLayoutGuide
-        let safeMenuContainer = self.safeAreaLayoutGuide
+        let safeMainContainer = self.mainContainerView.safeAreaLayoutGuide
+        let safeContentContainer = self.contentContainerView.safeAreaLayoutGuide
+        let safeMenuContainer = self.menuContainerView.safeAreaLayoutGuide
         let safeAddTextContainer = self.addTextContainerView.safeAreaLayoutGuide
         let safeDeleteContainer = self.footerDeleteContainer.safeAreaLayoutGuide
+        let safeFooterContainer = self.footerContainerView.safeAreaLayoutGuide
+        
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom
         
         NSLayoutConstraint.activate([
             
-            capturedImage.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            capturedImage.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            capturedImage.topAnchor.constraint(equalTo: safe.topAnchor),
-            capturedImage.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            mainContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            mainContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            mainContainerView.topAnchor.constraint(equalTo: safe.topAnchor),
+            mainContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             
-            menuContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            menuContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            menuContainerView.topAnchor.constraint(equalTo: safe.topAnchor),
+            contentContainerView.leadingAnchor.constraint(equalTo: safeMainContainer.leadingAnchor),
+            contentContainerView.trailingAnchor.constraint(equalTo: safeMainContainer.trailingAnchor),
+            contentContainerView.topAnchor.constraint(equalTo: safeMainContainer.topAnchor, constant: statusBarHeight),
+            contentContainerView.bottomAnchor.constraint(equalTo: safeMainContainer.bottomAnchor, constant: CGFloat(-Int(bottomPadding!))),
+            
+            capturedImage.leadingAnchor.constraint(equalTo: safeContentContainer.leadingAnchor),
+            capturedImage.trailingAnchor.constraint(equalTo: safeContentContainer.trailingAnchor),
+            capturedImage.topAnchor.constraint(equalTo: safeContentContainer.topAnchor),
+            capturedImage.bottomAnchor.constraint(equalTo: safeContentContainer.bottomAnchor),
+            
+            menuContainerView.leadingAnchor.constraint(equalTo: safeContentContainer.leadingAnchor),
+            menuContainerView.trailingAnchor.constraint(equalTo: safeContentContainer.trailingAnchor),
+            menuContainerView.topAnchor.constraint(equalTo: safeContentContainer.topAnchor),
             menuContainerView.heightAnchor.constraint(equalToConstant: 60),
             
             closeButton.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor, constant: 15),
@@ -219,56 +272,66 @@ extension CustomCameraCapturedImageView {
             addTextImage.heightAnchor.constraint(equalToConstant: 30),
             addTextImage.widthAnchor.constraint(equalToConstant: 30),
             
-            footerContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            footerContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            footerContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            footerContainerView.leadingAnchor.constraint(equalTo: safeContentContainer.leadingAnchor),
+            footerContainerView.trailingAnchor.constraint(equalTo: safeContentContainer.trailingAnchor),
+            footerContainerView.bottomAnchor.constraint(equalTo: safeContentContainer.bottomAnchor),
             footerContainerView.heightAnchor.constraint(equalToConstant: 50),
             
-//            footerDeleteContainer.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-//            footerDeleteContainer.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-//            footerDeleteContainer.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-//            footerDeleteContainer.heightAnchor.constraint(equalToConstant: 50),
-            
-            downloadButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -5),
-            downloadButton.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 20),
+            downloadButton.bottomAnchor.constraint(equalTo: safeContentContainer.bottomAnchor, constant: -10),
+            downloadButton.leadingAnchor.constraint(equalTo: safeContentContainer.leadingAnchor, constant: 20),
             downloadButton.heightAnchor.constraint(equalToConstant: 40),
             downloadButton.widthAnchor.constraint(equalToConstant: 40),
             
-//            deleteButton.bottomAnchor.constraint(equalTo: safeDeleteContainer.bottomAnchor, constant: -5),
-//            deleteButton.centerXAnchor.constraint(equalTo: safeDeleteContainer.centerXAnchor),
-//            deleteButton.heightAnchor.constraint(equalToConstant: 40),
-//            deleteButton.widthAnchor.constraint(equalToConstant: 40)
-
-            deleteButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            deleteButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -10),
+            deleteButton.centerXAnchor.constraint(equalTo: safeContentContainer.centerXAnchor),
+            deleteButton.bottomAnchor.constraint(equalTo: safeContentContainer.bottomAnchor, constant: -10),
             deleteButton.heightAnchor.constraint(equalToConstant: 30),
             deleteButton.widthAnchor.constraint(equalToConstant: 30),
+            
+            commitButton.centerYAnchor.constraint(equalTo: safeFooterContainer.centerYAnchor),
+            commitButton.trailingAnchor.constraint(equalTo: safeFooterContainer.trailingAnchor, constant: -10),
+            commitButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_40),
+            commitButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_100),
             
             ])
         
         addGradientView()
+        addBlurEffectToCommitButton()
         
     }
     
     /// add gradient to menu and footer view
     func addGradientView() {
         
-        print("menuContainerView.bounds : \(menuContainerView.bounds)")
-        print("menuContainerView.frame : \(menuContainerView.frame)")
-        
-        gradientUploaded = true
-        
         let gradient = CAGradientLayer()
         
-        gradient.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60)
-        gradient.colors = [UIColor.black.withAlphaComponent(0.6).cgColor, UIColor.clear.cgColor]
+        gradient.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: Constants.StaticViewSize.ViewSize.Height.height_60)
+        gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
+        //gradient.colors = [UIColor.black.withAlphaComponent(0.6).cgColor, UIColor.clear.cgColor]
         menuContainerView.layer.insertSublayer(gradient, at: 0)
         
         let gradientForFooter = CAGradientLayer()
         
-        gradientForFooter.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 50)
-        gradientForFooter.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
+        gradientForFooter.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: Constants.StaticViewSize.ViewSize.Height.height_50)
+        gradientForFooter.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        //gradientForFooter.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
         footerContainerView.layer.insertSublayer(gradientForFooter, at: 0)
+        
+    }
+    
+    private func addBlurEffectToCommitButton() {
+        
+        commitButton.insertSubview(blurView, at: 0)
+        
+        let safe = self.commitButton.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            blurView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            blurView.topAnchor.constraint(equalTo: safe.topAnchor),
+            blurView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            ])
         
     }
     
@@ -389,26 +452,14 @@ extension CustomCameraCapturedImageView {
     func menuAndFooterVisibiltyManagement(visibiltyVaule : Bool) {
         
         UIView.transition(with: menuContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
-
-            self.menuFooterHiddenManagement(hidden: visibiltyVaule)
             
-//            if visibiltyVaule {
-//                self.menuContainerView.isHidden = true
-//            } else {
-//                self.menuContainerView.isHidden = false
-//            }
+            self.menuFooterHiddenManagement(hidden: visibiltyVaule)
             
         })
         
         UIView.transition(with: footerContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
             
             self.menuFooterHiddenManagement(hidden: visibiltyVaule)
-            
-//            if visibiltyVaule {
-//                self.footerContainerView.isHidden = true
-//            } else {
-//                self.footerContainerView.isHidden = false
-//            }
             
         })
         
@@ -423,22 +474,27 @@ extension CustomCameraCapturedImageView {
     
     func activationManagerDefault(granted : Bool) {
         
-        if granted {
-            self.alpha = 1
-            
-        } else {
-            self.alpha = 0
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+            if granted {
+                self.alpha = 1
+                
+            } else {
+                self.alpha = 0
+            }
         }
+        
         
     }
     
     func activationManagerWithImage(granted : Bool, inputImage : UIImage) {
-        if granted {
-            self.alpha = 1
-            capturedImage.image = inputImage
-        } else {
-            self.alpha = 0
-            capturedImage.image = UIImage()
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+            if granted {
+                self.alpha = 1
+                self.capturedImage.image = inputImage
+            } else {
+                self.alpha = 0
+                self.capturedImage.image = UIImage()
+            }
         }
     }
     
@@ -453,8 +509,6 @@ extension CustomCameraCapturedImageView {
                 capturedImage.image = inputImage
             }
             
-//            saveCapturedImagesToSelectedItems(image : inputImage)
-            
         } else {
             self.alpha = 0
             
@@ -464,38 +518,26 @@ extension CustomCameraCapturedImageView {
         
     }
     
-    func initializeTextEditingView() {
+    func initializeStickerManagementView() {
         
-        print("initializeTextEditingView starts")
+        print("\(#function) starts")
         
-        customAddingTextView = CustomAddingTextView(delegate: self, delegateForShareMenuViews: delegateForShareMenuViews, delegateOfCameraCapturedImageView: self)
-
-        self.addSubview(customAddingTextView!)
+        stickerManagementView = StickerManagementView(delegate: self, delegateOfCameraCapturedImageView: self)
         
-        customAddingTextView!.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(stickerManagementView!)
         
-        let safe = self.safeAreaLayoutGuide
+        stickerManagementView!.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safe = self.contentContainerView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
-            customAddingTextView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            customAddingTextView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            customAddingTextView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            customAddingTextView!.topAnchor.constraint(equalTo: safe.topAnchor),
+            stickerManagementView!.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            stickerManagementView!.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            stickerManagementView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            stickerManagementView!.topAnchor.constraint(equalTo: safe.topAnchor),
             
             ])
-        
-    }
-    
-    func saveCapturedImagesToSelectedItems(image : UIImage) {
-        
-        if PostItems.shared.selectedImageArray == nil {
-            PostItems.shared.selectedImageArray = Array<UIImage>()
-        }
-        
-        PostItems.shared.selectedImageArray!.append(image)
-        
-        print("")
         
     }
     
@@ -514,13 +556,7 @@ extension CustomCameraCapturedImageView {
         
         if animated {
             UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
-                /*
-                if active {
-                    self.footerDeleteContainer.alpha = 1
-                } else {
-                    self.footerDeleteContainer.alpha = 0
-                }*/
-                
+
                 if active {
                     self.deleteButton.alpha = 1
                 } else {
@@ -529,12 +565,6 @@ extension CustomCameraCapturedImageView {
                 
             }
         } else {
-            /*
-            if active {
-                self.footerDeleteContainer.alpha = 1
-            } else {
-                self.footerDeleteContainer.alpha = 0
-            }*/
             
             if active {
                 self.deleteButton.alpha = 1
@@ -543,20 +573,20 @@ extension CustomCameraCapturedImageView {
             }
             
         }
-
+        
     }
     
     func setDelegationForSticker(inputDelegateView : CustomSticker2) {
         
-        if customAddingTextView != nil {
-            customAddingTextView!.delegateForEditedView = inputDelegateView
+        if stickerManagementView != nil {
+            stickerManagementView!.delegateForEditedView = inputDelegateView
         }
         
     }
     
     func stickerVisibilityOperations(active : Bool) {
         
-        guard let stickers = Stickers.shared.stickerArray else { return }
+        guard let stickers = CommonSticker.shared.stickerArray else { return }
         
         for item in stickers {
             item.activationManager(active: active)
@@ -566,13 +596,13 @@ extension CustomCameraCapturedImageView {
     
     func clearStickerFromCapturedArray() {
         
-        if Stickers.shared.stickerArray != nil {
-        
-            for item in Stickers.shared.stickerArray! {
+        if CommonSticker.shared.stickerArray != nil {
+            
+            for item in CommonSticker.shared.stickerArray! {
                 item.removeFromSuperview()
             }
             
-            Stickers.shared.emptyStickerArray()
+            CommonSticker.shared.emptyStickerArray()
         }
         
     }
@@ -617,42 +647,6 @@ extension CustomCameraCapturedImageView {
         
     }
     
-}
-
-// MARK: - UIGestureRecognizerDelegate
-extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
-    
-    func setupCloseButtonGesture() {
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraCapturedImageView.dismissCustomCameraCapturedView(_:)))
-        tapGesture.delegate = self
-        closeButton.addGestureRecognizer(tapGesture)
-        //        self.mainView.bringSubview(toFront: closeButton)
-        
-    }
-
-    @objc func dismissCustomCameraCapturedView(_ sender : UITapGestureRecognizer) {
-        
-        print("dismissCustomCameraCapturedView starts")
-        
-        clearStickerFromCapturedArray()
-
-        self.activationManagerDefault(granted: false)
-        
-        guard let image = capturedImage.image else { return }
-        
-        deleteCapturedImagesFromSelectedItems(image: image)
-        
-    }
-    
-    func downloadButtonGesture() {
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraCapturedImageView.saveCapturedImage(_:)))
-        tapGesture.delegate = self
-        downloadButton.addGestureRecognizer(tapGesture)
-        
-    }
-    
     func startAnimation() {
         
         downloadButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) // buton view kucultulur
@@ -668,6 +662,104 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
                 
         })
         self.downloadButton.layoutIfNeeded()
+        
+    }
+    
+    func startAnimationForCommitButton(completion : @escaping (_ finish : Bool) -> Void) {
+        
+        commitButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.commitButton.transform = CGAffineTransform.identity
+            
+        }, completion: completion)
+        
+    }
+    
+    @objc func commitProcess(_ sender : UIButton) {
+        print("\(#function), \(#line) starts")
+        // let's create an image with sticker if any exist on captured image
+        self.createNewImageWithCommonStickers()
+        
+        print("selected image count : \(PostItems.shared.returnSelectedImageArrayCount())")
+        
+        startAnimationForCommitButton { (finish) in
+            
+            if finish {
+                self.activationManagerDefault(granted: false)
+                self.delegatePostViewProtocol.committedCapturedImage()
+            }
+            
+        }
+        
+    }
+    
+    func createNewImageWithCommonStickers() {
+        
+        PostItems.shared.appendNewItemToSelectedOriginalImageArray(image: self.returnCapturedImage())
+        
+        if let array = CommonSticker.shared.stickerArray {
+            if !array.isEmpty {
+                self.menuFooterHiddenManagement(hidden: true)
+                
+                UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0.0)
+                
+                self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
+                let snapShot = UIGraphicsGetImageFromCurrentImageContext()
+                
+                UIGraphicsEndImageContext()
+                
+                self.menuFooterHiddenManagement(hidden: false)
+                PostItems.shared.appendNewItemToSelectedImageArray(image: snapShot!)
+                
+                
+                self.menuFooterHiddenManagement(hidden: false)
+                PostItems.shared.appendNewItemToSelectedImageArray(image: snapShot!)
+                
+                
+            } else {
+                PostItems.shared.appendNewItemToSelectedImageArray(image: self.returnCapturedImage())
+            }
+            
+        } else {
+            PostItems.shared.appendNewItemToSelectedImageArray(image: self.returnCapturedImage())
+            
+        }
+        
+    }
+    
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension CapturedImageView: UIGestureRecognizerDelegate {
+    
+    func setupCloseButtonGesture() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.dismissCustomCameraCapturedView(_:)))
+        tapGesture.delegate = self
+        closeButton.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func dismissCustomCameraCapturedView(_ sender : UITapGestureRecognizer) {
+        
+        print("dismissCustomCameraCapturedView starts")
+        
+        clearStickerFromCapturedArray()
+        
+        self.activationManagerDefault(granted: false)
+        
+        guard let image = capturedImage.image else { return }
+        
+        deleteCapturedImagesFromSelectedItems(image: image)
+        
+    }
+    
+    func downloadButtonGesture() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.saveCapturedImage(_:)))
+        tapGesture.delegate = self
+        downloadButton.addGestureRecognizer(tapGesture)
         
     }
     
@@ -691,9 +783,9 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
             print("response : \(response)")
             
             if response {
-
+                
                 self.stopSpinning()
-
+                
             }
             
         }
@@ -702,7 +794,7 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
     
     func setupAddTextGestures() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraCapturedImageView.startAddingTextView(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.startAddingTextView(_:)))
         tapGesture.delegate = self
         addTextContainerView.addGestureRecognizer(tapGesture)
         addTextImage.addGestureRecognizer(tapGesture)
@@ -712,21 +804,30 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
     @objc func startAddingTextView(_ sender : UITapGestureRecognizer) {
         
         print("startAddingTextView starts")
-        print("customAddingTextView : \(customAddingTextView)")
+        print("stickerManagementView : \(stickerManagementView)")
         
         stickerVisibilityOperations(active: false)
         
-        guard customAddingTextView != nil else {
+        stickerManagementViewAnimationManagement(active: true)
+        
+    }
+    
+    func stickerManagementViewAnimationManagement(active : Bool) {
+        
+        guard stickerManagementView != nil  else {
             return
         }
         
-        customAddingTextView!.activationManagementWithDelegations(granted: true)
+//        stickerManagementView!.activationManagementDefault(granted: active)
+        stickerManagementView!.activationManagementWithDelegations(granted: active)
+        
         
     }
     
 }
 
-extension CustomCameraCapturedImageView : ShareDataProtocols {
+// MARK: - ShareDataProtocols
+extension CapturedImageView : ShareDataProtocols {
     
     func menuContainersHideManagement(inputValue: Bool) {
         
@@ -771,29 +872,27 @@ extension CustomCameraCapturedImageView : ShareDataProtocols {
     
 }
 
-extension CustomCameraCapturedImageView : StickerProtocols {
+extension CapturedImageView : StickerProtocols {
     
     func addTextStickerWithParameters(sticker: Sticker) {
-    
+        
         print("addTextStickerWithParameters starts")
         
         guard let stickerFrame = sticker.frame else { return }
         
-        print("Sticker count : \(Stickers.shared.stickerArray?.count)")
+        print("Sticker count : \(CommonSticker.shared.stickerArray?.count)")
         
-        if Stickers.shared.stickerArray != nil {
+        if CommonSticker.shared.stickerArray != nil {
             print("NILLLLLLLL değil")
-            for item in Stickers.shared.stickerArray! {
+            for item in CommonSticker.shared.stickerArray! {
                 print("--> : \(item.sticker.text)")
             }
         }
         
-        let stickerView = CustomSticker2(frame: .zero, inputSticker: sticker)
+        let stickerView = StickerCommonView(frame: .zero, inputSticker: sticker)
         
         /* setting necessary delegations for protocols */
-        stickerView.setProtocols(delegateOfCapturedImageView: self, delegateForMenuViewOperations: delegateForShareMenuViews, delegateOfCustomAddingText: self)
-        
-//        setDelegationForSticker(inputDelegateView: stickerView)
+        stickerView.setProtocols(delegateOfCapturedImageView: self, delegateOfCustomAddingText: self)
         
         self.addSubview(stickerView)
         
@@ -810,11 +909,11 @@ extension CustomCameraCapturedImageView : StickerProtocols {
             
             ])
         
-        Stickers.shared.addStickerToArray(inputStickerView: stickerView)
+        CommonSticker.shared.addStickerToArray(inputStickerView: stickerView)
         
-        print("Sticker count : \(Stickers.shared.stickerArray?.count)")
+        print("Sticker count : \(CommonSticker.shared.stickerArray?.count)")
         
-        guard let items2 = Stickers.shared.stickerArray else { return }
+        guard let items2 = CommonSticker.shared.stickerArray else { return }
         
         for item in items2 {
             print("--> : \(item.sticker.text)")
@@ -822,14 +921,16 @@ extension CustomCameraCapturedImageView : StickerProtocols {
         
     }
     
-    func activateTextStickerEditigMode(inputSticker: Sticker, selfView : CustomSticker2) {
+    func activateTextStickerCommonEditigMode(inputSticker: Sticker, selfView: StickerCommonView) {
         
-        if customAddingTextView != nil {
+        if stickerManagementView != nil {
             
-            customAddingTextView!.delegateForEditedView = selfView
+            stickerManagementView!.delegateForEditedView = selfView
             
-            customAddingTextView!.activationManagementWithDelegations(granted: true)
-            customAddingTextView!.updateEditingTextView(inputSticker: inputSticker, editingMode: true)
+            stickerManagementViewAnimationManagement(active: true)
+            
+            //stickerManagementView!.activationManagementWithDelegations(granted: true)
+            stickerManagementView!.updateEditingTextView(inputSticker: inputSticker, editingMode: true)
             stickerVisibilityOperations(active: false)
         }
         
@@ -842,15 +943,6 @@ extension CustomCameraCapturedImageView : StickerProtocols {
     }
     
     func detectDeleteButtonIntersect(inputView : UIView) {
-        /*
-        if footerDeleteContainer.frame.intersects(inputView.frame) {
-            print("intersection detected!")
-            enlargeDeleteButton(inputView: deleteButton, active: true)
-            deleteButtonIntersectionDetected = true
-        } else {
-            enlargeDeleteButton(inputView: deleteButton, active: false)
-            deleteButtonIntersectionDetected = false
-        }*/
         
         if deleteButton.frame.intersects(inputView.frame) {
             
@@ -871,21 +963,20 @@ extension CustomCameraCapturedImageView : StickerProtocols {
         
     }
     
-    func deleteSticker(selectedSticker: CustomSticker2) {
+    func deleteCommonSticker(selectedSticker: StickerCommonView) {
         
         if deleteButtonIntersectionDetected {
             selectedSticker.removeFromSuperview()
             
-            if Stickers.shared.stickerArray != nil {
+            if CommonSticker.shared.stickerArray != nil {
                 
-                if let i = Stickers.shared.stickerArray!.firstIndex(of: selectedSticker) {
-                    Stickers.shared.stickerArray!.remove(at: i)
+                if let i = CommonSticker.shared.stickerArray!.firstIndex(of: selectedSticker) {
+                    CommonSticker.shared.stickerArray!.remove(at: i)
                 }
-
+                
             }
             
         }
-        
         
     }
     

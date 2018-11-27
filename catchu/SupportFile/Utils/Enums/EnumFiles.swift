@@ -26,6 +26,27 @@ enum PostContentType {
     case note
 }
 
+enum ActionControllerType {
+    case camera
+    case video
+
+}
+
+enum ActionControllerOperationType {
+    case select
+    case update
+}
+
+enum ActionButtonOperation {
+    case cameraOpen
+    case imageGalleryOpen
+    case selectedImageDelete
+    case selectedImageUpdate
+    case videoOpen
+    case videoGalleryOpen
+    case selectedVideoDelete
+}
+
 enum MediaType: String {
     case image
     case video
@@ -117,6 +138,10 @@ enum PermissionFLows {
     case photoLibraryUnAuthorized
     case microphone
     case microphoneUnAuthorizated
+    case videoLibrary
+    case videoLibraryUnauthorized
+    case video
+    case videoUnauthorized
 }
 
 enum CallerClass {

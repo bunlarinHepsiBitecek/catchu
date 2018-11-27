@@ -14,13 +14,12 @@ class CustomPermissionView: UIView {
     var permissionType : PermissionFLows?
     
     weak var delegate : PermissionProtocol!
-    weak var delegateForGalleryCollection : PermissionProtocol!
     
     lazy var mainView: UIView = {
         
         let temp = UIView(frame: .zero)
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.layer.cornerRadius = 7
+        //temp.layer.cornerRadius = 7
         temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         temp.clipsToBounds = true
         temp.isUserInteractionEnabled = true
@@ -210,9 +209,9 @@ class CustomPermissionView: UIView {
         setPhotoLibrarySettings(permissionType: permissionType)
         
         switch permissionType {
-        case .camera, .microphone, .photoLibrary:
+        case .camera, .microphone, .photoLibrary, .videoLibrary, .video:
             startAuthorizedProcess(permissionType: permissionType)
-        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized:
+        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized, .videoLibraryUnauthorized, .videoUnauthorized:
             startUnAuthorizedProcess(permissionType: permissionType)
         }
         
@@ -388,10 +387,10 @@ extension CustomPermissionView {
         case .photoLibraryUnAuthorized:
             photoLibraryUnAuthorized()
             
-        case .camera:
+        case .camera, .video:
             cameraAuthorized()
             
-        case .cameraUnathorized:
+        case .cameraUnathorized, .videoUnauthorized:
             cameraUnAuthorized()
             
         case .microphone:
@@ -399,10 +398,14 @@ extension CustomPermissionView {
             
         case .microphoneUnAuthorizated:
             microphoneUnAuthorized()
+        
+        case .videoLibrary:
+            photoLibraryAuthorized()
             
-        default:
-            return
+        case .videoLibraryUnauthorized:
+            photoLibraryUnAuthorized()
         }
+        
         
     }
     
@@ -465,6 +468,7 @@ extension CustomPermissionView {
     private func microphoneUnAuthorized() {
         
         imageContainer.image = UIImage(named: "microphoneMain.jpeg")
+        imageContainer.alpha = 0.5
         iconImageViev.image = UIImage(named: "microphone")
         
         topicLabel.text = LocalizedConstants.PermissionStatements.topicLabelForMicrophone
@@ -488,22 +492,22 @@ extension CustomPermissionView {
         guard let permissionType = permissionType else { return }
 
         switch permissionType {
-        case .photoLibrary:
+        case .photoLibrary, .videoLibrary:
 
             PHPhotoLibrary.requestAuthorization { (authorizationStatus) in
 
                 DispatchQueue.main.async {
-                    self.delegate.returnPermissionResult(status: authorizationStatus)
+                    self.delegate.returnPermissionResult(status: authorizationStatus, permissionType: permissionType)
                 }
             }
             
-        case .camera:
+        case .camera, .video:
             
             AVCaptureDevice.requestAccess(for: .video) { (result) in
 
                 if result {
                     DispatchQueue.main.async {
-                        self.delegate.returnPermissinResultBoolValue(result: result)
+                        self.delegate.returnPermissinResultBoolValue(result: result, permissionType: permissionType)
                     }
                 }
             }
@@ -516,7 +520,7 @@ extension CustomPermissionView {
                 
                 if granted {
                     DispatchQueue.main.async {
-                        self.delegate.returnPermissinResultBoolValue(result: granted)
+                        self.delegate.returnPermissinResultBoolValue(result: granted, permissionType: permissionType)
                     }
                 }
                 
@@ -570,7 +574,7 @@ extension CustomPermissionView : UIGestureRecognizerDelegate {
         guard let permissionType = permissionType else { return }
         
         switch permissionType {
-        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized:
+        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized, .videoLibraryUnauthorized:
             
             guard let callerView = self.superview else { return }
             

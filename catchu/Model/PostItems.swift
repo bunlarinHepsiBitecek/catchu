@@ -11,8 +11,9 @@ import UIKit
 class PostItems {
 
     public static var shared = PostItems()
-    
-    var selectedImageDictionary : Array<UIImage>?
+
+    var selectedOriginalImageArray : Array<UIImage>?
+    var selectedImageArray : Array<UIImage>?
     var selectedVideoUrl : Array<URL>?
     var selectedVideoScreenShoot : Dictionary<URL, UIImage>?
     var selectedVideoScreenShootWithPlayButton : Dictionary<URL, UIImage>?
@@ -24,7 +25,8 @@ class PostItems {
     
     func clearPostItemsObjects() {
         
-        PostItems.shared.selectedImageDictionary?.removeAll()
+        PostItems.shared.selectedOriginalImageArray?.removeAll()
+        PostItems.shared.selectedImageArray?.removeAll()
         PostItems.shared.selectedVideoUrl?.removeAll()
         PostItems.shared.selectedVideoScreenShoot?.removeAll()
         selectedVideoScreenShootWithPlayButton?.removeAll()
@@ -38,6 +40,30 @@ class PostItems {
     
     func setSnapShotOfMessage(inputImage : UIImage) {
         PostItems.shared.messageScreenShot = inputImage
+    }
+    
+    func appendNewItemToSelectedOriginalImageArray(image : UIImage) {
+        if PostItems.shared.selectedOriginalImageArray == nil {
+            PostItems.shared.selectedOriginalImageArray = Array<UIImage>()
+        }
+        
+        PostItems.shared.selectedOriginalImageArray?.append(image)
+    }
+    
+    func appendNewItemToSelectedImageArray(image : UIImage) {
+        if PostItems.shared.selectedImageArray == nil {
+            PostItems.shared.selectedImageArray = Array<UIImage>()
+        }
+        
+        PostItems.shared.selectedImageArray?.append(image)
+    }
+    
+    func appendNewItemToSelectedVideoUrl(url : URL) {
+        if PostItems.shared.selectedVideoUrl == nil {
+            PostItems.shared.selectedVideoUrl = Array<URL>()
+        }
+        
+        PostItems.shared.selectedVideoUrl?.append(url)
     }
     
     func appendVideoScreenShot(inputURL: URL, inputImage: UIImage) {
@@ -64,8 +90,8 @@ class PostItems {
     
     func returnImage(index : Int) -> UIImage {
         
-        if PostItems.shared.selectedImageDictionary != nil {
-            if let image = PostItems.shared.selectedImageDictionary?[index] {
+        if PostItems.shared.selectedImageArray != nil {
+            if let image = PostItems.shared.selectedImageArray?[index] {
                 return image
             }
         }
@@ -86,10 +112,26 @@ class PostItems {
         
     }
     
+    func emptySelectedOriginalImageArray() {
+        
+        if PostItems.shared.selectedOriginalImageArray != nil {
+            PostItems.shared.selectedOriginalImageArray!.removeAll()
+        }
+        
+    }
+    
+    func emptySelectedVideoUrl() {
+        
+        if PostItems.shared.selectedVideoUrl != nil {
+            PostItems.shared.selectedVideoUrl!.removeAll()
+        }
+        
+    }
+    
     func emptySelectedImageArray() {
         
-        if PostItems.shared.selectedImageDictionary != nil {
-            PostItems.shared.selectedImageDictionary!.removeAll()
+        if PostItems.shared.selectedImageArray != nil {
+            PostItems.shared.selectedImageArray!.removeAll()
         }
         
     }
@@ -102,12 +144,36 @@ class PostItems {
         
     }
     
+    func returnSelectedOriginalImageArrayCount() -> Int {
+        if let array = PostItems.shared.selectedOriginalImageArray {
+            return array.count
+        } else {
+            return 0
+        }
+    }
+    
+    func returnSelectedImageArrayCount() -> Int {
+        if let array = PostItems.shared.selectedImageArray {
+            return array.count
+        } else {
+            return 0
+        }
+    }
+    
+    func returnSelectedVideoArrayCount() -> Int {
+        if let array = PostItems.shared.selectedVideoUrl {
+            return array.count
+        } else {
+            return 0
+        }
+    }
+    
     func returnTotalPostItems() -> Int {
         
         var count = 0
         
-        if PostItems.shared.selectedImageDictionary != nil {
-            count += PostItems.shared.selectedImageDictionary!.count
+        if PostItems.shared.selectedImageArray != nil {
+            count += PostItems.shared.selectedImageArray!.count
         }
         
         if PostItems.shared.selectedVideoUrl != nil {

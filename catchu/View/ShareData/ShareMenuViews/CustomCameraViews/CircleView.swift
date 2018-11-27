@@ -16,6 +16,8 @@ class CircleView: UIView {
     private var timer = Timer()
     private var isTimerRunning : Bool = false
     
+    private var animateBack : Bool = false
+    
     weak var delegate : PostViewProtocols!
     
     override init(frame: CGRect) {
@@ -76,9 +78,25 @@ class CircleView: UIView {
     }
     
     func stop() {
-        
         circleLayer.strokeEnd = 1.0
+    }
+    
+    func stop(directionBack : Bool) {
         
+        if directionBack {
+            circleLayer.strokeEnd = 0.0
+            delegate.triggerContentCheckAnimation(active : false)
+        } else {
+            circleLayer.strokeEnd = 1.0
+            delegate.triggerContentCheckAnimation(active : true)
+        }
+        
+        animateBack = false
+        
+    }
+    
+    func reset() {
+        circleLayer.strokeStart = 0.0
     }
     
     func animateCircleWithDelegation(duration : TimeInterval, delegate: PostViewProtocols) {
@@ -103,6 +121,30 @@ class CircleView: UIView {
         
     }
     
+    func animateCircleWithDelegationToBack(duration : TimeInterval, delegate: PostViewProtocols) {
+        
+        animateBack = true
+        
+        self.delegate = delegate
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        
+        animation.duration = duration
+        second = Int(duration)
+        
+        animation.fromValue = 1
+        animation.toValue = 0
+        
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        
+        circleLayer.strokeEnd = 1.0
+        
+        circleLayer.add(animation, forKey: "animateCircle")
+        
+        runTimer()
+        
+    }
+    
     func runTimer() {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(CircleView.updateTimer)), userInfo: nil, repeats: true)
     }
@@ -112,8 +154,8 @@ class CircleView: UIView {
         
         if second <= 0 {
             timer.invalidate()
-            stop()
-            delegate.triggerContentCheckAnimation()
+            stop(directionBack: animateBack)
+            //delegate.triggerContentCheckAnimation()
             
         }
         

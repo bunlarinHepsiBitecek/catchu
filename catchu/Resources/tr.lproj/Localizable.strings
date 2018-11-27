@@ -154,3 +154,15 @@
 "inviteFriendTitle" = "Arkadaşını Davet Et";
 "inviteFriendInformation" = "Davet için bir numara seç 😀";
 
+// Action sheet titles
+"cameraGalleryTitle" = "Kamera - Galeri";
+"cameraGalleryExplanation" = "Galeriden seçiniz veya yeni bir resim çekiniz";
+"videoGalleryTitle" = "Video - Galeri";
+"viodeGalleryExplanation" = "Galeriden seçiniz veya yeni bir video çekiniz";
+"camera" = "Kamera";
+"gallery" = "Galeri";
+"update" = "Güncelle";
+"delete" = "Sil";
+"video" = "Video";
+
+

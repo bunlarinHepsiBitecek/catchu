@@ -194,6 +194,14 @@
 "inviteFriendTitle" = "Invite Friend";
 "inviteFriendInformation" = "Choise a phone to send invitations";
 
-
-
+// Action sheet titles
+"cameraGalleryTitle" = "Camera - Gallery";
+"cameraGalleryExplanation" = "Choose from gallery or take a new photo";
+"videoGalleryTitle" = "Video - Gallery";
+"viodeGalleryExplanation" = "Choose from gallery or record a new video";
+"camera" = "Camera";
+"gallery" = "Gallery";
+"update" = "Update";
+"delete" = "Delete";
+"video" = "Video";
 

@@ -8,14 +8,13 @@
 
 import UIKit
 
-class CustomPermissionViewController: UIView {
+class CustomPermissionViewManager: UIView {
     
-    public static var shared = CustomPermissionViewController()
+    public static var shared = CustomPermissionViewManager()
     
     var customPermissionView : CustomPermissionView?
-    weak var delegate : PermissionProtocol!
     
-    func createAuthorizationView(inputView : UIView, permissionType : PermissionFLows) {
+    func createAuthorizationView(inputView : UIView, permissionType : PermissionFLows, delegate: PermissionProtocol) {
         
         print("createAuthorizationView starts")
         

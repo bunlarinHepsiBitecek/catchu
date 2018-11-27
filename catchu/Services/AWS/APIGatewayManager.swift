@@ -514,7 +514,7 @@ class APIGatewayManager {
         var imageAttachmentArray = [UIImage]()
         
         if !granted {
-            if let imageArray = PostItems.shared.selectedImageDictionary {
+            if let imageArray = PostItems.shared.selectedImageArray {
                 if let image = imageArray.first {
                     
                     imageAttachmentArray.append(image)

@@ -22,7 +22,7 @@ class PermissionHandler {
     func gotoRequestProcessViewControllers(inputPermissionType : PermissionFLows) {
         
         switch inputPermissionType {
-        case .camera, .photoLibrary, .microphone:
+        case .camera, .photoLibrary, .microphone, .videoLibrary, .video:
             
             if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "PhotoLibraryPrePermissionViewController") as? PhotoLibraryPrePermissionViewController {
                 
@@ -33,7 +33,7 @@ class PermissionHandler {
                 
             }
             
-        case .cameraUnathorized, .photoLibraryUnAuthorized, .microphoneUnAuthorizated:
+        case .cameraUnathorized, .photoLibraryUnAuthorized, .microphoneUnAuthorizated, .videoLibraryUnauthorized, .videoUnauthorized:
             
             if let destinationViewControler = UIStoryboard(name: Constants.Storyboard.Name.Main, bundle: nil).instantiateViewController(withIdentifier: "MediaPermissionUnAuthorizedViewController") as? MediaPermissionUnAuthorizedViewController {
                 

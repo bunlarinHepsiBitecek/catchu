@@ -13,6 +13,16 @@ class PostTopBarView: UIView {
     private var isGradientAdded : Bool = false
     private var profileViewLoaded : Bool = false
     
+    /*
+    lazy var mainContainer: UIView = {
+        
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        
+        return temp
+    }()*/
+    
     lazy var profilePictureContainerView: UIView = {
         
         let temp = UIView()
@@ -93,20 +103,23 @@ class PostTopBarView: UIView {
             }
         }
         
+        print("profilePictureContainerView.bound.height : \(profilePictureContainerView.bounds.height)")
+        print("profilePictureContainerView.frame.height : \(profilePictureContainerView.frame.height)")
+        
         if profilePictureContainerView.bounds.height > 0 {
-            
+
             if !profileViewLoaded {
-                
+
                 self.profilePictureContainerView.layer.shadowColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 self.profilePictureContainerView.layer.shadowOffset = .zero
                 self.profilePictureContainerView.layer.shadowOpacity = 2;
                 self.profilePictureContainerView.layer.shadowRadius = 5;
                 self.profilePictureContainerView.layer.shadowPath = UIBezierPath(roundedRect: profilePictureContainerView.bounds, cornerRadius: Constants.StaticViewSize.CorderRadius.cornerRadius_35).cgPath
-                
+
                 profileViewLoaded = true
-                
+
             }
-            
+
         }
         
     }
@@ -133,18 +146,29 @@ extension PostTopBarView {
     }
     
     private func addViews() {
+        /*
+        self.addSubview(mainContainer)
+        self.mainContainer.addSubview(profilePictureContainerView)
+        self.profilePictureContainerView.addSubview(profileImageView)
+        self.mainContainer.addSubview(stackViewFollowers)*/
         
         self.addSubview(profilePictureContainerView)
         self.profilePictureContainerView.addSubview(profileImageView)
-        //self.addSubview(informationLabel)
         self.addSubview(stackViewFollowers)
         
         let safe = self.safeAreaLayoutGuide
+        //let safeMainContainer = self.mainContainer.safeAreaLayoutGuide
         let safeProfileImageContainer = self.profilePictureContainerView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
+            /*
+            mainContainer.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            mainContainer.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            mainContainer.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            mainContainer.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_100),*/
             
-            profilePictureContainerView.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+            //profilePictureContainerView.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+            profilePictureContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_20),
             profilePictureContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_20),
             profilePictureContainerView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_70),
             profilePictureContainerView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_70),
@@ -155,7 +179,8 @@ extension PostTopBarView {
             profileImageView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_70),
 
             stackViewFollowers.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ConstraintValues.constraint_50),
-            stackViewFollowers.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
+            stackViewFollowers.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_20),
+            //stackViewFollowers.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
             stackViewFollowers.leadingAnchor.constraint(equalTo: safeProfileImageContainer.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_30),
             stackViewFollowers.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
             

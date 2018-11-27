@@ -33,10 +33,13 @@ class SlideMenuTableViewCell: BaseTableCell {
     
     override func setupViews() {
         
-        self.addSubview(slideMenuImageView)
-        self.addSubview(slideMenuLabel)
+        //self.addSubview(slideMenuImageView)
+        //self.addSubview(slideMenuLabel)
         
-        let safe = self.safeAreaLayoutGuide
+        self.contentView.addSubview(slideMenuImageView)
+        self.contentView.addSubview(slideMenuLabel)
+        
+        let safe = self.contentView.safeAreaLayoutGuide
         let safeImage = self.slideMenuImageView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
@@ -49,7 +52,7 @@ class SlideMenuTableViewCell: BaseTableCell {
             slideMenuLabel.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
             slideMenuLabel.leadingAnchor.constraint(equalTo: safeImage.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
             slideMenuLabel.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_24),
-            slideMenuImageView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_100),
+            slideMenuLabel.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_100),
             
             ])
         

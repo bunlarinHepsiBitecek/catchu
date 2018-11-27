@@ -56,8 +56,8 @@ protocol GroupInformationUpdateProtocol: class {
 
 protocol PermissionProtocol: class {
     
-    func returnPermissionResult(status : PHAuthorizationStatus)
-    func returnPermissinResultBoolValue(result : Bool)
+    func returnPermissionResult(status : PHAuthorizationStatus, permissionType : PermissionFLows)
+    func returnPermissinResultBoolValue(result : Bool, permissionType : PermissionFLows)
     func initiateSpecificActions()
     func requestPermission(permissionType : PermissionFLows)
 //    func enablePermissionForGallery(permissionType : PermissionFLows)
@@ -66,10 +66,11 @@ protocol PermissionProtocol: class {
 
 extension PermissionProtocol {
     
-    func returnPermissionResult(status : PHAuthorizationStatus) {}
     func initiateSpecificActions() {}
-    func returnPermissinResultBoolValue(result : Bool) {}
     func requestPermission(permissionType : PermissionFLows) {}
+    func returnPermissionResult(status : PHAuthorizationStatus, permissionType : PermissionFLows) {}
+    func returnPermissinResultBoolValue(result : Bool, permissionType : PermissionFLows) {}
+    
     
 }
 
@@ -186,12 +187,14 @@ protocol StickerProtocols : class {
     func addTextStickerWithParameters(sticker : Sticker)
 //    func activateTextStickerEditigMode(sticker : Sticker, customSticker : CustomSticker2)
     func activateTextStickerEditigMode(inputSticker : Sticker, selfView : CustomSticker2)
+    func activateTextStickerCommonEditigMode(inputSticker : Sticker, selfView : StickerCommonView)
 //    func updateTextSticker(customSticker : CustomSticker)
     func updateTextSticker(inputSticker : Sticker)
     func customStickerActivationManager(active : Bool)
     func detectDeleteButtonIntersect(inputView : UIView)
     func stickerDeleteAnimationManager(active : Bool)
     func deleteSticker(selectedSticker : CustomSticker2)
+    func deleteCommonSticker(selectedSticker : StickerCommonView)
     
 }
 
@@ -200,12 +203,14 @@ extension StickerProtocols {
     func addTextStickerWithParameters(sticker : Sticker) {}
 //    func activateTextStickerEditigMode(sticker : Sticker, customSticker : CustomSticker2) {}
     func activateTextStickerEditigMode(inputSticker : Sticker, selfView : CustomSticker2) {}
+    func activateTextStickerCommonEditigMode(inputSticker : Sticker, selfView : StickerCommonView) {}
 //    func updateTextSticker(customSticker : CustomSticker) {}
     func updateTextSticker(inputSticker : Sticker) {}
     func customStickerActivationManager(active : Bool) {}
     func detectDeleteButtonIntersect(inputView : UIView) {}
     func stickerDeleteAnimationManager(active : Bool) {}
     func deleteSticker(selectedSticker : CustomSticker2) {}
+    func deleteCommonSticker(selectedSticker : StickerCommonView) {}
     
 }
 
@@ -242,14 +247,41 @@ extension UserProfileViewProtocols {
 
 protocol PostViewProtocols : class  {
     func dismissPostView()
-    func triggerContentCheckAnimation()
+    func triggerContentCheckAnimation(active : Bool)
     func initiateAlertControllerProcess(postContentType : PostContentType)
+    func committedCapturedImage()
+    func activationProcessOfVideoView(active : Bool)
 }
 
 extension PostViewProtocols {
     func dismissPostView() {}
-    func triggerContentCheckAnimation() {}
+    func triggerContentCheckAnimation(active : Bool) {}
     func initiateAlertControllerProcess(postContentType : PostContentType) {}
+    func committedCapturedImage() {}
+    func activationProcessOfVideoView(active : Bool) {}
 }
 
+protocol CameraImageVideoHandlerProtocol : class  {
+    func returnPickedImage(image : UIImage)
+    func returnPickedVideo(url : URL)
+    func triggerPermissionProcess(permissionType : PermissionFLows)
+    func updateProcessOfCapturedImage()
+    func initiateVideoViewPermissionProcess()
+}
+
+extension CameraImageVideoHandlerProtocol {
+    func returnPickedImage(image : UIImage) {}
+    func returnPickedVideo(url : URL) {}
+    func triggerPermissionProcess(permissionType : PermissionFLows) {}
+    func updateProcessOfCapturedImage() {}
+    func initiateVideoViewPermissionProcess() {}
+}
+
+protocol ActionSheetProtocols : class  {
+    func returnOperations(selectedProcessType : ActionButtonOperation)
+}
+
+extension ActionSheetProtocols {
+    func returnOperations(selectedProcessType : ActionButtonOperation) {}
+}
 

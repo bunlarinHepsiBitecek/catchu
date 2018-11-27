@@ -349,11 +349,11 @@ extension ImageManagementView {
         
         if let croppedImage = croppedImage {
             
-            if PostItems.shared.selectedImageDictionary == nil {
-                PostItems.shared.selectedImageDictionary = Array<UIImage>()
+            if PostItems.shared.selectedImageArray == nil {
+                PostItems.shared.selectedImageArray = Array<UIImage>()
             }
             
-            PostItems.shared.selectedImageDictionary!.append(croppedImage.returnImage())
+            PostItems.shared.selectedImageArray!.append(croppedImage.returnImage())
             
         }
         
@@ -363,11 +363,11 @@ extension ImageManagementView {
         
         if let customSelectedImageContainer = customSelectedImageContainer {
             
-            if PostItems.shared.selectedImageDictionary == nil {
-                PostItems.shared.selectedImageDictionary = Array<UIImage>()
+            if PostItems.shared.selectedImageArray == nil {
+                PostItems.shared.selectedImageArray = Array<UIImage>()
             }
             
-            PostItems.shared.selectedImageDictionary!.append(customSelectedImageContainer.returnImage())
+            PostItems.shared.selectedImageArray!.append(customSelectedImageContainer.returnImage())
             
         }
         
@@ -614,17 +614,16 @@ extension ImageManagementView : PermissionProtocol {
     
     func requestPermission(permissionType : PermissionFLows) {
         
-        CustomPermissionViewController.shared.delegate = self
         
         switch permissionType {
         case .photoLibrary:
-            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .photoLibrary)
+            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .photoLibrary, delegate: self)
         case .photoLibraryUnAuthorized:
-            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .photoLibraryUnAuthorized)
+            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .photoLibraryUnAuthorized, delegate: self)
         case .camera:
-            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .camera)
+            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .camera, delegate: self)
         case .cameraUnathorized:
-            CustomPermissionViewController.shared.createAuthorizationView(inputView: self, permissionType: .cameraUnathorized)
+            CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: .cameraUnathorized, delegate: self)
         default:
             return
         }
