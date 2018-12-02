@@ -143,9 +143,9 @@ extension FinalSharePageView {
         
         for item in stackViewForPostAttachments.arrangedSubviews {
             
-            if let postAttachmentItem = item as? PostAttachmentView {
-                postAttachmentItem.setDelegation(inputDelegate: self, inputViewControllerDelegate: delegate)
-            }
+//            if let postAttachmentItem = item as? PostAttachmentView {
+//                postAttachmentItem.setDelegation(inputDelegate: self, inputViewControllerDelegate: delegate)
+//            }
             
         }
     }
@@ -479,16 +479,6 @@ extension FinalSharePageView : UIGestureRecognizerDelegate {
 
 extension FinalSharePageView : ShareDataProtocols {
     
-    func clearPostAttachmentType() {
-        
-        for item in stackViewForPostAttachments.arrangedSubviews {
-            
-            if let view = item as? PostAttachmentView {
-                view.clearTintColor()
-            }
-        }
-    }
-    
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {
         
         for item in stackViewForPostAttachments.arrangedSubviews {
@@ -552,24 +542,6 @@ extension FinalSharePageView : ShareDataProtocols {
             
             self.layoutIfNeeded()
             
-        }
-        
-    }
-    
-    func selectedPostAttachmentTypeManagement(returned: PostAttachmentView) {
-        
-        guard let postType = returned.postAttachmentType else { return }
-        
-        switch postType {
-        case .friends, .group:
-            print(".")
-        case .publicPost:
-            print(".")
-        case .onlyMe:
-            returned.setImage(inputImage: UIImage(named: "locked")!)
-            print(".")
-        case .allFollowers:
-            break
         }
         
     }

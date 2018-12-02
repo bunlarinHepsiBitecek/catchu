@@ -102,13 +102,8 @@ protocol ShareDataProtocols: class {
     func setCroppedImage(inputImage : UIImage)
     func closeShareDataViewController2()
     func nextToFinalSharePage()
-    func selectedPostAttachmentTypeManagement(returned : PostAttachmentView)
-    func clearPostAttachmentType()
-    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void)
-    func deselectPostAttachmentAnimations()
     func scrollableManagement(enabled : Bool)
     func gridViewTriggerManagement(hidden : Bool)
-    
     func addTextSticker(inputView : UIView)
     func createSnapShotProcess()
     func checkAlphaValuesOfCustomEmbeddedViews()
@@ -144,13 +139,8 @@ extension ShareDataProtocols {
     func setCroppedImage(inputImage : UIImage) {}
     func closeShareDataViewController2() {}
     func nextToFinalSharePage() {}
-    func selectedPostAttachmentTypeManagement(returned : PostAttachmentView) {}
-    func clearPostAttachmentType() {}
-    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {}
-    func deselectPostAttachmentAnimations() {}
     func scrollableManagement(enabled : Bool) {}
     func gridViewTriggerManagement(hidden : Bool) {}
-    
     func addTextSticker(inputView : UIView) {}
     func createSnapShotProcess() {}
     func checkAlphaValuesOfCustomEmbeddedViews() {}
@@ -247,18 +237,24 @@ extension UserProfileViewProtocols {
 
 protocol PostViewProtocols : class  {
     func dismissPostView()
-    func triggerContentCheckAnimation(active : Bool)
+    func triggerContentCheckAnimation(active : Bool, postContentType: PostContentType)
     func initiateAlertControllerProcess(postContentType : PostContentType)
     func committedCapturedImage()
+    func committedCapturedVideo()
     func activationProcessOfVideoView(active : Bool)
+    func deselectPostAttachmentAnimations()
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void)
 }
 
 extension PostViewProtocols {
     func dismissPostView() {}
-    func triggerContentCheckAnimation(active : Bool) {}
+    func triggerContentCheckAnimation(active : Bool, postContentType: PostContentType) {}
     func initiateAlertControllerProcess(postContentType : PostContentType) {}
     func committedCapturedImage() {}
+    func committedCapturedVideo() {}
     func activationProcessOfVideoView(active : Bool) {}
+    func deselectPostAttachmentAnimations() {}
+    func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {}
 }
 
 protocol CameraImageVideoHandlerProtocol : class  {
@@ -284,4 +280,15 @@ protocol ActionSheetProtocols : class  {
 extension ActionSheetProtocols {
     func returnOperations(selectedProcessType : ActionButtonOperation) {}
 }
+
+// view model protocols
+protocol CommonViewModel {
+
+    //func handleAwsTaskResponse<AnyModel>(networkResult : ConnectionResult<AnyModel>)
+    //func handleAwsTaskResponse<AnyModel>(networkResult : ConnectionResult<AnyModel>) where AnyModel : AnyObject
+    func handleAwsTaskResponse<AnyModel>(networkResult: ConnectionResult<AnyModel>)
+    
+}
+
+protocol CommonViewModelItem {}
 

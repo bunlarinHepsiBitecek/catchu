@@ -17,8 +17,11 @@ class CircleView: UIView {
     private var isTimerRunning : Bool = false
     
     private var animateBack : Bool = false
+
+    private var postContentType: PostContentType?
     
     weak var delegate : PostViewProtocols!
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,12 +86,14 @@ class CircleView: UIView {
     
     func stop(directionBack : Bool) {
         
+        guard let postContentType = postContentType else { return }
+        
         if directionBack {
             circleLayer.strokeEnd = 0.0
-            delegate.triggerContentCheckAnimation(active : false)
+            delegate.triggerContentCheckAnimation(active : false, postContentType: postContentType)
         } else {
             circleLayer.strokeEnd = 1.0
-            delegate.triggerContentCheckAnimation(active : true)
+            delegate.triggerContentCheckAnimation(active : true, postContentType: postContentType)
         }
         
         animateBack = false
@@ -99,9 +104,10 @@ class CircleView: UIView {
         circleLayer.strokeStart = 0.0
     }
     
-    func animateCircleWithDelegation(duration : TimeInterval, delegate: PostViewProtocols) {
+    func animateCircleWithDelegation(duration : TimeInterval, delegate: PostViewProtocols, postContentType : PostContentType) {
         
         self.delegate = delegate
+        self.postContentType = postContentType
         
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         

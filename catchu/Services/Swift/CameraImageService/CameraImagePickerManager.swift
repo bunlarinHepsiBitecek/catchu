@@ -153,19 +153,21 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
             selectedMediaFromPicker = videoUrl
         }
         
-        if let selectedImage = selectedImageFromPicker {
-            if let delegate = delegate {
-                delegate.returnPickedImage(image: selectedImage)
+        picker.dismiss(animated: true) {
+            
+            if let selectedImage = selectedImageFromPicker {
+                if let delegate = self.delegate {
+                    delegate.returnPickedImage(image: selectedImage)
+                }
             }
-        }
-        
-        if let selectedVideo = selectedMediaFromPicker {
-            if let delegate = delegate {
-                delegate.returnPickedVideo(url: selectedVideo)
+            
+            if let selectedVideo = selectedMediaFromPicker {
+                if let delegate = self.delegate {
+                    delegate.returnPickedVideo(url: selectedVideo)
+                }
             }
+            
         }
-        
-        picker.dismiss(animated: true, completion: nil)
         
     }
     

@@ -163,7 +163,7 @@ extension PostMainView {
     
     private func addCustomVideoView() {
         
-        videoView = VideoView()
+        videoView = VideoView(frame: .zero, delegate: self)
         videoView?.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(videoView!)
@@ -235,7 +235,14 @@ extension PostMainView : CameraImageVideoHandlerProtocol {
     func returnPickedVideo(url: URL) {
         print("\(#function) starts")
         
-        
+        PostItems.shared.emptySelectedVideoUrl()
+        PostItems.shared.appendNewItemToSelectedVideoUrl(url: url)
+
+        guard saySomethingView != nil else {
+            return
+        }
+
+        saySomethingView!.contentAnimationManagement(postContentType: .video, active: true)
         
         /*
         let capturedVideoView = CapturedVideoView(outputFileURL: url, delegate: self)
@@ -322,6 +329,14 @@ extension PostMainView : PostViewProtocols {
         
         saySomethingView!.contentAnimationManagement(postContentType: .camera, active: true)
         
+    }
+    
+    func committedCapturedVideo() {
+        guard saySomethingView != nil else {
+            return
+        }
+        
+        saySomethingView!.contentAnimationManagement(postContentType: .video, active: true)
     }
     
 }

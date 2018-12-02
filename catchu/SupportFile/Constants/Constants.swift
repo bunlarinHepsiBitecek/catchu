@@ -10,7 +10,7 @@ import UIKit
 
 struct Constants {
     // https://picsum.photos/45/45/?random
-    static let LOCALTEST = false
+    static let LOCALTEST = true
     static let CATCHU = "CatchU"
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
@@ -110,6 +110,7 @@ struct Constants {
                 static let width_150 : CGFloat = 150
                 static let width_102 : CGFloat = 102
                 static let width_100 : CGFloat = 100
+                static let width_90 : CGFloat = 90
                 static let width_80 : CGFloat = 80
                 static let width_70 : CGFloat = 70
                 static let width_60 : CGFloat = 60

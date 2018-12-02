@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum ViewObjects<T> {
+    case input(T)
+}
+
 class SaySomethingView: UIView {
     
     weak var delegate : PostViewProtocols!
@@ -22,6 +26,7 @@ class SaySomethingView: UIView {
     private var noteContentActive : PostContentCheckView?
     
     private var keyboardActive : Bool = false
+    private var textViewHasText : Bool = false
     
     private var maxFontSize : CGFloat = 28
     private var minFontSize : CGFloat = 18
@@ -492,11 +497,19 @@ extension SaySomethingView {
     
     @objc func initiatePostProcess(_ sender : UIButton) {
         
-        print("initiatePostProcess starts")
+        print("\(#function) starts")
+        startAnimationCommon(inputObject: postButton)
         
-        //startCircleAnimation()
+        print("PostItems.shared.returnTotalPostItems() : \(PostItems.shared.returnTotalPostItems())")
+        print("saySomethingTextView.hasText : \(saySomethingTextView.hasText)")
+        print("textViewHasText : \(textViewHasText)")
         
-        guard let circleViewForCamera = circleViewForCamera else { return }
+        if PostItems.shared.returnTotalPostItems() <= 0 && !textViewHasText {
+            // there is nothing to post
+            AlertViewManager.show(type: .error, placement: .top, body: LocalizedConstants.PostAttachmentInformation.thereIsNothingToPost)
+        } else {
+            // let's share something
+        }
         
     }
     
@@ -537,11 +550,10 @@ extension SaySomethingView {
             
             if active {
                 circleViewForCamera.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
-                circleViewForCamera.animateCircleWithDelegation(duration: 1, delegate: self)
+                circleViewForCamera.animateCircleWithDelegation(duration: 1, delegate: self, postContentType: postContentType)
             } else {
                 //circleViewForCamera.setColor(inputColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
                 circleViewForCamera.animateCircleWithDelegationToBack(duration: 1, delegate: self)
-
             }
             
         case .video:
@@ -549,38 +561,40 @@ extension SaySomethingView {
             
             if active {
                 circleViewForVideo.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
+                circleViewForVideo.animateCircleWithDelegation(duration: 1, delegate: self, postContentType: postContentType)
             } else {
-                circleViewForVideo.setColor(inputColor: UIColor.clear.cgColor)
+                circleViewForVideo.animateCircleWithDelegationToBack(duration: 1, delegate: self)
             }
             
-            circleViewForVideo.animateCircleWithDelegation(duration: 1, delegate: self)
         case .note:
             guard let circleViewForNote = circleViewForNote else { return }
             
             if active {
                 circleViewForNote.setColor(inputColor: #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1))
+                circleViewForNote.animateCircleWithDelegation(duration: 1, delegate: self, postContentType: postContentType)
             } else {
-                circleViewForNote.setColor(inputColor: UIColor.clear.cgColor)
+                circleViewForNote.animateCircleWithDelegationToBack(duration: 1, delegate: self)
             }
-            
-            circleViewForNote.animateCircleWithDelegation(duration: 1, delegate: self)
+
         }
     }
     
-    func startCircleAnimation() {
+    func startAnimationCommon(inputObject: UIView) {
         
-        guard let circleViewForCamera = circleViewForCamera else { return }
+        inputObject.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) // buton view kucultulur
         
-        circleViewForCamera.animateCircleWithDelegation(duration: 1, delegate: self)
-        
-        guard let circleViewForVideo = circleViewForVideo else { return }
-        
-        circleViewForVideo.animateCircleWithDelegation(duration: 1, delegate: self)
-        
-        guard let circleViewForNote = circleViewForNote else { return }
-        
-        circleViewForNote.animateCircleWithDelegation(duration: 1, delegate: self)
-        
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
+            initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
+            options: UIViewAnimationOptions.allowUserInteraction,
+            animations: {
+                
+                inputObject.transform = CGAffineTransform.identity
+                
+                
+        })
+        inputObject.layoutIfNeeded()
     }
     
     func startAnimation() {
@@ -868,6 +882,23 @@ extension SaySomethingView : UITextViewDelegate {
         }
     }
     
+    fileprivate func textViewContentAnimation(_ textView: UITextView) {
+        print("\(#function) starts")
+        print("textView.hasText : \(textView.hasText)")
+        
+        if !textView.hasText {
+//            contentAnimationManagement(postContentType: .note, active: false)
+            triggerContentCheckAnimation(active: false, postContentType: .note)
+            self.textViewHasText = false
+        } else {
+            if !self.textViewHasText {
+//                contentAnimationManagement(postContentType: .note, active: true)
+            triggerContentCheckAnimation(active: true, postContentType: .note)
+            self.textViewHasText = true
+            }
+        }
+    }
+    
     func textViewDidChange(_ textView: UITextView) {
         
         let fixedWidth = textView.frame.size.width
@@ -886,6 +917,8 @@ extension SaySomethingView : UITextViewDelegate {
                 scrollManagementOfSaySomethingTextView(active: true)
             }
         }
+        
+        textViewContentAnimation(textView)
 
     }
     
@@ -900,9 +933,19 @@ extension SaySomethingView : UITextViewDelegate {
                 cameraContentActive.activationManager(active: false)
             }
         case .video:
-            return
+            guard let videoContentActive = videoContentActive else { return }
+            if active {
+                videoContentActive.activationManager(active: true)
+            } else {
+                videoContentActive.activationManager(active: false)
+            }
         case .note:
-            return
+            guard let noteContentActive = noteContentActive else { return }
+            if active {
+                noteContentActive.activationManager(active: true)
+            } else {
+                noteContentActive.activationManager(active: false)
+            }
         }
         
         
@@ -923,7 +966,8 @@ extension SaySomethingView : UIGestureRecognizerDelegate {
     
     @objc func keyboardActivationManager(_ sender : UITapGestureRecognizer) {
         
-        startAnimation()
+        //startAnimation()
+        startAnimationCommon(inputObject: mapContainer)
         
         if keyboardActive {
             saySomethingTextView.resignFirstResponder()
@@ -940,7 +984,8 @@ extension SaySomethingView : UIGestureRecognizerDelegate {
     }
     
     @objc func initiateCameraContentSelectionProcess(_ sender : UITapGestureRecognizer) {
-        startAnimationForCameraContent()
+        //startAnimationForCameraContent()
+        startAnimationCommon(inputObject: cameraContainer)
         startPhotoPickerProcess()
     }
     
@@ -951,23 +996,29 @@ extension SaySomethingView : UIGestureRecognizerDelegate {
     }
     
     @objc func initiateVideoContentSelectionProcess(_ sender : UITapGestureRecognizer) {
-        startAnimationForVideoContent()
+        //startAnimationForVideoContent()
+        startAnimationCommon(inputObject: videoContainer)
         startVideoPickerProcess()
     }
     
 }
 
-// MARK: - ShareDataProtocols
-extension SaySomethingView : ShareDataProtocols {
+// MARK: - PostViewProtocols
+extension SaySomethingView : PostViewProtocols {
     
-    func clearPostAttachmentType() {
+    func triggerContentCheckAnimation(active: Bool, postContentType: PostContentType) {
         
-        for item in stackViewForPostAttachments.arrangedSubviews {
+        switch postContentType {
+        case .camera:
+            contentActiveCheckIconAnimationManagement(postContentType: .camera, active: active)
             
-            if let view = item as? PostAttachmentView {
-                view.clearTintColor()
-            }
+        case .video:
+            contentActiveCheckIconAnimationManagement(postContentType: .video, active: active)
+        
+        case .note:
+            contentActiveCheckIconAnimationManagement(postContentType: .note, active: active)
         }
+        
     }
     
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {
@@ -982,11 +1033,18 @@ extension SaySomethingView : ShareDataProtocols {
                         view.isHidden = true
                         view.alpha = 0
                         
+                    })
+                    
+                    /*
+                    UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, animations: {
+                        view.isHidden = true
+                        view.alpha = 0
+                        
                     }) { (result) in
                         
                         completion(true)
                         
-                    }
+                    }*/
                     
                 }
                 
@@ -996,13 +1054,15 @@ extension SaySomethingView : ShareDataProtocols {
         
         decideInformationText(postType: selectedAttachmentType)
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, animations: {
             self.leadingConstraintsOfPostTargetStackview.isActive = false
             self.attachmentContainerView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).withAlphaComponent(0.1)
             self.informationLabel.alpha = 1
             
             self.layoutIfNeeded()
             
+        }) { (result) in
+            completion(result)
         }
         
     }
@@ -1033,32 +1093,6 @@ extension SaySomethingView : ShareDataProtocols {
         
     }
     
-    func selectedPostAttachmentTypeManagement(returned: PostAttachmentView) {
-        
-        guard let postType = returned.postAttachmentType else { return }
-        
-        switch postType {
-        case .friends, .group:
-            print(".")
-        case .publicPost, .allFollowers:
-            print(".")
-        case .onlyMe:
-            returned.setImage(inputImage: UIImage(named: "locked")!)
-            print(".")
-        }
-        
-    }
-    
-}
-
-// MARK: - PostViewProtocols
-extension SaySomethingView : PostViewProtocols {
-    
-    func triggerContentCheckAnimation(active : Bool) {
-        
-        contentActiveCheckIconAnimationManagement(postContentType: .camera, active: active)
-        
-    }
     
 }
 
@@ -1084,8 +1118,9 @@ extension SaySomethingView : ActionSheetProtocols {
             self.initiateVideoGallery()
         case .videoOpen:
             self.initiateVideoView()
-        default:
-            return
+        case .selectedVideoDelete:
+            PostItems.shared.emptySelectedVideoUrl()
+            contentAnimationManagement(postContentType: .video, active: false)
         }
         
     }

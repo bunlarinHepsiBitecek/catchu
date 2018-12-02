@@ -256,7 +256,8 @@ class FacebookContactListManager {
                     self.updateFacebookFriendArray(userListResponse: data)
                     completion(true)
                 case .failure(let error):
-                    print("error : \(error.message)")
+                    //print("error : \(error.message)")
+                    return
                 }
                 
             }

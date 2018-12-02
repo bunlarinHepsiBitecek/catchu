@@ -51,6 +51,7 @@ class REAWSManager: BackEndAPIInterface {
     ///   - task: Return from API Method Call,  AWSTask<Model>
     ///   - completion: Client NetworkResult<Model>
     private func processExpectingData<Model>(task: AWSTask<Model>, completion: ((NetworkResult<Model>) -> Void)) {
+        
         if let error = task.error {
             completion(.failure(.serverError(error: error)))
         } else if let result = task.result {

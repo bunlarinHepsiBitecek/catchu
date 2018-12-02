@@ -524,9 +524,9 @@ extension CapturedVideoView {
     }
     
     private func dismissView() {
-        deleteRecordedVideoFromSavedArray(url : recordedVideoURL)
         self.removeFromSuperview()
     }
+    
     
 }
 
@@ -542,6 +542,7 @@ extension CapturedVideoView : UIGestureRecognizerDelegate {
     }
     
     @objc func closeView(_ sender : UITapGestureRecognizer) {
+        deleteRecordedVideoFromSavedArray(url : recordedVideoURL)
         dismissView()
     }
     

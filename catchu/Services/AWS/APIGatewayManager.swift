@@ -10,10 +10,41 @@ import UIKit
 
 enum ConnectionResult<T> {
     case success(T)
-    case failure(REError)
+    case failure(ApiConnectionError)
 }
 
-class APIGatewayManager {
+enum ApiConnectionError: Error {
+    case missingData
+    case connectionError(error : Error)
+    case serverError(error : Error)
+}
+
+protocol ApiGatewayInterface {
+    func prepareRetrievedDataFromApigateway<CommonModel>(task: AWSTask<CommonModel>, completion: (ConnectionResult<CommonModel>) -> Void)
+}
+
+enum ApiLambdaError: NSNumber {
+    case success = 1
+}
+
+class APIGatewayManager: ApiGatewayInterface {
+    
+    /// Description : The function process task object retrived from server. Fragment data such as errors, failures, success etc. And complete function with api response data
+    ///
+    /// - Parameters:
+    ///   - task: AWSTask model
+    ///   - completion: completion method holding failures or success
+    func prepareRetrievedDataFromApigateway<CommonModel>(task: AWSTask<CommonModel>, completion: (ConnectionResult<CommonModel>) -> Void) {
+        
+        if let error = task.error {
+            completion(.failure(.serverError(error: error)))
+        } else if let resultData = task.result {
+            completion(.success(resultData))
+        } else {
+            completion(.failure(.missingData))
+        }
+        
+    }
     
     public static var shared = APIGatewayManager()
     
@@ -476,6 +507,39 @@ class APIGatewayManager {
         
     }
     
+    
+    /// Description : get user followers from server.
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - page: page number for pagination logic
+    ///   - perPage: number of items in one page
+    ///   - completion: task result
+    /// - Throws: if userid does not exist, throw client error
+    /// - Author: Erkut Bas
+    func getUserFriendList(userid: String, page: Int, perPage: Int, completion: @escaping (ConnectionResult<REFriendList>) -> Void) throws {
+        
+        if userid.isEmpty {
+            throw ApiGatewayClientErrors.missingUserId
+        }
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            
+            if finished {
+                
+                self.client.friendsGet(userid: userid, authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
+                    
+                    self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
+                    
+                    return nil
+                })
+            }
+            
+        }
+
+    }
+    
+    
     func initiatePostOperations() {
         
         Share.shared.convertPostItemsToShare()
@@ -580,7 +644,7 @@ class APIGatewayManager {
                             
                             if let error = result.error {
                                 if error.code != 1 {
-                                    completion(.failure(error))
+                                    //completion(.failure(error))
                                 }
                             }
                             
@@ -625,7 +689,7 @@ class APIGatewayManager {
                             
                             if let error = result.error {
                                 if error.code != 1 {
-                                    completion(.failure(error))
+                                    //completion(.failure(error))
                                 }
                             }
                             

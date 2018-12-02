@@ -29,7 +29,7 @@ class VideoView: UIView {
     private var timer = Timer()
     private var isTimerRunning : Bool = false
     
-    weak var delegate : ShareDataProtocols!
+    weak var delegate : PostViewProtocols!
     
     lazy var mainView: UIView = {
         
@@ -210,8 +210,10 @@ class VideoView: UIView {
         
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, delegate: PostViewProtocols) {
         super.init(frame: frame)
+        
+        self.delegate = delegate
         
         initializeView()
         initiateVideoProcess()
@@ -754,6 +756,7 @@ extension VideoView : PostViewProtocols {
     func activationProcessOfVideoView(active: Bool) {
         
         self.activationManager(active: active)
+        self.delegate.committedCapturedVideo()
         
     }
     

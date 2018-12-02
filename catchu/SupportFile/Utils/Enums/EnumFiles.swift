@@ -94,6 +94,11 @@ enum SegmentedButtonChoise {
     case nothing
 }
 
+enum FriendRelationViewChoise {
+    case friend
+    case group
+}
+
 enum EnumContainerView {
     
     case containerViewFriend
@@ -163,6 +168,10 @@ enum ColorPalettes {
     case palette1
     case palette2
     case palette3
+}
+
+enum ApiGatewayClientErrors: Swift.Error {
+    case missingUserId
 }
 
 enum CustomVideoError: Swift.Error {

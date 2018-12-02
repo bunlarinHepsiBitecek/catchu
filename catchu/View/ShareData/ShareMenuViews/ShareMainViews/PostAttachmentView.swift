@@ -13,7 +13,7 @@ class PostAttachmentView: UIView {
     public var postAttachmentType : PostAttachmentTypes?
     private var isSelected : Bool = false
     
-    weak var delegate : ShareDataProtocols!
+    weak var delegate : PostViewProtocols!
     weak var delegateForViewController : ViewPresentationProtocols!
     
     lazy var containerView: UIView = {
@@ -173,11 +173,11 @@ extension PostAttachmentView {
         
     }
     
-    func setDelegationOfPostAttachmentView(delegate : ShareDataProtocols) {
+    func setDelegationOfPostAttachmentView(delegate : PostViewProtocols) {
         self.delegate = delegate
     }
     
-    func setDelegation(inputDelegate : ShareDataProtocols, inputViewControllerDelegate : ViewPresentationProtocols) {
+    func setDelegation(inputDelegate : PostViewProtocols, inputViewControllerDelegate : ViewPresentationProtocols) {
         
         self.delegate = inputDelegate
         self.delegateForViewController = inputViewControllerDelegate
@@ -237,12 +237,16 @@ extension PostAttachmentView {
             
             delegate.selectedPostAttachmentAnimations(selectedAttachmentType: type) { (finish) in
                 if finish {
-                    //self.delegateForViewController.directToContactsViewController(inputPostType: type)
+                    switch type {
+                    case .friends, .group:
+                        self.pushViewFriendRelationViewController(type: type)
+                    default:
+                        break
+                    }
                 }
             }
             
             setTintColor()
-            
             setPrivacy()
             
         }
@@ -293,6 +297,44 @@ extension PostAttachmentView {
         print("type : \(postAttachmentType!)")
         
         animationManagement()
+        
+    }
+    
+    func addTransitionToPresentationOfFriendRelationViewController() {
+        
+        let transition = CATransition()
+        transition.duration = Constants.AnimationValues.aminationTime_03
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        
+        if let window = self.window {
+            window.layer.add(transition, forKey: kCATransition)
+        }
+        
+    }
+    
+    func pushViewFriendRelationViewController(type : PostAttachmentTypes) {
+        
+        print("\(#function) starts : type : \(type)")
+        addTransitionToPresentationOfFriendRelationViewController()
+        
+        let friendRelationViewController = FriendRelationViewController()
+        let currentViewController = LoaderController.currentViewController()
+
+        switch type {
+        case .friends:
+            friendRelationViewController.friendRelationChoise = FriendRelationViewChoise.friend
+            
+        case .group:
+            friendRelationViewController.friendRelationChoise = FriendRelationViewChoise.group
+        default:
+            return
+        }
+        
+        currentViewController?.present(friendRelationViewController, animated: false, completion: {
+            print("presented")
+        })
         
     }
     
