@@ -134,6 +134,7 @@ struct Constants {
                 static let height_110 : CGFloat = 110
                 static let height_102 : CGFloat = 102
                 static let height_100 : CGFloat = 100
+                static let height_90 : CGFloat = 90
                 static let height_80 : CGFloat = 80
                 static let height_75 : CGFloat = 75
                 static let height_70 : CGFloat = 70
@@ -149,6 +150,7 @@ struct Constants {
                 static let height_20 : CGFloat = 20
                 static let height_10 : CGFloat = 10
                 static let height_2 : CGFloat = 2
+                static let height_0 : CGFloat = 0
             }
         }
         
@@ -157,6 +159,7 @@ struct Constants {
             static let constraint_100 : CGFloat = 100
             static let constraint_90 : CGFloat = 90
             static let constraint_70 : CGFloat = 70
+            static let constraint_60 : CGFloat = 60
             static let constraint_50 : CGFloat = 50
             static let constraint_42 : CGFloat = 42
             static let constraint_40 : CGFloat = 40

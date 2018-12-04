@@ -177,6 +177,7 @@
 "saySomething" = "Say something...";
 "gettingFriends" = "Getting Friends...";
 "gettingGroup" = "Getting Group...";
+"noneFollowers" = "There is no follower 😢";
 
 // cloud
 "cloudFetching" = "Fetching from iCloud...";

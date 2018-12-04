@@ -249,3 +249,37 @@ enum ExploreType {
     case facebook
     case contact
 }
+
+enum TableViewState: String {
+    
+    case suggest
+    case loading
+    case populate
+    case empty
+    case error
+    
+}
+
+enum TableViewSectionTitle : String {
+    case Friends
+    case Groups
+    case None = ""
+}
+
+enum TableViewRowSelected : String {
+    case selected
+    case deSelected
+}
+
+enum CollectionViewActivation : String {
+    case enable
+    case disable
+}
+
+enum CollectionViewState: String {
+    case suggest
+    case loading
+    case populate
+    case empty
+    case error
+}

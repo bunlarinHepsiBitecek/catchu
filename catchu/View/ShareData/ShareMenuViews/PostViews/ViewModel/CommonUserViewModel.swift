@@ -11,9 +11,14 @@ import UIKit
 class CommonUserViewModel: CommonViewModelItem {
     
     var user : User?
+    var userSelected = CommonDynamic(TableViewRowSelected.deSelected)
     
     init(user : User?) {
         self.user = user
+    }
+    
+    func selectUserManagement(choise : TableViewRowSelected) {
+        userSelected.value = choise
     }
     
 }

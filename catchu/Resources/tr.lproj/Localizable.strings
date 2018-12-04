@@ -137,6 +137,7 @@
 "saySomething" = "Bir şeyler söyle...";
 "gettingFriends" = "Arkadaş Seçiliyor...";
 "gettingGroup" = "Grup Seçiliyor...";
+"noneFollowers" = "Takipçiniz yok 😢";
 
 // cloud
 "cloudFetching" = "iCloud'dan çekiliyor...";

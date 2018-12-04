@@ -10,15 +10,20 @@ import UIKit
 
 class FriendsViewModel: BaseViewModel, CommonViewModel {
     
-    var isFriendDataLoading = CommonDynamic(false)
-    var reloadTableView = CommonDynamic(false)
-    
     var friendArray = [CommonViewModelItem]()
+    var state = CommonDynamic(TableViewState.suggest)
+    var selectedListActivationState = CommonDynamic(CollectionViewActivation.disable)
+    var sectionTitle = TableViewSectionTitle.None
     
     func getUserFollowers() {
         
+        // let's tell view, data is loading
+        state.value = .loading
+        
+        guard let userid = User.shared.userid else { return }
+        
         do {
-            try APIGatewayManager.shared.getUserFriendList(userid: "", page: 1, perPage: 1) { (result) in
+            try APIGatewayManager.shared.getUserFriendList(userid: userid, page: 1, perPage: 1) { (result) in
             
                 self.handleAwsTaskResponse(networkResult: result)
             }
@@ -34,6 +39,26 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
         
     }
     
+    private func createFriendArrayData(reUserProfilePropertiesList : [REUserProfileProperties])  {
+        
+        print("\(#function) starts")
+        
+        // remove all items in friendArray
+        friendArray.removeAll()
+        
+        for item in reUserProfilePropertiesList {
+            let newUser = User(user: item)
+            friendArray.append(CommonUserViewModel(user: newUser))
+        }
+        
+        state.value = friendArray.count == 0 ? .empty : .populate
+        sectionTitle = .Friends
+        
+    }
+    
+    /// Description : CommonViewModel protocol
+    ///
+    /// - Parameter networkResult: any network result handler
     func handleAwsTaskResponse<AnyModel>(networkResult: ConnectionResult<AnyModel>) {
         
         switch networkResult {
@@ -42,10 +67,12 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
                 print("data to friendList casting is ok")
                 
                 if let businessError = data.error, let code = businessError.code, code != ApiLambdaError.success.rawValue {
-                    print("Lambda error : \(businessError.message)")
+                    print("Lambda error : \(String(describing: businessError.message))")
                 }
                 
-                
+                if let resultArray = data.resultArray {
+                    self.createFriendArrayData(reUserProfilePropertiesList: resultArray)
+                }
                 
             }
             
@@ -65,7 +92,28 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
             
         }
         
-        
     }
     
+    func checkIfSelectedFriendExist() {
+        
+        if let array = friendArray as? [CommonUserViewModel] {
+            for item in array {
+                if item.userSelected.value == .selected {
+                    if selectedListActivationState.value == .disable {
+                        selectedListActivationState.value = .enable
+                        //return
+                    }
+                    
+                    return
+                    
+                }
+            }
+        }
+        
+        selectedListActivationState.value = .disable
+    }
+    
+    
+    
 }
+

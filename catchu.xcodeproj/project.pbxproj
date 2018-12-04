@@ -88,7 +88,7 @@
 		45A496E7217F4D5100E6605B /* PhoneViewConfirmationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A496E6217F4D5100E6605B /* PhoneViewConfirmationController.swift */; };
 		45A496EB217F577E00E6605B /* FeedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A496EA217F577E00E6605B /* FeedMapView.swift */; };
 		45A8F9A521999229000CB357 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9A421999229000CB357 /* REProvider.swift */; };
-		45A8F9A9219B2B91000CB357 /* SearcViewControllerNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9A8219B2B91000CB357 /* SearcViewControllerNew.swift */; };
+		45A8F9A9219B2B91000CB357 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9A8219B2B91000CB357 /* SearchViewController.swift */; };
 		45A8F9AD219C3B91000CB357 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A8F9AC219C3B91000CB357 /* SearchViewModel.swift */; };
 		45ABCA76215E27BD00CB52B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ABCA75215E27BD00CB52B9 /* LoginView.swift */; };
 		45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7DE8216F4CDC0081C6F6 /* REProvider.swift */; };
@@ -149,6 +149,13 @@
 		A7130296214816EE005318BD /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7130295214816EE005318BD /* CircleView.swift */; };
 		A716902C21B22E850039287B /* CommonDynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716902B21B22E850039287B /* CommonDynamic.swift */; };
 		A716902E21B233E30039287B /* CommonUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716902D21B233E30039287B /* CommonUserViewModel.swift */; };
+		A716903021B3F1D90039287B /* FriendRelationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716902F21B3F1D90039287B /* FriendRelationView.swift */; };
+		A716903221B3F4360039287B /* FriendRelationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903121B3F4360039287B /* FriendRelationTableViewCell.swift */; };
+		A716903421B3F6B30039287B /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903321B3F6B30039287B /* Common.swift */; };
+		A716903621B452790039287B /* RelationCollectionLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903521B452790039287B /* RelationCollectionLoadingView.swift */; };
+		A716903821B69CF30039287B /* FriendRelationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903721B69CF30039287B /* FriendRelationSelectionView.swift */; };
+		A716903A21B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */; };
+		A716903C21B6D03F0039287B /* SelectedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903B21B6D03F0039287B /* SelectedFriendsViewModel.swift */; };
 		A71CC353215B417B002A2468 /* CameraGalleryFunctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC352215B417B002A2468 /* CameraGalleryFunctionView.swift */; };
 		A71CC356215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */; };
 		A71CC358215B44F7002A2468 /* PhotoCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */; };
@@ -189,13 +196,6 @@
 		A722EC4621A5881800E9BD3B /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = A722EC4521A5881800E9BD3B /* map.png */; };
 		A722EC4821A5CA7E00E9BD3B /* PostContentCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722EC4721A5CA7E00E9BD3B /* PostContentCheckView.swift */; };
 		A7276D23210E12F800CAC67C /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = A7276D22210E12F700CAC67C /* awsconfiguration.json */; };
-		A7276D392110790100CAC67C /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D382110790100CAC67C /* SearchView.swift */; };
-		A7276D3C2110797600CAC67C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D3B2110797600CAC67C /* SearchViewController.swift */; };
-		A7276D3E21107A9900CAC67C /* ExtensionSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D3D21107A9900CAC67C /* ExtensionSearchViewController.swift */; };
-		A7276D402110935800CAC67C /* ContainerSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D3F2110935800CAC67C /* ContainerSearchResultViewController.swift */; };
-		A7276D42211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D41211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift */; };
-		A7276D462110947B00CAC67C /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D452110947B00CAC67C /* SearchResultTableViewCell.swift */; };
-		A7276D482110A5D000CAC67C /* SearchProcessTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D472110A5D000CAC67C /* SearchProcessTableViewCell.swift */; };
 		A7276D542110C5F400CAC67C /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D502110C5F400CAC67C /* Empty.swift */; };
 		A7276D5C2110C67900CAC67C /* REFriendList_error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D592110C67800CAC67C /* REFriendList_error.swift */; };
 		A7276D5D2110C67900CAC67C /* REFriendList_resultArray_item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D5A2110C67800CAC67C /* REFriendList_resultArray_item.swift */; };
@@ -465,7 +465,7 @@
 		45A496E6217F4D5100E6605B /* PhoneViewConfirmationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewConfirmationController.swift; sourceTree = "<group>"; };
 		45A496EA217F577E00E6605B /* FeedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMapView.swift; sourceTree = "<group>"; };
 		45A8F9A421999229000CB357 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProvider.swift; sourceTree = "<group>"; };
-		45A8F9A8219B2B91000CB357 /* SearcViewControllerNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearcViewControllerNew.swift; sourceTree = "<group>"; };
+		45A8F9A8219B2B91000CB357 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		45A8F9AC219C3B91000CB357 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		45ABCA75215E27BD00CB52B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		45AE7DE8216F4CDC0081C6F6 /* REProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REProvider.swift; sourceTree = "<group>"; };
@@ -526,6 +526,13 @@
 		A7130295214816EE005318BD /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		A716902B21B22E850039287B /* CommonDynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonDynamic.swift; sourceTree = "<group>"; };
 		A716902D21B233E30039287B /* CommonUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUserViewModel.swift; sourceTree = "<group>"; };
+		A716902F21B3F1D90039287B /* FriendRelationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationView.swift; sourceTree = "<group>"; };
+		A716903121B3F4360039287B /* FriendRelationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationTableViewCell.swift; sourceTree = "<group>"; };
+		A716903321B3F6B30039287B /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		A716903521B452790039287B /* RelationCollectionLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationCollectionLoadingView.swift; sourceTree = "<group>"; };
+		A716903721B69CF30039287B /* FriendRelationSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationSelectionView.swift; sourceTree = "<group>"; };
+		A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
+		A716903B21B6D03F0039287B /* SelectedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedFriendsViewModel.swift; sourceTree = "<group>"; };
 		A71CC352215B417B002A2468 /* CameraGalleryFunctionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGalleryFunctionView.swift; sourceTree = "<group>"; };
 		A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCell2.swift; sourceTree = "<group>"; };
 		A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell2.swift; sourceTree = "<group>"; };
@@ -566,13 +573,6 @@
 		A722EC4521A5881800E9BD3B /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map.png; sourceTree = "<group>"; };
 		A722EC4721A5CA7E00E9BD3B /* PostContentCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentCheckView.swift; sourceTree = "<group>"; };
 		A7276D22210E12F700CAC67C /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
-		A7276D382110790100CAC67C /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		A7276D3B2110797600CAC67C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		A7276D3D21107A9900CAC67C /* ExtensionSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSearchViewController.swift; sourceTree = "<group>"; };
-		A7276D3F2110935800CAC67C /* ContainerSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerSearchResultViewController.swift; sourceTree = "<group>"; };
-		A7276D41211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionContainerSearchResultViewController.swift; sourceTree = "<group>"; };
-		A7276D452110947B00CAC67C /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
-		A7276D472110A5D000CAC67C /* SearchProcessTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProcessTableViewCell.swift; sourceTree = "<group>"; };
 		A7276D502110C5F400CAC67C /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		A7276D592110C67800CAC67C /* REFriendList_error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFriendList_error.swift; sourceTree = "<group>"; };
 		A7276D5A2110C67800CAC67C /* REFriendList_resultArray_item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFriendList_resultArray_item.swift; sourceTree = "<group>"; };
@@ -1339,24 +1339,10 @@
 			path = Swift;
 			sourceTree = "<group>";
 		};
-		A7276D37211078EF00CAC67C /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				A7276D382110790100CAC67C /* SearchView.swift */,
-				A7276D452110947B00CAC67C /* SearchResultTableViewCell.swift */,
-				A7276D472110A5D000CAC67C /* SearchProcessTableViewCell.swift */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
 		A7276D3A2110795400CAC67C /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				A7276D3B2110797600CAC67C /* SearchViewController.swift */,
-				A7276D3D21107A9900CAC67C /* ExtensionSearchViewController.swift */,
-				A7276D3F2110935800CAC67C /* ContainerSearchResultViewController.swift */,
-				A7276D41211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift */,
-				45A8F9A8219B2B91000CB357 /* SearcViewControllerNew.swift */,
+				45A8F9A8219B2B91000CB357 /* SearchViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1604,7 +1590,6 @@
 				A7E78032218F6FE700E76E3C /* ContactViews */,
 				A765A96B213C887700881F1B /* GroupCreation */,
 				A77D3FD12131822500D016D6 /* GroupInformation */,
-				A7276D37211078EF00CAC67C /* Search */,
 				A79A767A20C5C77E00FCE198 /* Collections */,
 				A79A766520C4B45900FCE198 /* FriendGroupListView */,
 			);
@@ -1779,6 +1764,7 @@
 				A7E4F68E21B17BAA0063E00B /* FriendsViewModel.swift */,
 				A716902B21B22E850039287B /* CommonDynamic.swift */,
 				A716902D21B233E30039287B /* CommonUserViewModel.swift */,
+				A716903B21B6D03F0039287B /* SelectedFriendsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1787,6 +1773,12 @@
 			isa = PBXGroup;
 			children = (
 				A7E4F69321B1B8BF0063E00B /* FriendGroupRelationView.swift */,
+				A716902F21B3F1D90039287B /* FriendRelationView.swift */,
+				A716903121B3F4360039287B /* FriendRelationTableViewCell.swift */,
+				A716903321B3F6B30039287B /* Common.swift */,
+				A716903521B452790039287B /* RelationCollectionLoadingView.swift */,
+				A716903721B69CF30039287B /* FriendRelationSelectionView.swift */,
+				A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */,
 			);
 			path = RelationInfoPackage;
 			sourceTree = "<group>";
@@ -2137,6 +2129,7 @@
 				A76DF54E20CC308A00B98A09 /* EnumFiles.swift in Sources */,
 				A721C0032117ADC70037A62D /* ExtensionContainerGroupViewController.swift in Sources */,
 				A71CC353215B417B002A2468 /* CameraGalleryFunctionView.swift in Sources */,
+				A716903C21B6D03F0039287B /* SelectedFriendsViewModel.swift in Sources */,
 				454285AC214A95FC00F68FAC /* REBucketUpload.swift in Sources */,
 				4538A065217752010044A79D /* CountryViewController.swift in Sources */,
 				454285B7214A968400F68FAC /* REPostRequest.swift in Sources */,
@@ -2159,7 +2152,6 @@
 				454285B4214A962000F68FAC /* RECommentResponse.swift in Sources */,
 				A7E2F85D2114A6F700214066 /* REUserProfile.swift in Sources */,
 				A71D188C21A723FB00DFC4A9 /* CameraImagePickerManager.swift in Sources */,
-				A7276D402110935800CAC67C /* ContainerSearchResultViewController.swift in Sources */,
 				A75B4598213307DE009D2701 /* ExitTableViewCell.swift in Sources */,
 				A7086B53215B554100C570C1 /* ImageManagementView.swift in Sources */,
 				A7812EB12124981400460117 /* SlidingView4.swift in Sources */,
@@ -2222,20 +2214,22 @@
 				A77D98782159175F002F9A02 /* VideoMenuView.swift in Sources */,
 				A7928FD6217D2ADE0005D811 /* Sticker.swift in Sources */,
 				A7348E13217222BC005FB900 /* FilterColorCollectionViewCell.swift in Sources */,
-				A7276D42211093F500CAC67C /* ExtensionContainerSearchResultViewController.swift in Sources */,
 				A70B7728214AA2AA00494889 /* CustomPermissionViewManager.swift in Sources */,
 				A7087934212C597F0012C7F6 /* EditableProfileView.swift in Sources */,
-				45A8F9A9219B2B91000CB357 /* SearcViewControllerNew.swift in Sources */,
+				45A8F9A9219B2B91000CB357 /* SearchViewController.swift in Sources */,
 				A774ACA2213204FB00848B79 /* GroupInfoHeaderTableViewCell.swift in Sources */,
 				A722EC3821A4057E00E9BD3B /* SaySomethingView.swift in Sources */,
 				45A8F9A521999229000CB357 /* REProvider.swift in Sources */,
 				45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */,
+				A716903A21B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift in Sources */,
 				A742407E214694C600E20A58 /* CustomCamera.swift in Sources */,
 				454815B8215EABB0009684E1 /* PasswordResetView.swift in Sources */,
 				A75E80A5212EA08F00EA0D03 /* MediaPermissionUnAuthorizedViewController.swift in Sources */,
 				A762B75E21641ADB00DBB4EF /* PostAttachmentView.swift in Sources */,
+				A716903621B452790039287B /* RelationCollectionLoadingView.swift in Sources */,
 				45E8B5F8215A9B3A005AD00A /* APIClientModel.swift in Sources */,
-				A7276D482110A5D000CAC67C /* SearchProcessTableViewCell.swift in Sources */,
+				A716903021B3F1D90039287B /* FriendRelationView.swift in Sources */,
+				A716903421B3F6B30039287B /* Common.swift in Sources */,
 				A7C1C3532197169B0096CEA6 /* ExploreChoiseCollectionViewCell.swift in Sources */,
 				A7130296214816EE005318BD /* CircleView.swift in Sources */,
 				45AE7DF7216F99FA0081C6F6 /* LikeViewController.swift in Sources */,
@@ -2311,7 +2305,6 @@
 				A7F35D912116811B005DA851 /* REFriendRequestList.swift in Sources */,
 				45AE7DF3216F8E4D0081C6F6 /* LikeViewModel.swift in Sources */,
 				A7D4E9742151444700081859 /* ColorPaletteCollectionViewCell.swift in Sources */,
-				A7276D3C2110797600CAC67C /* SearchViewController.swift in Sources */,
 				A7C1C34E2196F16A0096CEA6 /* ExploreView.swift in Sources */,
 				A7C92D8821500F5600432D70 /* CustomCapturedMainBackground.swift in Sources */,
 				A762893C215E56A40083EE57 /* CustomScrollViewContainer.swift in Sources */,
@@ -2319,9 +2312,9 @@
 				A708792E212B250A0012C7F6 /* REGroupRequest_groupParticipantArray_item.swift in Sources */,
 				A7E2F85B2114A6F700214066 /* REUserProfile_error.swift in Sources */,
 				45AE7DED216F813B0081C6F6 /* REProviderList.swift in Sources */,
+				A716903821B69CF30039287B /* FriendRelationSelectionView.swift in Sources */,
 				454285AB214A95FC00F68FAC /* REPostListResponse.swift in Sources */,
 				A708792121276CF80012C7F6 /* Item3CollectionViewCell.swift in Sources */,
-				A7276D3E21107A9900CAC67C /* ExtensionSearchViewController.swift in Sources */,
 				A710F421213FCD8100ECC5DA /* ShareDataView.swift in Sources */,
 				451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */,
 				A722EC23219EFA6600E9BD3B /* ContactRequestView.swift in Sources */,
@@ -2365,11 +2358,11 @@
 				A7EC57D3211B3F390078F631 /* REUserProfileProperties.swift in Sources */,
 				A7817AC02134AE1B00ECCF8C /* ParticipantListViewController.swift in Sources */,
 				458AAB2E2181B88700F85A9B /* ConstantsViews.swift in Sources */,
-				A7276D462110947B00CAC67C /* SearchResultTableViewCell.swift in Sources */,
 				A74240822146DB4D00E20A58 /* CustomCameraCapturedImageView.swift in Sources */,
 				45211DE520D81793009347B1 /* MapShareView.swift in Sources */,
 				A7087919212756F90012C7F6 /* DataPage4CollectionViewCell.swift in Sources */,
 				453548172152689D00FC81F5 /* DynamicTextView.swift in Sources */,
+				A716903221B3F4360039287B /* FriendRelationTableViewCell.swift in Sources */,
 				A7276D5E2110C67900CAC67C /* REFriendList.swift in Sources */,
 				458F0D742160CCDB00FC4701 /* LoginViewController.swift in Sources */,
 				4538A0712178E29A0044A79D /* UIButtonExtensions.swift in Sources */,
@@ -2390,7 +2383,6 @@
 				A7B6BC2221A88AB700D11A78 /* StickerCommonView.swift in Sources */,
 				A71F65B1216B7276002A7C5C /* FinalShareSaySomethingView.swift in Sources */,
 				45BFD57421919BA600CA8C0E /* MenuTabViewCell.swift in Sources */,
-				A7276D392110790100CAC67C /* SearchView.swift in Sources */,
 				A77D98712158EC48002F9A02 /* ShareMenuViews.swift in Sources */,
 				A708792321276D080012C7F6 /* Item4CollectionViewCell.swift in Sources */,
 				A710F42521401CDA00ECC5DA /* ShareTypeSliderView.swift in Sources */,

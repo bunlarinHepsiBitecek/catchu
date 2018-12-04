@@ -86,7 +86,7 @@ extension MainTabBarViewController : UITabBarControllerDelegate {
         print("tabBarController starts")
         print("tabBarController : \(tabBarController.selectedIndex)")
         
-        if tabBarController.selectedIndex == 2 {
+        if tabBarController.selectedIndex == 1 {
             
             add_PostViewController()
 //            add_ShareDataViewController2()

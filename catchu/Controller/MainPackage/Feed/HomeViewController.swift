@@ -90,7 +90,7 @@ extension HomeViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         print("searchBarShouldBeginEditing")
-        let searcVC = SearcViewControllerNew()
+        let searcVC = SearchViewController()
         self.navigationController?.pushViewController(searcVC, animated: true)
         return false
     }

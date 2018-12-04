@@ -96,34 +96,6 @@
       "idiom" : "ios-marketing",
       "filename" : "App Icon Main - 1024x1024.png",
       "scale" : "1x"
-    },
-    {
-      "size" : "29x29",
-      "idiom" : "ipad",
-      "filename" : "Settings Icon - 29x29.png",
-      "unassigned" : true,
-      "scale" : "1x"
-    },
-    {
-      "size" : "29x29",
-      "idiom" : "ipad",
-      "filename" : "Settings Icon - 29x29@2x.png",
-      "unassigned" : true,
-      "scale" : "2x"
-    },
-    {
-      "size" : "40x40",
-      "idiom" : "ipad",
-      "filename" : "Spotlight Icon - 40x40.png",
-      "unassigned" : true,
-      "scale" : "1x"
-    },
-    {
-      "size" : "40x40",
-      "idiom" : "ipad",
-      "filename" : "Spotlight Icon - 40x40@2x-1.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {

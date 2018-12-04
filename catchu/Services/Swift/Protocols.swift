@@ -281,14 +281,4 @@ extension ActionSheetProtocols {
     func returnOperations(selectedProcessType : ActionButtonOperation) {}
 }
 
-// view model protocols
-protocol CommonViewModel {
-
-    //func handleAwsTaskResponse<AnyModel>(networkResult : ConnectionResult<AnyModel>)
-    //func handleAwsTaskResponse<AnyModel>(networkResult : ConnectionResult<AnyModel>) where AnyModel : AnyObject
-    func handleAwsTaskResponse<AnyModel>(networkResult: ConnectionResult<AnyModel>)
-    
-}
-
-protocol CommonViewModelItem {}
 

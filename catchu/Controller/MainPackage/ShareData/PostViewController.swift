@@ -35,7 +35,7 @@ class PostViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }*/
-
+    
 }
 
 // MARK: - major functions

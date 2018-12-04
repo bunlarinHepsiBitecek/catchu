@@ -244,7 +244,6 @@ struct LocalizedConstants {
         static let onlyMe = NSLocalizedString("onlyMe", comment: "")
         static let allFollowers = NSLocalizedString("allFollowers", comment: "")
         
-        
     }
     
     struct PostAttachmentInformation {
@@ -256,6 +255,8 @@ struct LocalizedConstants {
         static let gettingFriends = NSLocalizedString("gettingFriends", comment: "")
         static let thereIsNothingToPost = NSLocalizedString("thereIsNothingToPost", comment: "")
         static let saySomething = NSLocalizedString("saySomething", comment: "")
+        static let noneFollowers = NSLocalizedString("noneFollowers", comment: "")
+        
         
     }
     

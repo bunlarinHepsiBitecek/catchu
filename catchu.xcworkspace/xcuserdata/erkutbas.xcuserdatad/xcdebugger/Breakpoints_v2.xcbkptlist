@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/PostMainView.swift"
-            timestampString = "565311753.664387"
+            timestampString = "565484681.125669"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "238"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/PostMainView.swift"
-            timestampString = "565311753.664456"
+            timestampString = "565484681.1257451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "245"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/SaySomethingView.swift"
-            timestampString = "565401234.967133"
+            timestampString = "565629740.929499"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "547"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/SaySomethingView.swift"
-            timestampString = "565401234.9672019"
+            timestampString = "565629740.929574"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "507"
@@ -73,44 +73,108 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-            timestampString = "565401234.967266"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/FriendsViewModel.swift"
+            timestampString = "565629740.929639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
-            landmarkName = "getUserFollowers()"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "checkIfSelectedFriendExist()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/FriendsViewModel.swift"
+            timestampString = "565629740.929704"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "checkIfSelectedFriendExist()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.929763"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.9298249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.92988"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "catchu.FriendGroupRelationView.getUserFollowers() -&gt; ()"
+                  symbolName = "catchu.FriendRelationView.(friendSelectionCollectionAnimation in _6C46BAC1CD9F504EB2936AAC16C7AAD3)(activation: catchu.CollectionViewActivation) -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-                  timestampString = "565401235.290381"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/FriendRelationView.swift"
+                  timestampString = "565627427.352905"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "157"
-                  endingLineNumber = "157"
-                  offsetFromSymbolStart = "289">
+                  startingLineNumber = "194"
+                  endingLineNumber = "194"
+                  offsetFromSymbolStart = "966">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (catchu.ConnectionResult&lt;catchu.REFriendList&gt;) -&gt; () in catchu.FriendGroupRelationView.getUserFollowers() -&gt; ()"
+                  symbolName = "closure #1 () -&gt; () in catchu.FriendRelationView.(friendSelectionCollectionAnimation in _6C46BAC1CD9F504EB2936AAC16C7AAD3)(activation: catchu.CollectionViewActivation) -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-                  timestampString = "565401235.292477"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/FriendRelationView.swift"
+                  timestampString = "565627427.354876"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "159"
-                  endingLineNumber = "159"
-                  offsetFromSymbolStart = "34">
+                  startingLineNumber = "197"
+                  endingLineNumber = "197"
+                  offsetFromSymbolStart = "41">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -121,13 +185,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-            timestampString = "565401234.967645"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.929934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
-            landmarkName = "initiateViewSettings()"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,13 +201,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-            timestampString = "565401234.967921"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.929987"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
-            landmarkName = "handleResponse(_:)"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.93004"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/FriendRelationView.swift"
+            timestampString = "565629740.9300931"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "friendSelectionCollectionAnimation(activation:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

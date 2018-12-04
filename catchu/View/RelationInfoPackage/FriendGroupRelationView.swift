@@ -12,6 +12,10 @@ class FriendGroupRelationView: UIView {
 
     weak var delegate : ViewPresentationProtocols!
     private var friendRelationChoise : FriendRelationViewChoise!
+    private var friendRelationView : FriendRelationView!
+    
+    // to make it segmented button visible to user or not
+    private var segmentedButtonHeigthConstraints = NSLayoutConstraint()
     
     lazy var informationContainer: UIView = {
         let temp = UIView()
@@ -131,6 +135,13 @@ class FriendGroupRelationView: UIView {
         return temp
     }()
     
+    lazy var tableViewContainer: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+        return temp
+    }()
+    
     init(frame: CGRect, delegate : ViewPresentationProtocols, friendRelationChoise: FriendRelationViewChoise) {
         super.init(frame: frame)
         self.delegate = delegate
@@ -149,64 +160,22 @@ class FriendGroupRelationView: UIView {
 // MARK: - major functions
 extension FriendGroupRelationView {
     
-    func getUserFollowers() {
+    private func initiateViewSettings() {
         
-        guard let userid = User.shared.userid else { return }
-        
-        do {
-            try APIGatewayManager.shared.getUserFriendList(userid: userid, page: 1, perPage: 1) { (result) in
-                
-                self.handleResponse(result)
-                
-            }
-            
-        } catch let error as ApiGatewayClientErrors {
-            if error == .missingUserId {
-                print("\(#function) : missing userid")
-            }
-        }
-        catch  {
-            print("")
-        }
-        
-    }
-    
-    private func handleResponse<T>(_ data: ConnectionResult<T>) {
-        
-        switch data {
-        case .success(let data):
-            if let data = data as? REFriendList {
-                print("data : \(data.resultArray)")
-            }
-            
-        case .failure(let apiConnectionErrors):
-            
-            print("fail")
-            
-        default:
-            break
-        }
-        
-    }
-    
-    
-    func initiateViewSettings() {
-        
-        configureViewSettings()
         addViews()
-        
-        getUserFollowers()
+        configureViewSettings()
+        addFriendRelationView()
         
     }
     
-    func configureViewSettings() {
+    private func configureViewSettings() {
         
         configureSearchBarSettings()
         configureSegmentedButtonSettings()
         
     }
     
-    func configureSearchBarSettings() {
+    private func configureSearchBarSettings() {
         
         let textFieldInsideSearchBar = searchBar.value(forKey: Constants.searchBarProperties.searchField) as? UITextField
         
@@ -216,7 +185,7 @@ extension FriendGroupRelationView {
         searchBar.searchBarStyle = .minimal
     }
     
-    func configureSegmentedButtonSettings() {
+    private func configureSegmentedButtonSettings() {
         
         guard let friendRelationChoise = friendRelationChoise else { return }
         
@@ -232,15 +201,18 @@ extension FriendGroupRelationView {
         
     }
     
-    func segmentedButtonActivationManagement(active : Bool) {
+    private func segmentedButtonActivationManagement(active : Bool) {
         if active {
             segmentedButton.alpha = 1
+            segmentedButtonHeigthConstraints.constant = Constants.StaticViewSize.ViewSize.Height.height_30
         } else {
             segmentedButton.alpha = 0
+            segmentedButtonHeigthConstraints.constant = Constants.StaticViewSize.ViewSize.Height.height_0
         }
+        
     }
     
-    func addViews() {
+    private func addViews() {
         
         self.addSubview(informationContainer)
         self.informationContainer.addSubview(topicInformationView)
@@ -258,6 +230,8 @@ extension FriendGroupRelationView {
         self.addSubview(searchBar)
         self.addSubview(segmentedButton)
         
+        self.addSubview(tableViewContainer)
+        
         let safe = self.safeAreaLayoutGuide
         let safeInformationContainer = self.informationContainer.safeAreaLayoutGuide
         let safeCounterInformation = self.counterInformationView.safeAreaLayoutGuide
@@ -265,6 +239,9 @@ extension FriendGroupRelationView {
         let safeSelectedParticipant = self.selectedParticipantCount.safeAreaLayoutGuide
         let safeSliceCharacter = self.sliceCharacter.safeAreaLayoutGuide
         let safeSearchBar = self.searchBar.safeAreaLayoutGuide
+        let safeSegmentedButton = self.segmentedButton.safeAreaLayoutGuide
+        
+        segmentedButtonHeigthConstraints = segmentedButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_30)
         
         NSLayoutConstraint.activate([
             
@@ -313,21 +290,46 @@ extension FriendGroupRelationView {
             nextButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_30),
             nextButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_50),
             
-            searchBar.topAnchor.constraint(equalTo: safeInformationContainer.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
+            searchBar.topAnchor.constraint(equalTo: safeInformationContainer.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_0),
             searchBar.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             
             segmentedButton.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
             segmentedButton.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
-            segmentedButton.topAnchor.constraint(equalTo: safeSearchBar.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
-            segmentedButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_30),
+            segmentedButton.topAnchor.constraint(equalTo: safeSearchBar.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_0),
+            segmentedButtonHeigthConstraints,
+            
+            tableViewContainer.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            tableViewContainer.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            tableViewContainer.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            tableViewContainer.topAnchor.constraint(equalTo: safeSegmentedButton.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5)
             
             ])
         
     }
     
     @objc func dismissViewController(_ sender : UIButton) {
+        
         delegate.dismissViewController()
+    }
+    
+    private func addFriendRelationView() {
+        friendRelationView = FriendRelationView()
+        friendRelationView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.tableViewContainer.addSubview(friendRelationView)
+        
+        let safe = self.tableViewContainer.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            friendRelationView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            friendRelationView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            friendRelationView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            friendRelationView.topAnchor.constraint(equalTo: safe.topAnchor)
+            
+            ])
+            
     }
     
 }
