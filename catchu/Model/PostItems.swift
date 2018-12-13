@@ -38,6 +38,19 @@ class PostItems {
         
     }
     
+    func createSelectedFriendArray(userList: Array<User>) {
+        if PostItems.shared.selectedFriendArray == nil {
+            PostItems.shared.selectedFriendArray = Array<User>()
+        } else {
+            PostItems.shared.selectedFriendArray?.removeAll()
+        }
+        
+        for item in userList {
+            PostItems.shared.selectedFriendArray?.append(item)
+        }
+        
+    }
+    
     func setSnapShotOfMessage(inputImage : UIImage) {
         PostItems.shared.messageScreenShot = inputImage
     }

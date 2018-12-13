@@ -39,7 +39,7 @@ protocol CommonViewModel {
 protocol CommonViewModelItem {}
 
 protocol CommonDesignableCell {
-    func initiateCellDesign(item: CommonViewModelItem)
+    func initiateCellDesign(item: CommonViewModelItem?)
 }
 
 protocol TakasiDenemeProtocol {

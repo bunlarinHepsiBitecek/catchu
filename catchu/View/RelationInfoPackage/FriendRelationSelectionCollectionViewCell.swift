@@ -14,15 +14,14 @@ class FriendRelationSelectionCollectionViewCell: BaseCollectionCell {
     
     lazy var profilePictureView: UIImageView = {
         
-        let temp = UIImageView()
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_60, height: Constants.StaticViewSize.ViewSize.Width.width_60))
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.contentMode = .scaleAspectFill
-        temp.layer.borderWidth = 1
-        temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_50
+        //temp.layer.borderWidth = 1
+        //temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_30
         temp.clipsToBounds = true
-        
         return temp
     }()
     
@@ -51,7 +50,9 @@ class FriendRelationSelectionCollectionViewCell: BaseCollectionCell {
     
     lazy var friendName: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 10, weight: .medium)
+        label.textAlignment = .center
+        label.contentMode = .center
         label.text = "catchuname"
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +61,9 @@ class FriendRelationSelectionCollectionViewCell: BaseCollectionCell {
     }()
     
     override func setupViews() {
+        
+        self.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
         addSubviews()
     }
     
@@ -71,7 +75,7 @@ extension FriendRelationSelectionCollectionViewCell: CommonDesignableCell {
     func addSubviews() {
         
         self.contentView.addSubview(profilePictureView)
-        self.profilePictureView.addSubview(iconContainer)
+        self.contentView.addSubview(iconContainer)
         self.iconContainer.addSubview(iconImageView)
         self.contentView.addSubview(friendName)
         
@@ -81,8 +85,9 @@ extension FriendRelationSelectionCollectionViewCell: CommonDesignableCell {
         
         NSLayoutConstraint.activate([
             
-            profilePictureView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
             profilePictureView.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
+            //profilePictureView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
+            profilePictureView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
             profilePictureView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_60),
             profilePictureView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_60),
             
@@ -99,13 +104,13 @@ extension FriendRelationSelectionCollectionViewCell: CommonDesignableCell {
             friendName.topAnchor.constraint(equalTo: safeProfileImage.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
             friendName.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             friendName.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            friendName.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_10),
+            friendName.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_15),
             
             ])
         
     }
     
-    func initiateCellDesign(item: CommonViewModelItem) {
+    func initiateCellDesign(item: CommonViewModelItem?) {
         
         guard let userViewModel = item as? CommonUserViewModel else { return }
         
@@ -113,17 +118,18 @@ extension FriendRelationSelectionCollectionViewCell: CommonDesignableCell {
         
         guard let user = userViewModel.user else { return }
         
+        if let userName = user.username {
+            self.friendName.text = userName
+        }
+        
         if let name = user.name {
-            self.friendName.text = name
             self.profilePictureView.setImageInitialPlaceholder(name, circular: true)
+        } else {
+            self.profilePictureView.image = UIImage(named: "user.png")
         }
         
         if let url = user.profilePictureUrl {
             self.profilePictureView.setImagesFromCacheOrFirebaseForFriend(url)
-        }
-        
-        userViewModel.userSelected.bind { (animation) in
-            print("clouse triggered")
         }
         
     }

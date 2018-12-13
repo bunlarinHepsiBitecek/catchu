@@ -12,6 +12,7 @@ class CommonUserViewModel: CommonViewModelItem {
     
     var user : User?
     var userSelected = CommonDynamic(TableViewRowSelected.deSelected)
+    var isUserSearchable = SearchableModes.searchable
     
     init(user : User?) {
         self.user = user
@@ -19,6 +20,15 @@ class CommonUserViewModel: CommonViewModelItem {
     
     func selectUserManagement(choise : TableViewRowSelected) {
         userSelected.value = choise
+    }
+    
+    func displayProperties()  {
+        
+        print("\(#function) starts")
+        print("username : \(user?.username), name : \(user?.name), userid : \(user?.userid)")
+        print("userSelected : \(userSelected.value.rawValue)")
+        print("isUserSearchable : \(isUserSearchable)")
+        
     }
     
 }

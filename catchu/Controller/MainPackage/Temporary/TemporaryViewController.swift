@@ -162,7 +162,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
             
             if finished {
-                client.friendsGet(userid: userid, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                client.friendsGet(userid: userid, page: "1", perPage: "30", authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
                     
                     if taskFriendList.error != nil {
                         

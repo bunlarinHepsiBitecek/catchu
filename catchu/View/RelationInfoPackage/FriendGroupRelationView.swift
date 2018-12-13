@@ -11,11 +11,22 @@ import UIKit
 class FriendGroupRelationView: UIView {
 
     weak var delegate : ViewPresentationProtocols!
+    weak var delegatePostView : PostViewProtocols!
+    
     private var friendRelationChoise : FriendRelationViewChoise!
+    private var friendRelationPurpose : FriendRelationViewPurpose!
     private var friendRelationView : FriendRelationView!
+    private var groupRelationView : GroupRelationView!
+
+    // caller view controller choise
+    
     
     // to make it segmented button visible to user or not
     private var segmentedButtonHeigthConstraints = NSLayoutConstraint()
+    
+    // post target informations
+    private var selectedFriendList = Array<User>()
+    private var selectedGroupList = Array<Group>()
     
     lazy var informationContainer: UIView = {
         let temp = UIView()
@@ -56,7 +67,7 @@ class FriendGroupRelationView: UIView {
         
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         temp.textAlignment = .right
         temp.contentMode = .center
         temp.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -70,7 +81,7 @@ class FriendGroupRelationView: UIView {
         
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         temp.textAlignment = .center
         temp.contentMode = .center
         temp.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -85,7 +96,7 @@ class FriendGroupRelationView: UIView {
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.light)
+        temp.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         temp.textAlignment = .left
         temp.contentMode = .center
         temp.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -101,7 +112,7 @@ class FriendGroupRelationView: UIView {
         temp.isUserInteractionEnabled = true
         
         temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.cancel, for: .normal)
-        temp.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         temp.addTarget(self, action: #selector(dismissViewController(_:)), for: .touchUpInside)
         
         return temp
@@ -113,8 +124,10 @@ class FriendGroupRelationView: UIView {
         temp.isUserInteractionEnabled = true
         
         temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
-        temp.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-//        temp.addTarget(self, action: #selector(initiatePostProcess(_:)), for: .touchUpInside)
+        temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        temp.addTarget(self, action: #selector(nextPressed(_:)), for: .touchUpInside)
+        temp.isEnabled = false
+        temp.titleLabel?.lineBreakMode = .byWordWrapping
         
         return temp
     }()
@@ -124,6 +137,9 @@ class FriendGroupRelationView: UIView {
         let temp = UISearchBar()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
+        //temp.setShowsCancelButton(true, animated: true)
+        temp.placeholder = LocalizedConstants.SearchBar.searchFollower
+        temp.delegate = self
         
         return temp
     }()
@@ -132,20 +148,24 @@ class FriendGroupRelationView: UIView {
         let temp = UISegmentedControl()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
+        
+        temp.addTarget(self, action: #selector(FriendGroupRelationView.segmentedButtonClicked(_:)), for: UIControlEvents.valueChanged)
         return temp
     }()
     
     lazy var tableViewContainer: UIView = {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+        temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         return temp
     }()
     
-    init(frame: CGRect, delegate : ViewPresentationProtocols, friendRelationChoise: FriendRelationViewChoise) {
+    init(frame: CGRect, delegate : ViewPresentationProtocols, delegatePostView : PostViewProtocols, friendRelationChoise: FriendRelationViewChoise, friendRelationPurpose: FriendRelationViewPurpose) {
         super.init(frame: frame)
         self.delegate = delegate
+        self.delegatePostView = delegatePostView
         self.friendRelationChoise = friendRelationChoise
+        self.friendRelationPurpose = friendRelationPurpose
         initiateViewSettings()
         
     }
@@ -153,7 +173,6 @@ class FriendGroupRelationView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
 }
 
@@ -163,15 +182,37 @@ extension FriendGroupRelationView {
     private func initiateViewSettings() {
         
         addViews()
+        addFriendRelationViews(choise: friendRelationChoise)
         configureViewSettings()
-        addFriendRelationView()
+        addGestures()
         
+    }
+    
+    private func addFriendRelationViews(choise: FriendRelationViewChoise) {
+        switch choise {
+        case .friend:
+            self.addFriendRelationView()
+            self.friendRelationView.viewActivationManager(active: true, animated: true)
+        case .group:
+            self.addGroupRelationView()
+            self.addFriendRelationView()
+            self.activationManagerOfCounterInformationView(active: false, animated: false)
+        }
     }
     
     private func configureViewSettings() {
         
         configureSearchBarSettings()
         configureSegmentedButtonSettings()
+        addObserverToCounterSettings()
+        addObserverToNextButtonSettings()
+
+        /*
+        guard let friendRelationChoise = friendRelationChoise else { return }
+        
+        // the configurations below is related to friendRelationView
+        if friendRelationChoise == .friend {
+        }*/
         
     }
     
@@ -195,8 +236,79 @@ extension FriendGroupRelationView {
         case .group:
             segmentedButton.insertSegment(withTitle: LocalizedConstants.TitleValues.ButtonTitle.group, at: 0, animated: true)
             segmentedButton.insertSegment(withTitle: LocalizedConstants.TitleValues.ButtonTitle.newGroup, at: 1, animated: true)
+            segmentedButton.selectedSegmentIndex = 0
             segmentedButtonActivationManagement(active: true)
             return
+        }
+        
+    }
+    
+    /// OBSERVERS - begin
+    /// Description : adding observer to counter labels on top information view
+    private func addObserverToCounterSettings() {
+        
+        friendRelationView.startObserverForSelectedFriendCount { (counter) in
+            
+            DispatchQueue.main.async {
+                UIView.transition(with: self.totalParticipantCount, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+                    self.selectedParticipantCount.text = "\(counter)"
+                })
+            }
+        }
+        
+        friendRelationView.startObserverForTotalFriendCount { (totalCount) in
+            
+            DispatchQueue.main.async {
+                
+                UIView.transition(with: self.totalParticipantCount, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+                    self.totalParticipantCount.text = "\(totalCount)"
+                })
+            }
+            
+        }
+        
+        friendRelationView.addSelectedFriendCountObserver { (counter) in
+            
+            DispatchQueue.main.async {
+                UIView.transition(with: self.totalParticipantCount, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+                    self.selectedParticipantCount.text = "\(counter)"
+                })
+            }
+        }
+        
+        friendRelationView.startObserverForSelectedUserList { (userList) in
+            print("userList : \(userList)")
+            print("userList.count : \(userList.count)")
+            self.selectedFriendList = userList
+            self.nextButtonManagement(count: userList.count)
+            /*
+            if self.selectedFriendList.count > 0 {
+                self.nextButtonEnableManagement(enable: true)
+            } else {
+                self.nextButtonEnableManagement(enable: false)
+            }*/
+            
+        }
+        
+    }
+    
+    private func addObserverToNextButtonSettings() {
+        groupRelationView.startObservingForSelectedGroup { (groupList) in
+            print("groupList : \(groupList)")
+            print("groupList count : \(groupList.count)")
+            self.selectedGroupList = groupList
+            self.nextButtonManagement(count: groupList.count)
+            
+        }
+    }
+    /// OBSERVERS - end
+    
+    func nextButtonManagement(count : Int) {
+        
+        if count > 0 {
+            self.nextButtonEnableManagement(enable: true)
+        } else {
+            self.nextButtonEnableManagement(enable: false)
         }
         
     }
@@ -210,6 +322,10 @@ extension FriendGroupRelationView {
             segmentedButtonHeigthConstraints.constant = Constants.StaticViewSize.ViewSize.Height.height_0
         }
         
+    }
+    
+    private func nextButtonEnableManagement(enable : Bool) {
+        nextButton.isEnabled = enable
     }
     
     private func addViews() {
@@ -283,12 +399,12 @@ extension FriendGroupRelationView {
             cancelButton.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ViewSize.Width.width_10),
             cancelButton.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_25),
             cancelButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_30),
-            cancelButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_50),
+            cancelButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_60),
             
             nextButton.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ViewSize.Width.width_10),
             nextButton.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_25),
             nextButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_30),
-            nextButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_50),
+            nextButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_70),
             
             searchBar.topAnchor.constraint(equalTo: safeInformationContainer.bottomAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_0),
             searchBar.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
@@ -314,6 +430,7 @@ extension FriendGroupRelationView {
     }
     
     private func addFriendRelationView() {
+        
         friendRelationView = FriendRelationView()
         friendRelationView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -332,6 +449,213 @@ extension FriendGroupRelationView {
             
     }
     
+    private func addGroupRelationView() {
+        groupRelationView = GroupRelationView()
+        groupRelationView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.tableViewContainer.addSubview(groupRelationView)
+        
+        let safe = self.tableViewContainer.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            groupRelationView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            groupRelationView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            groupRelationView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            groupRelationView.topAnchor.constraint(equalTo: safe.topAnchor)
+            
+            ])
+    }
+    
+    @objc func nextPressed(_ sender : UIButton) {
+        
+        guard let friendRelationChoise = friendRelationChoise else { return }
+        guard let friendRelationPurpose = friendRelationPurpose else { return }
+
+        switch friendRelationPurpose {
+        // it means that FriendRelationViewController is called from PostViewController for attach a target person(s) or a group
+        case .post:
+            
+            switch friendRelationChoise {
+            case .friend:
+                PostItems.shared.createSelectedFriendArray(userList: selectedFriendList)
+            case .group:
+                
+                let activeSegment = returnSegmentedButtonIndex()
+                
+                if activeSegment == 0 {
+                    if let groupid = selectedGroupList[0].groupID {
+                        PostItems.shared.groupid = groupid
+                    }
+                } else if activeSegment == 1 {
+                    // to make a create new group process
+                    return
+                }
+                
+            }
+            
+            // delegatePostView could be nil. User does not have to set delegation.
+            if delegatePostView != nil {
+                delegatePostView.setPostTargetInformation(info: returnInformationForSelectedListData())
+            }
+            
+            delegate.dismissViewController()
+            
+        case .groupManagement:
+            return
+        }
+        
+    }
+    
+    func returnInformationForSelectedListData() -> String {
+        
+        var finalInformationText = ""
+        let information = "Posting to "
+        
+        if let friendRelationChoise = friendRelationChoise {
+            switch friendRelationChoise {
+            case .friend:
+                let extraPartCount = selectedFriendList.count - 1
+                
+                if selectedFriendList.count == 1 {
+                    if let user = selectedFriendList.first {
+                        if let username = user.username {
+                            finalInformationText = information + username
+                        } else if let name = user.name {
+                            finalInformationText = information + name
+                        }
+                    }
+                } else if selectedFriendList.count > 1 {
+                    if let user = selectedFriendList.first {
+                        if let username = user.username {
+                            finalInformationText = information + username + " and " + "\(extraPartCount)" + " others..."
+                        } else if let name = user.name {
+                            finalInformationText = information + name + " and " + "\(extraPartCount)" + " more others..."
+                        }
+                    }
+                }
+                
+            case .group:
+                if let groupName = selectedGroupList[0].groupName {
+                    finalInformationText = information + "\"" + groupName + "\""
+                }
+            }
+        }
+        
+        return finalInformationText
+    }
+    
+    @objc func segmentedButtonClicked(_ sender : UISegmentedControl) {
+        print("\(#function)")
+        
+        guard let friendRelationChoise = friendRelationChoise else { return }
+        
+        switch friendRelationChoise {
+        case .group:
+            self.friendGroupActivationManager(selectedIndex: sender.selectedSegmentIndex)
+        case .friend:
+            return
+        }
+    }
+    
+    private func friendGroupActivationManager(selectedIndex : Int) {
+        
+        setNextButtonTitle(index: selectedIndex)
+        
+        if selectedIndex == 0 {
+            groupRelationView.viewActivationManager(active: true, animated: true)
+            friendRelationView.viewActivationManager(active: false, animated: true)
+            self.activationManagerOfCounterInformationView(active: false, animated: false)
+            self.nextButtonManagement(count: selectedGroupList.count)
+        } else if selectedIndex == 1 {
+            groupRelationView.viewActivationManager(active: false, animated: true)
+            friendRelationView.viewActivationManager(active: true, animated: true)
+            self.activationManagerOfCounterInformationView(active: true, animated: true)
+            self.nextButtonManagement(count: selectedFriendList.count)
+        }
+        
+    }
+    
+    private func activationManagerOfCounterInformationView(active : Bool, animated : Bool) {
+    
+        if animated {
+            UIView.transition(with: self.counterInformationView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+                if active {
+                    self.counterInformationView.alpha = 1
+                } else {
+                    self.counterInformationView.alpha = 0
+                }
+            })
+            
+        } else {
+            if active {
+                self.counterInformationView.alpha = 1
+            } else {
+                self.counterInformationView.alpha = 0
+            }
+        }
+        
+    }
+    
+    private func setNextButtonTitle(index : Int) {
+        if index == 0 {
+            nextButton.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
+        } else if index == 1 {
+            nextButton.setTitle(LocalizedConstants.TitleValues.ButtonTitle.createGroup, for: .normal)
+        }
+    }
+    
+    private func returnSegmentedButtonIndex() -> Int {
+        return segmentedButton.selectedSegmentIndex
+    }
+    
 }
 
+// MARK: - UISearchBarDelegate
+extension FriendGroupRelationView : UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("\(#function)")
+        
+        if let text = searchBar.text {
+            print("text : \(text)")
+            friendRelationView.searchTrigger(inputText: text)
+        }
+        
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print("\(#function)")
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+}
 
+// MARK: - UIGestureRecognizerDelegate
+extension FriendGroupRelationView : UIGestureRecognizerDelegate {
+    
+    func addGestures() {
+        //addTapGesturesToMainView()
+    }
+    
+    func addTapGesturesToMainView() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(FriendGroupRelationView.dismissKeyboard(_:)))
+        tap.delegate = self
+        self.addGestureRecognizer(tap)
+        
+    }
+    
+    @objc func dismissKeyboard(_ sender : UITapGestureRecognizer) {
+        print("\(#function) starts")
+        
+        //self.endEditing(true)
+    }
+}

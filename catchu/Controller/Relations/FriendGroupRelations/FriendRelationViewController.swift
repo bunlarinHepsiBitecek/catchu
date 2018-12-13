@@ -12,6 +12,10 @@ class FriendRelationViewController: UIViewController {
     
     private var friendRelationView : FriendGroupRelationView!
     var friendRelationChoise : FriendRelationViewChoise?
+    var friendRelationViewPurpose : FriendRelationViewPurpose?
+    
+    // used to return selected friend, friendList, or group information
+    weak var delegate : PostViewProtocols!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,14 +45,31 @@ extension FriendRelationViewController {
     
     func addViews() {
         
-        addFriendRelationView()
+        do {
+            try addFriendRelationView()
+            
+        } catch let error as ClientPresentErrors {
+            print("ALERT ALERT ALERT")
+            if error == .missingViewControllerChoise {
+                print("FriendRelationViewController awaits choise value - calling for friends or groups")
+            } else if error == .missingViewControllerPurpose {
+                print("FriendRelationViewController awaits purpose value - calling for post operation or group management")
+            }
+        }
+        
+        catch {
+            print("Something goes wrong!")
+        }
+        
+        //addFriendRelationView()
     }
     
-    func addFriendRelationView() {
+    func addFriendRelationView() throws {
         
-        guard let friendRelationChoise = friendRelationChoise else { return }
+        guard let friendRelationChoise = friendRelationChoise else { throw ClientPresentErrors.missingViewControllerChoise }
+        guard let friendRelationViewPurpose = friendRelationViewPurpose else { throw ClientPresentErrors.missingViewControllerPurpose }
         
-        friendRelationView = FriendGroupRelationView(frame: .zero, delegate: self, friendRelationChoise: friendRelationChoise)
+        friendRelationView = FriendGroupRelationView(frame: .zero, delegate: self, delegatePostView: delegate, friendRelationChoise: friendRelationChoise, friendRelationPurpose: friendRelationViewPurpose)
         
         friendRelationView.translatesAutoresizingMaskIntoConstraints = false
         

@@ -31,6 +31,29 @@ class Group {
         self.groupMembers = []
     }
     
+    init(reGroup : REGroupRequestResult_resultArray_item) {
+        
+        if let groupid = reGroup.groupid {
+            self.groupID = groupid
+        }
+        
+        if let adminUserid = reGroup.groupAdmin {
+            self.adminUserID = adminUserid
+        }
+        
+        if let name = reGroup.name {
+            self.groupName = name
+        }
+        
+        if let url = reGroup.groupPhotoUrl {
+            self.groupPictureUrl = url
+        }
+        
+        if let createData = reGroup.createAt {
+            self.groupCreateDate = createData
+        }
+    }
+    
     func createSortedGroupList() {
         
         self.groupSortedList = groupList.sorted(by: {$0.groupName! < $1.groupName!})

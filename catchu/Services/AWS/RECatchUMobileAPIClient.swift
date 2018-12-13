@@ -267,7 +267,7 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      return type: REFriendList
      */
-    public func friendsGet(userid: String, authorization: String) -> AWSTask<REFriendList> {
+    public func friendsGet(userid: String, page: String?, perPage: String?, authorization: String) -> AWSTask<REFriendList> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -276,6 +276,15 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         
         var queryParameters:[String:Any] = [:]
         queryParameters["userid"] = userid
+        
+        if let page = page {
+            queryParameters["page"] = page
+        }
+        
+        if let perPage = perPage {
+            queryParameters["perPage"] = perPage
+        }
+        
         
         let pathParameters:[String:Any] = [:]
         

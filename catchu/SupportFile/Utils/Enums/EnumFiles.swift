@@ -29,6 +29,7 @@ enum PostContentType {
 enum ActionControllerType {
     case camera
     case video
+    case groupInformation
 
 }
 
@@ -121,6 +122,7 @@ enum RequestType : String {
     case add_participant_into_group = "ADD_PARTICIPANT_INTO_GROUP"
     case exit_group = "EXIT_GROUP"
     case create_group = "CREATE_GROUP"
+    case userGroups = "GET_AUTHENTICATED_USER_GROUP_LIST"
     
  
 }
@@ -172,6 +174,11 @@ enum ColorPalettes {
 
 enum ApiGatewayClientErrors: Swift.Error {
     case missingUserId
+}
+
+enum ClientPresentErrors: Swift.Error {
+    case missingViewControllerPurpose
+    case missingViewControllerChoise
 }
 
 enum CustomVideoError: Swift.Error {
@@ -264,6 +271,7 @@ enum TableViewSectionTitle : String {
     case Friends
     case Groups
     case None = ""
+    case SearchResult = "Search Result"
 }
 
 enum TableViewRowSelected : String {
@@ -282,4 +290,25 @@ enum CollectionViewState: String {
     case populate
     case empty
     case error
+}
+
+enum CollectionViewOperation {
+    case insert
+    case delete
+    case none
+}
+
+enum SearchableModes {
+    case searchable
+    case unSearchable
+}
+
+enum SearcMode {
+    case active
+    case passive
+}
+
+enum FriendRelationViewPurpose {
+    case post
+    case groupManagement
 }

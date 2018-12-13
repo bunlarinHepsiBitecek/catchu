@@ -322,10 +322,13 @@ extension PostAttachmentView {
         let friendRelationViewController = FriendRelationViewController()
         let currentViewController = LoaderController.currentViewController()
 
+        // used to return selected friend, friendList or group information
+        friendRelationViewController.delegate = delegate
+        friendRelationViewController.friendRelationViewPurpose = FriendRelationViewPurpose.post
+
         switch type {
         case .friends:
             friendRelationViewController.friendRelationChoise = FriendRelationViewChoise.friend
-            
         case .group:
             friendRelationViewController.friendRelationChoise = FriendRelationViewChoise.group
         default:

@@ -244,6 +244,7 @@ protocol PostViewProtocols : class  {
     func activationProcessOfVideoView(active : Bool)
     func deselectPostAttachmentAnimations()
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void)
+    func setPostTargetInformation(info : String)
 }
 
 extension PostViewProtocols {
@@ -255,6 +256,7 @@ extension PostViewProtocols {
     func activationProcessOfVideoView(active : Bool) {}
     func deselectPostAttachmentAnimations() {}
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {}
+    func setPostTargetInformation(info : String) {}
 }
 
 protocol CameraImageVideoHandlerProtocol : class  {
@@ -275,10 +277,12 @@ extension CameraImageVideoHandlerProtocol {
 
 protocol ActionSheetProtocols : class  {
     func returnOperations(selectedProcessType : ActionButtonOperation)
+    func presentViewController()
 }
 
 extension ActionSheetProtocols {
     func returnOperations(selectedProcessType : ActionButtonOperation) {}
+    func presentViewController() {}
 }
 
 

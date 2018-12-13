@@ -93,6 +93,7 @@
 //Search
 "searching" = "Aranıyor...";
 "searchingFor" = "Araniyor ";
+"searchFollower" = "Takipçi Ara...";
 
 // Contact
 "addFriend" = "Arkadaş Ekle";
@@ -165,5 +166,13 @@
 "update" = "Güncelle";
 "delete" = "Sil";
 "video" = "Video";
+
+// TableViewRowAction titles
+"moreInformation" = "Daha ...";
+"deleteGroup" = "Çıkış";
+"exitGroup" = "Gruptan Çık";
+"GroupInformation" = "Grup Bilgisi";
+
+
 
 

@@ -205,6 +205,36 @@ class APIGatewayManager: ApiGatewayInterface {
         inputBody?.requestType = requestType.rawValue
         inputBody?.groupid = groupId
         
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                self.client.groupsPost(authorization: tokenResult.token, body: inputBody!).continueWith(block: { (task) -> Any? in
+                    if task.error != nil {
+        
+                        print("error : \(String(describing: task.error?.localizedDescription))")
+        
+                        AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
+        
+                        LoaderController.shared.removeLoader()
+        
+                    } else {
+        
+                        print("task result : \(task.result?.resultArrayParticipantList?.count)")
+        
+                        if let result = task.result {
+        
+                            completion(result, true)
+        
+                        }
+        
+                    }
+        
+                    return nil
+                })
+                
+            }
+        }
+        
         //        client.groupsPost(body: inputBody!).continueWith { (task) -> Any? in
         //
         //            if task.error != nil {
@@ -477,7 +507,7 @@ class APIGatewayManager: ApiGatewayInterface {
                 
                 guard let userid = User.shared.userid else { return }
                 
-                client.friendsGet(userid: userid, authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                client.friendsGet(userid: userid, page: "1", perPage: "30", authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
                     
                     if taskFriendList.error != nil {
                         
@@ -527,7 +557,7 @@ class APIGatewayManager: ApiGatewayInterface {
             
             if finished {
                 
-                self.client.friendsGet(userid: userid, authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
+                self.client.friendsGet(userid: userid, page: String(page), perPage: String(perPage), authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
                     
                     self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
                     
@@ -536,7 +566,43 @@ class APIGatewayManager: ApiGatewayInterface {
             }
             
         }
-
+        
+    }
+    
+    /// Description : get user groups from server
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - page: page number for pagination logic
+    ///   - perPage: number of items in one page
+    ///   - completion: task result
+    /// - Throws: if userid does not exist, throw client error
+    /// - Author: Erkut Bas
+    func getUserGroupList(userid: String, page: Int?, perPage: Int?, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) throws {
+        
+        if userid.isEmpty {
+            throw ApiGatewayClientErrors.missingUserId
+        }
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            
+            if finished {
+                
+                // create group request object
+                guard let groupRequest = REGroupRequest() else { return }
+                groupRequest.requestType = RequestType.userGroups.rawValue
+                groupRequest.userid = userid
+                
+                self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (awsTask) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
+                    return nil
+                    
+                })
+                
+            }
+            
+        }
+        
     }
     
     

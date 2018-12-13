@@ -148,6 +148,7 @@ struct Constants {
                 static let height_24 : CGFloat = 24
                 static let height_22 : CGFloat = 22
                 static let height_20 : CGFloat = 20
+                static let height_15 : CGFloat = 15
                 static let height_10 : CGFloat = 10
                 static let height_2 : CGFloat = 2
                 static let height_0 : CGFloat = 0

@@ -17,15 +17,18 @@
 import Foundation
 import AWSCore
 
+
 @objcMembers
 public class REFriendList : AWSModel {
     
     var error: REError?
+    var totalNumberOfFriend: NSNumber?
     var resultArray: [REUserProfileProperties]?
     
     public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
         var params:[AnyHashable : Any] = [:]
         params["error"] = "error"
+        params["totalNumberOfFriend"] = "totalNumberOfFriend"
         params["resultArray"] = "resultArray"
         
         return params
@@ -37,4 +40,3 @@ public class REFriendList : AWSModel {
         return  ValueTransformer.awsmtl_JSONArrayTransformer(withModelClass: REUserProfileProperties.self);
     }
 }
-

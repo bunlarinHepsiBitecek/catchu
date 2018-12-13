@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct LocalizedConstants {
+struct 	LocalizedConstants {
     static let Ok = NSLocalizedString("OK", comment: "")
     static let Cancel = NSLocalizedString("Cancel", comment: "")
     static let UnknownError = NSLocalizedString("UnknownError", comment: "")
@@ -143,6 +143,7 @@ struct LocalizedConstants {
         static let searchResult = NSLocalizedString("Search Result", comment: "")
         static let searching = NSLocalizedString("searching", comment: "")
         static let searchingFor = NSLocalizedString("searchingFor", comment: "")
+        static let searchFollower = NSLocalizedString("searchFollower", comment: "")
     }
     
     struct Library {
@@ -290,6 +291,14 @@ struct LocalizedConstants {
         static let gallery = NSLocalizedString("gallery", comment: "")
         static let update = NSLocalizedString("update", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
+        static let exitGroup = NSLocalizedString("deleteGroup", comment: "")
+        static let groupInformation = NSLocalizedString("groupInformation", comment: "")
+    }
+    
+    struct TableViewRowActionTitles {
+        
+        static let more = NSLocalizedString("moreInformation", comment: "")
+        static let delete = NSLocalizedString("deleteGroup", comment: "")
     }
     
 }

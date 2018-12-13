@@ -14,17 +14,21 @@ class AlertControllerManager {
     
     weak var delegate : ActionSheetProtocols!
     
-    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType, delegate : ActionSheetProtocols) {
+    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?) {
         
         self.delegate = delegate
         
         switch type {
         case .camera:
-            starCameraOperations(operationType: operationType)
-            break
+            if let operationType = operationType {
+                starCameraOperations(operationType: operationType)
+            }
         case .video:
-            starVideoOperations(operationType: operationType)
-            break
+            if let operationType = operationType {
+                starVideoOperations(operationType: operationType)
+            }
+        case .groupInformation:
+            presentGroupInformationViewController()
         }
         
     }
@@ -109,6 +113,27 @@ class AlertControllerManager {
             }
             
         }
+        
+    }
+    
+    private func presentGroupInformationViewController() {
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.groupInformation, style: .default, handler: { (action) in
+            // to do
+            self.delegate.presentViewController()
+        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.exitGroup, style: .destructive, handler: { (action) in
+            // delete group process
+        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
+            // to do
+        }))
+        
+        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
         
     }
     

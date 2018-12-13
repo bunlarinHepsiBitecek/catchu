@@ -111,6 +111,7 @@
 //Search
 "searching" = "Searching...";
 "searchingFor" = "Searching for ";
+"searchFollower" = "Search Follower...";
 
 // Contact
 "addFriend" = "Add Friend";
@@ -205,4 +206,10 @@
 "update" = "Update";
 "delete" = "Delete";
 "video" = "Video";
+
+// TableViewRowAction titles
+"moreInformation" = "More ...";
+"deleteGroup" = "Delete";
+"exitGroup" = "Exit Group";
+"GroupInformation" = "Group Information";
 

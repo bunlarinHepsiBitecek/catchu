@@ -80,6 +80,35 @@ extension UserProfileViewController2 {
         
     }
     
+    func addTransitionToPresentationOfFriendRelationViewController() {
+        
+        let transition = CATransition()
+        transition.duration = Constants.AnimationValues.aminationTime_03
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        
+        if let window = self.view.window {
+            window.layer.add(transition, forKey: kCATransition)
+        }
+        
+    }
+    
+    func gotoFriendRelationViewController() {
+        
+        addTransitionToPresentationOfFriendRelationViewController()
+        
+        let friendRelationViewController = FriendRelationViewController()
+        
+        // used to return selected friend, friendList or group information
+        friendRelationViewController.delegate = self
+        friendRelationViewController.friendRelationChoise = FriendRelationViewChoise.group
+        friendRelationViewController.friendRelationViewPurpose = FriendRelationViewPurpose.groupManagement
+        
+        self.present(friendRelationViewController, animated: false, completion: nil)
+        
+    }
+    
     func gotoExplorePeopleViewController() {
         
         print("gotoExplorePeopleViewController starts")
@@ -91,6 +120,10 @@ extension UserProfileViewController2 {
         
     }
     /* viewController passing */
+    
+}
+
+extension UserProfileViewController2 : PostViewProtocols {
     
 }
 
@@ -143,7 +176,8 @@ extension UserProfileViewController2 : ViewPresentationProtocols {
         
         switch inputSlideMenuType {
         case .manageGroupOperations:
-            gotoContactViewController()
+            //gotoContactViewController()
+            gotoFriendRelationViewController()
         case .explore:
             gotoExplorePeopleViewController()
             return

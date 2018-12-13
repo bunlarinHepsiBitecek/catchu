@@ -252,6 +252,7 @@ class SaySomethingView: UIView {
         temp.font = UIFont.systemFont(ofSize: 15)
         temp.textAlignment = .left
         temp.alpha = 0
+        temp.numberOfLines = 1
         
         temp.textColor = #colorLiteral(red: 0.2274509804, green: 0.3333333333, blue: 0.6235294118, alpha: 1)
         
@@ -745,7 +746,7 @@ extension SaySomethingView {
             stackViewForPostAttachments.centerYAnchor.constraint(equalTo: safeAttachmentContainer.centerYAnchor),
             
             informationLabel.leadingAnchor.constraint(equalTo: safeAttachmentContainer.leadingAnchor, constant: 10),
-            informationLabel.trailingAnchor.constraint(equalTo: safeAttachmentContainer.trailingAnchor),
+            informationLabel.trailingAnchor.constraint(equalTo: safeAttachmentContainer.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_50),
             informationLabel.topAnchor.constraint(equalTo: safeAttachmentContainer.topAnchor),
             informationLabel.bottomAnchor.constraint(equalTo: safeAttachmentContainer.bottomAnchor),
             
@@ -1091,6 +1092,10 @@ extension SaySomethingView : PostViewProtocols {
             
         }
         
+    }
+    
+    func setPostTargetInformation(info: String) {
+        self.informationLabel.text = info
     }
     
     

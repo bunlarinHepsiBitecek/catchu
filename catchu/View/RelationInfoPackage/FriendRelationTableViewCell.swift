@@ -119,46 +119,59 @@ extension FriendRelationTableViewCell {
             ])
     }
     
-    func initiateCellDesign(item: CommonViewModelItem) {
-        print("\(#function) starts")
+    func initiateCellDesign(item: CommonViewModelItem?) {
+        //print("\(#function) starts")
         
-        guard let userViewModel = item as? CommonUserViewModel else { return }
+        if let userViewModel = item as? CommonUserViewModel {
+            self.userViewModel = userViewModel
+            
+            guard let user = userViewModel.user else { return }
+            
+            //userViewModel.displayProperties()
+            
+            self.profileImageView.alpha = 1
+            self.username.alpha = 1
+            self.name.alpha = 1
+            self.selectIcon.alpha = 1
+            
+            if let name = user.name {
+                self.name.text = name
+                self.profileImageView.setImageInitialPlaceholder(name, circular: true)
+            }
+            
+            if let userName = user.username {
+                self.username.text = userName
+            }
+            
+            if let url = user.profilePictureUrl {
+                self.profileImageView.setImagesFromCacheOrFirebaseForFriend(url)
+            }
+            
+            userViewModel.userSelected.bindAndFire { [unowned self] in
+                self.cellSelectionAnimation(state: $0, animated: self.cellAnimation)
+            }
         
-        self.userViewModel = userViewModel
-        
-        guard let user = userViewModel.user else { return }
-        
-        if let name = user.name {
-            self.name.text = name
-            self.profileImageView.setImageInitialPlaceholder(name, circular: true)
+        } else {
+          
+            self.profileImageView.alpha = 0
+            self.username.alpha = 0
+            self.name.alpha = 0
+            self.selectIcon.alpha = 0
+            
         }
-        
-        if let userName = user.username {
-            self.username.text = userName
-        }
-        
-        if let url = user.profilePictureUrl {
-            self.profileImageView.setImagesFromCacheOrFirebaseForFriend(url)
-        }
-        
-        userViewModel.userSelected.bindAndFire { [unowned self] in
-            self.cellSelectionAnimation(state: $0, animated: self.cellAnimation)
-        }
-        
+        //guard let userViewModel = item as? CommonUserViewModel else { return }
+
     }
 
     private func resetCellProperties() {
         userViewModel?.userSelected.unbind()
-        print("viewmodel user state :\(userViewModel!.userSelected.value.rawValue) ")
+        //print("viewmodel user state :\(userViewModel!.userSelected.value.rawValue) ")
         profileImageView.image = nil
         selectIcon.image = nil
         cellAnimation = false
-//        userViewModel?.userSelected.value = .deSelected
     }
     
     private func cellSelectionAnimation(state : TableViewRowSelected, animated: Bool) {
-        print("\(#function) starts name: \(userViewModel?.user?.name) - \(userViewModel?.userSelected.value)")
-        
         if animated {
             UIView.transition(with: self.selectIcon, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
                 self.setIconImage(state: state)
@@ -172,9 +185,11 @@ extension FriendRelationTableViewCell {
     private func setIconImage(state: TableViewRowSelected) {
         switch state {
         case .selected:
-            self.selectIcon.image = #imageLiteral(resourceName: "check-mark.png")
+            self.selectIcon.image = #imageLiteral(resourceName: "icon_checked_lightBlue")
+            self.selectIcon.layer.borderWidth = 0
         case .deSelected:
             self.selectIcon.image = nil
+            self.selectIcon.layer.borderWidth = 1
         }
     }
     
