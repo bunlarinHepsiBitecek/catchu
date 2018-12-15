@@ -388,4 +388,27 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
             }
         }
     }
+    
+    @IBAction func bas(_ sender: Any) {
+        
+        let groupInfoView = GroupInfoView2()
+        groupInfoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(groupInfoView)
+        
+        let safe = self.view.safeAreaLayoutGuide
+        
+        //        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        
+        NSLayoutConstraint.activate([
+            
+            groupInfoView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            groupInfoView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            groupInfoView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            //groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor, constant: -statusBarHeight),
+            groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor),
+            
+            ])
+        
+    }
 }

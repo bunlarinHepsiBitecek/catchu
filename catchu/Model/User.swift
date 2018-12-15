@@ -236,7 +236,7 @@ class User {
         self.userid = httpRequest.userid!
         self.name = httpRequest.name!
         self.username = httpRequest.username!
-        self.profilePictureUrl = httpRequest.profilePhotoUrl!
+        //self.profilePictureUrl = httpRequest.profilePhotoUrl!
         self.isUserHasAPrivateAccount = (httpRequest.isPrivateAccount?.boolValue)!
 //        userBirthday = httpRequest.birthday
 //        userGender = httpRequest.gender!

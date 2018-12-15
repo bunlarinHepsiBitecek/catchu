@@ -156,7 +156,9 @@ struct Constants {
         }
         
         struct ConstraintValues {
+            static let constraint_250 : CGFloat = 250
             static let constraint_200 : CGFloat = 200
+            static let constraint_150 : CGFloat = 150
             static let constraint_100 : CGFloat = 100
             static let constraint_90 : CGFloat = 90
             static let constraint_70 : CGFloat = 70
