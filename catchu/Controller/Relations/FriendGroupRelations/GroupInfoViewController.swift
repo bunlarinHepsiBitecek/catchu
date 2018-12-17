@@ -10,6 +10,9 @@ import UIKit
 
 class GroupInfoViewController: UIViewController {
 
+    var group: Group?
+    var groupViewModel: CommonGroupViewModel?
+
     private var groupInfoView : GroupInfoView2!
     
     override func viewDidLoad() {
@@ -31,7 +34,19 @@ extension GroupInfoViewController {
     private func prepareViewController() {
         
         configureViewControllerSettings()
-        addViews()
+        
+        do {
+            try addViews()
+            
+        }
+        catch let error as ClientPresentErrors {
+            if error == .missingGroupObject {
+                print("Without Group data, groupInfoView can not be presented")
+            }
+        }
+        catch {
+            print("Something goes terribly wrong")
+        }
         
     }
     
@@ -39,33 +54,65 @@ extension GroupInfoViewController {
         self.view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
     
-    private func addViews() {
+    private func addViews() throws {
+        print("\(#function)")
+        guard let group = self.group else { throw ClientPresentErrors.missingGroupObject }
+        guard let groupViewModel = self.groupViewModel else { throw ClientPresentErrors.missingGroupObject }
         
-        addGroupInfoView()
+        groupViewModel.groupNameChanged.value = "yarro"
         
+        addGroupInfoView(group: group, groupViewModel: groupViewModel)
+        addGroupInfoDismissListener()
     }
     
-    private func addGroupInfoView() {
+    private func addGroupInfoView(group : Group, groupViewModel: CommonGroupViewModel) {
         print("\(#function) starts")
         
-        groupInfoView = GroupInfoView2()
+        //groupInfoView = GroupInfoView2(frame: .zero, group: group)
+        groupInfoView = GroupInfoView2(frame: .zero, group: group, groupViewModel: groupViewModel)
         groupInfoView.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(groupInfoView)
         
         let safe = self.view.safeAreaLayoutGuide
         
-//        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        
         NSLayoutConstraint.activate([
             
             groupInfoView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             groupInfoView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             groupInfoView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            //groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor, constant: -statusBarHeight),
             groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor),
             
             ])
+        
+    }
+    
+    private func addTransitionToPresentationOfFriendRelationViewController() {
+        
+        let transition = CATransition()
+        transition.duration = Constants.AnimationValues.aminationTime_03
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromLeft
+        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        
+        if let window = self.view.window {
+            window.layer.add(transition, forKey: kCATransition)
+        }
+        
+    }
+    
+    private func addGroupInfoDismissListener() {
+        groupInfoView.addObserverForGroupInfoDismiss { (state) in
+            switch state {
+            case .exit:
+                self.addTransitionToPresentationOfFriendRelationViewController()
+                self.dismiss(animated: false, completion: nil)
+                
+            case .start:
+                return
+            }
+            
+        }
         
     }
 }

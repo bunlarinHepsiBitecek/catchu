@@ -14,6 +14,8 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
     var state = CommonDynamic(TableViewState.suggest)
     var sectionTitle = CommonDynamic(TableViewSectionTitle.Groups)
     var selectedGroupList = CommonDynamic([Group]())
+    //var infoRequestedGroup: Group?
+    var infoRequestedGroup: CommonGroupViewModel?
     
     /// Description : Get authenticated users' group list
     func getGroups() {

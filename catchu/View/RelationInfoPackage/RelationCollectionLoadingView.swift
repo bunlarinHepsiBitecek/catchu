@@ -88,4 +88,17 @@ extension RelationCollectionLoadingView {
         
     }
     
+    func setInformation(_ state : TableViewState, inputInformationText : String) {
+        
+        switch state {
+        case .empty:
+            informationLabel.text = LocalizedConstants.PostAttachmentInformation.noneFollowers
+        case .loading:
+            informationLabel.text = inputInformationText
+        default:
+            return
+        }
+        
+    }
+    
 }

@@ -605,6 +605,40 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
+    /// Description : get participant list of a specific group
+    ///
+    /// - Parameters:
+    ///   - groupid: groupid
+    ///   - completion: participant list
+    /// - Throws: missing group id
+    /// - Author: Erkut Bas
+    func getGroupParticipantList(groupid: String, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) throws {
+        
+        if groupid.isEmpty {
+            throw ApiGatewayClientErrors.missingGroupId
+        }
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            
+            if finished {
+                
+                // create group request object
+                guard let groupRequest = REGroupRequest() else { return }
+                groupRequest.requestType = RequestType.get_group_participant_list.rawValue
+                groupRequest.groupid = groupid
+                
+                self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (awsTask) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
+                    return nil
+                    
+                })
+                
+            }
+            
+        }
+        
+    }
+    
     
     func initiatePostOperations() {
         

@@ -38,6 +38,17 @@ protocol CommonViewModel {
 
 protocol CommonViewModelItem {}
 
+protocol CommonGroupViewModelItem {
+    var type : GroupDetailSectionTypes { get }
+    var sectionTitle : String { get }
+    var rowCount : Int { get }
+    
+}
+
+protocol CommonDesignableCellForGroupDetail {
+    func initiateCellDesign(item: CommonGroupViewModelItem?)
+}
+
 protocol CommonDesignableCell {
     func initiateCellDesign(item: CommonViewModelItem?)
 }

@@ -789,7 +789,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ph5-S9-gjk">
                                         <rect key="frame" x="0.0" y="45" width="375" height="50"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="New Subject..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PuD-La-9Kd">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="New Subject..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PuD-La-9Kd">
                                                 <rect key="frame" x="10" y="0.0" width="355" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="textColor"/>
@@ -1589,7 +1589,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="7814" y="-401"/>
+            <point key="canvasLocation" x="7813.6000000000004" y="-401.23152709359607"/>
         </scene>
         <!--Contact View Controller2-->
         <scene sceneID="kB1-S9-li3">

@@ -174,11 +174,13 @@ enum ColorPalettes {
 
 enum ApiGatewayClientErrors: Swift.Error {
     case missingUserId
+    case missingGroupId
 }
 
 enum ClientPresentErrors: Swift.Error {
     case missingViewControllerPurpose
     case missingViewControllerChoise
+    case missingGroupObject
 }
 
 enum CustomVideoError: Swift.Error {
@@ -312,3 +314,16 @@ enum FriendRelationViewPurpose {
     case post
     case groupManagement
 }
+
+enum GroupImageProcess {
+    case exit
+    case start
+}
+
+enum GroupDetailSectionTypes {
+    case name
+    case admin
+    case participant
+    case exit
+}
+

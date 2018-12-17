@@ -390,7 +390,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
     }
     
     @IBAction func bas(_ sender: Any) {
-        
+        /*
         let groupInfoView = GroupInfoView2()
         groupInfoView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -408,7 +408,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
             //groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor, constant: -statusBarHeight),
             groupInfoView.topAnchor.constraint(equalTo: safe.topAnchor),
             
-            ])
+            ])*/
         
     }
 }

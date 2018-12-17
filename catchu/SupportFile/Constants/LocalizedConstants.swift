@@ -92,6 +92,7 @@ struct 	LocalizedConstants {
         struct ButtonTitle {
             
             static let cancel = NSLocalizedString("Cancel", comment: "")
+            static let save = NSLocalizedString("save", comment: "")
             static let next = NSLocalizedString("next", comment: "")
             static let createGroup = NSLocalizedString("createGroup", comment: "")
             static let friend = NSLocalizedString("Friends", comment: "")
@@ -128,7 +129,14 @@ struct 	LocalizedConstants {
             static let fetching = NSLocalizedString("fetching", comment: "")
             static let followers = NSLocalizedString("followers", comment: "")
             static let following = NSLocalizedString("following", comment: "")
+            static let exitGroup = NSLocalizedString("exitGroup", comment: "")
+            static let admin = NSLocalizedString("admin", comment: "")
+            static let participants = NSLocalizedString("participants", comment: "")
             
+        }
+        
+        struct ViewControllerTitles {
+            static let groupInfoEdit = NSLocalizedString("groupInfoEdit", comment: "")
         }
     }
     
@@ -257,7 +265,7 @@ struct 	LocalizedConstants {
         static let thereIsNothingToPost = NSLocalizedString("thereIsNothingToPost", comment: "")
         static let saySomething = NSLocalizedString("saySomething", comment: "")
         static let noneFollowers = NSLocalizedString("noneFollowers", comment: "")
-        
+        static let gettingGroupDetail = NSLocalizedString("gettingGroupDetail", comment: "")
         
     }
     
@@ -291,14 +299,16 @@ struct 	LocalizedConstants {
         static let gallery = NSLocalizedString("gallery", comment: "")
         static let update = NSLocalizedString("update", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
-        static let exitGroup = NSLocalizedString("deleteGroup", comment: "")
+        static let exitGroup = NSLocalizedString("exitGroup", comment: "")
         static let groupInformation = NSLocalizedString("groupInformation", comment: "")
     }
     
     struct TableViewRowActionTitles {
         
         static let more = NSLocalizedString("moreInformation", comment: "")
-        static let delete = NSLocalizedString("deleteGroup", comment: "")
+        static let delete = NSLocalizedString("delete", comment: "")
+        static let exitGroup = NSLocalizedString("exitGroup", comment: "")
+        static let GroupInformation = NSLocalizedString("GroupInformation", comment: "")
     }
     
 }

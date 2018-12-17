@@ -10,7 +10,7 @@ import UIKit
 
 class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     
-    private var groupViewModel: CommonGroupViewModel?
+    var groupViewModel: CommonGroupViewModel?
     private var cellAnimation : Bool = false
     
     lazy var groupProfileImageView: UIImageView = {
@@ -94,6 +94,10 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
         
         self.resetCellSettings()
         
+    }
+    
+    deinit {
+        groupViewModel?.groupNameChanged.unbind()
     }
 }
 
@@ -183,6 +187,13 @@ extension GroupRelationTableViewCell {
             self.cellSelectionAnimation(state: selectedInfo, animated: self.cellAnimation)
         })
         
+        self.groupViewModel?.groupNameChanged.bind({ (newString) in
+            print("sikibok")
+            DispatchQueue.main.async {
+                self.groupName.text = newString
+            }
+        })
+        
         groupViewModel?.displayProperties()
         
     }
@@ -210,6 +221,22 @@ extension GroupRelationTableViewCell {
         selectIcon.image = nil
         cellAnimation = false
 
+    }
+    
+    func returnCellRelatedGroup() -> Group? {
+        if let group = self.groupViewModel?.group {
+            return group
+        }
+        
+        return nil
+    }
+    
+    func returnCellGroupViewModel() -> CommonGroupViewModel {
+        return self.groupViewModel!
+    }
+    
+    func takasi() {
+        groupViewModel?.groupNameChanged.value = "takasi"
     }
     
 }

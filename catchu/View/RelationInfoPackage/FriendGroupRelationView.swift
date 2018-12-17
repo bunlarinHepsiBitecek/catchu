@@ -123,6 +123,8 @@ class FriendGroupRelationView: UIView {
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
+        temp.contentMode = .center
+        temp.titleLabel?.textAlignment = .center
         temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         temp.addTarget(self, action: #selector(nextPressed(_:)), for: .touchUpInside)
@@ -293,13 +295,22 @@ extension FriendGroupRelationView {
     }
     
     private func addObserverToNextButtonSettings() {
-        groupRelationView.startObservingForSelectedGroup { (groupList) in
-            print("groupList : \(groupList)")
-            print("groupList count : \(groupList.count)")
-            self.selectedGroupList = groupList
-            self.nextButtonManagement(count: groupList.count)
-            
+        
+        guard let friendRelationChoise = friendRelationChoise else { return }
+        
+        switch friendRelationChoise {
+        case .friend:
+            return
+        case .group:
+            groupRelationView.startObservingForSelectedGroup { (groupList) in
+                print("groupList : \(groupList)")
+                print("groupList count : \(groupList.count)")
+                self.selectedGroupList = groupList
+                self.nextButtonManagement(count: groupList.count)
+                
+            }
         }
+        
     }
     /// OBSERVERS - end
     

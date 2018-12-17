@@ -12,6 +12,7 @@ class CommonGroupViewModel: CommonViewModelItem {
     
     var group : Group?
     var groupSelected = CommonDynamic(TableViewRowSelected.deSelected)
+    var groupNameChanged = CommonDynamic(String())
 
     init(group : Group?) {
         self.group = group

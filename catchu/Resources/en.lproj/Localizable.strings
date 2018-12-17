@@ -78,6 +78,9 @@
 "connectToContacts" = "Connect Contacts";
 "invite" = "Invite";
 "post" = "Post";
+"admin" = "Admin";
+"participants" = "Participants";
+"save" = "Save";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";
@@ -179,6 +182,7 @@
 "gettingFriends" = "Getting Friends...";
 "gettingGroup" = "Getting Group...";
 "noneFollowers" = "There is no follower 😢";
+"gettingGroupDetail" = "Getting Group Details...";
 
 // cloud
 "cloudFetching" = "Fetching from iCloud...";
@@ -213,3 +217,5 @@
 "exitGroup" = "Exit Group";
 "GroupInformation" = "Group Information";
 
+// View Controller Titles
+"groupInfoEdit" = "Group Name";

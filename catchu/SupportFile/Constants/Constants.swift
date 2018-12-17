@@ -94,10 +94,12 @@ struct Constants {
             static let cornerRadius_25 : CGFloat = 25
             static let cornerRadius_23 : CGFloat = 23
             static let cornerRadius_20 : CGFloat = 20
+            static let cornerRadius_18 : CGFloat = 18
             static let cornerRadius_15 : CGFloat = 15
             static let cornerRadius_12 : CGFloat = 12
             static let cornerRadius_11 : CGFloat = 11
             static let cornerRadius_10 : CGFloat = 10
+            static let cornerRadius_8 : CGFloat = 8
             static let cornerRadius_5 : CGFloat = 5
             static let cornerRadius_4 : CGFloat = 4
         }
@@ -119,10 +121,12 @@ struct Constants {
                 static let width_48 : CGFloat = 48
                 static let width_44 : CGFloat = 44
                 static let width_40 : CGFloat = 40
+                static let width_36 : CGFloat = 36
                 static let width_30 : CGFloat = 30
                 static let width_24 : CGFloat = 24
                 static let width_22 : CGFloat = 22
                 static let width_20 : CGFloat = 20
+                static let width_16 : CGFloat = 16
                 static let width_10 : CGFloat = 10
             }
             struct Height {
@@ -144,10 +148,12 @@ struct Constants {
                 static let height_48 : CGFloat = 48
                 static let height_44 : CGFloat = 44
                 static let height_40 : CGFloat = 40
+                static let height_36 : CGFloat = 36
                 static let height_30 : CGFloat = 30
                 static let height_24 : CGFloat = 24
                 static let height_22 : CGFloat = 22
                 static let height_20 : CGFloat = 20
+                static let height_16 : CGFloat = 16
                 static let height_15 : CGFloat = 15
                 static let height_10 : CGFloat = 10
                 static let height_2 : CGFloat = 2
@@ -164,6 +170,7 @@ struct Constants {
             static let constraint_70 : CGFloat = 70
             static let constraint_60 : CGFloat = 60
             static let constraint_50 : CGFloat = 50
+            static let constraint_44 : CGFloat = 44
             static let constraint_42 : CGFloat = 42
             static let constraint_40 : CGFloat = 40
             static let constraint_30 : CGFloat = 30

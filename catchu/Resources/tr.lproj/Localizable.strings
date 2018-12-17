@@ -63,6 +63,9 @@
 "connectToContacts" = "Kişileri Getir";
 "invite" = "Davet Et";
 "post" = "Post";
+"admin" = "Yönetici";
+"participants" = "Katılımcı";
+"save" = "Kaydet";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
@@ -139,6 +142,7 @@
 "gettingFriends" = "Arkadaş Seçiliyor...";
 "gettingGroup" = "Grup Seçiliyor...";
 "noneFollowers" = "Takipçiniz yok 😢";
+"gettingGroupDetail" = "Grup Detayları alınıyor...";
 
 // cloud
 "cloudFetching" = "iCloud'dan çekiliyor...";
@@ -173,6 +177,8 @@
 "exitGroup" = "Gruptan Çık";
 "GroupInformation" = "Grup Bilgisi";
 
+// View Controller Titles
+"groupInfoEdit" = "Grup İsmi";
 
 
 

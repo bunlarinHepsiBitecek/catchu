@@ -240,6 +240,15 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
             print("action : \(action)")
             print("indexPath : \(indexPath)")
             
+            self.groupRelationViewModel.infoRequestedGroup = cell?.returnCellGroupViewModel()
+            
+            /*
+            if let cell = cell {
+                if let group = cell.returnCellRelatedGroup() {
+                    self.groupRelationViewModel.infoRequestedGroup = group
+                }
+            }*/
+            
             AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self)
         }
         
@@ -259,11 +268,20 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
 extension GroupRelationView : ActionSheetProtocols {
     func presentViewController() {
         
+        groupRelationViewModel.infoRequestedGroup?.groupNameChanged.value = "erkut"
+        
         if let currentViewController = LoaderController.currentViewController() {
             
             addTransitionToPresentationOfFriendRelationViewController()
             
             let groupInfoViewController = GroupInfoViewController()
+            groupInfoViewController.groupViewModel = groupRelationViewModel.infoRequestedGroup
+            
+            if let groupViewModel = groupRelationViewModel.infoRequestedGroup {
+                if let group = groupViewModel.group {
+                    groupInfoViewController.group = group
+                }
+            }
             
             currentViewController.present(groupInfoViewController, animated: false, completion: nil)
             
