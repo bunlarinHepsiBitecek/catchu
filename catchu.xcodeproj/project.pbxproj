@@ -156,6 +156,8 @@
 		A716903821B69CF30039287B /* FriendRelationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903721B69CF30039287B /* FriendRelationSelectionView.swift */; };
 		A716903A21B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */; };
 		A716903C21B6D03F0039287B /* SelectedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716903B21B6D03F0039287B /* SelectedFriendsViewModel.swift */; };
+		A7184EAC21C9115C000BA72C /* GroupInfoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7184EAB21C9115C000BA72C /* GroupInfoEditViewModel.swift */; };
+		A7184EAE21C93693000BA72C /* GroupInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7184EAD21C93693000BA72C /* GroupInfoView.swift */; };
 		A71CC353215B417B002A2468 /* CameraGalleryFunctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC352215B417B002A2468 /* CameraGalleryFunctionView.swift */; };
 		A71CC356215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */; };
 		A71CC358215B44F7002A2468 /* PhotoCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */; };
@@ -360,7 +362,6 @@
 		A7EC57D5211B43310078F631 /* RERelationProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57D4211B43310078F631 /* RERelationProperties.swift */; };
 		A7EC57DF211B4C460078F631 /* APIGatewayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57DE211B4C460078F631 /* APIGatewayManager.swift */; };
 		A7ED7325216F3DE400E518FB /* FinalNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED7324216F3DE400E518FB /* FinalNoteViewController.swift */; };
-		A7F21B1421C4549D0015DB58 /* GroupInfoView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B1321C4549D0015DB58 /* GroupInfoView2.swift */; };
 		A7F21B3A21C55CDC0015DB58 /* GroupImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */; };
 		A7F21B3C21C58F6D0015DB58 /* multiple_users.png in Resources */ = {isa = PBXBuildFile; fileRef = A7F21B3B21C58F6C0015DB58 /* multiple_users.png */; };
 		A7F21B3E21C5A53F0015DB58 /* GroupImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B3D21C5A53F0015DB58 /* GroupImageViewModel.swift */; };
@@ -377,7 +378,6 @@
 		A7FD8A5D21BFF4E50094E02B /* GroupRelationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD8A5C21BFF4E50094E02B /* GroupRelationTableViewCell.swift */; };
 		A7FD8A5F21BFF5850094E02B /* GroupRelationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD8A5E21BFF5850094E02B /* GroupRelationViewModel.swift */; };
 		A7FE5DF921C2539A00C7BCEC /* GroupInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FE5DF821C2539A00C7BCEC /* GroupInfoViewController.swift */; };
-		A7FE5DFB21C2541400C7BCEC /* GroupInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FE5DFA21C2541400C7BCEC /* GroupInfoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -557,6 +557,8 @@
 		A716903721B69CF30039287B /* FriendRelationSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationSelectionView.swift; sourceTree = "<group>"; };
 		A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		A716903B21B6D03F0039287B /* SelectedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedFriendsViewModel.swift; sourceTree = "<group>"; };
+		A7184EAB21C9115C000BA72C /* GroupInfoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoEditViewModel.swift; sourceTree = "<group>"; };
+		A7184EAD21C93693000BA72C /* GroupInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoView.swift; sourceTree = "<group>"; };
 		A71CC352215B417B002A2468 /* CameraGalleryFunctionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGalleryFunctionView.swift; sourceTree = "<group>"; };
 		A71CC355215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCell2.swift; sourceTree = "<group>"; };
 		A71CC357215B44F7002A2468 /* PhotoCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell2.swift; sourceTree = "<group>"; };
@@ -761,7 +763,6 @@
 		A7EC57D4211B43310078F631 /* RERelationProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RERelationProperties.swift; sourceTree = "<group>"; };
 		A7EC57DE211B4C460078F631 /* APIGatewayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGatewayManager.swift; sourceTree = "<group>"; };
 		A7ED7324216F3DE400E518FB /* FinalNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalNoteViewController.swift; sourceTree = "<group>"; };
-		A7F21B1321C4549D0015DB58 /* GroupInfoView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoView2.swift; sourceTree = "<group>"; };
 		A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageContainerView.swift; sourceTree = "<group>"; };
 		A7F21B3B21C58F6C0015DB58 /* multiple_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multiple_users.png; sourceTree = "<group>"; };
 		A7F21B3D21C5A53F0015DB58 /* GroupImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageViewModel.swift; sourceTree = "<group>"; };
@@ -778,7 +779,6 @@
 		A7FD8A5C21BFF4E50094E02B /* GroupRelationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRelationTableViewCell.swift; sourceTree = "<group>"; };
 		A7FD8A5E21BFF5850094E02B /* GroupRelationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRelationViewModel.swift; sourceTree = "<group>"; };
 		A7FE5DF821C2539A00C7BCEC /* GroupInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoViewController.swift; sourceTree = "<group>"; };
-		A7FE5DFA21C2541400C7BCEC /* GroupInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoView.swift; sourceTree = "<group>"; };
 		B5C3AD71002450E40F97C224 /* Pods-catchu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catchu.release.xcconfig"; path = "Pods/Target Support Files/Pods-catchu/Pods-catchu.release.xcconfig"; sourceTree = "<group>"; };
 		C4E2B569C5CB5CFE69BDDBCF /* Pods-catchu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catchu.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catchu/Pods-catchu.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1754,6 +1754,7 @@
 				A7AE5FA121C63CF0008FD5AD /* GroupExitViewModel.swift */,
 				A7AE5FA321C63D00008FD5AD /* GroupParticipantsViewModel.swift */,
 				A7AE5FA521C67FC8008FD5AD /* GroupParticipantViewModel.swift */,
+				A7184EAB21C9115C000BA72C /* GroupInfoEditViewModel.swift */,
 			);
 			path = GroupDetailViewModels;
 			sourceTree = "<group>";
@@ -1862,11 +1863,10 @@
 				A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */,
 				A7FD8A5421BFBBCF0094E02B /* GroupRelationView.swift */,
 				A7FD8A5C21BFF4E50094E02B /* GroupRelationTableViewCell.swift */,
-				A7FE5DFA21C2541400C7BCEC /* GroupInfoView.swift */,
 				A73194D021C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift */,
 				A7CD3A2221C40AB300663001 /* ScretchableView.swift */,
-				A7F21B1321C4549D0015DB58 /* GroupInfoView2.swift */,
 				A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */,
+				A7184EAD21C93693000BA72C /* GroupInfoView.swift */,
 			);
 			path = RelationInfoPackage;
 			sourceTree = "<group>";
@@ -2261,7 +2261,6 @@
 				A72173BA20E7D32700F73B9C /* UIImageExtensions.swift in Sources */,
 				A7EC57C92118C6DA0078F631 /* Group.swift in Sources */,
 				A7C1C34A2195AE7B0096CEA6 /* SlideMenuTableViewCell.swift in Sources */,
-				A7F21B1421C4549D0015DB58 /* GroupInfoView2.swift in Sources */,
 				A755B56F2120752D00FD2573 /* UIViewExtensions.swift in Sources */,
 				A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */,
 				A7C1C350219714790096CEA6 /* ExploreViewSlider.swift in Sources */,
@@ -2323,6 +2322,7 @@
 				A7FD8A5921BFC35A0094E02B /* CommonGroupViewModel.swift in Sources */,
 				A7CD3A2321C40AB300663001 /* ScretchableView.swift in Sources */,
 				454815B8215EABB0009684E1 /* PasswordResetView.swift in Sources */,
+				A7184EAC21C9115C000BA72C /* GroupInfoEditViewModel.swift in Sources */,
 				A75E80A5212EA08F00EA0D03 /* MediaPermissionUnAuthorizedViewController.swift in Sources */,
 				A7AE5FB521C7E774008FD5AD /* GroupInfoEditTableViewCell.swift in Sources */,
 				A762B75E21641ADB00DBB4EF /* PostAttachmentView.swift in Sources */,
@@ -2440,6 +2440,7 @@
 				A7ED7325216F3DE400E518FB /* FinalNoteViewController.swift in Sources */,
 				A7369AFE20C78830001692F4 /* ExtensionUIImageView.swift in Sources */,
 				A72AF221219483FE0050B685 /* UserProfileMainView.swift in Sources */,
+				A7184EAE21C93693000BA72C /* GroupInfoView.swift in Sources */,
 				45BFD5762191A50D00CA8C0E /* MenuTabViewModel.swift in Sources */,
 				A708792C212B23530012C7F6 /* EditProfileViewController.swift in Sources */,
 				A722EC3A21A408B500E9BD3B /* PostTopBarView.swift in Sources */,
@@ -2511,7 +2512,6 @@
 				A77D3FD32131824B00D016D6 /* GroupInformationView.swift in Sources */,
 				A765A97D213CBD9100881F1B /* GroupCreateCollectionViewCell.swift in Sources */,
 				4538A05F217725F10044A79D /* RECountryListResponse.swift in Sources */,
-				A7FE5DFB21C2541400C7BCEC /* GroupInfoView.swift in Sources */,
 				A77D987F215A0C94002F9A02 /* FirebaseManager.swift in Sources */,
 				A7812EAF21247FED00460117 /* MenuBar4CollectionViewCell.swift in Sources */,
 				A7C1C362219906B90096CEA6 /* REProviderList.swift in Sources */,

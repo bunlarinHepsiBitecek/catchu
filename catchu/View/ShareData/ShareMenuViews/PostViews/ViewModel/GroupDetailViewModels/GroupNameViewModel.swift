@@ -8,17 +8,19 @@
 
 import Foundation
 
-
 class GroupNameViewModel: BaseViewModel, CommonViewModel, CommonGroupViewModelItem {
-    
+    // to sync groupRelationView data
     var groupViewModel: CommonGroupViewModel?
+    // to sync groupImageContainerView data 
+    var groupImageViewModel: GroupImageViewModel?
     
-    var group: Group?
+    //var group: Group?
     var groupNameUpdated = CommonDynamic(String())
     
-    init(group: Group?, groupViewModel: CommonGroupViewModel) {
-        self.group = group
+    init(group: Group?, groupViewModel: CommonGroupViewModel, groupImageViewModel: GroupImageViewModel) {
+        //self.group = group
         self.groupViewModel = groupViewModel
+        self.groupImageViewModel = groupImageViewModel
     }
     
     var sectionTitle: String {

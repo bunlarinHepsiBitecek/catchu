@@ -15,6 +15,7 @@ struct Constants {
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
     static let AWS_PATH_EMPTY = "empty" // used for aws lambda path param empty
+    static let ALERT = "ALERT\n"
     
     struct Bundle {
         struct Path {
@@ -41,6 +42,7 @@ struct Constants {
         static let DOUBLE_ZERO: Double = 0.0
         static let DOUBLE_ONE: Double = 1.0
         static let FLOAT_ZERO: Float   = 0.0
+        static let MAX_LETTER_COUNT_25 = 25
         
         struct GeoFireUnits {
             static let GEOFIRE_QUERY_RADIUS : Double = 0.05

@@ -242,13 +242,6 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
             
             self.groupRelationViewModel.infoRequestedGroup = cell?.returnCellGroupViewModel()
             
-            /*
-            if let cell = cell {
-                if let group = cell.returnCellRelatedGroup() {
-                    self.groupRelationViewModel.infoRequestedGroup = group
-                }
-            }*/
-            
             AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self)
         }
         
@@ -256,19 +249,11 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
         
     }
     
-//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        guard let cell = groupTableView.dequeueReusableCell(withIdentifier: GroupRelationTableViewCell.identifier, for: indexPath) as? GroupRelationTableViewCell else { return }
-//
-//    }
-    
-    
 }
 
 // MARK: - ActionSheetProtocols
 extension GroupRelationView : ActionSheetProtocols {
     func presentViewController() {
-        
-        groupRelationViewModel.infoRequestedGroup?.groupNameChanged.value = "erkut"
         
         if let currentViewController = LoaderController.currentViewController() {
             
@@ -276,12 +261,6 @@ extension GroupRelationView : ActionSheetProtocols {
             
             let groupInfoViewController = GroupInfoViewController()
             groupInfoViewController.groupViewModel = groupRelationViewModel.infoRequestedGroup
-            
-            if let groupViewModel = groupRelationViewModel.infoRequestedGroup {
-                if let group = groupViewModel.group {
-                    groupInfoViewController.group = group
-                }
-            }
             
             currentViewController.present(groupInfoViewController, animated: false, completion: nil)
             

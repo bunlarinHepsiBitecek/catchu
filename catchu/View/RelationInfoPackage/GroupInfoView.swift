@@ -2,301 +2,367 @@
 //  GroupInfoView.swift
 //  catchu
 //
-//  Created by Erkut Baş on 12/13/18.
+//  Created by Erkut Baş on 12/15/18.
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
 import UIKit
 
 class GroupInfoView: UIView {
-
-    private let imageContainerHeight = Constants.StaticViewSize.ConstraintValues.constraint_250
+    
     private let statusBarHeight = UIApplication.shared.statusBarFrame.height
+    private let groupImageContainerViewHeight : CGFloat = 150
+    private let groupImageContainerVisibleHeight : CGFloat = 50
     
-    var header : ScretchableView!
-    var navigationView = UIView()
+    private var groupImageContainerView : GroupImageContainerView!
     
-    lazy var topView: UIView = {
-        let temp = UIView()
-        temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.isUserInteractionEnabled = true
-        temp.backgroundColor = UIColor.clear
-        return temp
-    }()
+    private let groupDetailViewModel = GroupDetailViewModel()
+    
+    // getting from caller viewController to pass and listen changes
+    var groupViewModel : CommonGroupViewModel?
     
     lazy var groupDetailTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), style: UITableView.Style.grouped)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
         
         temp.delegate = self
         temp.dataSource = self
-        //temp.prefetchDataSource = self
-        
-        //temp.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-        temp.backgroundColor = UIColor.clear
-        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+        //temp.backgroundColor = UIColor.clear
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        temp.contentInset = UIEdgeInsets(top: groupImageContainerViewHeight + statusBarHeight, left: 0, bottom: 0, right: 0)
+        temp.contentInsetAdjustmentBehavior = .automatic
         temp.rowHeight = UITableViewAutomaticDimension
-        //temp.tableFooterView = UIView()
-        //temp.contentInset = UIEdgeInsetsMake(imageContainerHeight, 0, 0, 0)
         
-        temp.register(GroupInfoParticipantTableViewCell.self, forCellReuseIdentifier: GroupInfoParticipantTableViewCell.identifier)
-        
-        return temp
-        
-    }()
-    
-    lazy var blurView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
-        let temp = UIVisualEffectView(effect: effect)
-        temp.isUserInteractionEnabled = false
-        temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
-        temp.layer.masksToBounds = true
-        return temp
-    }()
-    
-    lazy var blurView2: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
-        let temp = UIVisualEffectView(effect: effect)
-        temp.isUserInteractionEnabled = false
-        temp.translatesAutoresizingMaskIntoConstraints = false
-        //temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
-        temp.layer.masksToBounds = true
-        return temp
-    }()
-    
-    lazy var backButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
-        temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.isUserInteractionEnabled = true
-        
-        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
-        //temp.titleLabel?.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        temp.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        temp.backgroundColor = UIColor.clear
-        temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        temp.addTarget(self, action: #selector(backProcess(_:)), for: .touchUpInside)
-        
-        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
+        // cell registrations
+        temp.register(GroupNameTableViewCell.self, forCellReuseIdentifier: GroupNameTableViewCell.identifier)
+        temp.register(GroupAdminPanelTableViewCell.self, forCellReuseIdentifier: GroupAdminPanelTableViewCell.identifier)
+        temp.register(GroupExitTableViewCell.self, forCellReuseIdentifier: GroupExitTableViewCell.identifier)
+        temp.register(GroupParticipantTableViewCell.self, forCellReuseIdentifier: GroupParticipantTableViewCell.identifier)
         
         return temp
         
     }()
     
+    lazy var groupImageContainer: UIView = {
+        let temp = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: groupImageContainerViewHeight))
+        //temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        
+        return temp
+    }()
     
-    override init(frame: CGRect) {
+    /*
+     override init(frame: CGRect) {
+     super.init(frame: frame)
+     
+     self.initializeView()
+     }*/
+    
+    init(frame: CGRect, groupViewModel: CommonGroupViewModel) {
         super.init(frame: frame)
-        initializeView()
+        // to sync groupRelationView data
+        self.groupViewModel = groupViewModel
+        self.groupDetailViewModel.groupViewModel = self.groupViewModel
+        
+        self.initializeView()
+        // after adding groupImageContainerView, let's get it's viewModel to sync groupImageContainerView data
+        self.groupDetailViewModel.groupImageViewModel = groupImageContainerView.groupImageViewModel
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        groupDetailViewModel.groupParticipantCount.unbind()
+        groupDetailViewModel.isAuthenticatedUserAdmin.unbind()
+        groupDetailViewModel.state.unbind()
+    }
 }
 
 // MARK: - major functions
 extension GroupInfoView {
     
     private func initializeView() {
-        //self.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         
         addViews()
+        
+        do {
+            try addGroupImageContainer()
+        }
+        catch let error as ClientPresentErrors {
+            if error == .missingGroupViewModel {
+                print("CommonGroupViewModel is required!")
+            }
+        }
+        catch {
+            print("Something terribly goes wrong")
+        }
+        
+        addGroupDetailViewModelListeners()
+        startGettingGroupDetailData()
+        
     }
     
     private func addViews() {
-        addMainViews()
-        setupHeaderView()
         
-        // NavigationHeader
-        let navibarHeight : CGFloat = 44
-        let statusbarHeight : CGFloat = UIApplication.shared.statusBarFrame.size.height
-        navigationView = UIView()
-        navigationView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: navibarHeight + statusbarHeight)
-        //navigationView.backgroundColor = UIColor(red: 121/255.0, green: 193/255.0, blue: 203/255.0, alpha: 1.0)
-        navigationView.backgroundColor = UIColor.clear
-        navigationView.alpha = 0.0
-        self.addSubview(navigationView)
-        
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: 10, y: 20, width: 44, height: 44)
-        button.setImage(UIImage(named: "navi_back_btn")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-        button.tintColor = UIColor.white
-        self.addSubview(button)
-        
-        button.insertSubview(blurView, at: 0)
-        
-        let safe = button.safeAreaLayoutGuide
-        
-        NSLayoutConstraint.activate([
-            
-            blurView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            blurView.topAnchor.constraint(equalTo: safe.topAnchor),
-            blurView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            
-            ])
-        
-        navigationView.insertSubview(blurView2, at: 0)
-        
-        let safe2 = navigationView.safeAreaLayoutGuide
-        
-        NSLayoutConstraint.activate([
-            
-            blurView2.leadingAnchor.constraint(equalTo: safe2.leadingAnchor),
-            blurView2.trailingAnchor.constraint(equalTo: safe2.trailingAnchor),
-            blurView2.topAnchor.constraint(equalTo: safe2.topAnchor),
-            blurView2.bottomAnchor.constraint(equalTo: safe2.bottomAnchor),
-            
-            ])
-        
-       // addBackButton()
-        
-        //groupDetailTableView.contentInset = UIEdgeInsetsMake(300, 0, 0, 0)
-        
-        /*
-        let groupInfoProfileContainer = GroupInfoImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
-        groupDetailTableView.tableHeaderView = groupInfoProfileContainer
-        */
-    }
-    
-    private func addMainViews() {
-        //self.addSubview(topView)
         self.addSubview(groupDetailTableView)
+        self.addSubview(groupImageContainer)
         
         let safe = self.safeAreaLayoutGuide
-        let safeTopView = self.topView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
             groupDetailTableView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             groupDetailTableView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            groupDetailTableView.topAnchor.constraint(equalTo: safe.topAnchor, constant: -statusBarHeight),
+            groupDetailTableView.topAnchor.constraint(equalTo: safe.topAnchor),
             groupDetailTableView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             
+            groupImageContainer.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            groupImageContainer.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            groupImageContainer.topAnchor.constraint(equalTo: safe.topAnchor),
+            
             ])
         
-        //addBlurEffectToBackButton2()
     }
     
-    private func addBackButton() {
-        self.addSubview(backButton)
+    private func addGroupImageContainer() throws {
         
-        let safe = self.safeAreaLayoutGuide
+        guard let groupViewModel = groupViewModel else { throw ClientPresentErrors.missingGroupViewModel }
+        
+        groupImageContainerView = GroupImageContainerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: groupImageContainerViewHeight + statusBarHeight), groupViewModel: groupViewModel)
+        
+        groupImageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        groupImageContainerView.layer.shadowOffset = CGSize(width: 0, height: 3)
+        groupImageContainerView.layer.shadowOpacity = 0.6
+        groupImageContainerView.layer.shadowRadius = 5.0
+        groupImageContainerView.layer.shadowColor = UIColor.black.cgColor
+        
+        self.groupImageContainer.addSubview(groupImageContainerView)
+        
+        let safeGroupImageContainer = self.groupImageContainer.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
-            backButton.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            backButton.topAnchor.constraint(equalTo: safe.topAnchor),
-            backButton.heightAnchor.constraint(equalToConstant: 50),
-            backButton.widthAnchor.constraint(equalToConstant: 50),
+            groupImageContainerView.leadingAnchor.constraint(equalTo: safeGroupImageContainer.leadingAnchor),
+            groupImageContainerView.trailingAnchor.constraint(equalTo: safeGroupImageContainer.trailingAnchor),
+            groupImageContainerView.topAnchor.constraint(equalTo: safeGroupImageContainer.topAnchor, constant: -statusBarHeight),
+            groupImageContainerView.bottomAnchor.constraint(equalTo: safeGroupImageContainer.bottomAnchor),
             
             ])
         
-        //addBlurEffectToBackButton()
+        groupImageContainerView.startListenStackViewGroupTitleTapped { (tapped) in
+            // to do
+        }
         
     }
     
-    private func addBlurEffectToBackButton() {
-        backButton.insertSubview(blurView, at: 0)
+    private func addGroupDetailViewModelListeners() {
         
-        let safe = self.backButton.safeAreaLayoutGuide
+        groupDetailViewModel.state.bind { (state) in
+            
+            self.setLoadingAnimation(state)
+            
+            switch state {
+            case .populate:
+                self.reloadGroupDetailTableView()
+                return
+            default:
+                return
+            }
+        }
         
-        NSLayoutConstraint.activate([
+        groupDetailViewModel.groupParticipantCount.bind { (totalCount) in
             
-            blurView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            blurView.topAnchor.constraint(equalTo: safe.topAnchor),
-            blurView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            self.groupImageContainerView.groupImageViewModel.groupParticipantCount.value = totalCount
             
-            ])
+        }
+        
     }
     
-    private func addBlurEffectToBackButton2() {
-        topView.insertSubview(blurView, at: 0)
+    private func setLoadingAnimation(_ state : TableViewState) {
         
-        let safe = self.topView.safeAreaLayoutGuide
+        DispatchQueue.main.async {
+            let loadingView = RelationCollectionLoadingView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Height.height_50))
+            loadingView.setInformation(state, inputInformationText: LocalizedConstants.PostAttachmentInformation.gettingGroupDetail)
+            
+            switch state {
+            case .populate:
+                self.groupDetailTableView.tableFooterView = nil
+            default:
+                self.groupDetailTableView.tableFooterView = loadingView
+            }
+        }
         
-        NSLayoutConstraint.activate([
-            
-            blurView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            blurView.topAnchor.constraint(equalTo: safe.topAnchor),
-            blurView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            
-            ])
     }
     
-    func setupHeaderView() {
-        
-        let options = ScretchableViewOptions()
-        options.position = .fullScreenTop
-        
-        print("self.frame.size.width : \(self.frame.size.width)")
-        
-        let currentViewController = LoaderController.currentViewController()
-        
-        header = ScretchableView()
-        header.scretchableViewSize(headerSize: CGSize(width: UIScreen.main.bounds.width, height: 220),
-                                 imageSize: CGSize(width: UIScreen.main.bounds.width, height: 220),
-                                 controller: currentViewController!,
-                                 options: options)
-        header.imageView.image = UIImage(named: "8771.jpg")
-        
-        groupDetailTableView.tableHeaderView = header
+    private func startGettingGroupDetailData() {
+        groupDetailViewModel.getGroupDetails()
     }
     
-    @objc func backProcess(_ sender : UIButton) {
+    private func reloadGroupDetailTableView() {
+        
+        DispatchQueue.main.async {
+            
+            self.groupDetailTableView.reloadData()
+            
+        }
+        
+    }
+    
+    /// Description : it's used to go group name edit view process
+    ///
+    /// - Parameter groupNameViewModel: groupNameViewModel object taken from this view
+    private func directGroupInfoEditViewController(groupNameViewModel: GroupNameViewModel) {
         print("\(#function)")
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            
+            let groupInfoEditViewController = GroupInfoEditTableViewController()
+            groupInfoEditViewController.groupNameViewModel = groupNameViewModel
+            
+            let groupInfoEditNavigationController = UINavigationController(rootViewController: groupInfoEditViewController)
+            
+            currentViewController.present(groupInfoEditNavigationController, animated: true, completion: nil)
+        }
+        
+    }
+    
+    // observe view controller dismiss operation
+    func addObserverForGroupInfoDismiss(completion : @escaping (_ state : GroupImageProcess) -> Void) {
+        groupImageContainerView.startCancelButtonObserver(completion: completion)
     }
     
 }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
-extension GroupInfoView : UITableViewDataSource, UITableViewDelegate {
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return groupDetailViewModel.returnSectionCount()
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let groupDetailObject = groupDetailViewModel.returnGroupDetailSectionItems(section: section)
+        
+        switch groupDetailObject.type {
+        case .participant:
+            if let participantsObject = groupDetailObject as? GroupParticipantsViewModel {
+                return "\(participantsObject.participantList.count)" + " " + participantsObject.sectionTitle
+            }
+            return groupDetailObject.sectionTitle
+        default:
+            return nil
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100
-        
+        return groupDetailViewModel.returnRowCount(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = groupDetailTableView.dequeueReusableCell(withIdentifier: GroupInfoParticipantTableViewCell.identifier, for: indexPath) as? GroupInfoParticipantTableViewCell else { return UITableViewCell() }
+        let groupDetailObject = groupDetailViewModel.returnGroupDetailSectionItems(section: indexPath.section)
         
-        cell.textLabel?.text = "\(indexPath.row) + takasi bom bom"
-        cell.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        cell.imageView?.image = UIImage(named: "8771.jpg")
+        switch groupDetailObject.type {
+        case .name:
+            print("name cell loaded")
+            
+            guard let cell = groupDetailTableView.dequeueReusableCell(withIdentifier: GroupNameTableViewCell.identifier, for: indexPath) as? GroupNameTableViewCell else { return UITableViewCell() }
+            
+            cell.initiateCellDesign(item: groupDetailObject)
+            
+            return cell
+            
+        case .admin:
+            print("admin cell loaded")
+            
+            guard let cell = groupDetailTableView.dequeueReusableCell(withIdentifier: GroupAdminPanelTableViewCell.identifier, for: indexPath) as? GroupAdminPanelTableViewCell else { return UITableViewCell() }
+            
+            cell.initiateCellDesign(item: groupDetailObject)
+            
+            return cell
+            
+        case .participant:
+            print("participant cell loaded")
+            
+            if let participantObject = groupDetailObject as? GroupParticipantsViewModel {
+                guard let cell = groupDetailTableView.dequeueReusableCell(withIdentifier: GroupParticipantTableViewCell.identifier, for: indexPath) as? GroupParticipantTableViewCell else { return UITableViewCell() }
+                
+                let object = participantObject.participantList[indexPath.row]
+                
+                cell.initiateCellDesign(item: participantObject.participantList[indexPath.row])
+                
+                return cell
+            }
+            
+        case .exit:
+            print("exit cell loaded")
+            
+            guard let cell = groupDetailTableView.dequeueReusableCell(withIdentifier: GroupExitTableViewCell.identifier, for: indexPath) as? GroupExitTableViewCell else { return UITableViewCell() }
+            
+            cell.initiateCellDesign(item: groupDetailObject)
+            
+            return cell
+        }
         
-        cell.accessoryType = .detailButton
-        
-        
-        return cell
+        return UITableViewCell()
         
     }
     
-    
-    // MARK: - ScrollView Delegate
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        header.updateScrollViewOffset(scrollView)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // NavigationHeader alpha update
-        let offset : CGFloat = scrollView.contentOffset.y
-        if (offset > 50) {
-            let alpha : CGFloat = min(CGFloat(1), CGFloat(1) - (CGFloat(50) + (navigationView.frame.height) - offset) / (navigationView.frame.height))
-            navigationView.alpha = CGFloat(alpha)
-            
-        } else {
-            navigationView.alpha = 0.0;
+        let groupDetailObject = groupDetailViewModel.returnGroupDetailSectionItems(section: indexPath.section)
+        
+        switch groupDetailObject.type {
+        case .name:
+            // to do
+            if let groupNameViewModel = groupDetailObject as? GroupNameViewModel {
+                self.directGroupInfoEditViewController(groupNameViewModel: groupNameViewModel)
+                
+            }
+        default:
+            return
         }
+        
     }
     
 }
 
+// MARK: - scroll override functions
+extension GroupInfoView {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        print("yarro scroll")
+        let y = (groupImageContainerViewHeight) - (scrollView.contentOffset.y + groupImageContainerViewHeight)
+        let height = min(max(y, groupImageContainerVisibleHeight), UIScreen.main.bounds.height)
+        print("scrollView.contentOffset.y : \(scrollView.contentOffset.y)")
+        print("y : \(y)")
+        print("height : \(height)")
+        groupImageContainer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: height)
+        
+        if groupImageContainerView != nil {
+            
+            if (height <= groupImageContainerVisibleHeight) {
+                print("bitirim")
+                groupImageContainerView.activationManagerOfStackViewGroupInfo(active: true)
+            }
+            
+            if (height <= groupImageContainerVisibleHeight) {
+                groupImageContainerView.activationManagerOfMaxSizeContainerView(active: true)
+            } else {
+                groupImageContainerView.activationManagerOfMaxSizeContainerView(active: false)
+                groupImageContainerView.activationManagerOfStackViewGroupInfo(active: false)
+            }
+            
+        }
+        
+    }
+    
+}

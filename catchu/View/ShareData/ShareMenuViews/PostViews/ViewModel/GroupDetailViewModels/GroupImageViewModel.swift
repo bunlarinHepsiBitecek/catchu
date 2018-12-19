@@ -10,8 +10,13 @@ import Foundation
 
 class GroupImageViewModel: BaseViewModel, CommonViewModel {
     
-    var group: Group?
+    // this model is required to sync groupRelationView data (specially for groupImage)
+    var groupViewModel: CommonGroupViewModel?
+    
     var groupImageProcessState = CommonDynamic(GroupImageProcess.start)
+    var stackTitleTapped = CommonDynamic(false)
+    var groupParticipantCount = CommonDynamic(Int())
+    var groupTitleChangeListener = CommonDynamic(String())
     
     func handleAwsTaskResponse<AnyModel>(networkResult: ConnectionResult<AnyModel>) {
         print("\(#function)")

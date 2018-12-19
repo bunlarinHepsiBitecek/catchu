@@ -28,7 +28,7 @@ class GroupNameTableViewCell: CommonTableCell, CommonDesignableCellForGroupDetai
         self.accessoryType = .disclosureIndicator
         
         addViews()
-        //addGroupNameUpdateListener()
+
     }
     
     override func prepareForReuse() {
@@ -50,11 +50,15 @@ extension GroupNameTableViewCell {
             
             guard let groupNameViewModel = self.groupNameViewModel else { return }
             
-            if let group = groupNameViewModel.group {
-                self.groupName.text = group.groupName
+            if let groupViewModel = groupNameViewModel.groupViewModel {
+                if let group = groupViewModel.group {
+                    self.groupName.text = group.groupName
+                }
             }
             
         }
+        
+        addGroupNameUpdateListener()
         
     }
     
@@ -77,6 +81,12 @@ extension GroupNameTableViewCell {
             
             ])
         
+    }
+    
+    func addGroupNameUpdateListener() {
+        groupNameViewModel?.groupNameUpdated.bind({ (newValue) in
+            self.groupName.text = newValue
+        })
     }
 
 }

@@ -9,8 +9,32 @@
 import UIKit
 
 class GroupInfoEditTableViewController: UITableViewController {
-
-    var groupViewModel: CommonGroupViewModel?
+    
+    // groupNameViewModel is getting outside
+    var groupNameViewModel: GroupNameViewModel?
+    
+    // groupInfoEditViewModel is created self tableviewcontroller
+    var groupInfoEditViewModel: GroupInfoEditViewModel?
+    
+    lazy var leftBarButton: UIBarButtonItem = {
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissViewController(_:)))
+        temp.isEnabled = true
+        return temp
+    }()
+    
+    lazy var rigthBarButton: UIBarButtonItem = {
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.save, style: UIBarButtonItemStyle.plain, target: self, action: #selector(saveChanges(_:)))
+        temp.isEnabled = false
+        return temp
+    }()
+    
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        temp.backgroundColor = UIColor.clear
+        temp.hidesWhenStopped = true
+        temp.startAnimating()
+        return temp
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +45,11 @@ class GroupInfoEditTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    deinit {
+        groupInfoEditViewModel?.saveButtonActivation.unbind()
+        groupInfoEditViewModel?.saveProcessState.unbind()
     }
 
     // MARK: - Table view data source
@@ -39,60 +68,11 @@ class GroupInfoEditTableViewController: UITableViewController {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupInfoEditTableViewCell.identifier, for: indexPath) as? GroupInfoEditTableViewCell else { return UITableViewCell() }
         
-        cell.initiateCellDesign(item: groupViewModel)
+        cell.initiateCellDesign(item: groupInfoEditViewModel)
         
         return cell
     }
     
-    func addListenerToGroupNameChangeState(completion : @escaping (_ newString : String) -> Void) {
-        
-    }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 // MARK: - major functions
@@ -100,28 +80,71 @@ extension GroupInfoEditTableViewController {
     
     private func prepareViewController() {
         print("\(#function)")
-        
-        groupViewModel?.groupNameChanged.value = "gazgaz"
-        
+
         addBarButtons()
         setupViewSettings()
+        
+        do {
+            try setupViewModelListeners()
+            
+        } catch let error as ClientPresentErrors {
+            if error == .missingGroupNameViewModel {
+                print("GroupNameViewModel is required")
+            }
+        }
+        
+        catch  {
+            print("Something terribly goes wrong")
+        }
         
     }
     
     private func setupViewSettings() {
         self.tableView = UITableView(frame: .zero, style: .grouped)
         self.title = LocalizedConstants.TitleValues.ViewControllerTitles.groupInfoEdit
+        self.tableView.separatorStyle = .none
         self.tableView.register(GroupInfoEditTableViewCell.self, forCellReuseIdentifier: GroupInfoEditTableViewCell.identifier)
     }
     
     private func addBarButtons() {
         
-        let leftBarButton = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.dismissViewController(_:)))
-        let rigthBarButton = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.save, style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.saveChanges(_:)))
-        
         self.navigationItem.leftBarButtonItem = leftBarButton
         self.navigationItem.rightBarButtonItem = rigthBarButton
         
+    }
+    
+    private func enableManagerOfSaveButton(active: Bool) {
+        self.rigthBarButton.isEnabled = active
+    }
+    
+    private func setupViewModelListeners() throws {
+        
+        guard let groupNameViewModel = self.groupNameViewModel else { throw ClientPresentErrors.missingGroupNameViewModel }
+        
+        groupInfoEditViewModel = GroupInfoEditViewModel(groupNameViewModel: groupNameViewModel)
+        
+        groupInfoEditViewModel?.saveButtonActivation.bind({ (active) in
+            self.enableManagerOfSaveButton(active: active)
+        })
+        
+        groupInfoEditViewModel?.saveProcessState.bind({ (operationState) in
+            self.saveProcessOperationStateControl(operationState: operationState)
+        })
+        
+    }
+    
+    private func saveProcessOperationStateControl(operationState: CRUD_OperationStates) {
+        switch operationState {
+        case .processing:
+            if let rightBarButtonView = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
+                activityIndicatorView.frame = rightBarButtonView.frame
+                navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+            }
+            return
+        case .done:
+            self.navigationItem.rightBarButtonItem = rigthBarButton
+            return
+        }
     }
     
     @objc func dismissViewController(_ sender : UIButton) {
@@ -130,5 +153,30 @@ extension GroupInfoEditTableViewController {
     
     @objc func saveChanges(_ sender : UIButton) {
         //self.dismiss(animated: true, completion: nil)
+        
+        groupInfoEditViewModel?.saveProcessState.value = .processing
+        
+        print("\(Constants.ALERT) nothing happens go ahead dont worry")
+        
+        do {
+            try groupInfoEditViewModel?.updateGroupInformation()
+        }
+        catch let error as ClientPresentErrors {
+            if error == .missingGroupInfoEditViewModel {
+                print("\(Constants.ALERT)GroupInfoEditViewModel is required!")
+            }
+        }
+        catch let error as CastingErrors {
+            if error == .groupObjectCastFailed {
+                print("\(Constants.ALERT)GroupObjectCasting failed")
+            }
+        }
+        catch {
+            print("Something goes terribly wrong")
+        }
+        
     }
+    
+    
+    
 }

@@ -10,10 +10,9 @@ import UIKit
 
 class GroupInfoViewController: UIViewController {
 
-    var group: Group?
     var groupViewModel: CommonGroupViewModel?
 
-    private var groupInfoView : GroupInfoView2!
+    private var groupInfoView : GroupInfoView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,20 +55,17 @@ extension GroupInfoViewController {
     
     private func addViews() throws {
         print("\(#function)")
-        guard let group = self.group else { throw ClientPresentErrors.missingGroupObject }
         guard let groupViewModel = self.groupViewModel else { throw ClientPresentErrors.missingGroupObject }
         
-        groupViewModel.groupNameChanged.value = "yarro"
-        
-        addGroupInfoView(group: group, groupViewModel: groupViewModel)
+        addGroupInfoView(groupViewModel: groupViewModel)
         addGroupInfoDismissListener()
     }
     
-    private func addGroupInfoView(group : Group, groupViewModel: CommonGroupViewModel) {
+    private func addGroupInfoView(groupViewModel: CommonGroupViewModel) {
         print("\(#function) starts")
         
         //groupInfoView = GroupInfoView2(frame: .zero, group: group)
-        groupInfoView = GroupInfoView2(frame: .zero, group: group, groupViewModel: groupViewModel)
+        groupInfoView = GroupInfoView(frame: .zero, groupViewModel: groupViewModel)
         groupInfoView.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(groupInfoView)

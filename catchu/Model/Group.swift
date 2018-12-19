@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Group {
+class Group: NSCopying {
     
     public static var shared = Group()
     
@@ -26,9 +26,17 @@ class Group {
     var groupList : Array<Group> = []
     var groupSortedList : Array<Group> = []
     
-    
     init() {
         self.groupMembers = []
+    }
+    
+    init(groupID: String, adminUserID: String, groupName: String, groupPictureUrl: String, groupCreateDate: String) {
+        self.groupID = groupID
+        self.adminUserID = adminUserID
+        self.groupName = groupName
+        self.groupPictureUrl = groupPictureUrl
+        self.groupCreateDate = groupCreateDate
+        
     }
     
     init(reGroup : REGroupRequestResult_resultArray_item) {
@@ -52,6 +60,10 @@ class Group {
         if let createData = reGroup.createAt {
             self.groupCreateDate = createData
         }
+    }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        return Group(groupID: groupID!, adminUserID: adminUserID!, groupName: groupName!, groupPictureUrl: groupPictureUrl!, groupCreateDate: groupCreateDate!)
     }
     
     func createSortedGroupList() {
@@ -111,7 +123,7 @@ class Group {
         
     }
     
-    func returnREGroupRequestFromGroup(inputGroup : Group) -> REGroupRequest {
+    func returnREGroupRequestFromGroup(inputGroup : Group) -> REGroupRequest? {
         
         let returnREGroup = REGroupRequest()
         
@@ -120,10 +132,33 @@ class Group {
         returnREGroup?.groupName = inputGroup.groupName
         returnREGroup?.groupPhotoUrl = inputGroup.groupPictureUrl
         
-        return returnREGroup!
+        return returnREGroup
         
     }
     
+    func returnREGroupRequestFromGroup() -> REGroupRequest? {
+        
+        let returnREGroup = REGroupRequest()
+        
+        if let groupid = self.groupID {
+            returnREGroup?.groupid = groupid
+        }
+        
+        if let adminUserid = self.adminUserID {
+            returnREGroup?.userid = adminUserid
+        }
+        
+        if let groupName = self.groupName {
+            returnREGroup?.groupName = groupName
+        }
+        
+        if let groupPhotoUrl = self.groupPictureUrl {
+            returnREGroup?.groupPhotoUrl = groupPhotoUrl
+        }
+        
+        return returnREGroup
+        
+    }
     
     /// Converts group object to ReGroupRequest
     ///

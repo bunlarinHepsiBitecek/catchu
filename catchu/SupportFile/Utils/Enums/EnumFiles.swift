@@ -181,6 +181,14 @@ enum ClientPresentErrors: Swift.Error {
     case missingViewControllerPurpose
     case missingViewControllerChoise
     case missingGroupObject
+    case missingGroupNameViewModel
+    case missingGroupViewModel
+    case missingGroupImageViewModel
+    case missingGroupInfoEditViewModel
+}
+
+enum CastingErrors: Swift.Error {
+    case groupObjectCastFailed
 }
 
 enum CustomVideoError: Swift.Error {
@@ -327,3 +335,7 @@ enum GroupDetailSectionTypes {
     case exit
 }
 
+enum CRUD_OperationStates {
+    case processing
+    case done
+}

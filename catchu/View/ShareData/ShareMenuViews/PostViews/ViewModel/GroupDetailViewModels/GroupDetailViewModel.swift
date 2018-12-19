@@ -10,9 +10,11 @@ import Foundation
 
 class GroupDetailViewModel: BaseViewModel, CommonViewModel {
     
+    // to sync relationGroupView data
     var groupViewModel: CommonGroupViewModel?
+    // to sync groupImageContainerView data
+    var groupImageViewModel: GroupImageViewModel?
     
-    var group: Group?
     var groupDetailSections = Array<CommonGroupViewModelItem>()
     var state = CommonDynamic(TableViewState.suggest)
     var isAuthenticatedUserAdmin = CommonDynamic(false)
@@ -23,24 +25,25 @@ class GroupDetailViewModel: BaseViewModel, CommonViewModel {
         state.value = .loading
         groupParticipantCount.value = 0
         
-        guard let group = self.group else { return }
-        guard let groupid = group.groupID else { return }
-        
-        print("groupid : \(groupid)")
-        
-        do {
-            try APIGatewayManager.shared.getGroupParticipantList(groupid: groupid, completion: { (result) in
-                self.handleAwsTaskResponse(networkResult: result)
-            })
+        if let group = groupViewModel?.group {
+            guard let groupid = group.groupID else { return }
             
-        }
-        catch let error as ApiGatewayClientErrors {
-            if error == .missingGroupId {
-                print("Groupid is requeired!!!")
+            print("groupid : \(groupid)")
+            
+            do {
+                try APIGatewayManager.shared.getGroupParticipantList(groupid: groupid, completion: { (result) in
+                    self.handleAwsTaskResponse(networkResult: result)
+                })
+                
             }
-        }
-        catch {
-            print("there is a serious problem over here")
+            catch let error as ApiGatewayClientErrors {
+                if error == .missingGroupId {
+                    print("Groupid is requeired!!!")
+                }
+            }
+            catch {
+                print("there is a serious problem over here")
+            }
         }
         
     }
@@ -56,7 +59,29 @@ class GroupDetailViewModel: BaseViewModel, CommonViewModel {
                 }
                 
                 if let resultArray = data.resultArrayParticipantList {
-                    self.createGroupDetailSections(participantList: resultArray)
+                    //self.createGroupDetailSections(participantList: resultArray)
+                    
+                    do {
+                        try self.createGroupDetailSections(participantList: resultArray)
+                    }
+                    catch let error as ClientPresentErrors {
+                        switch error {
+                        case .missingGroupImageViewModel:
+                            print("GroupImageViewModel is required")
+                            
+                        case .missingGroupViewModel:
+                            print("GroupViewModel is required")
+                            
+                        case .missingGroupObject:
+                            print("Group object is required")
+                        default:
+                            print("Something goes terribly wrong")
+                        }
+                    }
+                    catch {
+                        print("Something goes terribly wrong")
+                    }
+                    
                 }
                 
             }
@@ -79,15 +104,15 @@ class GroupDetailViewModel: BaseViewModel, CommonViewModel {
         
     }
     
-    func createGroupDetailSections(participantList : [REUserProfileProperties]) {
+    func createGroupDetailSections(participantList : [REUserProfileProperties]) throws {
         print("\(#function)")
         
-        // check and unwrapped group object
-        guard let group = group else { return }
-        guard let groupViewModel = groupViewModel else { return }
+        guard let groupViewModel = groupViewModel else { throw ClientPresentErrors.missingGroupViewModel }
+        guard let groupImageViewModel = groupImageViewModel else { throw ClientPresentErrors.missingGroupImageViewModel }
+        guard let group = groupViewModel.group else { throw ClientPresentErrors.missingGroupObject }
         
         // first create a section for group name
-        let groupNameSection = GroupNameViewModel(group: group, groupViewModel: groupViewModel)
+        let groupNameSection = GroupNameViewModel(group: group, groupViewModel: groupViewModel, groupImageViewModel: groupImageViewModel)
         groupDetailSections.append(groupNameSection)
         
         // second create admin section if exists
@@ -119,7 +144,9 @@ class GroupDetailViewModel: BaseViewModel, CommonViewModel {
     
     func checkAuthenticatedUserIsAdmin() {
         
-        if let group = self.group {
+        guard let groupViewModel = groupViewModel else { return }
+        
+        if let group = groupViewModel.group {
             if let adminID = group.adminUserID, let userid = User.shared.userid {
                 if adminID == userid {
                     isAuthenticatedUserAdmin.value = true
@@ -142,7 +169,9 @@ class GroupDetailViewModel: BaseViewModel, CommonViewModel {
     }
     
     private func returnAuthenticatedUserIsAdmin() -> Bool {
-        if let group = self.group {
+        guard let groupViewModel = groupViewModel else { return false }
+        
+        if let group = groupViewModel.group {
             if let adminID = group.adminUserID, let userid = User.shared.userid {
                 if adminID == userid {
                     return true

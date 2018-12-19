@@ -639,6 +639,36 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
+    /// Description : update group information
+    ///
+    /// - Parameters:
+    ///   - group: group object
+    ///   - completion: updated group information
+    /// - Author: Erkut Bas
+    func updateGroupInformation(group: Group, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) {
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            
+            if finished {
+                
+                // create group request object
+                guard let groupRequest =  else { return }
+                groupRequest.requestType = RequestType.update_group_info.rawValue
+                
+                
+
+                self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (awsTask) -> Any? in
+                    
+                    self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
+                    return nil
+                    
+                })
+                
+            }
+            
+        }
+        
+    }
     
     func initiatePostOperations() {
         

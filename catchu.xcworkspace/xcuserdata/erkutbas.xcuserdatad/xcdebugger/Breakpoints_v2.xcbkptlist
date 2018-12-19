@@ -9,28 +9,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupDetailTableViewCells/GroupParticipantTableViewCell.swift"
-            timestampString = "566778973.907323"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "initiateCellDesign(item:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566778973.907608"
+            timestampString = "566913513.851724"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566778973.907805"
+            timestampString = "566913513.8518569"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -57,59 +41,171 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupDetailTableViewCells/GroupParticipantTableViewCell.swift"
-            timestampString = "566778973.907873"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "initiateCellDesign(item:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566778973.907933"
+            timestampString = "566913513.851954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "addGroupDetailViewModelListeners()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/GroupImageContainerView.swift"
+            timestampString = "566913513.852041"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "GroupImageContainerView"
+            landmarkType = "21">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
+            timestampString = "566913513.8521481"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoViewController.swift"
+            timestampString = "566913513.8522381"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "addViews()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
+            timestampString = "566913513.852308"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "directGroupInfoEditViewController(groupNameViewModel:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
+            timestampString = "566913513.852399"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
+            landmarkName = "saveChanges(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
+            timestampString = "566913513.852487"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "saveProcessOperationStateControl(operationState:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
+            timestampString = "566913513.852568"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "enableManagerOfSaveButton(active:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
+            timestampString = "566913513.8526649"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "updateGroupInformation()"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Int) -&gt; () in catchu.GroupInfoView2.(addGroupDetailViewModelListeners in _EFBFA91BC12377EC49D1D7A38059FADD)() -&gt; ()"
+                  symbolName = "catchu.GroupInfoEditViewModel.updateGroupInformation() throws -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-                  timestampString = "566778865.016626"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
+                  timestampString = "566913514.172506"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "168"
-                  endingLineNumber = "168"
-                  offsetFromSymbolStart = "41">
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "674">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #2 (Swift.Int) -&gt; () in catchu.GroupInfoView2.(addGroupDetailViewModelListeners in _EFBFA91BC12377EC49D1D7A38059FADD)() -&gt; ()"
+                  symbolName = "closure #1 (catchu.ConnectionResult&lt;catchu.REGroupRequestResult&gt;) -&gt; () in catchu.GroupInfoEditViewModel.updateGroupInformation() throws -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-                  timestampString = "566778865.018733"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
+                  timestampString = "566913514.1746401"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
                   offsetFromSymbolStart = "34">
                </Location>
             </Locations>
@@ -121,108 +217,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupImageContainerView.swift"
-            timestampString = "566778973.907989"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
-            landmarkName = "setParticipantCount(participantCount:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
-            timestampString = "566778973.9081579"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "dismissViewController(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566778973.908339"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
-            landmarkName = "tableView(_:didSelectRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupRelationView.swift"
-            timestampString = "566778973.908404"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "243"
-            endingLineNumber = "243"
-            landmarkName = "tableView(_:editActionsForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupRelationView.swift"
-            timestampString = "566778973.9085751"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
-            landmarkName = "presentViewController()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoViewController.swift"
-            timestampString = "566778973.908633"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "addViews()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "catchu/View/RelationInfoPackage/GroupDetailTableViewCells/GroupInfoEditTableViewCell.swift"
-            timestampString = "566778973.908805"
+            timestampString = "566913513.853591"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "textFieldChanged(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -233,29 +233,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
-            timestampString = "566778973.90929"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
+            timestampString = "566913663.352221"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupDetailTableViewCells/GroupInfoEditTableViewCell.swift"
-            timestampString = "566778973.909341"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "initiateCellDesign(item:)"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "handleAwsTaskResponse(networkResult:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

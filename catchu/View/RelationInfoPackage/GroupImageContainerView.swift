@@ -10,7 +10,7 @@ import UIKit
 
 class GroupImageContainerView: UIView {
     
-    private var groupImageViewModel = GroupImageViewModel()
+    var groupImageViewModel = GroupImageViewModel()
     
     private let statusBarHeight = UIApplication.shared.statusBarFrame.height
     
@@ -113,6 +113,10 @@ class GroupImageContainerView: UIView {
         temp.axis = .vertical
         temp.distribution = .fillProportionally
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(direcToGroupInfoEditViewController(_:)))
+        tapGesture.delegate = self
+        temp.addGestureRecognizer(tapGesture)
+        
         return temp
     }()
     
@@ -192,15 +196,18 @@ class GroupImageContainerView: UIView {
         return temp
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, groupViewModel: CommonGroupViewModel) {
         super.init(frame: frame)
-        
+        groupImageViewModel.groupViewModel = groupViewModel
         initializeView()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        groupImageViewModel.groupParticipantCount.unbind()
     }
     
 }
@@ -216,6 +223,10 @@ extension GroupImageContainerView {
         
         alphaManagerOfMaxContainerView(active: false)
         alphaManagerOfStackViewGroupInfo(active: false)
+        
+        addListeners()
+        
+        setValuesToViews()
         
     }
     
@@ -330,6 +341,37 @@ extension GroupImageContainerView {
         }
     }
     
+    private func setValuesToViews() {
+        if let groupViewModel = groupImageViewModel.groupViewModel {
+            if let group = groupViewModel.group {
+                if let groupName = group.groupName {
+                    self.title.text = groupName
+                }
+                
+                if let url = group.groupPictureUrl {
+                    self.imageHolder.setImagesFromCacheOrFirebaseForGroup(url)
+                }
+                
+            }
+        }
+        
+        
+    }
+    
+    private func addListeners() {
+        groupImageViewModel.groupParticipantCount.bind { (participantCount) in
+            DispatchQueue.main.async {
+                self.titleExtra.text = "\(participantCount)" + " " + LocalizedConstants.TitleValues.LabelTitle.participants
+            }
+        }
+        
+        groupImageViewModel.groupTitleChangeListener.bind { (newTitle) in
+            DispatchQueue.main.async {
+                self.title.text = newTitle
+            }
+        }
+    }
+    
     func activationManagerOfMaxSizeContainerView(active : Bool) {
         UIView.transition(with: self.maxSizeContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
             self.alphaManagerOfMaxContainerView(active: active)
@@ -357,9 +399,35 @@ extension GroupImageContainerView {
         
     }
     
+    /*
     func setParticipantCount(participantCount : Int) {
         titleExtra.text = "\(participantCount)" + " " + LocalizedConstants.TitleValues.LabelTitle.participants
+    }*/
+    
+    func startListenStackViewGroupTitleTapped(completion : @escaping(_ tapped : Bool) -> Void) {
+        groupImageViewModel.stackTitleTapped.bind { (tapped) in
+            completion(tapped)
+        }
     }
     
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension GroupImageContainerView : UIGestureRecognizerDelegate {
+    
+    @objc func direcToGroupInfoEditViewController(_ sender : UITapGestureRecognizer) {
+        print("\(#function)")
+        
+        stackViewGroupTitle.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, animations: {
+            self.stackViewGroupTitle.transform = CGAffineTransform.identity
+        }) { (finish) in
+            if finish {
+                
+            }
+        }
+        
+    }
     
 }
