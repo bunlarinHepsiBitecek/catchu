@@ -235,8 +235,4 @@ extension GroupRelationTableViewCell {
         return self.groupViewModel!
     }
     
-    func takasi() {
-        groupViewModel?.groupNameChanged.value = "takasi"
-    }
-    
 }

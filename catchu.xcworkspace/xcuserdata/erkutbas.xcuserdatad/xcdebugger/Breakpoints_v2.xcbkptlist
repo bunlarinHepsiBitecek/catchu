@@ -9,13 +9,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566913513.851724"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.267121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "configureCaptureDevices()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.267411"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "configureDeviceInputs()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.267473"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "enableVideoSession()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566913513.8518569"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.267529"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "disableVideoSession()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566913513.851954"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/VideoView.swift"
+            timestampString = "567006189.267586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "addGroupDetailViewModelListeners()"
+            startingLineNumber = "458"
+            endingLineNumber = "458"
+            landmarkName = "stopVideoProcess()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,45 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupImageContainerView.swift"
-            timestampString = "566913513.852041"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/PostMainView.swift"
+            timestampString = "567006189.268061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
-            landmarkName = "GroupImageContainerView"
-            landmarkType = "21">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566913513.8521481"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
-            landmarkName = "tableView(_:didSelectRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoViewController.swift"
-            timestampString = "566913513.8522381"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "addViews()"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "activationManagerOfVideoView(granted:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +105,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView2.swift"
-            timestampString = "566913513.852308"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/PostMainView.swift"
+            timestampString = "567006189.268559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "directGroupInfoEditViewController(groupNameViewModel:)"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "activationManagerOfVideoView(granted:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,13 +121,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
-            timestampString = "566913513.852399"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.268847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
-            landmarkName = "saveChanges(_:)"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "createVideoSession()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/VideoView.swift"
+            timestampString = "567006189.2689019"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "initiateVideoProcess()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,13 +153,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
-            timestampString = "566913513.852487"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.269348"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "saveProcessOperationStateControl(operationState:)"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
+            landmarkName = "prepare(immediatelyStartSession:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -153,13 +169,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/GroupInfoEditTableViewController.swift"
-            timestampString = "566913513.852568"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.269401"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "enableManagerOfSaveButton(active:)"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "prepare(immediatelyStartSession:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -169,78 +185,94 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
-            timestampString = "566913513.8526649"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.269449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "updateGroupInformation()"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "prepare(immediatelyStartSession:completionHandler:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.269497"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "prepare(immediatelyStartSession:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/CustomCameraViews/CustomVideo.swift"
+            timestampString = "567006189.269544"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "prepare(immediatelyStartSession:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/VideoView.swift"
+            timestampString = "567006189.26959"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
+            landmarkName = "configureCustomVideo()"
+            landmarkType = "9">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "catchu.GroupInfoEditViewModel.updateGroupInformation() throws -&gt; ()"
+                  symbolName = "configureCustomVideo #1 () -&gt; () in catchu.VideoView.(initiateVideoProcess in _0294446BDC42624F56C0656C3FF80BC7)() -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
-                  timestampString = "566913514.172506"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/VideoView.swift"
+                  timestampString = "567004677.326318"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "674">
+                  startingLineNumber = "424"
+                  endingLineNumber = "424"
+                  offsetFromSymbolStart = "44">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (catchu.ConnectionResult&lt;catchu.REGroupRequestResult&gt;) -&gt; () in catchu.GroupInfoEditViewModel.updateGroupInformation() throws -&gt; ()"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Error&gt;) -&gt; () in configureCustomVideo #1 () -&gt; () in catchu.VideoView.(initiateVideoProcess in _0294446BDC42624F56C0656C3FF80BC7)() -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
-                  timestampString = "566913514.1746401"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/VideoView.swift"
+                  timestampString = "567004677.328146"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "38"
-                  endingLineNumber = "38"
-                  offsetFromSymbolStart = "34">
+                  startingLineNumber = "425"
+                  endingLineNumber = "425"
+                  offsetFromSymbolStart = "48">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupDetailTableViewCells/GroupInfoEditTableViewCell.swift"
-            timestampString = "566913513.853591"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "textFieldChanged(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupInfoEditViewModel.swift"
-            timestampString = "566913663.352221"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "handleAwsTaskResponse(networkResult:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

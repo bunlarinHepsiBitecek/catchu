@@ -54,7 +54,8 @@ extension PostMainView {
         addPostTopBarView()
         addSaySomethingView()
         addCapturedCameraView()
-        addCustomVideoView()
+        //addCustomVideoView()
+        checkCustomVideoView()
         
     }
     
@@ -161,9 +162,9 @@ extension PostMainView {
         
     }
     
-    private func addCustomVideoView() {
+    private func addCustomVideoView(immediatelyStartSession: Bool) {
         
-        videoView = VideoView(frame: .zero, delegate: self)
+        videoView = VideoView(frame: .zero, delegate: self, immediatelyStartSession: immediatelyStartSession)
         videoView?.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(videoView!)
@@ -178,12 +179,22 @@ extension PostMainView {
             videoView!.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             
             ])
+    }
+    
+    private func checkCustomVideoView() {
+        
+        if AVCaptureDevice.authorizationStatus(for: .video) == .authorized && AVAudioSession.sharedInstance().recordPermission() == .granted {
+            addCustomVideoView(immediatelyStartSession: false)
+        }
         
     }
     
     private func activationManagerOfVideoView(granted : Bool) {
         if videoView != nil {
             videoView?.activationManager(active: granted)
+        } else {
+            addCustomVideoView(immediatelyStartSession: true)
+            //videoView?.activationManager(active: true)
         }
     }
     
@@ -244,26 +255,6 @@ extension PostMainView : CameraImageVideoHandlerProtocol {
 
         saySomethingView!.contentAnimationManagement(postContentType: .video, active: true)
         
-        /*
-        let capturedVideoView = CapturedVideoView(outputFileURL: url, delegate: self)
-        
-        capturedVideoView.backgroundColor = UIColor.clear
-        
-        self.addSubview(capturedVideoView)
-        
-        capturedVideoView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let safe = self.safeAreaLayoutGuide
-        
-        NSLayoutConstraint.activate([
-            
-            capturedVideoView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            capturedVideoView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            capturedVideoView.topAnchor.constraint(equalTo: safe.topAnchor),
-            capturedVideoView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            
-            ])*/
-        
     }
     
 }
@@ -299,7 +290,7 @@ extension PostMainView : PermissionProtocol {
             case .camera:
                 CameraImagePickerManager.shared.openSystemCamera(delegate: self)
                 
-            case .video:
+            case .video, .microphone:
                 // after checking camera permissin, it's required to ask microphone
                 self.initiateVideoViewPermissionProcess()
                 return

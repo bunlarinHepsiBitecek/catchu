@@ -109,7 +109,11 @@ extension GroupInfoEditTableViewController {
     private func addBarButtons() {
         
         self.navigationItem.leftBarButtonItem = leftBarButton
-        self.navigationItem.rightBarButtonItem = rigthBarButton
+        //self.navigationItem.rightBarButtonItem = rigthBarButton
+        
+        self.addRigthBarButton { (finish) in
+            print("right bat button is added")
+        }
         
     }
     
@@ -134,17 +138,33 @@ extension GroupInfoEditTableViewController {
     }
     
     private func saveProcessOperationStateControl(operationState: CRUD_OperationStates) {
-        switch operationState {
-        case .processing:
-            if let rightBarButtonView = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
-                activityIndicatorView.frame = rightBarButtonView.frame
-                navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+        
+        DispatchQueue.main.async {
+            switch operationState {
+            case .processing:
+                if let rightBarButtonView = self.navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
+                    self.activityIndicatorView.frame = rightBarButtonView.frame
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicatorView)
+                }
+                return
+            case .done:
+                self.navigationItem.rightBarButtonItem = self.rigthBarButton
+                
+                self.addRigthBarButton(completion: { (finish) in
+                    if finish {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                })
+                
+                return
             }
-            return
-        case .done:
-            self.navigationItem.rightBarButtonItem = rigthBarButton
-            return
         }
+        
+    }
+    
+    private func addRigthBarButton(completion : @escaping (_ finish : Bool) -> Void) {
+        self.navigationItem.rightBarButtonItem = self.rigthBarButton
+        completion(true)
     }
     
     @objc func dismissViewController(_ sender : UIButton) {

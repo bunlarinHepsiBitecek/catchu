@@ -120,12 +120,6 @@ extension GroupInfoEditTableViewCell {
     }
     
     @objc func textFieldChanged(_ sender : UITextField) {
-        /*
-        if let text = sender.text {
-            groupInfoEditViewModel?.groupNameViewModel?.groupNameUpdated.value = text
-            groupInfoEditViewModel?.groupNameViewModel?.groupViewModel?.groupNameChanged.value = text
-            groupInfoEditViewModel?.groupNameViewModel?.groupImageViewModel?.groupTitleChangeListener.value = text
-        }*/
         
         if let group = groupInfoEditViewModel?.groupNameViewModel?.groupViewModel?.group {
             if let text = sender.text {

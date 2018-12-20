@@ -85,7 +85,9 @@ extension GroupNameTableViewCell {
     
     func addGroupNameUpdateListener() {
         groupNameViewModel?.groupNameUpdated.bind({ (newValue) in
-            self.groupName.text = newValue
+            DispatchQueue.main.async {
+                self.groupName.text = newValue
+            }
         })
     }
 

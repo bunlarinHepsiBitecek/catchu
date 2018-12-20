@@ -11,6 +11,7 @@ import UIKit
 class VideoView: UIView {
 
     let customVideo = CustomVideo()
+    var immediatelyStartSession: Bool = false
     
     //private var capturedVideoView : CustomCapturedVideoView?
     private var capturedVideoView : CapturedVideoView?
@@ -210,14 +211,19 @@ class VideoView: UIView {
         
     }()
     
-    init(frame: CGRect, delegate: PostViewProtocols) {
+    init(frame: CGRect, delegate: PostViewProtocols, immediatelyStartSession: Bool) {
         super.init(frame: frame)
         
         self.delegate = delegate
+        self.immediatelyStartSession = immediatelyStartSession
         
         initializeView()
         initiateVideoProcess()
-        activationManager(active: false)
+        
+        if !immediatelyStartSession {
+            activationManager(active: false)
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -418,7 +424,8 @@ extension VideoView {
         customVideo.delegate = self
         
         func configureCustomVideo() {
-            customVideo.prepare { (error) in
+            
+            customVideo.prepare(immediatelyStartSession: immediatelyStartSession) { (error) in
                 if let error = error {
                     print(error)
                 }
@@ -428,7 +435,7 @@ extension VideoView {
                 try? self.customVideo.displayPreviewForVideo(on: self.mainView)
             }
         }
-        
+
         configureCustomVideo()
         
     }
@@ -460,6 +467,8 @@ extension VideoView {
     
     func activationManager(active : Bool) {
 
+        print("LOLOLOLOLOLOLOLOLO")
+        
         if active {
             startVideoProcess()
         } else {

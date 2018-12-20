@@ -177,7 +177,7 @@ class GroupImageContainerView: UIView {
         temp.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         temp.backgroundColor = UIColor.clear
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        temp.addTarget(self, action: #selector(backProcess(_:)), for: .touchUpInside)
+        temp.addTarget(self, action: #selector(imageChangeProcess(_:)), for: .touchUpInside)
         
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_18
         
@@ -391,6 +391,21 @@ extension GroupImageContainerView {
         
     }
     
+    @objc func imageChangeProcess(_ sender : UIButton) {
+        print("\(#function)")
+        
+        AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .select, delegate: self)
+        
+    }
+    
+    private func initiateOpenImageGallery() {
+        CameraImagePickerManager.shared.openImageGallery(delegate: self)
+    }
+    
+    private func initiateOpenSystemCamera() {
+        CameraImagePickerManager.shared.openSystemCamera(delegate: self)
+    }
+    
     func startCancelButtonObserver(completion : @escaping (_ state : GroupImageProcess) -> Void) {
         
         groupImageViewModel.groupImageProcessState.bind { (imageProcessState) in
@@ -429,5 +444,41 @@ extension GroupImageContainerView : UIGestureRecognizerDelegate {
         }
         
     }
+    
+}
+
+// MARK: - ActionSheetProtocols
+extension GroupImageContainerView: ActionSheetProtocols {
+    
+    func returnOperations(selectedProcessType: ActionButtonOperation) {
+        switch selectedProcessType {
+        case .cameraOpen:
+            print("camera open")
+            initiateOpenSystemCamera()
+        case .imageGalleryOpen:
+            print("image gallery open")
+            initiateOpenImageGallery()
+        default:
+            return
+        }
+    }
+    
+}
+
+// MARK: - CameraImageVideoHandlerProtocol
+extension GroupImageContainerView: CameraImageVideoHandlerProtocol {
+    
+    func triggerPermissionProcess(permissionType: PermissionFLows) {
+        switch permissionType {
+        case .camera:
+            return
+        case .photoLibrary:
+            return
+            
+        default:
+            return
+        }
+    }
+    
     
 }

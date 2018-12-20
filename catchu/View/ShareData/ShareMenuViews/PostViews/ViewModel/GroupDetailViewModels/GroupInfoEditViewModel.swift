@@ -15,6 +15,7 @@ class GroupInfoEditViewModel: BaseViewModel, CommonViewModelItem, CommonViewMode
     var saveButtonActivation = CommonDynamic(false)
     var saveProcessState = CommonDynamic(CRUD_OperationStates.done)
     var newGroupNameText: String?
+    var updatedGroup: Group?
     
     init(groupNameViewModel: GroupNameViewModel) {
         self.groupNameViewModel = groupNameViewModel
@@ -30,11 +31,11 @@ class GroupInfoEditViewModel: BaseViewModel, CommonViewModelItem, CommonViewMode
         guard let group = groupViewModel.group else { throw ClientPresentErrors.missingGroupObject }
         
         // create copy object for update process
-        guard let inputGroup = group.copy() as? Group else { throw CastingErrors.groupObjectCastFailed }
         
-        inputGroup.groupName = newGroupNameText
+        updatedGroup = group.copy() as? Group
+        updatedGroup?.groupName = newGroupNameText
         
-        APIGatewayManager.shared.updateGroupInformation(group: inputGroup) { (result) in
+        APIGatewayManager.shared.updateGroupInformation(group: updatedGroup!) { (result) in
             self.handleAwsTaskResponse(networkResult: result)
         }
         
@@ -48,6 +49,10 @@ class GroupInfoEditViewModel: BaseViewModel, CommonViewModelItem, CommonViewMode
             if let data = data as? REGroupRequestResult {
                 print("groupUpdata operation is successfull")
                 saveButtonUpdateProcessDone()
+                updateGroupObjectInViewModels()
+                
+                
+                
             }
             
         case .failure(let apiError):
@@ -67,9 +72,23 @@ class GroupInfoEditViewModel: BaseViewModel, CommonViewModelItem, CommonViewMode
             
     }
     
-    func saveButtonUpdateProcessDone() {
+    private func saveButtonUpdateProcessDone() {
         saveProcessState.value = .done
         saveButtonActivation.value = false
+    }
+    
+    private func updateGroupObjectInViewModels() {
+        
+        if let updatedGroup = updatedGroup {
+            groupNameViewModel?.groupViewModel?.group = updatedGroup
+            
+            if let updatedName = updatedGroup.groupName {
+                groupNameViewModel?.groupNameUpdated.value = updatedName
+                groupNameViewModel?.groupViewModel?.groupNameChanged.value = updatedName
+                groupNameViewModel?.groupImageViewModel?.groupTitleChangeListener.value = updatedName
+            }
+        }
+        
     }
     
 }

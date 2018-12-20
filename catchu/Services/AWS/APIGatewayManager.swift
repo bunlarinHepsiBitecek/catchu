@@ -652,10 +652,8 @@ class APIGatewayManager: ApiGatewayInterface {
             if finished {
                 
                 // create group request object
-                guard let groupRequest =  else { return }
+                guard let groupRequest = group.returnREGroupRequestFromGroup() else { return }
                 groupRequest.requestType = RequestType.update_group_info.rawValue
-                
-                
 
                 self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (awsTask) -> Any? in
                     

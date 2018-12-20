@@ -35,11 +35,15 @@ class CustomVideo: NSObject {
     
     weak var delegate : ShareDataProtocols!
     
+    var immediatelyStartSession: Bool = false
+    
 }
 
 extension CustomVideo {
     
-    func prepare(completionHandler: @escaping (Error?) -> Void)  {
+    func prepare(immediatelyStartSession: Bool, completionHandler: @escaping (Error?) -> Void)  {
+        
+        self.immediatelyStartSession = immediatelyStartSession
         
         /// create session
         func createVideoSession() {
@@ -190,6 +194,11 @@ extension CustomVideo {
                 try configureCaptureDevices()
                 try configureDeviceInputs()
                 try configurePhotoOutput()
+                
+                if self.immediatelyStartSession {
+                    try self.enableVideoSession()
+                }
+                
             }
                 
             catch {

@@ -288,6 +288,7 @@ class CustomVideoView: UIView {
         
         customVideo.delegate = self
         
+        /*
         func configureCustomVideo() {
             customVideo.prepare { (error) in
                 if let error = error {
@@ -298,9 +299,9 @@ class CustomVideoView: UIView {
                 
                 try? self.customVideo.displayPreviewForVideo(on: self.mainView)
             }
-        }
+        }*/
         
-        configureCustomVideo()
+        //configureCustomVideo()
         
         
     }
