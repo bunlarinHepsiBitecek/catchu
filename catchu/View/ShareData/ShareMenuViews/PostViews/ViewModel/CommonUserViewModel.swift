@@ -14,6 +14,8 @@ class CommonUserViewModel: CommonViewModelItem {
     var userSelected = CommonDynamic(TableViewRowSelected.deSelected)
     var isUserSearchable = SearchableModes.searchable
     
+    init() {}
+    
     init(user : User?) {
         self.user = user
     }

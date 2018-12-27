@@ -118,6 +118,18 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         
     }
     
+    private func findImageOrientation(image : UIImage) -> ImageOrientation {
+        if image.size.width > image.size.height {
+            return ImageOrientation.landScape
+        } else if image.size.width < image.size.height {
+            return ImageOrientation.portrait
+        } else if image.size.width == image.size.height {
+            return ImageOrientation.square
+        } else {
+            return ImageOrientation.other
+        }
+    }
+    
     func triggerViewControllerPresenter(controller : Controller<UIImagePickerController>) {
         
         if let currentViewController = LoaderController.currentViewController() {
@@ -139,9 +151,10 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         
         var selectedImageFromPicker : UIImage?
         var selectedMediaFromPicker : URL?
+        var selectedMediaPathExtension: String?
         
-        if let x = info[UIImagePickerControllerReferenceURL] as? URL {
-            print("x.path : \(x.pathExtension)")
+        if let infoUrl = info[UIImagePickerControllerReferenceURL] as? URL {
+            selectedMediaPathExtension = infoUrl.pathExtension.lowercased()
         }
         
         // downcast any to UIImage
@@ -156,8 +169,13 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         picker.dismiss(animated: true) {
             
             if let selectedImage = selectedImageFromPicker {
+                
+                if selectedMediaPathExtension == nil {
+                    selectedMediaPathExtension = Constants.DEFAULT_PATH_EXT_JPG
+                }
+                
                 if let delegate = self.delegate {
-                    delegate.returnPickedImage(image: selectedImage)
+                    delegate.returnPickedImage(image: selectedImage, pathExtension: selectedMediaPathExtension!, orientation: self.findImageOrientation(image: selectedImage))
                 }
             }
             

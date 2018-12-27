@@ -18,6 +18,9 @@ class FriendRelationView: UIView {
     private var friendSelectionView: FriendRelationSelectionView!
     private var friendSelectionViewHeightConstraint = NSLayoutConstraint()
     
+    private var participantArray: Array<User>?
+    private var friendRelationPurpose: FriendRelationViewPurpose?
+    
     lazy var friendTableView: UITableView = {
         
         let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
@@ -32,6 +35,8 @@ class FriendRelationView: UIView {
         temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         temp.rowHeight = UITableViewAutomaticDimension
         temp.tableFooterView = UIView()
+        
+        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
         //temp.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         temp.register(FriendRelationTableViewCell.self, forCellReuseIdentifier: FriendRelationTableViewCell.identifier)
@@ -40,8 +45,24 @@ class FriendRelationView: UIView {
         
     }()
     
+    /*
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        initializeViewSettings()
+        
+    }*/
+    
+    init(frame: CGRect, participantArray: Array<User>?, friendRelationPurpose: FriendRelationViewPurpose?) {
+        super.init(frame: frame)
+        
+        if let participantArray = participantArray {
+            self.participantArray = participantArray
+        }
+        
+        if let friendRelationPurpose = friendRelationPurpose {
+            self.friendRelationPurpose = friendRelationPurpose
+        }
         
         initializeViewSettings()
         
@@ -156,6 +177,15 @@ extension FriendRelationView {
         }
     }
     
+    /*
+    func addGroupCreationRemovedParticipantListener(completion : @escaping (_ userViewModel : CommonUserViewModel) -> Void) {
+        
+        friendsViewModel.groupCreationRemovedParticipant.bind { (userViewModel) in
+            completion(userViewModel)
+        }
+        
+    }*/
+    
     private func setupViewSettings() {
         
         print("\(#function) starts")
@@ -251,6 +281,69 @@ extension FriendRelationView {
         
     }
     
+    private func selectedFriendListAnimationManagement(_ cell: FriendRelationTableViewCell) {
+        if friendsViewModel.returnSelectedFriendCount() == 1 {
+            
+            friendsViewModel.checkIfSelectedFriendExist()
+            if let userViewModel = cell.userViewModel {
+                friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
+            }
+            
+        } else if friendsViewModel.returnSelectedFriendCount() == 0 {
+            if let userViewModel = cell.userViewModel {
+                friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
+            }
+            friendsViewModel.checkIfSelectedFriendExist()
+            
+        } else {
+            
+            if let userViewModel = cell.userViewModel {
+                friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
+            }
+        }
+    }
+    
+    func selectedFriendListAnimationManagement2(_ userViewModel: CommonUserViewModel) {
+        if friendsViewModel.returnSelectedFriendCount() == 1 {
+            
+            friendsViewModel.checkIfSelectedFriendExist()
+            friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
+            
+        } else if friendsViewModel.returnSelectedFriendCount() == 0 {
+            friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
+            friendsViewModel.checkIfSelectedFriendExist()
+            
+        } else {
+            friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
+        }
+    }
+    
+    
+    // check if a cell is loading state or not
+    private func cellIsLoading(for indexPath : IndexPath) -> Bool {
+        return indexPath.row >= friendsViewModel.currentFriendCount
+    }
+    
+    private func checkIfParticipantUserExist(commonViewModelItem: CommonViewModelItem) -> Bool {
+        
+        guard let friendRelationPurpose = friendRelationPurpose else { return false }
+        guard let participantArray = participantArray else { return false }
+        
+        guard let commonUserViewModel = commonViewModelItem as? CommonUserViewModel else { return false }
+        guard let user = commonUserViewModel.user else { return false }
+        
+        if friendRelationPurpose == .participant {
+            for item in participantArray {
+                if user.userid == item.userid {
+                    return true
+                }
+            }
+        }
+        
+        return false
+        
+    }
+    
     func startObserverForSelectedFriendCount(completion : @escaping (_ counter : Int) -> Void) {
         
         friendsViewModel.selectedFrientCount.bind { (counter) in
@@ -275,27 +368,15 @@ extension FriendRelationView {
         
     }
     
-    private func selectedFriendListAnimationManagement(_ cell: FriendRelationTableViewCell) {
-        if friendsViewModel.returnSelectedFriendCount() == 1 {
-            
-            friendsViewModel.checkIfSelectedFriendExist()
-            if let userViewModel = cell.userViewModel {
-                friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
-            }
-            
-        } else if friendsViewModel.returnSelectedFriendCount() == 0 {
-            if let userViewModel = cell.userViewModel {
-                friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
-            }
-            friendsViewModel.checkIfSelectedFriendExist()
-            
-        } else {
-            
-            if let userViewModel = cell.userViewModel {
-                friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
-            }
+    func startObserverForSelectedCommonUserViewModelList(completion : @escaping (_ commonUserViewModelList: [CommonUserViewModel]) -> Void) {
+        
+        friendsViewModel.selectedCommonUserViewModel.bind { (commonUserViewModelList) in
+            completion(commonUserViewModelList)
         }
+        
     }
+    
+    
     
     func searchTrigger(inputText : String) {
         print("\(#function) starts")
@@ -305,10 +386,6 @@ extension FriendRelationView {
         
     }
     
-    // check if a cell is loading state or not
-    private func cellIsLoading(for indexPath : IndexPath) -> Bool {
-        return indexPath.row >= friendsViewModel.currentFriendCount
-    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -343,6 +420,11 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
             cell.initiateCellDesign(item: .none)
         } else {
             cell.initiateCellDesign(item: friendsViewModel.friendArray[indexPath.row])
+    
+            if checkIfParticipantUserExist(commonViewModelItem: friendsViewModel.friendArray[indexPath.row]) {
+                cell.disableCell()
+            }
+            
         }
         
         return cell
@@ -355,7 +437,8 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
         guard let cell = friendTableView.cellForRow(at: indexPath) as? FriendRelationTableViewCell else { return }
         
         cell.setUserSelectionState(state: .selected)
-        selectedFriendListAnimationManagement(cell)
+        //selectedFriendListAnimationManagement(cell)
+        selectedFriendListAnimationManagement2(cell.userViewModel!)
         friendsViewModel.findSelectedFriendCount()
         friendsViewModel.convertSelectedFriendListToUserList()
         

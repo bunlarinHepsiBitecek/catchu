@@ -50,9 +50,6 @@ class GroupInfoEditViewModel: BaseViewModel, CommonViewModelItem, CommonViewMode
                 print("groupUpdata operation is successfull")
                 saveButtonUpdateProcessDone()
                 updateGroupObjectInViewModels()
-                
-                
-                
             }
             
         case .failure(let apiError):

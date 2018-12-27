@@ -44,7 +44,7 @@ extension GroupInfoViewController {
             }
         }
         catch {
-            print("Something goes terribly wrong")
+            print("\(Constants.CRASH_WARNING)")
         }
         
     }
@@ -66,6 +66,7 @@ extension GroupInfoViewController {
         
         //groupInfoView = GroupInfoView2(frame: .zero, group: group)
         groupInfoView = GroupInfoView(frame: .zero, groupViewModel: groupViewModel)
+        //groupInfoView = GroupInfoView(frame: .zero, groupViewModel: groupViewModel, delegate: self)
         groupInfoView.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(groupInfoView)
@@ -112,3 +113,4 @@ extension GroupInfoViewController {
         
     }
 }
+

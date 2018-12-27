@@ -14,6 +14,8 @@ class FriendRelationViewController: UIViewController {
     var friendRelationChoise : FriendRelationViewChoise?
     var friendRelationViewPurpose : FriendRelationViewPurpose?
     
+    var participantArray: Array<User>?
+    var selectedGroup: Group?
     // used to return selected friend, friendList, or group information
     weak var delegate : PostViewProtocols!
     
@@ -54,11 +56,13 @@ extension FriendRelationViewController {
                 print("FriendRelationViewController awaits choise value - calling for friends or groups")
             } else if error == .missingViewControllerPurpose {
                 print("FriendRelationViewController awaits purpose value - calling for post operation or group management")
+            } else if error == .missingDelegation {
+                print("Delegation is required")
             }
         }
         
         catch {
-            print("Something goes wrong!")
+            print("\(Constants.CRASH_WARNING)")
         }
         
         //addFriendRelationView()
@@ -68,8 +72,9 @@ extension FriendRelationViewController {
         
         guard let friendRelationChoise = friendRelationChoise else { throw ClientPresentErrors.missingViewControllerChoise }
         guard let friendRelationViewPurpose = friendRelationViewPurpose else { throw ClientPresentErrors.missingViewControllerPurpose }
+        guard let delegate = delegate else { throw ClientPresentErrors.missingDelegation }
         
-        friendRelationView = FriendGroupRelationView(frame: .zero, delegate: self, delegatePostView: delegate, friendRelationChoise: friendRelationChoise, friendRelationPurpose: friendRelationViewPurpose)
+        friendRelationView = FriendGroupRelationView(frame: .zero, delegate: self, delegatePostView: delegate, friendRelationChoise: friendRelationChoise, friendRelationPurpose: friendRelationViewPurpose, participantArray: participantArray, selectedGroup: selectedGroup)
         
         friendRelationView.translatesAutoresizingMaskIntoConstraints = false
         

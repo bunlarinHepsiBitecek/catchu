@@ -826,9 +826,9 @@ extension SaySomethingView {
     func startPhotoPickerProcess() {
         
         if PostItems.shared.returnSelectedImageArrayCount() > 0 {
-            AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .update, delegate: self)
+            AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .update, delegate: self, title: nil)
         } else {
-            AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .select, delegate: self)
+            AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .select, delegate: self, title: nil)
         }
         
     }
@@ -836,9 +836,9 @@ extension SaySomethingView {
     func startVideoPickerProcess() {
         
         if PostItems.shared.returnSelectedVideoArrayCount() > 0 {
-            AlertControllerManager.shared.startActionSheetManager(type: .video, operationType: .update, delegate: self)
+            AlertControllerManager.shared.startActionSheetManager(type: .video, operationType: .update, delegate: self, title: nil)
         } else {
-            AlertControllerManager.shared.startActionSheetManager(type: .video, operationType: .select, delegate: self)
+            AlertControllerManager.shared.startActionSheetManager(type: .video, operationType: .select, delegate: self, title: nil)
         }
         
     }
@@ -1126,6 +1126,17 @@ extension SaySomethingView : ActionSheetProtocols {
         case .selectedVideoDelete:
             PostItems.shared.emptySelectedVideoUrl()
             contentAnimationManagement(postContentType: .video, active: false)
+        
+        case .gotoUserInfo:
+            return
+        case .makeGroupAdmin:
+            return
+        case .exitGroup:
+            return
+            
+        case .addNewParticipant:
+            return
+            
         }
         
     }

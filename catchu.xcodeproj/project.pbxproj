@@ -211,7 +211,7 @@
 		A73194D121C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73194D021C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift */; };
 		A7348E13217222BC005FB900 /* FilterColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7348E12217222BC005FB900 /* FilterColorCollectionViewCell.swift */; };
 		A735C57520D8447B00B7B1E2 /* 8771.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A735C57420D8447A00B7B1E2 /* 8771.jpg */; };
-		A7369AFE20C78830001692F4 /* ExtensionUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7369AFD20C78830001692F4 /* ExtensionUIImageView.swift */; };
+		A7369AFE20C78830001692F4 /* ImageDownloadResizeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7369AFD20C78830001692F4 /* ImageDownloadResizeManagement.swift */; };
 		A7369B0020C86A5C001692F4 /* check-mark.png in Resources */ = {isa = PBXBuildFile; fileRef = A7369AFF20C86A5C001692F4 /* check-mark.png */; };
 		A7424021214284E200E20A58 /* PermissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7424020214284E200E20A58 /* PermissionHandler.swift */; };
 		A74240232142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240222142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift */; };
@@ -362,6 +362,19 @@
 		A7EC57D5211B43310078F631 /* RERelationProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57D4211B43310078F631 /* RERelationProperties.swift */; };
 		A7EC57DF211B4C460078F631 /* APIGatewayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57DE211B4C460078F631 /* APIGatewayManager.swift */; };
 		A7ED7325216F3DE400E518FB /* FinalNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED7324216F3DE400E518FB /* FinalNoteViewController.swift */; };
+		A7EFF97F21CF038200B1A3DC /* ImageSizeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF97E21CF038200B1A3DC /* ImageSizeManager.swift */; };
+		A7EFF98221CF0AEB00B1A3DC /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF98121CF0AEB00B1A3DC /* ImageCacheManager.swift */; };
+		A7EFF98421D2FBBD00B1A3DC /* NewGroupCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF98321D2FBBD00B1A3DC /* NewGroupCreationViewController.swift */; };
+		A7EFF98621D2FC8D00B1A3DC /* NewGroupCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF98521D2FC8D00B1A3DC /* NewGroupCreationView.swift */; };
+		A7EFF98F21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF98E21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift */; };
+		A7EFF99121D3C81F00B1A3DC /* GroupCreationSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99021D3C81F00B1A3DC /* GroupCreationSectionHeaderView.swift */; };
+		A7EFF99321D3D38100B1A3DC /* GroupCreationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99221D3D38100B1A3DC /* GroupCreationViewModel.swift */; };
+		A7EFF99521D4083C00B1A3DC /* GroupCreationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99421D4083C00B1A3DC /* GroupCreationTableViewCell.swift */; };
+		A7EFF99721D419B100B1A3DC /* GroupCreationParticipantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99621D419B100B1A3DC /* GroupCreationParticipantCollectionViewCell.swift */; };
+		A7EFF99921D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99821D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift */; };
+		A7EFF99B21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99A21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift */; };
+		A7EFF99D21D4EE8200B1A3DC /* SectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99C21D4EE8200B1A3DC /* SectionHeaderViewModel.swift */; };
+		A7EFF99F21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99E21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift */; };
 		A7F21B3A21C55CDC0015DB58 /* GroupImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */; };
 		A7F21B3C21C58F6D0015DB58 /* multiple_users.png in Resources */ = {isa = PBXBuildFile; fileRef = A7F21B3B21C58F6C0015DB58 /* multiple_users.png */; };
 		A7F21B3E21C5A53F0015DB58 /* GroupImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B3D21C5A53F0015DB58 /* GroupImageViewModel.swift */; };
@@ -612,7 +625,7 @@
 		A73194D021C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoParticipantTableViewCell.swift; sourceTree = "<group>"; };
 		A7348E12217222BC005FB900 /* FilterColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		A735C57420D8447A00B7B1E2 /* 8771.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8771.jpg; sourceTree = "<group>"; };
-		A7369AFD20C78830001692F4 /* ExtensionUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIImageView.swift; sourceTree = "<group>"; };
+		A7369AFD20C78830001692F4 /* ImageDownloadResizeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadResizeManagement.swift; sourceTree = "<group>"; };
 		A7369AFF20C86A5C001692F4 /* check-mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-mark.png"; sourceTree = "<group>"; };
 		A7424020214284E200E20A58 /* PermissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionHandler.swift; sourceTree = "<group>"; };
 		A74240222142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionWarningCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -763,6 +776,19 @@
 		A7EC57D4211B43310078F631 /* RERelationProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RERelationProperties.swift; sourceTree = "<group>"; };
 		A7EC57DE211B4C460078F631 /* APIGatewayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGatewayManager.swift; sourceTree = "<group>"; };
 		A7ED7324216F3DE400E518FB /* FinalNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalNoteViewController.swift; sourceTree = "<group>"; };
+		A7EFF97E21CF038200B1A3DC /* ImageSizeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSizeManager.swift; sourceTree = "<group>"; };
+		A7EFF98121CF0AEB00B1A3DC /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
+		A7EFF98321D2FBBD00B1A3DC /* NewGroupCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupCreationViewController.swift; sourceTree = "<group>"; };
+		A7EFF98521D2FC8D00B1A3DC /* NewGroupCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupCreationView.swift; sourceTree = "<group>"; };
+		A7EFF98E21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupCreationHeaderView.swift; sourceTree = "<group>"; };
+		A7EFF99021D3C81F00B1A3DC /* GroupCreationSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationSectionHeaderView.swift; sourceTree = "<group>"; };
+		A7EFF99221D3D38100B1A3DC /* GroupCreationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationViewModel.swift; sourceTree = "<group>"; };
+		A7EFF99421D4083C00B1A3DC /* GroupCreationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationTableViewCell.swift; sourceTree = "<group>"; };
+		A7EFF99621D419B100B1A3DC /* GroupCreationParticipantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationParticipantCollectionViewCell.swift; sourceTree = "<group>"; };
+		A7EFF99821D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationCellSizeCalculator.swift; sourceTree = "<group>"; };
+		A7EFF99A21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		A7EFF99C21D4EE8200B1A3DC /* SectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderViewModel.swift; sourceTree = "<group>"; };
+		A7EFF99E21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGroupRelationViewModel.swift; sourceTree = "<group>"; };
 		A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageContainerView.swift; sourceTree = "<group>"; };
 		A7F21B3B21C58F6C0015DB58 /* multiple_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multiple_users.png; sourceTree = "<group>"; };
 		A7F21B3D21C5A53F0015DB58 /* GroupImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageViewModel.swift; sourceTree = "<group>"; };
@@ -1058,6 +1084,7 @@
 		4564E44D20B96C14003B0D16 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A7EFF98021CF0AD600B1A3DC /* MediaDownload */,
 				A77D987D215A0C6F002F9A02 /* Firebase */,
 				A7276D36210F6CB000CAC67C /* Swift */,
 				A7276D35210F6C9F00CAC67C /* Location */,
@@ -1184,6 +1211,7 @@
 				A7E4F69021B17FC30063E00B /* FriendRelationViewController.swift */,
 				A7FE5DF821C2539A00C7BCEC /* GroupInfoViewController.swift */,
 				A7AE5FB221C7E3B7008FD5AD /* GroupInfoEditTableViewController.swift */,
+				A7EFF98321D2FBBD00B1A3DC /* NewGroupCreationViewController.swift */,
 			);
 			path = FriendGroupRelations;
 			sourceTree = "<group>";
@@ -1462,7 +1490,8 @@
 		A7369AFC20C787E0001692F4 /* ExistedLibraryExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				A7369AFD20C78830001692F4 /* ExtensionUIImageView.swift */,
+				A7369AFD20C78830001692F4 /* ImageDownloadResizeManagement.swift */,
+				A7EFF97E21CF038200B1A3DC /* ImageSizeManager.swift */,
 			);
 			path = ExistedLibraryExtensions;
 			sourceTree = "<group>";
@@ -1755,6 +1784,9 @@
 				A7AE5FA321C63D00008FD5AD /* GroupParticipantsViewModel.swift */,
 				A7AE5FA521C67FC8008FD5AD /* GroupParticipantViewModel.swift */,
 				A7184EAB21C9115C000BA72C /* GroupInfoEditViewModel.swift */,
+				A7EFF99221D3D38100B1A3DC /* GroupCreationViewModel.swift */,
+				A7EFF99A21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift */,
+				A7EFF99C21D4EE8200B1A3DC /* SectionHeaderViewModel.swift */,
 			);
 			path = GroupDetailViewModels;
 			sourceTree = "<group>";
@@ -1846,6 +1878,7 @@
 				A716903B21B6D03F0039287B /* SelectedFriendsViewModel.swift */,
 				A7FD8A5821BFC35A0094E02B /* CommonGroupViewModel.swift */,
 				A7FD8A5E21BFF5850094E02B /* GroupRelationViewModel.swift */,
+				A7EFF99E21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1853,6 +1886,7 @@
 		A7E4F69221B1B89F0063E00B /* RelationInfoPackage */ = {
 			isa = PBXGroup;
 			children = (
+				A7EFF98721D3005D00B1A3DC /* NewGroupCreation */,
 				A7AE5FA721C6F166008FD5AD /* GroupDetailTableViewCells */,
 				A7E4F69321B1B8BF0063E00B /* FriendGroupRelationView.swift */,
 				A716902F21B3F1D90039287B /* FriendRelationView.swift */,
@@ -1867,6 +1901,9 @@
 				A7CD3A2221C40AB300663001 /* ScretchableView.swift */,
 				A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */,
 				A7184EAD21C93693000BA72C /* GroupInfoView.swift */,
+				A7EFF98521D2FC8D00B1A3DC /* NewGroupCreationView.swift */,
+				A7EFF98E21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift */,
+				A7EFF99021D3C81F00B1A3DC /* GroupCreationSectionHeaderView.swift */,
 			);
 			path = RelationInfoPackage;
 			sourceTree = "<group>";
@@ -1911,6 +1948,24 @@
 				A7E7803D2190AB6200E76E3C /* CustomNotificationManager.swift */,
 			);
 			path = NotificationManager;
+			sourceTree = "<group>";
+		};
+		A7EFF98021CF0AD600B1A3DC /* MediaDownload */ = {
+			isa = PBXGroup;
+			children = (
+				A7EFF98121CF0AEB00B1A3DC /* ImageCacheManager.swift */,
+			);
+			path = MediaDownload;
+			sourceTree = "<group>";
+		};
+		A7EFF98721D3005D00B1A3DC /* NewGroupCreation */ = {
+			isa = PBXGroup;
+			children = (
+				A7EFF99421D4083C00B1A3DC /* GroupCreationTableViewCell.swift */,
+				A7EFF99621D419B100B1A3DC /* GroupCreationParticipantCollectionViewCell.swift */,
+				A7EFF99821D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift */,
+			);
+			path = NewGroupCreation;
 			sourceTree = "<group>";
 		};
 		A7F35D9321168408005DA851 /* Profile */ = {
@@ -2209,6 +2264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79A767D20C5C7B500FCE198 /* FriendCollectionViewCell.swift in Sources */,
+				A7EFF99D21D4EE8200B1A3DC /* SectionHeaderViewModel.swift in Sources */,
 				A7F35DA22116F173005DA851 /* TakasiViewController.swift in Sources */,
 				A72AF2122192A5A80050B685 /* SlideMenu.swift in Sources */,
 				A7E2F84F211276DA00214066 /* ButtonWithImage.swift in Sources */,
@@ -2262,6 +2318,7 @@
 				A7EC57C92118C6DA0078F631 /* Group.swift in Sources */,
 				A7C1C34A2195AE7B0096CEA6 /* SlideMenuTableViewCell.swift in Sources */,
 				A755B56F2120752D00FD2573 /* UIViewExtensions.swift in Sources */,
+				A7EFF98F21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift in Sources */,
 				A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */,
 				A7C1C350219714790096CEA6 /* ExploreViewSlider.swift in Sources */,
 				4538A05D217725E20044A79D /* RECountry.swift in Sources */,
@@ -2288,6 +2345,7 @@
 				4564E41320B95574003B0D16 /* AppDelegate.swift in Sources */,
 				A7424021214284E200E20A58 /* PermissionHandler.swift in Sources */,
 				A7E4F69421B1B8BF0063E00B /* FriendGroupRelationView.swift in Sources */,
+				A7EFF99121D3C81F00B1A3DC /* GroupCreationSectionHeaderView.swift in Sources */,
 				A7AE5F9B21C5D7B3008FD5AD /* GroupDetailViewModel.swift in Sources */,
 				A79A766320C36C7E00FCE198 /* ContactViewController.swift in Sources */,
 				A7AE5FA621C67FC8008FD5AD /* GroupParticipantViewModel.swift in Sources */,
@@ -2301,8 +2359,10 @@
 				4564E46F20B999AD003B0D16 /* DesignableUITextField.swift in Sources */,
 				A7D399C7214A446B00661132 /* CustomPermissionView.swift in Sources */,
 				45DABA9C21665BC80070840E /* LoaderTransition.swift in Sources */,
+				A7EFF99921D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift in Sources */,
 				451E9F152139366300185925 /* CachedImageView.swift in Sources */,
 				45DEEA9D20E16DB000FE484E /* Share.swift in Sources */,
+				A7EFF97F21CF038200B1A3DC /* ImageSizeManager.swift in Sources */,
 				A71F65AB21691705002A7C5C /* FinalSharedItemsView.swift in Sources */,
 				A7E78036218F714800E76E3C /* ContactViewController2.swift in Sources */,
 				A7FE5DF921C2539A00C7BCEC /* GroupInfoViewController.swift in Sources */,
@@ -2381,6 +2441,7 @@
 				A709F64B20FEA6A4003FF2C5 /* CognitoConfig.swift in Sources */,
 				4527E05520C8605800ECB3D1 /* MainTabBarViewController.swift in Sources */,
 				451E9F012139318E00185925 /* REAWSManager.swift in Sources */,
+				A7EFF99F21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift in Sources */,
 				45A496E7217F4D5100E6605B /* PhoneViewConfirmationController.swift in Sources */,
 				A71D186B21A6B87E00DFC4A9 /* AlertControllerManager.swift in Sources */,
 				A7D4E976215144CA00081859 /* ColorPaletteView.swift in Sources */,
@@ -2388,6 +2449,7 @@
 				A762B75A2163C80200DBB4EF /* CustomMapView.swift in Sources */,
 				A7EC57C42118BC7B0078F631 /* REGroupRequestResult.swift in Sources */,
 				4538A06321772E530044A79D /* CountryViewModel.swift in Sources */,
+				A7EFF99521D4083C00B1A3DC /* GroupCreationTableViewCell.swift in Sources */,
 				A75B4594213228C7009D2701 /* HeaderInfoTableViewCell.swift in Sources */,
 				A774ACA42132077300848B79 /* GroupInformationHeaderView.swift in Sources */,
 				A7EC57C52118BC7B0078F631 /* REGroupRequest.swift in Sources */,
@@ -2421,6 +2483,7 @@
 				A710F421213FCD8100ECC5DA /* ShareDataView.swift in Sources */,
 				451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */,
 				A722EC23219EFA6600E9BD3B /* ContactRequestView.swift in Sources */,
+				A7EFF98621D2FC8D00B1A3DC /* NewGroupCreationView.swift in Sources */,
 				A7087932212B79960012C7F6 /* EditProfile4TableViewCell.swift in Sources */,
 				45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */,
 				A71F65AF2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift in Sources */,
@@ -2436,9 +2499,10 @@
 				454285A1214A95BA00F68FAC /* REPost.swift in Sources */,
 				454285A4214A95C800F68FAC /* REComment.swift in Sources */,
 				A7E780402191A35600E76E3C /* CustomPostAlerManager.swift in Sources */,
+				A7EFF99321D3D38100B1A3DC /* GroupCreationViewModel.swift in Sources */,
 				A7087917212756E00012C7F6 /* DataPage3CollectionViewCell.swift in Sources */,
 				A7ED7325216F3DE400E518FB /* FinalNoteViewController.swift in Sources */,
-				A7369AFE20C78830001692F4 /* ExtensionUIImageView.swift in Sources */,
+				A7369AFE20C78830001692F4 /* ImageDownloadResizeManagement.swift in Sources */,
 				A72AF221219483FE0050B685 /* UserProfileMainView.swift in Sources */,
 				A7184EAE21C93693000BA72C /* GroupInfoView.swift in Sources */,
 				45BFD5762191A50D00CA8C0E /* MenuTabViewModel.swift in Sources */,
@@ -2451,6 +2515,7 @@
 				451E9F142139366300185925 /* MediaView.swift in Sources */,
 				A7817AC62134BFCF00ECCF8C /* ParticipantListTableViewCell.swift in Sources */,
 				A7E4F68F21B17BAA0063E00B /* FriendsViewModel.swift in Sources */,
+				A7EFF98421D2FBBD00B1A3DC /* NewGroupCreationViewController.swift in Sources */,
 				451E9F112139366300185925 /* FeedViewCell.swift in Sources */,
 				A7276D5C2110C67900CAC67C /* REFriendList_error.swift in Sources */,
 				A7276D602110EF7600CAC67C /* Search.swift in Sources */,
@@ -2467,6 +2532,7 @@
 				45211DE520D81793009347B1 /* MapShareView.swift in Sources */,
 				A7087919212756F90012C7F6 /* DataPage4CollectionViewCell.swift in Sources */,
 				453548172152689D00FC81F5 /* DynamicTextView.swift in Sources */,
+				A7EFF98221CF0AEB00B1A3DC /* ImageCacheManager.swift in Sources */,
 				A716903221B3F4360039287B /* FriendRelationTableViewCell.swift in Sources */,
 				A7276D5E2110C67900CAC67C /* REFriendList.swift in Sources */,
 				458F0D742160CCDB00FC4701 /* LoginViewController.swift in Sources */,
@@ -2522,6 +2588,7 @@
 				A79A765D20C368B700FCE198 /* TemporaryViewController.swift in Sources */,
 				452001D220CC439C00C1ED22 /* ShareCollectionViewCell.swift in Sources */,
 				A721BFF921176F000037A62D /* totoViewController.swift in Sources */,
+				A7EFF99721D419B100B1A3DC /* GroupCreationParticipantCollectionViewCell.swift in Sources */,
 				4538A06921788C5C0044A79D /* PhoneViewCell.swift in Sources */,
 				45AE7DEB216F4D170081C6F6 /* REUserListResponse.swift in Sources */,
 				A7C92D862150075400432D70 /* CustomCameraView.swift in Sources */,
@@ -2529,6 +2596,7 @@
 				A7C1C35E219884F00096CEA6 /* FacebookContactListManager.swift in Sources */,
 				A7F21B3A21C55CDC0015DB58 /* GroupImageContainerView.swift in Sources */,
 				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
+				A7EFF99B21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift in Sources */,
 				A7B6BC2021A8817B00D11A78 /* StickerManagementView.swift in Sources */,
 				452001CA20CBB7AB00C1ED22 /* MapView.swift in Sources */,
 				A74240232142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift in Sources */,

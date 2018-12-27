@@ -188,7 +188,8 @@ extension FinalShareInfoViewController {
                         if let businessError = friendList.error {
                             
                             if businessError.code != 1 {
-                                print("something goes wrong : \(businessError.code)")
+                                print("\(Constants.CRASH_WARNING)")
+                                print("\(businessError.code)")
                             } else {
                                 
                                 User.shared.appendElementIntoFriendListAWS(httpResult: friendList)

@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct SelectedGroupData {
+    var selectedGroupViewModel: CommonGroupViewModel?
+    var selectedGroupIndexPath: IndexPath?
+}
+
 class GroupRelationViewModel: BaseViewModel, CommonViewModel {
     
     var groupArray = [CommonViewModelItem]()
@@ -15,12 +20,17 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
     var sectionTitle = CommonDynamic(TableViewSectionTitle.Groups)
     var selectedGroupList = CommonDynamic([Group]())
     //var infoRequestedGroup: Group?
-    var infoRequestedGroup: CommonGroupViewModel?
+    //var infoRequestedGroup: CommonGroupViewModel?
+    var groupRelationViewProcessType = GroupOperationTypes.getGroupList
+    var selectedGroupData = SelectedGroupData(selectedGroupViewModel: nil, selectedGroupIndexPath: nil)
+    var groupRelationOperationStates = CommonDynamic(CRUD_OperationStates.done)
     
     /// Description : Get authenticated users' group list
     func getGroups() {
         
         state.value = .loading
+        
+        groupRelationViewProcessType = GroupOperationTypes.getGroupList
         
         guard let userid = User.shared.userid else { return }
         
@@ -40,6 +50,25 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
         
     }
     
+    func exitGroup() {
+        // infoRequested group is selected group as well
+        //guard let infoRequestedGroup = infoRequestedGroup else { return }
+        //guard let group = infoRequestedGroup.group else { return }
+        
+        groupRelationOperationStates.value = .processing
+        
+        guard let groupViewModel = selectedGroupData.selectedGroupViewModel else { return }
+        guard let group = groupViewModel.group else { return }
+        guard let userid = User.shared.userid else { return }
+        
+        groupRelationViewProcessType = GroupOperationTypes.removeParticipantFromGroup
+        
+        APIGatewayManager.shared.removeParticipantFromGroup(group: group, userid: userid) { (result) in
+            self.handleAwsTaskResponse(networkResult: result)
+        }
+        
+    }
+    
     /// Description : network request handler
     ///
     /// - Parameter networkResult: api gateway result object
@@ -54,10 +83,24 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
                     print("Lambda error : \(String(describing: businessError.message))")
                 }
                 
-                if let resultArray = data.resultArray {
-                    self.createGroupArrayData(groupItems: resultArray)
+                switch groupRelationViewProcessType {
+                case .getGroupList:
+                    if let resultArray = data.resultArray {
+                        self.createGroupArrayData(groupItems: resultArray)
+                    }
+                    
+                case .removeParticipantFromGroup:
+                    print("Remove process is successfull")
+                    self.removeSelectedGroupFromViewModel()
+                    
+                default:
+                    print("Nothing happened")
+                    return
                 }
                 
+                // reset viewModel operation tyoe
+                groupRelationViewProcessType = GroupOperationTypes.none
+            
             }
             
         case .failure(let apiError):
@@ -107,6 +150,28 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
         }
         
         selectedGroupList.value = temp
+    }
+    
+    func setSelectedGroupData(groupViewModel: CommonGroupViewModel, indexPath: IndexPath) {
+        selectedGroupData.selectedGroupIndexPath = indexPath
+        selectedGroupData.selectedGroupViewModel = groupViewModel
+    }
+    
+    func removeSelectedGroupFromViewModel() {
+        guard let groupViewModel = selectedGroupData.selectedGroupViewModel else { return }
+        guard let group = groupViewModel.group else { return }
+        guard let groupid = group.groupID else { return }
+        
+        if let array = groupArray as? [CommonGroupViewModel] {
+            
+            if let index = array.firstIndex(where: { $0.group?.groupID == groupid }) {
+                groupArray.remove(at: index)
+            }
+
+        }
+        
+        groupRelationOperationStates.value = .done
+        
     }
     
 }

@@ -40,7 +40,7 @@ class UploadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSe
     
     func uploadFile(uploadUrl: URL, data: Data, type: MediaType, ext: String, completion : @escaping (_ result : Bool) -> Void) {
         print("uploadFile")
-        self.showProgressView()
+        //self.showProgressView()
         
         var request = URLRequest(url: uploadUrl)
         request.cachePolicy = .reloadIgnoringLocalCacheData

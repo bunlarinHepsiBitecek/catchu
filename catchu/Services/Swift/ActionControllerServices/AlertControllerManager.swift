@@ -14,7 +14,7 @@ class AlertControllerManager {
     
     weak var delegate : ActionSheetProtocols!
     
-    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?) {
+    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?, title: String?) {
         
         self.delegate = delegate
         
@@ -29,7 +29,18 @@ class AlertControllerManager {
             }
         case .groupInformation:
             presentGroupInformationViewController()
+            
+        case .userInformation:
+            if let operationType = operationType {
+                startUserInformationOperations(title: title!, operationType: operationType)
+            }
+            
+        case .newParticipant:
+            if let title = title {
+                startAddingNewParticipantProcess(title: title)
+            }
         }
+        
         
     }
     
@@ -126,12 +137,75 @@ class AlertControllerManager {
         }))
         
         alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.exitGroup, style: .destructive, handler: { (action) in
-            // delete group process
+            
+            self.delegate.exitFromGroup()
+            
         }))
         
         alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
             // to do
         }))
+        
+        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
+        
+    }
+    
+    /// Description : called from group participants
+    ///
+    /// - Parameters:
+    ///   - title: action sheet title comes from outside
+    ///   - operationType: operation type for dynamic action sheet list
+    /// - Author: Erkut Bas
+    private func startUserInformationOperations(title: String, operationType: ActionControllerOperationType) {
+        print("\(#function)")
+        
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.gotoInfo, style: .default, handler: { (action) in
+            // to do
+             self.delegate.returnOperations(selectedProcessType: .gotoUserInfo)
+        }))
+        
+        if operationType == .admin {
+            
+            alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.makeGroupAdmin, style: .default, handler: { (action) in
+                // to do
+                
+                self.delegate.returnOperations(selectedProcessType: .makeGroupAdmin)
+            }))
+            
+            alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.exitGroup, style: .destructive, handler: { (action) in
+                // to do
+                self.delegate.returnOperations(selectedProcessType: .exitGroup)
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
+            // to do
+        }))
+        
+        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
+        
+    }
+    
+    /// Description: when add new participants to group, creates an action sheet
+    ///
+    /// - Parameter title: title contains participant information
+    /// - Author: Erkut Bas
+    private func startAddingNewParticipantProcess(title: String) {
+     
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.add, style: .default, handler: { (action) in
+            // to do
+            self.delegate.returnOperations(selectedProcessType: .addNewParticipant)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
+            // to do
+        }))
+        
+        alertController.view.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         
         self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
         

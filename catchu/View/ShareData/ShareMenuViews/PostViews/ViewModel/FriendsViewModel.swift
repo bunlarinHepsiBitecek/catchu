@@ -19,6 +19,8 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
     var totalFriendCount = CommonDynamic(Int())
     var selectedUserList = CommonDynamic([User]())
     
+    var selectedCommonUserViewModel = CommonDynamic([CommonUserViewModel]())
+    
     var currentPage = 1
     var totalNumberOfFriends = 0
     var totalNumberOfFriendsGet : Bool = false
@@ -199,6 +201,7 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
         selectedFrientCount.value = counter
     }
     
+    /*
     func convertSelectedFriendListToUserList() {
         
         var temp = [User]()
@@ -214,6 +217,28 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
         }
         
         selectedUserList.value = temp
+    }*/
+    
+    func convertSelectedFriendListToUserList() {
+        
+        var temp = [User]()
+        var tempCommonViewModelArray = [CommonUserViewModel]()
+        
+        if let array = friendArray as? [CommonUserViewModel] {
+            for item in array {
+                if item.userSelected.value == .selected {
+                    
+                    tempCommonViewModelArray.append(item)
+                    
+                    if let user = item.user {
+                        temp.append(user)
+                    }
+                }
+            }
+        }
+        
+        selectedUserList.value = temp
+        selectedCommonUserViewModel.value = tempCommonViewModelArray
     }
     
     func searchFriendInTableViewData(inputText : String) {

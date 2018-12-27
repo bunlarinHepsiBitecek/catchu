@@ -149,6 +149,7 @@ extension FriendRelationTableViewCell {
             
             userViewModel.userSelected.bindAndFire { [unowned self] in
                 self.cellSelectionAnimation(state: $0, animated: self.cellAnimation)
+                print("USER SELECTED LISTENER TRIGGERED!")
             }
         
         } else {
@@ -162,6 +163,17 @@ extension FriendRelationTableViewCell {
         //guard let userViewModel = item as? CommonUserViewModel else { return }
 
     }
+    
+    func disableCell() {
+        
+        self.name.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        self.username.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        self.username.text = LocalizedConstants.TitleValues.LabelTitle.userAlreadyInGroup
+        self.selectIcon.image = UIImage(named: "check_mark_grey.png")
+        
+        isUserInteractionEnabled = false
+        
+    }
 
     private func resetCellProperties() {
         userViewModel?.userSelected.unbind()
@@ -169,6 +181,11 @@ extension FriendRelationTableViewCell {
         profileImageView.image = nil
         selectIcon.image = nil
         cellAnimation = false
+        
+        // reset disabled properties
+        name.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        username.textColor = UIColor.lightGray
+        self.isUserInteractionEnabled = true
     }
     
     private func cellSelectionAnimation(state : TableViewRowSelected, animated: Bool) {

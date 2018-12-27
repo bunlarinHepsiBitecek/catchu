@@ -245,6 +245,7 @@ protocol PostViewProtocols : class  {
     func deselectPostAttachmentAnimations()
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void)
     func setPostTargetInformation(info : String)
+    func returnAddedParticipants(participantArray: Array<User>)
 }
 
 extension PostViewProtocols {
@@ -257,10 +258,11 @@ extension PostViewProtocols {
     func deselectPostAttachmentAnimations() {}
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {}
     func setPostTargetInformation(info : String) {}
+    func returnAddedParticipants(participantArray: Array<User>) {}
 }
 
 protocol CameraImageVideoHandlerProtocol : class  {
-    func returnPickedImage(image : UIImage)
+    func returnPickedImage(image : UIImage, pathExtension: String, orientation: ImageOrientation)
     func returnPickedVideo(url : URL)
     func triggerPermissionProcess(permissionType : PermissionFLows)
     func updateProcessOfCapturedImage()
@@ -268,7 +270,7 @@ protocol CameraImageVideoHandlerProtocol : class  {
 }
 
 extension CameraImageVideoHandlerProtocol {
-    func returnPickedImage(image : UIImage) {}
+    func returnPickedImage(image : UIImage, pathExtension: String, orientation: ImageOrientation) {}
     func returnPickedVideo(url : URL) {}
     func triggerPermissionProcess(permissionType : PermissionFLows) {}
     func updateProcessOfCapturedImage() {}
@@ -278,11 +280,13 @@ extension CameraImageVideoHandlerProtocol {
 protocol ActionSheetProtocols : class  {
     func returnOperations(selectedProcessType : ActionButtonOperation)
     func presentViewController()
+    func exitFromGroup()
 }
 
 extension ActionSheetProtocols {
     func returnOperations(selectedProcessType : ActionButtonOperation) {}
     func presentViewController() {}
+    func exitFromGroup() {}
 }
 
 

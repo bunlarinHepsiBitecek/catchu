@@ -98,6 +98,7 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     
     deinit {
         groupViewModel?.groupNameChanged.unbind()
+        groupViewModel?.groupImageChanged.unbind()
     }
 }
 
@@ -180,7 +181,8 @@ extension GroupRelationTableViewCell {
         }
         
         if let url = group.groupPictureUrl {
-            self.groupProfileImageView.setImagesFromCacheOrFirebaseForGroup(url)
+            print("group id : \(group.groupID)")
+            self.groupProfileImageView.setImagesFromCacheOrDownloadWithTypes(url, type: ImageSizeTypes.thumbnails)
         }
         
         self.groupViewModel?.groupSelected.bindAndFire({ [unowned self] (selectedInfo) in
@@ -191,6 +193,13 @@ extension GroupRelationTableViewCell {
             print("sikibok")
             DispatchQueue.main.async {
                 self.groupName.text = newString
+            }
+        })
+        
+        self.groupViewModel?.groupImageChanged.bind({ (newImage) in
+            print("mokomoko")
+            DispatchQueue.main.async {
+                self.groupProfileImageView.image = newImage
             }
         })
         

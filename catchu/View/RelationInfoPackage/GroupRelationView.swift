@@ -27,6 +27,8 @@ class GroupRelationView: UIView {
         temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         temp.rowHeight = UITableViewAutomaticDimension
         temp.tableFooterView = UIView()
+        
+        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
         //temp.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         temp.register(GroupRelationTableViewCell.self, forCellReuseIdentifier: GroupRelationTableViewCell.identifier)
@@ -51,6 +53,7 @@ class GroupRelationView: UIView {
         groupRelationViewModel.state.unbind()
         groupRelationViewModel.sectionTitle.unbind()
         groupRelationViewModel.selectedGroupList.unbind()
+        groupRelationViewModel.groupRelationOperationStates.unbind()
     }
     
 }
@@ -106,6 +109,19 @@ extension GroupRelationView {
             
         }
         
+        groupRelationViewModel.groupRelationOperationStates.bind { (operatinState) in
+            switch operatinState {
+            case .processing:
+                print("processing....")
+                
+            case .done:
+                DispatchQueue.main.async {
+                    self.deleteSelectedRow()
+                }
+                print("done...")
+            }
+        }
+        
     }
     
     private func startGettingUserGroups() {
@@ -127,7 +143,7 @@ extension GroupRelationView {
         
         DispatchQueue.main.async {
             let loadingView = RelationCollectionLoadingView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Height.height_50))
-            loadingView.setInformation(state)
+            loadingView.setInformation(state, inputInformationText: LocalizedConstants.PostAttachmentInformation.gettingGroup)
             
             switch state {
             case .populate:
@@ -183,6 +199,17 @@ extension GroupRelationView {
         
     }
     
+    private func deleteSelectedRow() {
+        
+        guard let selectedGroupIndexPath = groupRelationViewModel.selectedGroupData.selectedGroupIndexPath else { return }
+        
+        print("selectedGroupIndexPath : \(selectedGroupIndexPath)")
+        
+        self.groupTableView.beginUpdates()
+        self.groupTableView.deleteRows(at: [selectedGroupIndexPath], with: UITableViewRowAnimation.middle)
+        self.groupTableView.endUpdates()
+        
+    }
     
 }
 
@@ -234,15 +261,22 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
         let deleteAction = UITableViewRowAction(style: .destructive, title: LocalizedConstants.TableViewRowActionTitles.delete) { (action, indexPath) in
             print("action : \(action)")
             print("indexPath : \(indexPath)")
+            
+            //AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self)
+            
         }
         
         let moreInformationAction = UITableViewRowAction(style: .normal, title: LocalizedConstants.TableViewRowActionTitles.more) { (action, indexPath) in
             print("action : \(action)")
             print("indexPath : \(indexPath)")
             
-            self.groupRelationViewModel.infoRequestedGroup = cell?.returnCellGroupViewModel()
+            //self.groupRelationViewModel.infoRequestedGroup = cell?.returnCellGroupViewModel()
             
-            AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self)
+            guard let groupViewModelRetrievedFromCell = cell?.returnCellGroupViewModel() else { return }
+            
+            self.groupRelationViewModel.setSelectedGroupData(groupViewModel: groupViewModelRetrievedFromCell, indexPath: indexPath)
+            
+            AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self, title: nil)
         }
         
         return [deleteAction, moreInformationAction]
@@ -260,11 +294,18 @@ extension GroupRelationView : ActionSheetProtocols {
             addTransitionToPresentationOfFriendRelationViewController()
             
             let groupInfoViewController = GroupInfoViewController()
-            groupInfoViewController.groupViewModel = groupRelationViewModel.infoRequestedGroup
+            //groupInfoViewController.groupViewModel = groupRelationViewModel.infoRequestedGroup
+            groupInfoViewController.groupViewModel = groupRelationViewModel.selectedGroupData.selectedGroupViewModel
             
             currentViewController.present(groupInfoViewController, animated: false, completion: nil)
             
         }
+        
+    }
+    
+    func exitFromGroup() {
+        
+        groupRelationViewModel.exitGroup()
         
     }
 }

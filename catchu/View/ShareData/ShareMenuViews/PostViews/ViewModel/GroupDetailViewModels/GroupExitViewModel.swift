@@ -14,6 +14,8 @@ class GroupExitViewModel: BaseViewModel, CommonViewModel, CommonGroupViewModelIt
         return ""
     }
     
+    //var sectionNumber: Int = 0
+    
     var rowCount: Int {
         return 1
     }

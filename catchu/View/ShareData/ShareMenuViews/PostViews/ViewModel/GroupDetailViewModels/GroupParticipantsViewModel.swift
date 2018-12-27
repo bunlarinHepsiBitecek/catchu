@@ -16,6 +16,8 @@ class GroupParticipantsViewModel: BaseViewModel, CommonViewModel, CommonGroupVie
         return LocalizedConstants.TitleValues.LabelTitle.participants
     }
     
+    //var sectionNumber: Int = 0
+    
     var rowCount: Int {
         return participantList.count
     }

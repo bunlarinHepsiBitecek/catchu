@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Photos
 
 class GroupImageContainerView: UIView {
     
     var groupImageViewModel = GroupImageViewModel()
+    var inputViewForPermissionDisplay: UIView?
     
     private let statusBarHeight = UIApplication.shared.statusBarFrame.height
     
@@ -196,8 +198,26 @@ class GroupImageContainerView: UIView {
         return temp
     }()
     
-    init(frame: CGRect, groupViewModel: CommonGroupViewModel) {
+    lazy var activityIndicatorContainerView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).withAlphaComponent(0.5)
+        return temp
+    }()
+    
+    // updating process indicator
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        temp.hidesWhenStopped = true
+        temp.startAnimating()
+        return temp
+    }()
+    
+    init(frame: CGRect, groupViewModel: CommonGroupViewModel, callerView: UIView) {
         super.init(frame: frame)
+        inputViewForPermissionDisplay = callerView
         groupImageViewModel.groupViewModel = groupViewModel
         initializeView()
     }
@@ -208,6 +228,13 @@ class GroupImageContainerView: UIView {
     
     deinit {
         groupImageViewModel.groupParticipantCount.unbind()
+        groupImageViewModel.groupImageChangeProcess.unbind()
+        groupImageViewModel.groupInfoViewExit.unbind()
+        groupImageViewModel.stackTitleTapped.unbind()
+        groupImageViewModel.groupTitleChangeListener.unbind()
+        groupImageViewModel.groupImageChangeProcess.unbind()
+        groupImageViewModel.groupImageChangeProcess.unbind()
+        
     }
     
 }
@@ -228,6 +255,8 @@ extension GroupImageContainerView {
         
         setValuesToViews()
         
+        activityIndicatorAnimationManagement(active: false, animated: false)
+        
     }
     
     private func addViews() {
@@ -237,10 +266,13 @@ extension GroupImageContainerView {
         self.addSubview(maxSizeContainerView)
         self.addSubview(stackViewGroupTitle)
         self.addSubview(cameraButton)
+        self.addSubview(activityIndicatorContainerView)
+        self.activityIndicatorContainerView.addSubview(activityIndicatorView)
         
         self.bringSubview(toFront: cancelButton)
         
         let safe = self.safeAreaLayoutGuide
+        let safeActivityIndicatorContainerView = self.activityIndicatorContainerView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -267,6 +299,13 @@ extension GroupImageContainerView {
             cameraButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_36),
             cameraButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_36),
             
+            activityIndicatorContainerView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            activityIndicatorContainerView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            activityIndicatorContainerView.topAnchor.constraint(equalTo: safe.topAnchor),
+            activityIndicatorContainerView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            activityIndicatorView.centerXAnchor.constraint(equalTo: safeActivityIndicatorContainerView.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: safeActivityIndicatorContainerView.centerYAnchor),
             
             ])
         
@@ -349,15 +388,25 @@ extension GroupImageContainerView {
                 }
                 
                 if let url = group.groupPictureUrl {
-                    self.imageHolder.setImagesFromCacheOrFirebaseForGroup(url)
+                    //self.imageHolder.setImagesFromCacheOrFirebaseForGroup(url)
+                    self.imageHolder.setImagesFromCacheOrDownloadWithTypes(url, type: .originals)
                 }
                 
             }
         }
         
-        
     }
     
+    private func processChangeGroupData(groupStruct: UpdatedGroupImageInformation) {
+        UIView.transition(with: self.imageHolder, duration: Constants.AnimationValues.aminationTime_03, options: .curveEaseInOut, animations: {
+            self.imageHolder.image = groupStruct.newGroupImage
+            
+        })
+        // save newImage to cache
+        ImageCacheManager.shared.saveImageToCache((groupStruct.newGroupObject?.groupPictureUrl)!, image: groupStruct.newGroupImage!)
+    }
+    
+    /// Description : adding adding dynamic listeners
     private func addListeners() {
         groupImageViewModel.groupParticipantCount.bind { (participantCount) in
             DispatchQueue.main.async {
@@ -370,6 +419,26 @@ extension GroupImageContainerView {
                 self.title.text = newTitle
             }
         }
+        
+        groupImageViewModel.groupDataChangeListener.bind { (updatedGroup) in
+            DispatchQueue.main.async {
+                self.processChangeGroupData(groupStruct: updatedGroup)
+            }
+        }
+        
+        groupImageViewModel.groupImageChangeProcess.bind { (operationState) in
+            
+            DispatchQueue.main.async {
+                switch operationState {
+                case .processing:
+                    self.activityIndicatorAnimationManagement(active: true, animated: false)
+                case .done:
+                    self.activityIndicatorAnimationManagement(active: false , animated: true)
+                }
+            }
+            
+        }
+        
     }
     
     func activationManagerOfMaxSizeContainerView(active : Bool) {
@@ -384,17 +453,26 @@ extension GroupImageContainerView {
         })
     }
     
+    
+    /// Description : it's used to close group info view
+    ///
+    /// - Parameter sender: sender button
+    /// - Author: Erkut Bas
     @objc func backProcess(_ sender : UIButton) {
         print("\(#function)")
         
-        groupImageViewModel.groupImageProcessState.value = .exit
+        groupImageViewModel.groupInfoViewExit.value = .exit
         
     }
     
+    /// Description : it's used to change group image
+    ///
+    /// - Parameter sender: sender button
+    /// - Author: Erkut Bas
     @objc func imageChangeProcess(_ sender : UIButton) {
         print("\(#function)")
         
-        AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .select, delegate: self)
+        AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: .select, delegate: self, title: nil)
         
     }
     
@@ -406,18 +484,40 @@ extension GroupImageContainerView {
         CameraImagePickerManager.shared.openSystemCamera(delegate: self)
     }
     
-    func startCancelButtonObserver(completion : @escaping (_ state : GroupImageProcess) -> Void) {
+    private func activityIndicatorAnimationManagement(active : Bool, animated: Bool) {
         
-        groupImageViewModel.groupImageProcessState.bind { (imageProcessState) in
-            completion(imageProcessState)
+        if animated {
+            UIView.transition(with: self.activityIndicatorContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+                
+                if active {
+                    self.activityIndicatorContainerView.alpha = 1
+                } else {
+                    self.activityIndicatorContainerView.alpha = 0
+                }
+                
+            })
+        } else {
+            if active {
+                self.activityIndicatorContainerView.alpha = 1
+            } else {
+                self.activityIndicatorContainerView.alpha = 0
+            }
         }
+        
+        /*
+        if active {
+            activityIndicatorView.startAnimating()
+        } else {
+            activityIndicatorView.stopAnimating()
+        }*/
         
     }
     
-    /*
-    func setParticipantCount(participantCount : Int) {
-        titleExtra.text = "\(participantCount)" + " " + LocalizedConstants.TitleValues.LabelTitle.participants
-    }*/
+    func startCancelButtonObserver(completion : @escaping (_ state : GroupInfoLifeProcess) -> Void) {
+        groupImageViewModel.groupInfoViewExit.bind { (imageProcessState) in
+            completion(imageProcessState)
+        }
+    }
     
     func startListenStackViewGroupTitleTapped(completion : @escaping(_ tapped : Bool) -> Void) {
         groupImageViewModel.stackTitleTapped.bind { (tapped) in
@@ -469,16 +569,85 @@ extension GroupImageContainerView: ActionSheetProtocols {
 extension GroupImageContainerView: CameraImageVideoHandlerProtocol {
     
     func triggerPermissionProcess(permissionType: PermissionFLows) {
-        switch permissionType {
-        case .camera:
-            return
-        case .photoLibrary:
-            return
-            
-        default:
-            return
+        
+        if let inputViewForPermissionDisplay = inputViewForPermissionDisplay {
+            CustomPermissionViewManager.shared.createAuthorizationView(inputView: inputViewForPermissionDisplay, permissionType: permissionType, delegate: self)
         }
+        
     }
     
+    // return from camera shot or library picker
+    func returnPickedImage(image: UIImage, pathExtension: String, orientation: ImageOrientation) {
+        print("\(#function)")
+        print("pathExtension : \(pathExtension)")
+        print("image orientation : \(image.imageOrientation.rawValue)")
+        print("image.size : \(image.size)")
+        print("image.alignmentRectInsets : \(image.alignmentRectInsets)")
+        print("image : \(image)")
+        
+        //guard let imageAsData = UIImageJPEGRepresentation(image, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE)) else { return }
+        //guard let imageAsData = UIImageJPEGRepresentation(image, 0.80) else { return }
+        
+        let x = image.reSizeImage(orientation: orientation)
+        print("x : \(x)")
+        
+        guard let imageAsData = UIImageJPEGRepresentation(x!, 0.80) else { return }
+    
+        print("There were \(imageAsData.count) bytes")
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useMB] // optional: restricts the units to MB only
+        bcf.countStyle = .file
+        let string = bcf.string(fromByteCount: Int64(imageAsData.count))
+        print("formatted result: \(string)")
+        
+        groupImageViewModel.prepareUpdatedGroupImageInformation(newImage: image, newImagePathExtension: pathExtension, newImageAsData: imageAsData, newGroupObject: nil, newGroupImageOrientation: orientation, newGroupImageDownloadUrl: nil)
+        
+        do {
+            try groupImageViewModel.updateGroupImage()
+        } catch let error as ClientPresentErrors {
+            print("\(Constants.ALERT)\(error)")
+        } catch {
+            print("\(Constants.CRASH_WARNING)")
+        }
+        
+    }
+    
+}
+
+
+// MARK: - PermissionProtocol
+extension GroupImageContainerView: PermissionProtocol {
+    
+    // return for library process videoLibrary or photoLibrary
+    func returnPermissionResult(status: PHAuthorizationStatus, permissionType: PermissionFLows) {
+        
+        switch status {
+        case .authorized:
+            switch permissionType {
+            case .photoLibrary:
+                CameraImagePickerManager.shared.openImageGallery(delegate: self)
+            default:
+                return
+            }
+        default:
+            print("\(Constants.CRASH_WARNING)")
+        }
+        
+    }
+    
+    // return for library process videoSession, cameraSession or audioSession
+    func returnPermissinResultBoolValue(result: Bool, permissionType: PermissionFLows) {
+        print("\(#function) starts")
+        
+        if result {
+            switch permissionType {
+            case .camera:
+                CameraImagePickerManager.shared.openSystemCamera(delegate: self)
+            default:
+                print("\(Constants.CRASH_WARNING)")
+            }
+        }
+        
+    }
     
 }

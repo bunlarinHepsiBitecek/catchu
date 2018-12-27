@@ -77,7 +77,7 @@ class LoaderController: NSObject {
         removeProgressView()
         print("startProgressView")
         
-        self.progressView.progressViewStyle = progressViewStyle
+        //self.progressView.progressViewStyle = progressViewStyle
         let currentView = self.currentView()
         
         DispatchQueue.main.async {

@@ -46,6 +46,23 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
+    
+    /// Description: REAWSManager api gateway handler
+    ///
+    /// - Parameters:
+    ///   - task: AWSTask model
+    ///   - completion: completion method holding failures or success
+    private func processExpectingData<Model>(task: AWSTask<Model>, completion: ((NetworkResult<Model>) -> Void)) {
+        
+        if let error = task.error {
+            completion(.failure(.serverError(error: error)))
+        } else if let result = task.result {
+            completion(.success(result))
+        } else {
+            completion(.failure(.missingDataError))
+        }
+    }
+    
     public static var shared = APIGatewayManager()
     
     let client = RECatchUMobileAPIClient.default()
@@ -665,6 +682,152 @@ class APIGatewayManager: ApiGatewayInterface {
             }
             
         }
+        
+    }
+    
+    /// Description: it's used to upload an image to S3 Bucket and then get a download url for neo4j update process
+    ///
+    /// - Parameters:
+    ///   - data: image converted to data
+    ///   - mediaType: media type - image or video
+    ///   - imageExtension: image extension
+    ///   - completion: download url
+    func uploadImageToBucket(data: Data, mediaType: MediaType, imageExtension: String, completion : @escaping (String) -> Void ) {
+        
+        REAWSManager.shared.getUploadUrl(imageCount: 1, imageExtension: imageExtension, videoCount: 0, videoExtension: Constants.CharacterConstants.EMPTY) { (result) in
+        
+            switch result {
+            case .success(let response):
+                
+                if let dataImageArray = response.images {
+                    if let dataImageSingleObject = dataImageArray.first {
+                        guard let uploadString = dataImageSingleObject.uploadUrl else { return }
+                        guard let uploadUrl = URL(string: uploadString) else { return }
+                        guard let downloadUrl = dataImageSingleObject.downloadUrl else { return }
+                        
+                        UploadManager.shared.uploadFile(uploadUrl: uploadUrl, data: data, type: mediaType, ext: imageExtension, completion: { (success) in
+                            if success {
+                                completion(downloadUrl)
+                                
+                            }
+                        })
+    
+                    }
+                }
+                
+            case .failure(let apiError):
+                switch apiError {
+                case .serverError(let error):
+                    print("Server error: \(error)")
+                case .connectionError(let error) :
+                    print("Connection error: \(error)")
+                case .missingDataError:
+                    print("Missing Data Error")
+                }
+            }
+        
+        }
+        
+    }
+    
+    /// Description : used to remove given participant from group
+    ///
+    /// - Parameters:
+    ///   - group: related group
+    ///   - userid: given username who wants to remove from group
+    ///   - completion: operation result information
+    /// - Author: Erkut Bas
+    func removeParticipantFromGroup(group: Group, userid: String, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) {
+        
+        if (group.groupID?.isEmpty)! || userid.isEmpty {
+            print("\(Constants.ALERT)\tUserid or groupid is empty.")
+            return
+        }
+
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                guard let groupRequest = group.returnREGroupRequestFromGroup() else { return }
+                groupRequest.userid = userid
+                groupRequest.requestType = RequestType.exit_group.rawValue
+                
+                self.client.groupsPost(authorization: tokenResult.token, body:   groupRequest).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+            }
+        }
+    }
+    
+    /// Description: adding new participants to group
+    ///
+    /// - Parameters:
+    ///   - participantArray: user array
+    ///   - completion: function completion result
+    /// - Author: Erkut Bas
+    func addNewParticipantsToGroup(group: Group, participantArray: Array<User>, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) throws {
+        
+        if participantArray.isEmpty {
+            throw ApiGatewayClientErrors.participantArrayCanNotBeEmpty
+        }
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                guard let groupRequest = group.returnREGroupRequestFromGroup() else { return }
+                groupRequest.requestType = RequestType.add_participant_into_group.rawValue
+                groupRequest.groupParticipantArray = [REGroupRequest_groupParticipantArray_item]()
+                
+                for item in participantArray {
+                    let participantArrayItem = REGroupRequest_groupParticipantArray_item()
+                    participantArrayItem?.participantUserid = item.userid
+                    groupRequest.groupParticipantArray?.append(participantArrayItem!)
+                }
+                
+                self.client.groupsPost(authorization: tokenResult.token, body:   groupRequest).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+            }
+        }
+        
+    }
+    
+    /// Description : changes group admin
+    ///
+    /// - Parameters:
+    ///   - group: selected group
+    ///   - adminUserid: admin
+    ///   - newAdminUserid: new admin
+    ///   - completion: result
+    /// - Throws: api gateway client errors
+    /// - Author: Erkut Bas
+    func changeGroupAdmin(group: Group, adminUserid: String, newAdminUserid: String, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) throws {
+        
+        if adminUserid.isEmpty || newAdminUserid.isEmpty {
+            throw ApiGatewayClientErrors.missingUserId
+        }
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                guard let groupRequest = group.returnREGroupRequestFromGroup() else { return }
+                groupRequest.userid = adminUserid
+                groupRequest.requestType = RequestType.changeGroupAdmin.rawValue
+                
+                groupRequest.groupParticipantArray = [REGroupRequest_groupParticipantArray_item]()
+                let participantArrayItem = REGroupRequest_groupParticipantArray_item()
+                participantArrayItem?.participantUserid = newAdminUserid
+                groupRequest.groupParticipantArray?.append(participantArrayItem!)
+                
+                self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+                
+            }
+        }
+        
         
     }
     

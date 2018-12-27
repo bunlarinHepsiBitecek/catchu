@@ -36,6 +36,9 @@ class GroupInfoView: UIView {
         temp.contentInsetAdjustmentBehavior = .automatic
         temp.rowHeight = UITableViewAutomaticDimension
         
+        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_85, bottom: 0, right: 0)
+        //temp.separatorColor = UIColor.groupTableViewBackground
+        
         // cell registrations
         temp.register(GroupNameTableViewCell.self, forCellReuseIdentifier: GroupNameTableViewCell.identifier)
         temp.register(GroupAdminPanelTableViewCell.self, forCellReuseIdentifier: GroupAdminPanelTableViewCell.identifier)
@@ -78,7 +81,6 @@ class GroupInfoView: UIView {
     
     deinit {
         groupDetailViewModel.groupParticipantCount.unbind()
-        groupDetailViewModel.isAuthenticatedUserAdmin.unbind()
         groupDetailViewModel.state.unbind()
     }
 }
@@ -133,7 +135,7 @@ extension GroupInfoView {
         
         guard let groupViewModel = groupViewModel else { throw ClientPresentErrors.missingGroupViewModel }
         
-        groupImageContainerView = GroupImageContainerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: groupImageContainerViewHeight + statusBarHeight), groupViewModel: groupViewModel)
+        groupImageContainerView = GroupImageContainerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: groupImageContainerViewHeight + statusBarHeight), groupViewModel: groupViewModel, callerView: self)
         
         groupImageContainerView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -171,6 +173,10 @@ extension GroupInfoView {
             case .populate:
                 self.reloadGroupDetailTableView()
                 return
+                
+            case .sectionReload:
+                self.reloadParticipantSection()
+                return
             default:
                 return
             }
@@ -191,7 +197,7 @@ extension GroupInfoView {
             loadingView.setInformation(state, inputInformationText: LocalizedConstants.PostAttachmentInformation.gettingGroupDetail)
             
             switch state {
-            case .populate:
+            case .populate, .sectionReload:
                 self.groupDetailTableView.tableFooterView = nil
             default:
                 self.groupDetailTableView.tableFooterView = loadingView
@@ -208,10 +214,20 @@ extension GroupInfoView {
         
         DispatchQueue.main.async {
             
-            self.groupDetailTableView.reloadData()
+            UIView.transition(with: self.groupDetailTableView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+                self.groupDetailTableView.reloadData()
+            
+            })
             
         }
         
+    }
+    
+    private func reloadParticipantSection() {
+        DispatchQueue.main.async {
+            self.groupDetailTableView.reloadSections([self.groupDetailViewModel.participantSectionNumber], with: .middle)
+            
+        }
     }
     
     /// Description : it's used to go group name edit view process
@@ -232,8 +248,37 @@ extension GroupInfoView {
         
     }
     
+    private func directParticipantViewController() {
+        let friendRelationViewController = FriendRelationViewController()
+        let currentViewController = LoaderController.currentViewController()
+        
+        // used to return selected friend, friendList or group information
+        //friendRelationViewController.delegate = delegate
+        friendRelationViewController.friendRelationViewPurpose = FriendRelationViewPurpose.participant
+        friendRelationViewController.friendRelationChoise = FriendRelationViewChoise.friend
+        friendRelationViewController.delegate = self
+        friendRelationViewController.participantArray = groupDetailViewModel.participantArray
+        friendRelationViewController.selectedGroup = groupDetailViewModel.groupViewModel?.group
+        
+        currentViewController?.present(friendRelationViewController, animated: false, completion: {
+            print("presented")
+        })
+    }
+    
+    private func startActionSheet(title: String) {
+        
+        var operationType = ActionControllerOperationType.select
+        
+        if groupDetailViewModel.returnAuthenticatedUserIsAdmin() {
+            operationType = ActionControllerOperationType.admin
+        }
+        
+        AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.userInformation, operationType: operationType, delegate: self, title: title)
+        
+    }
+    
     // observe view controller dismiss operation
-    func addObserverForGroupInfoDismiss(completion : @escaping (_ state : GroupImageProcess) -> Void) {
+    func addObserverForGroupInfoDismiss(completion : @escaping (_ state : GroupInfoLifeProcess) -> Void) {
         groupImageContainerView.startCancelButtonObserver(completion: completion)
     }
     
@@ -294,8 +339,6 @@ extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
             if let participantObject = groupDetailObject as? GroupParticipantsViewModel {
                 guard let cell = groupDetailTableView.dequeueReusableCell(withIdentifier: GroupParticipantTableViewCell.identifier, for: indexPath) as? GroupParticipantTableViewCell else { return UITableViewCell() }
                 
-                let object = participantObject.participantList[indexPath.row]
-                
                 cell.initiateCellDesign(item: participantObject.participantList[indexPath.row])
                 
                 return cell
@@ -326,6 +369,25 @@ extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
                 self.directGroupInfoEditViewController(groupNameViewModel: groupNameViewModel)
                 
             }
+            
+        case .admin:
+            self.directParticipantViewController()
+            
+        case .participant:
+            
+            guard let cell = groupDetailTableView.cellForRow(at: indexPath) as? GroupParticipantTableViewCell else { return }
+            
+            print("userid : \(cell.groupParticipantViewModel?.user?.userid)")
+            
+            if let groupParticipantViewModel = cell.groupParticipantViewModel {
+                if let user = groupParticipantViewModel.user {
+                    groupDetailViewModel.selectedUser = user
+                    if let name = user.name {
+                        self.startActionSheet(title: name)
+                    }
+                }
+            }
+            
         default:
             return
         }
@@ -365,4 +427,40 @@ extension GroupInfoView {
         
     }
     
+}
+
+// MARK: - PostViewProtocols
+extension GroupInfoView : PostViewProtocols {
+    
+    func returnAddedParticipants(participantArray: Array<User>) {
+        print("\(#function)")
+        print("participantArray count : \(participantArray.count)")
+        
+        groupDetailViewModel.addNewParticipantsToGroup(newParticipantArray: participantArray)
+        
+    }
+    
+}
+
+// MARK: - ActionSheetProtocols
+extension GroupInfoView: ActionSheetProtocols {
+    
+    func returnOperations(selectedProcessType: ActionButtonOperation) {
+        switch selectedProcessType {
+        case .exitGroup:
+            if let user = groupDetailViewModel.selectedUser {
+                groupDetailViewModel.exitGroup(selectedUser: user)
+            }
+        case .gotoUserInfo:
+            return
+        case .makeGroupAdmin:
+            if let user = groupDetailViewModel.selectedUser {
+                if let userid = User.shared.userid, let newAdminUserid = user.userid {
+                    groupDetailViewModel.changeGroupAdmin(adminUserid: userid, newAdminUserid: newAdminUserid)
+                }
+            }
+        default:
+            return
+        }
+    }
 }

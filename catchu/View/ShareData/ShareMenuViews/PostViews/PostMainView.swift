@@ -158,6 +158,13 @@ extension PostMainView {
             
         case .update:
             capturedCameraView.activationManagerDefault(granted: true)
+            
+        case .admin:
+            // used for group administration, in this view it's not necessary
+            return
+            
+        case .addParticipant:
+            return
         }
         
     }
@@ -207,12 +214,13 @@ extension PostMainView : CameraImageVideoHandlerProtocol {
         CustomPermissionViewManager.shared.createAuthorizationView(inputView: self, permissionType: permissionType, delegate: self)
     }
     
-    func returnPickedImage(image: UIImage) {
-        print("returnPickedImage starts")
+    func returnPickedImage(image: UIImage, pathExtension: String, orientation: ImageOrientation) {
+        print("\(#function)")
+        print("pathExtension : \(pathExtension)")
         
         activateCapturedCameraView(image: image, actionType: .select)
     }
-
+    
     func updateProcessOfCapturedImage() {
         print("\(#function) starts")
         
@@ -277,7 +285,7 @@ extension PostMainView : PermissionProtocol {
                 return
             }
         default:
-            print("Something goes wrong!")
+            print("\(Constants.CRASH_WARNING)")
         }
         
     }
@@ -295,7 +303,7 @@ extension PostMainView : PermissionProtocol {
                 self.initiateVideoViewPermissionProcess()
                 return
             default:
-                print("Something goes wrong!")
+                print("\(Constants.CRASH_WARNING)")
             }
         }
         

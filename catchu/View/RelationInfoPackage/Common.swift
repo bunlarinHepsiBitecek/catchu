@@ -27,6 +27,26 @@ class CommonTableCell: UITableViewCell {
     }
 }
 
+class CommonCollectionCell: UICollectionViewCell {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupViews() {
+        
+    }
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
+}
+
+
 // view model protocols
 protocol CommonViewModel {
     
@@ -41,6 +61,7 @@ protocol CommonViewModelItem {}
 protocol CommonGroupViewModelItem {
     var type : GroupDetailSectionTypes { get }
     var sectionTitle : String { get }
+    //var sectionNumber: Int { get set }
     var rowCount : Int { get }
     
 }

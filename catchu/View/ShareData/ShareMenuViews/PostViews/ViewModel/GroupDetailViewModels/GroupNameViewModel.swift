@@ -9,9 +9,10 @@
 import Foundation
 
 class GroupNameViewModel: BaseViewModel, CommonViewModel, CommonGroupViewModelItem {
+    
     // to sync groupRelationView data
     var groupViewModel: CommonGroupViewModel?
-    // to sync groupImageContainerView data 
+    // to sync groupImageContainerView data
     var groupImageViewModel: GroupImageViewModel?
     
     //var group: Group?
@@ -30,6 +31,8 @@ class GroupNameViewModel: BaseViewModel, CommonViewModel, CommonGroupViewModelIt
     var rowCount: Int {
         return 1
     }
+    
+    //var sectionNumber: Int = 0
     
     var type: GroupDetailSectionTypes {
         return .name

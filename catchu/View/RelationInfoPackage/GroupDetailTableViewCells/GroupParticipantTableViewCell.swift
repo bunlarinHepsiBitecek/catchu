@@ -13,7 +13,7 @@ class GroupParticipantTableViewCell: CommonTableCell, CommonDesignableCell {
     var groupParticipantViewModel: GroupParticipantViewModel?
     
     lazy var participantImageView: UIImageView = {
-        let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_40, height: Constants.StaticViewSize.ViewSize.Width.width_40))
+        let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Width.width_50))
         imageView.contentMode = UIViewContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
@@ -141,11 +141,11 @@ extension GroupParticipantTableViewCell {
         
         NSLayoutConstraint.activate([
             
-            participantImageView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_20),
-            participantImageView.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
-            participantImageView.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
-            participantImageView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_40),
-            participantImageView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_40),
+            participantImageView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_15),
+            participantImageView.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
+            participantImageView.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_5),
+            participantImageView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_50),
+            participantImageView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_50),
             
             stackViewForParticipantInfo.leadingAnchor.constraint(equalTo: safeParticipantImage.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_20),
             stackViewForParticipantInfo.centerYAnchor.constraint(equalTo: safe.centerYAnchor),

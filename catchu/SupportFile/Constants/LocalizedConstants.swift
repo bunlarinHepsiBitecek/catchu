@@ -132,11 +132,16 @@ struct 	LocalizedConstants {
             static let exitGroup = NSLocalizedString("exitGroup", comment: "")
             static let admin = NSLocalizedString("admin", comment: "")
             static let participants = NSLocalizedString("participants", comment: "")
+            static let userAlreadyInGroup = NSLocalizedString("userAlreadyInGroup", comment: "")
+            static let groupNameDefault = NSLocalizedString("groupNameDefault", comment: "")
+            static let provideGroupName = NSLocalizedString("provideGroupName", comment: "")
+            static let selectedParticipantCount = NSLocalizedString("selectedParticipantCount", comment: "")
             
         }
         
         struct ViewControllerTitles {
             static let groupInfoEdit = NSLocalizedString("groupInfoEdit", comment: "")
+            static let groupCreate = NSLocalizedString("groupCreate", comment: "")
         }
     }
     
@@ -266,7 +271,6 @@ struct 	LocalizedConstants {
         static let saySomething = NSLocalizedString("saySomething", comment: "")
         static let noneFollowers = NSLocalizedString("noneFollowers", comment: "")
         static let gettingGroupDetail = NSLocalizedString("gettingGroupDetail", comment: "")
-        
     }
     
     struct Cloud {
@@ -301,6 +305,9 @@ struct 	LocalizedConstants {
         static let delete = NSLocalizedString("delete", comment: "")
         static let exitGroup = NSLocalizedString("exitGroup", comment: "")
         static let groupInformation = NSLocalizedString("groupInformation", comment: "")
+        static let gotoInfo = NSLocalizedString("gotoInfo", comment: "")
+        static let makeGroupAdmin = NSLocalizedString("makeGroupAdmin", comment: "")
+        static let add = NSLocalizedString("Add", comment: "")
     }
     
     struct TableViewRowActionTitles {

@@ -1,5 +1,5 @@
 //
-//  ExtensionUIImageView.swift
+//  ImageDownloadResizeManagement.swift
 //  catchu
 //
 //  Created by Erkut Baş on 6/6/18.
@@ -83,7 +83,6 @@ extension UIImageView {
             
             if !urlString.isEmpty {
                 
-                //                let url = URL(string: urlString)
                 if let url = URL(string: urlString) {
                     
                     print("url : \(url)")
@@ -124,7 +123,7 @@ extension UIImageView {
     
     func downloadImages(_ urlString: String, completin : @escaping (_ finish : Bool) -> Void) {
         print("downloadImages starts")
-        
+       
         self.image = nil
         
         if let tempImage = SectionBasedGroup.shared.cachedGroupImages.object(forKey: urlString as NSString) {

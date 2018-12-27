@@ -410,5 +410,12 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
             
             ])*/
         
+        let deneme = NewGroupCreationViewController()
+        let nav = UINavigationController(rootViewController: deneme)
+        
+        self.present(nav, animated: false, completion: {
+            print("presented")
+        })
+        
     }
 }

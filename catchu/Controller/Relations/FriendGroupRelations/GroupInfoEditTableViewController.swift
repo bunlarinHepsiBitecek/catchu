@@ -192,7 +192,7 @@ extension GroupInfoEditTableViewController {
             }
         }
         catch {
-            print("Something goes terribly wrong")
+            print("\(Constants.CRASH_WARNING)")
         }
         
     }

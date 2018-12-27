@@ -20,7 +20,11 @@ class GroupCreateTableViewCell: UITableViewCell {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
+        print("REMZİ TEST 2")
+        
         contentSize.contentSizeOfCell = contentSize.calculateContentSizeForTableRowHeight(inputItemCount: returnSelectedFriendCount())
+        
+        print("REMZİ TEST 3")
         
         // Initialization code
     }

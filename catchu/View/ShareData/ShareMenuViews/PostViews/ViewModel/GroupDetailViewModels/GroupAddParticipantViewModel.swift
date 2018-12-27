@@ -20,6 +20,8 @@ class GroupAddParticipantViewModel: BaseViewModel, CommonViewModel, CommonGroupV
         return "Participant List"
     }
     
+    //var sectionNumber: Int = 0
+    
     var rowCount: Int {
         return 1
     }

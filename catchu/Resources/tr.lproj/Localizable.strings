@@ -66,6 +66,11 @@
 "admin" = "Yönetici";
 "participants" = "Katılımcı";
 "save" = "Kaydet";
+"userAlreadyInGroup" = "Kişi zaten grupta! 😉";
+"groupNameDefault" = "Grup Adı...";
+"groupCreate" = "Grup Oluşturma";
+"provideGroupName" = "Lütfen bir grup adı giriniz.";
+"selectedParticipantCount" = "Katılımcı Sayısı : ";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";

@@ -143,6 +143,7 @@ extension GroupCreateView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        print("REMZİ TEST 1")
         return contentSize.contentSizeOfCell
     }
 

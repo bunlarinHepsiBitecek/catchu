@@ -10,6 +10,8 @@ import UIKit
 
 class FriendGroupRelationView: UIView {
 
+    private var friendGroupRelationViewModel = FriendGroupRelationViewModel()
+    
     weak var delegate : ViewPresentationProtocols!
     weak var delegatePostView : PostViewProtocols!
     
@@ -27,6 +29,12 @@ class FriendGroupRelationView: UIView {
     // post target informations
     private var selectedFriendList = Array<User>()
     private var selectedGroupList = Array<Group>()
+    
+    private var selectedCommonUserViewModelList = Array<CommonUserViewModel>()
+    
+    // to sync current participants with user friend array
+    private var participantArray: Array<User>?
+    private var selectedGroup: Group?
     
     lazy var informationContainer: UIView = {
         let temp = UIView()
@@ -162,12 +170,19 @@ class FriendGroupRelationView: UIView {
         return temp
     }()
     
-    init(frame: CGRect, delegate : ViewPresentationProtocols, delegatePostView : PostViewProtocols, friendRelationChoise: FriendRelationViewChoise, friendRelationPurpose: FriendRelationViewPurpose) {
+    init(frame: CGRect, delegate : ViewPresentationProtocols, delegatePostView : PostViewProtocols, friendRelationChoise: FriendRelationViewChoise, friendRelationPurpose: FriendRelationViewPurpose, participantArray: Array<User>?, selectedGroup: Group?) {
         super.init(frame: frame)
         self.delegate = delegate
         self.delegatePostView = delegatePostView
         self.friendRelationChoise = friendRelationChoise
         self.friendRelationPurpose = friendRelationPurpose
+        self.selectedGroup = selectedGroup
+        
+        if let participantArray = participantArray {
+            self.participantArray = participantArray
+        }
+        
+        // initialize view
         initiateViewSettings()
         
     }
@@ -208,6 +223,7 @@ extension FriendGroupRelationView {
         configureSegmentedButtonSettings()
         addObserverToCounterSettings()
         addObserverToNextButtonSettings()
+        addGroupCreationListeners()
 
         /*
         guard let friendRelationChoise = friendRelationChoise else { return }
@@ -292,6 +308,14 @@ extension FriendGroupRelationView {
             
         }
         
+        friendRelationView.startObserverForSelectedCommonUserViewModelList { (commonUserViewModelList) in
+            print("commonUserViewModelList :\(commonUserViewModelList)")
+            print("commonUserViewModelList.count :\(commonUserViewModelList.count)")
+            
+            self.selectedCommonUserViewModelList = commonUserViewModelList
+            
+        }
+        
     }
     
     private func addObserverToNextButtonSettings() {
@@ -312,7 +336,20 @@ extension FriendGroupRelationView {
         }
         
     }
+    
+    private func addGroupCreationListeners() {
+        friendGroupRelationViewModel.groupCreationRemovedParticipant.bind { (commonUserViewModel) in
+            print("commonUserViewModel : \(commonUserViewModel)")
+            print("commonUserViewModel state : \(commonUserViewModel.userSelected.value)")
+            self.triggerFriendSelectionViewItemRemoveProcess(commonUserViewModel: commonUserViewModel)
+        }
+    }
+    
     /// OBSERVERS - end
+    
+    private func triggerFriendSelectionViewItemRemoveProcess(commonUserViewModel: CommonUserViewModel) {
+        friendRelationView.selectedFriendListAnimationManagement2(commonUserViewModel)
+    }
     
     func nextButtonManagement(count : Int) {
         
@@ -442,7 +479,7 @@ extension FriendGroupRelationView {
     
     private func addFriendRelationView() {
         
-        friendRelationView = FriendRelationView()
+        friendRelationView = FriendRelationView(frame: .zero, participantArray: participantArray, friendRelationPurpose: friendRelationPurpose)
         friendRelationView.translatesAutoresizingMaskIntoConstraints = false
         
         self.tableViewContainer.addSubview(friendRelationView)
@@ -478,6 +515,22 @@ extension FriendGroupRelationView {
             ])
     }
     
+    private func directToGroupCreationViewController() {
+        
+        let groupCreationViewController = NewGroupCreationViewController()
+        groupCreationViewController.selectedCommonUserViewModelList = self.selectedCommonUserViewModelList
+        groupCreationViewController.friendGroupRelationViewModel = friendGroupRelationViewModel
+        
+        let navigationViewController = UINavigationController(rootViewController: groupCreationViewController)
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            currentViewController.present(navigationViewController, animated: true) {
+                print("NewGroupCreationViewController is presented!")
+            }
+        }
+        
+    }
+    
     @objc func nextPressed(_ sender : UIButton) {
         
         guard let friendRelationChoise = friendRelationChoise else { return }
@@ -500,6 +553,7 @@ extension FriendGroupRelationView {
                     }
                 } else if activeSegment == 1 {
                     // to make a create new group process
+                    self.directToGroupCreationViewController()
                     return
                 }
                 
@@ -514,11 +568,19 @@ extension FriendGroupRelationView {
             
         case .groupManagement:
             return
+            
+        case .participant:
+            
+            if delegatePostView != nil {
+                AlertControllerManager.shared.startActionSheetManager(type: .newParticipant, operationType: nil, delegate: self, title: createTitleForNewParticipants())
+            }
+            
+            return
         }
         
     }
     
-    func returnInformationForSelectedListData() -> String {
+    private func returnInformationForSelectedListData() -> String {
         
         var finalInformationText = ""
         let information = "Posting to "
@@ -554,6 +616,67 @@ extension FriendGroupRelationView {
         }
         
         return finalInformationText
+    }
+    
+    /// Description : creates title of action sheet for adding new participants
+    ///
+    /// - Returns: title value
+    private func createTitleForNewParticipants() -> String {
+        
+        var title = "Add "
+        var count = 0
+        
+        if selectedFriendList.count > 4 {
+            for item in selectedFriendList {
+                if let name = item.name {
+                    title += name
+                }
+                
+                count += 1
+                
+                if selectedFriendList.endIndex < 4 {
+                    title += ", "
+                }
+                
+                if count > 4 {
+                    break
+                }
+            }
+            
+            let countValue = "\(selectedFriendList.count - 4)"
+            let part1 = " and " + countValue
+            var part2 = ""
+            if let groupName = selectedGroup?.groupName {
+                part2 = " to \"" + groupName
+            }
+            let part3 = "\" group."
+            let part4 = part1 + part2 + part3
+            
+            title += part4
+            
+        } else {
+            
+            for item in selectedFriendList {
+                if let name = item.name {
+                    title += name
+                }
+                
+                count += 1
+                
+                if selectedFriendList.endIndex != count {
+                    title += ", "
+                }
+                
+            }
+            
+            if let groupName = selectedGroup?.groupName {
+                title =  title + " to \"" + groupName + "\" group."
+            }
+            
+        }
+        
+        return title
+        
     }
     
     @objc func segmentedButtonClicked(_ sender : UISegmentedControl) {
@@ -669,4 +792,19 @@ extension FriendGroupRelationView : UIGestureRecognizerDelegate {
         
         //self.endEditing(true)
     }
+}
+
+// MARK: - ActionSheetProtocols
+extension FriendGroupRelationView : ActionSheetProtocols {
+    
+    func returnOperations(selectedProcessType: ActionButtonOperation) {
+        switch selectedProcessType {
+        case .addNewParticipant:
+            delegatePostView.returnAddedParticipants(participantArray: selectedFriendList)
+            delegate.dismissViewController()
+        default:
+            return
+        }
+    }
+    
 }

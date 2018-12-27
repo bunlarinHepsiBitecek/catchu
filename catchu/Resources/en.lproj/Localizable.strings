@@ -81,6 +81,12 @@
 "admin" = "Admin";
 "participants" = "Participants";
 "save" = "Save";
+"userAlreadyInGroup" = "User is already in group!";
+"groupNameDefault" = "Group name...";
+"groupCreate" = "Group Create";
+"provideGroupName" = "Please provide a group name.";
+"selectedParticipantCount" = "Selected Participant : ";
+
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";
@@ -219,3 +225,5 @@
 
 // View Controller Titles
 "groupInfoEdit" = "Group Name";
+
+

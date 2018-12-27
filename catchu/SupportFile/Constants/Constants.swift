@@ -15,7 +15,9 @@ struct Constants {
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
     static let AWS_PATH_EMPTY = "empty" // used for aws lambda path param empty
-    static let ALERT = "ALERT\n"
+    static let ALERT = "ALERT\t"
+    static let CRASH_WARNING = "Something goes terribly wrong!"
+    static let DEFAULT_PATH_EXT_JPG = "jpg"
     
     struct Bundle {
         struct Path {
@@ -169,6 +171,8 @@ struct Constants {
             static let constraint_150 : CGFloat = 150
             static let constraint_100 : CGFloat = 100
             static let constraint_90 : CGFloat = 90
+            static let constraint_85 : CGFloat = 85
+            static let constraint_80 : CGFloat = 80
             static let constraint_70 : CGFloat = 70
             static let constraint_60 : CGFloat = 60
             static let constraint_50 : CGFloat = 50
@@ -280,6 +284,8 @@ struct Constants {
         static let imageCollectionViewEdgeInsets_02 : CGFloat = 2
         static let imageCollectionViewMaxCellCount : CGFloat = 4
         static let minimumLineSpacing_Zero : CGFloat = 0
+        static let minimumLineSpacing_10 : CGFloat = 10
+        static let numberOfItemPerRow_3 : Int = 3
     }
     
     struct FirebaseCallableFunctions {
@@ -590,4 +596,15 @@ struct Constants {
         static let Height: CGFloat = 50
     }
     
+    struct ImageResizeValues {
+        struct Height {
+            static let height_1080 : CGFloat = 1080
+            static let height_1440 : CGFloat = 1440
+        }
+        
+        struct Width {
+            static let width_1080 : CGFloat = 1080
+            static let width_1440 : CGFloat = 1440
+        }
+    }
 }

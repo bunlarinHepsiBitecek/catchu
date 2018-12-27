@@ -30,12 +30,16 @@ enum ActionControllerType {
     case camera
     case video
     case groupInformation
+    case userInformation
+    case newParticipant
 
 }
 
 enum ActionControllerOperationType {
     case select
     case update
+    case admin
+    case addParticipant
 }
 
 enum ActionButtonOperation {
@@ -46,6 +50,10 @@ enum ActionButtonOperation {
     case videoOpen
     case videoGalleryOpen
     case selectedVideoDelete
+    case gotoUserInfo
+    case makeGroupAdmin
+    case exitGroup
+    case addNewParticipant
 }
 
 enum MediaType: String {
@@ -123,6 +131,7 @@ enum RequestType : String {
     case exit_group = "EXIT_GROUP"
     case create_group = "CREATE_GROUP"
     case userGroups = "GET_AUTHENTICATED_USER_GROUP_LIST"
+    case changeGroupAdmin = "CHANGE_GROUP_ADMIN"
     
  
 }
@@ -175,6 +184,8 @@ enum ColorPalettes {
 enum ApiGatewayClientErrors: Swift.Error {
     case missingUserId
     case missingGroupId
+    case reGroupRequestObjectFailed
+    case participantArrayCanNotBeEmpty
 }
 
 enum ClientPresentErrors: Swift.Error {
@@ -185,6 +196,12 @@ enum ClientPresentErrors: Swift.Error {
     case missingGroupViewModel
     case missingGroupImageViewModel
     case missingGroupInfoEditViewModel
+    case missingInputViewForPermissionHandler
+    case missingUpdatedGroupInformation
+    case missingImageAsData
+    case missingImageExtension
+    case missingDelegation
+    case missingFriendGroupRelationViewModel
 }
 
 enum CastingErrors: Swift.Error {
@@ -273,6 +290,7 @@ enum TableViewState: String {
     case loading
     case populate
     case empty
+    case sectionReload
     case error
     
 }
@@ -321,9 +339,10 @@ enum SearcMode {
 enum FriendRelationViewPurpose {
     case post
     case groupManagement
+    case participant
 }
 
-enum GroupImageProcess {
+enum GroupInfoLifeProcess {
     case exit
     case start
 }
@@ -339,3 +358,25 @@ enum CRUD_OperationStates {
     case processing
     case done
 }
+
+enum GroupOperationTypes {
+    case getGroupList
+    case removeParticipantFromGroup
+    case addNewParticipants
+    case getGroupDetails
+    case changeGroupAdmin
+    case none
+}
+
+enum ImageOrientation {
+    case portrait
+    case landScape
+    case square
+    case other
+}
+
+enum ImageSizeTypes: String {
+    case originals = "originals"
+    case thumbnails = "thumbnails"
+}
+
