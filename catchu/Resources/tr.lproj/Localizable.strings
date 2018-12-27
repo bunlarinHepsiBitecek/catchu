@@ -179,7 +179,7 @@
 // TableViewRowAction titles
 "moreInformation" = "Daha ...";
 "deleteGroup" = "Çıkış";
-"exitGroup" = "Gruptan Çık";
+"exitGroup" = "Gruptan Çıkar";
 "GroupInformation" = "Grup Bilgisi";
 
 // View Controller Titles

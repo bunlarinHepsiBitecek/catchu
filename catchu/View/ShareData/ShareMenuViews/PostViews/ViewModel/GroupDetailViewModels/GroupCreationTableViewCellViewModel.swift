@@ -12,6 +12,15 @@ class GroupCreationTableViewCellViewModel {
     
     var groupParticipantArray = [CommonViewModelItem]()
     
+    // GroupCreationViewModel to sync total participant count to dismiss view controller when there is no participant in create group view controller
+    var groupCreationViewModel: GroupCreationViewModel?
+    
+    // to sync participant count with tableView sectionHeader
+    var sectionHeaderViewModel: SectionHeaderViewModel?
+    
+    // to sync removed item with previous friend relation view
+    var friendGroupRelationViewModel: FriendGroupRelationViewModel?
+    
     func returnGroupParticipantArrayCount() -> Int {
         return groupParticipantArray.count
     }

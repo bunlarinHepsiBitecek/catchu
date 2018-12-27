@@ -10,11 +10,9 @@ import UIKit
 
 class NewGroupCreationViewController: UIViewController {
 
-    private var newGroupCreationView: NewGroupCreationView!
-    var selectedCommonUserViewModelList = Array<CommonUserViewModel>()
+    var groupCreationControllerViewModel: GroupCreationControllerViewModel?
     
-    // to sync group creation participant count and friend group relation view count
-    var friendGroupRelationViewModel: FriendGroupRelationViewModel?
+    private var newGroupCreationView: NewGroupCreationView!
     
     lazy var leftBarButton: UIBarButtonItem = {
         let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissViewController(_:)))
@@ -64,6 +62,9 @@ extension NewGroupCreationViewController {
         }
         
         addBarButtons()
+        addSaveButtonStateListener()
+        addTotalParticipantCountListener()
+        addGroupCreationHeaderViewListeners()
         
     }
     
@@ -75,9 +76,9 @@ extension NewGroupCreationViewController {
     
     private func addViews() throws {
         
-        guard let friendGroupRelationViewModel = friendGroupRelationViewModel else { throw ClientPresentErrors.missingFriendGroupRelationViewModel}
+        guard let friendGroupRelationViewModel = groupCreationControllerViewModel!.friendGroupRelationViewModel else { throw ClientPresentErrors.missingFriendGroupRelationViewModel}
         
-        newGroupCreationView = NewGroupCreationView(frame: .zero, selectedCommonUserViewModelList: selectedCommonUserViewModelList, friendGroupRelationViewModel: friendGroupRelationViewModel)
+        newGroupCreationView = NewGroupCreationView(frame: .zero, selectedCommonUserViewModelList: groupCreationControllerViewModel!.selectedCommonUserViewModelList, friendGroupRelationViewModel: friendGroupRelationViewModel)
         
         newGroupCreationView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -116,6 +117,78 @@ extension NewGroupCreationViewController {
     }
     
     @objc func saveChanges(_ sender : UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        
     }
+    
+    private func addTotalParticipantCountListener() {
+        newGroupCreationView.addTotalParticipantCountListener { (count) in
+            if count <= 0 {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func addSaveButtonStateListener() {
+        
+        groupCreationControllerViewModel?.newGroupCreationState.bind({ (operationState) in
+            self.saveProcessOperationStateControl(operationState: operationState)
+        })
+        
+    }
+    
+    private func saveProcessOperationStateControl(operationState: CRUD_OperationStates) {
+        
+        DispatchQueue.main.async {
+            switch operationState {
+            case .processing:
+                if let rightBarButtonView = self.navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
+                    self.activityIndicatorView.frame = rightBarButtonView.frame
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicatorView)
+                }
+                return
+            case .done:
+                self.navigationItem.rightBarButtonItem = self.rigthBarButton
+                
+                self.addRigthBarButton(completion: { (finish) in
+                    if finish {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                })
+                
+                return
+            }
+        }
+        
+    }
+    
+    private func addGroupCreationHeaderViewListeners() {
+        newGroupCreationView.addHeaderViewListeners { (filled) in
+            self.enableManagerOfSaveButton(active: filled)
+        }
+        
+        newGroupCreationView.addGroupNameListener { (groupName) in
+            print("groupName : \(groupName)")
+            self.groupCreationControllerViewModel?.prepareNewGroupInformationData(image: nil, imageOrientation: nil, imageExtension: nil, imageAsData: nil, groupObject: nil, downloadUrl: nil, groupName: groupName)
+        }
+        
+        newGroupCreationView.addGroupImageListener { (groupImage) in
+            print("groupImage : \(groupImage)")
+            self.groupCreationControllerViewModel?.prepareNewGroupInformationData(image: groupImage, imageOrientation: nil, imageExtension: nil, imageAsData: nil, groupObject: nil, downloadUrl: nil, groupName: nil)
+        }
+        
+        newGroupCreationView.addGroupImagePickerListener { (imagePickerData) in
+            self.groupCreationControllerViewModel?.prepareNewGroupInformationData(image: imagePickerData.image, imageOrientation: imagePickerData.orientation, imageExtension: imagePickerData.pathExtension, imageAsData: nil, groupObject: nil, downloadUrl: nil, groupName: nil)
+        }
+    }
+    
+    private func enableManagerOfSaveButton(active: Bool) {
+        self.rigthBarButton.isEnabled = active
+    }
+    
+    private func startNewGroupCreationProcess() {
+        
+        
+        
+    }
+    
 }

@@ -504,13 +504,6 @@ extension GroupImageContainerView {
             }
         }
         
-        /*
-        if active {
-            activityIndicatorView.startAnimating()
-        } else {
-            activityIndicatorView.stopAnimating()
-        }*/
-        
     }
     
     func startCancelButtonObserver(completion : @escaping (_ state : GroupInfoLifeProcess) -> Void) {

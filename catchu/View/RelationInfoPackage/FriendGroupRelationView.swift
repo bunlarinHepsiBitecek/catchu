@@ -337,6 +337,7 @@ extension FriendGroupRelationView {
         
     }
     
+    
     private func addGroupCreationListeners() {
         friendGroupRelationViewModel.groupCreationRemovedParticipant.bind { (commonUserViewModel) in
             print("commonUserViewModel : \(commonUserViewModel)")
@@ -518,8 +519,7 @@ extension FriendGroupRelationView {
     private func directToGroupCreationViewController() {
         
         let groupCreationViewController = NewGroupCreationViewController()
-        groupCreationViewController.selectedCommonUserViewModelList = self.selectedCommonUserViewModelList
-        groupCreationViewController.friendGroupRelationViewModel = friendGroupRelationViewModel
+        groupCreationViewController.groupCreationControllerViewModel = GroupCreationControllerViewModel(selectedCommonUserViewModelList: self.selectedCommonUserViewModelList, friendGroupRelationViewModel: friendGroupRelationViewModel)
         
         let navigationViewController = UINavigationController(rootViewController: groupCreationViewController)
         

@@ -260,7 +260,7 @@ extension GroupInfoView {
         friendRelationViewController.participantArray = groupDetailViewModel.participantArray
         friendRelationViewController.selectedGroup = groupDetailViewModel.groupViewModel?.group
         
-        currentViewController?.present(friendRelationViewController, animated: false, completion: {
+        currentViewController?.present(friendRelationViewController, animated: true, completion: {
             print("presented")
         })
     }

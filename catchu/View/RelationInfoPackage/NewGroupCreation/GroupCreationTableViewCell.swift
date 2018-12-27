@@ -13,12 +13,6 @@ class GroupCreationTableViewCell: CommonTableCell {
     //var groupParticipantArray = [CommonViewModelItem]()
     private var tableViewCellViewModel = GroupCreationTableViewCellViewModel()
     
-    // to sync participant count with tableView sectionHeader
-    private var sectionHeaderViewModel: SectionHeaderViewModel?
-    
-    // to sync removed item with previous friend relation view
-    private var friendGroupRelationViewModel: FriendGroupRelationViewModel?
-    
     lazy var participantcollection: UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -75,14 +69,37 @@ extension GroupCreationTableViewCell {
             ])
     }
     
-    func startCreationOfCollectionView(groupParticipantArray: Array<CommonUserViewModel>, sectionHeaderViewModel: SectionHeaderViewModel, friendGroupRelationViewModel: FriendGroupRelationViewModel) {
+    func startCreationOfCollectionView(groupParticipantArray: Array<CommonUserViewModel>, sectionHeaderViewModel: SectionHeaderViewModel, friendGroupRelationViewModel: FriendGroupRelationViewModel, groupCreationViewModel: GroupCreationViewModel) {
         
         //self.groupParticipantArray = groupParticipantArray
         self.tableViewCellViewModel.groupParticipantArray = groupParticipantArray
-        self.friendGroupRelationViewModel = friendGroupRelationViewModel
-        self.sectionHeaderViewModel = sectionHeaderViewModel
+        self.tableViewCellViewModel.friendGroupRelationViewModel = friendGroupRelationViewModel
+        self.tableViewCellViewModel.sectionHeaderViewModel = sectionHeaderViewModel
+        self.tableViewCellViewModel.groupCreationViewModel = groupCreationViewModel
         
         addViews()
+    }
+    
+    private func didSelectProcess(cell: GroupCreationParticipantCollectionViewCell, indexPath: IndexPath) {
+        
+        cell.setUserSelectionState(state: .deSelected)
+        if let userViewModel = cell.userViewModel {
+            
+            if let friendGroupRelationViewModel = tableViewCellViewModel.friendGroupRelationViewModel {
+                friendGroupRelationViewModel.groupCreationRemovedParticipant.value = userViewModel
+            }
+            
+            tableViewCellViewModel.removeItemFromGroupParticipantArray(removedItem: userViewModel)
+            
+            participantcollection.performBatchUpdates({
+                participantcollection.deleteItems(at: [indexPath])
+            }) { (finish) in
+                self.tableViewCellViewModel.sectionHeaderViewModel?.participantCount.value = self.tableViewCellViewModel.returnGroupParticipantArrayCount()
+                self.tableViewCellViewModel.groupCreationViewModel?.totalParticipantCount.value = self.tableViewCellViewModel.returnGroupParticipantArrayCount()
+                
+            }
+        }
+        
     }
     
 }
@@ -112,36 +129,7 @@ extension GroupCreationTableViewCell: UICollectionViewDelegateFlowLayout, UIColl
         
         guard let cell = participantcollection.cellForItem(at: indexPath) as? GroupCreationParticipantCollectionViewCell else { return }
         
-        cell.setUserSelectionState(state: .deSelected)
-        if let userViewModel = cell.userViewModel {
-            
-            if let friendGroupRelationViewModel = friendGroupRelationViewModel {
-                friendGroupRelationViewModel.groupCreationRemovedParticipant.value = userViewModel
-            }
-            
-            tableViewCellViewModel.removeItemFromGroupParticipantArray(removedItem: userViewModel)
-            
-            participantcollection.performBatchUpdates({
-                participantcollection.deleteItems(at: [indexPath])
-            }) { (finish) in
-                self.sectionHeaderViewModel?.participantCount.value = self.tableViewCellViewModel.returnGroupParticipantArrayCount()
-            }
-        }
-        
-        
-        /*
-        if let userViewModel = cell.userViewModel {
-            selectedFriendsViewModel.removeItemFromFriendArray(friend: userViewModel)
-            selectedFriendCollectionView.performBatchUpdates({
-                selectedFriendCollectionView.deleteItems(at: [indexPath])
-            })
-            
-            if selectedFriendsViewModel.friendArray.count <= 0 {
-                selectedFriendsViewModel.selectedFriendListEmpty.value = .disable
-            }
-            
-        }*/
-        
+        didSelectProcess(cell: cell, indexPath: indexPath)
         
     }
     

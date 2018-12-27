@@ -9,28 +9,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Services/Swift/CameraImageService/CameraImagePickerManager.swift"
-            timestampString = "567608549.492607"
+            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
+            timestampString = "567644006.7138799"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupImageContainerView.swift"
-            timestampString = "567608549.492924"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
+            startingLineNumber = "350"
+            endingLineNumber = "350"
             landmarkName = "returnPickedImage(image:pathExtension:orientation:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -41,76 +25,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/ViewModel/GroupDetailViewModels/GroupDetailViewModel.swift"
-            timestampString = "567608549.493149"
+            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
+            timestampString = "567644018.5093189"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
-            landmarkName = "removeSelectedParticipantFromViewModel()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/GroupInfoView.swift"
-            timestampString = "567608549.493378"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "addGroupDetailViewModelListeners()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-            timestampString = "567608549.493587"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
-            landmarkName = "addGroupCreationListeners()"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "addGroupImagePickerListener(completion:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "catchu.FriendGroupRelationView.(addGroupCreationListeners in _3D069F6880CB64AE27FE9D6EB74AA3F2)() -&gt; ()"
+                  symbolName = "catchu.NewGroupCreationHeaderView.addGroupImagePickerListener(completion: (catchu.ImagePickerData) -&gt; ()) -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-                  timestampString = "567608344.5159841"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
+                  timestampString = "567644018.7221889"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "341"
-                  endingLineNumber = "341"
-                  offsetFromSymbolStart = "22">
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "37">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (catchu.CommonUserViewModel) -&gt; () in catchu.FriendGroupRelationView.(addGroupCreationListeners in _3D069F6880CB64AE27FE9D6EB74AA3F2)() -&gt; ()"
+                  symbolName = "closure #1 (catchu.ImagePickerData) -&gt; () in catchu.NewGroupCreationHeaderView.addGroupImagePickerListener(completion: (catchu.ImagePickerData) -&gt; ()) -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/FriendGroupRelationView.swift"
-                  timestampString = "567608344.518797"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
+                  timestampString = "567644018.7257431"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "342"
-                  endingLineNumber = "342"
-                  offsetFromSymbolStart = "23">
+                  startingLineNumber = "240"
+                  endingLineNumber = "240"
+                  offsetFromSymbolStart = "35">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -121,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/NewGroupCreation/GroupCreationTableViewCell.swift"
-            timestampString = "567608549.494442"
+            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationView.swift"
+            timestampString = "567644028.732901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "addGroupImagePickerListener(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,13 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationView.swift"
-            timestampString = "567608549.494928"
+            filePath = "catchu/Controller/Relations/FriendGroupRelations/NewGroupCreationViewController.swift"
+            timestampString = "567644036.870958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "addGroupCreationHeaderViewListeners()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

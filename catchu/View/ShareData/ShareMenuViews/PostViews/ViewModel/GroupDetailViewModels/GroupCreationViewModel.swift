@@ -10,8 +10,9 @@ import Foundation
 
 class GroupCreationViewModel: BaseViewModel, CommonViewModel {
     
-    var groupParticipantArray = [CommonViewModelItem]()
+    //var groupParticipantArray = [CommonViewModelItem]()
     var selectedCommonUserViewModelList = Array<CommonUserViewModel>()
+    var totalParticipantCount = CommonDynamic(Int())
     
     // to sync group creation participant count and friend group relation view count
     var friendGroupRelationViewModel: FriendGroupRelationViewModel?
@@ -23,4 +24,5 @@ class GroupCreationViewModel: BaseViewModel, CommonViewModel {
     func returnNumberOfSelectedCommonUserViewModelList() -> Int {
         return selectedCommonUserViewModelList.count
     }
+    
 }

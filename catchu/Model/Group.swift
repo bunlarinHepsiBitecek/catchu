@@ -18,6 +18,7 @@ class Group: NSCopying {
     var groupPictureUrl : String?
     var groupCreateDate : String?
     var groupMembers : [User] = []
+    var groupImage: UIImage?
     
     var indexPath : IndexPath?
     

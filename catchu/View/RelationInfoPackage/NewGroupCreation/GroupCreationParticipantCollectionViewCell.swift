@@ -88,7 +88,7 @@ extension GroupCreationParticipantCollectionViewCell {
             profilePictureView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_60),
             
             iconContainer.trailingAnchor.constraint(equalTo: safeProfileImage.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
-            iconContainer.topAnchor.constraint(equalTo: safeProfileImage.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
+            iconContainer.topAnchor.constraint(equalTo: safeProfileImage.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_0),
             iconContainer.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_24),
             iconContainer.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_24),
             

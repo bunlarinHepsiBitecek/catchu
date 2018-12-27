@@ -202,6 +202,7 @@ enum ClientPresentErrors: Swift.Error {
     case missingImageExtension
     case missingDelegation
     case missingFriendGroupRelationViewModel
+    case missingNewGroupImage
 }
 
 enum CastingErrors: Swift.Error {

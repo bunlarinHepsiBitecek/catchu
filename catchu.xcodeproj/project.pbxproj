@@ -375,6 +375,8 @@
 		A7EFF99B21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99A21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift */; };
 		A7EFF99D21D4EE8200B1A3DC /* SectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99C21D4EE8200B1A3DC /* SectionHeaderViewModel.swift */; };
 		A7EFF99F21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF99E21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift */; };
+		A7EFF9A121D51B8700B1A3DC /* GroupCreationControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF9A021D51B8700B1A3DC /* GroupCreationControllerViewModel.swift */; };
+		A7EFF9A321D5210B00B1A3DC /* TableViewHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFF9A221D5210B00B1A3DC /* TableViewHeaderViewModel.swift */; };
 		A7F21B3A21C55CDC0015DB58 /* GroupImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */; };
 		A7F21B3C21C58F6D0015DB58 /* multiple_users.png in Resources */ = {isa = PBXBuildFile; fileRef = A7F21B3B21C58F6C0015DB58 /* multiple_users.png */; };
 		A7F21B3E21C5A53F0015DB58 /* GroupImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F21B3D21C5A53F0015DB58 /* GroupImageViewModel.swift */; };
@@ -789,6 +791,8 @@
 		A7EFF99A21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		A7EFF99C21D4EE8200B1A3DC /* SectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderViewModel.swift; sourceTree = "<group>"; };
 		A7EFF99E21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGroupRelationViewModel.swift; sourceTree = "<group>"; };
+		A7EFF9A021D51B8700B1A3DC /* GroupCreationControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationControllerViewModel.swift; sourceTree = "<group>"; };
+		A7EFF9A221D5210B00B1A3DC /* TableViewHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderViewModel.swift; sourceTree = "<group>"; };
 		A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageContainerView.swift; sourceTree = "<group>"; };
 		A7F21B3B21C58F6C0015DB58 /* multiple_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multiple_users.png; sourceTree = "<group>"; };
 		A7F21B3D21C5A53F0015DB58 /* GroupImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupImageViewModel.swift; sourceTree = "<group>"; };
@@ -1787,6 +1791,8 @@
 				A7EFF99221D3D38100B1A3DC /* GroupCreationViewModel.swift */,
 				A7EFF99A21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift */,
 				A7EFF99C21D4EE8200B1A3DC /* SectionHeaderViewModel.swift */,
+				A7EFF9A021D51B8700B1A3DC /* GroupCreationControllerViewModel.swift */,
+				A7EFF9A221D5210B00B1A3DC /* TableViewHeaderViewModel.swift */,
 			);
 			path = GroupDetailViewModels;
 			sourceTree = "<group>";
@@ -2366,6 +2372,7 @@
 				A71F65AB21691705002A7C5C /* FinalSharedItemsView.swift in Sources */,
 				A7E78036218F714800E76E3C /* ContactViewController2.swift in Sources */,
 				A7FE5DF921C2539A00C7BCEC /* GroupInfoViewController.swift in Sources */,
+				A7EFF9A121D51B8700B1A3DC /* GroupCreationControllerViewModel.swift in Sources */,
 				A77D98782159175F002F9A02 /* VideoMenuView.swift in Sources */,
 				A7928FD6217D2ADE0005D811 /* Sticker.swift in Sources */,
 				A7348E13217222BC005FB900 /* FilterColorCollectionViewCell.swift in Sources */,
@@ -2569,6 +2576,7 @@
 				A72AF21C219479880050B685 /* REPhone.swift in Sources */,
 				45143A6A216254080016A30D /* ErrorView.swift in Sources */,
 				A7087928212AB7360012C7F6 /* ImageVideoPickerHandler.swift in Sources */,
+				A7EFF9A321D5210B00B1A3DC /* TableViewHeaderViewModel.swift in Sources */,
 				A7817AC22134B3B300ECCF8C /* ParticipantListView.swift in Sources */,
 				45E8B5F6215A9AAE005AD00A /* FeedViewModel.swift in Sources */,
 				A7AE5FAB21C71973008FD5AD /* GroupAdminPanelTableViewCell.swift in Sources */,
