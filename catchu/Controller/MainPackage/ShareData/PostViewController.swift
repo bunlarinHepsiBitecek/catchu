@@ -137,5 +137,21 @@ extension PostViewController : PostViewProtocols {
         
     }
     
+    func dismissPostViewForSuccessfullProcess() {
+        
+        if let destionation = LoaderController.shared.currentViewController() as? MainTabBarViewController {
+            
+            destionation.selectedIndex = priorActiveTab
+        }
+        
+        guard delegate != nil else {
+            return
+        }
+        
+        addTransitionToPresentationOfShareViews()
+        delegate.tabBarHiddenManagement(hidden: false)
+        self.dismiss(animated: false, completion: nil)
+        
+    }
 }
 

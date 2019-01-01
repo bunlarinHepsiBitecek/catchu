@@ -117,7 +117,7 @@ extension NewGroupCreationViewController {
     }
     
     @objc func saveChanges(_ sender : UIButton) {
-        
+        self.startNewGroupCreationProcess()
     }
     
     private func addTotalParticipantCountListener() {
@@ -177,7 +177,7 @@ extension NewGroupCreationViewController {
         }
         
         newGroupCreationView.addGroupImagePickerListener { (imagePickerData) in
-            self.groupCreationControllerViewModel?.prepareNewGroupInformationData(image: imagePickerData.image, imageOrientation: imagePickerData.orientation, imageExtension: imagePickerData.pathExtension, imageAsData: nil, groupObject: nil, downloadUrl: nil, groupName: nil)
+            self.groupCreationControllerViewModel?.prepareNewGroupInformationData(image: imagePickerData.image, imageOrientation: imagePickerData.orientation, imageExtension: imagePickerData.pathExtension, imageAsData: imagePickerData.imageAsData, groupObject: nil, downloadUrl: nil, groupName: nil)
         }
     }
     
@@ -187,6 +187,20 @@ extension NewGroupCreationViewController {
     
     private func startNewGroupCreationProcess() {
         
+        do {
+            try groupCreationControllerViewModel?.startNewGroupCreationProcess()
+        } catch let error as ClientPresentErrors {
+            if error == .missingUserid {
+                print("\(Constants.ALERT)useris is required")
+            } else if error == .missingNewGroupName {
+                print("\(Constants.ALERT)group name is required")
+            } else if error == .missingImageAsData {
+                print("\(Constants.ALERT)image data is required to upload")
+            }
+        }
+        catch {
+            print("\(Constants.CRASH_WARNING)")
+        }
         
         
     }

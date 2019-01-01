@@ -203,6 +203,8 @@ enum ClientPresentErrors: Swift.Error {
     case missingDelegation
     case missingFriendGroupRelationViewModel
     case missingNewGroupImage
+    case missingNewGroupName
+    case missingUserid
 }
 
 enum CastingErrors: Swift.Error {
@@ -355,6 +357,11 @@ enum GroupDetailSectionTypes {
     case exit
 }
 
+enum MoreOptionSectionTypes {
+    case allowComment
+    case allowLocationAppear
+}
+
 enum CRUD_OperationStates {
     case processing
     case done
@@ -381,3 +388,19 @@ enum ImageSizeTypes: String {
     case thumbnails = "thumbnails"
 }
 
+enum CommitButtonStates {
+    case active
+    case passise
+}
+
+enum PostProcessState {
+    case posting
+    case posted
+    case none
+}
+
+enum TimerState {
+    case running
+    case stopped
+    case none
+}

@@ -24,6 +24,10 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
     var groupRelationViewProcessType = GroupOperationTypes.getGroupList
     var selectedGroupData = SelectedGroupData(selectedGroupViewModel: nil, selectedGroupIndexPath: nil)
     var groupRelationOperationStates = CommonDynamic(CRUD_OperationStates.done)
+    var newGroupAdded = CommonDynamic(CommonGroupViewModel())
+    
+    var searchTool = CommonDynamic(SearchTools(searchText: Constants.CharacterConstants.EMPTY, searchIsProgress: false))
+    var searchedGroupArray = [CommonViewModelItem]()
     
     /// Description : Get authenticated users' group list
     func getGroups() {
@@ -172,6 +176,69 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
         
         groupRelationOperationStates.value = .done
         
+    }
+    
+    func addNewGroup(newGroup: CommonViewModelItem) {
+        groupArray.append(newGroup)
+    }
+    
+    func deselectAllGroup() {
+        
+        if let array = groupArray as? [CommonGroupViewModel] {
+            for item in array {
+                item.groupSelected.value = .deSelected
+            }
+        }
+    }
+    
+    func triggerSectionTitleChange() {
+        if searchTool.value.searchIsProgress {
+            sectionTitle.value = .SearchResult
+        } else {
+            sectionTitle.value = .Groups
+        }
+    }
+    
+    func searchGroupInTableViewData(inputText : String) {
+        print("\(#function) starts")
+        
+        // remove items from searchFriendArray
+        searchedGroupArray.removeAll()
+        
+        if let array = groupArray as? [CommonGroupViewModel] {
+            for item in array {
+                if let group = item.group {
+                    if let name = group.groupName {
+                        if name.lowercased().hasPrefix(inputText.lowercased()) {
+                            searchedGroupArray.append(item)
+                            continue
+                        }
+                    }
+                }
+            }
+        }
+        
+        // update total
+        state.value = .populate
+        
+    }
+    
+    func returnGroupArrayData(index: Int) -> CommonViewModelItem {
+        
+        if searchTool.value.searchIsProgress {
+            return searchedGroupArray[index]
+        } else {
+            return groupArray[index]
+        }
+        
+    }
+    
+    func returnGroupArrayCount() -> Int {
+        if searchTool.value.searchIsProgress {
+            return searchedGroupArray.count
+        } else {
+            return groupArray.count
+        }
     }
     
 }

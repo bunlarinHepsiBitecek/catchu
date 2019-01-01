@@ -15,6 +15,8 @@ class CommonGroupViewModel: CommonViewModelItem {
     var groupNameChanged = CommonDynamic(String())
     var groupImageChanged = CommonDynamic(UIImage())
 
+    init() {}
+    
     init(group : Group?) {
         self.group = group
     }

@@ -91,6 +91,7 @@ struct 	LocalizedConstants {
         
         struct ButtonTitle {
             
+            static let back = NSLocalizedString("Back", comment: "")
             static let cancel = NSLocalizedString("Cancel", comment: "")
             static let save = NSLocalizedString("save", comment: "")
             static let next = NSLocalizedString("next", comment: "")
@@ -135,6 +136,7 @@ struct 	LocalizedConstants {
             static let userAlreadyInGroup = NSLocalizedString("userAlreadyInGroup", comment: "")
             static let groupNameDefault = NSLocalizedString("groupNameDefault", comment: "")
             static let provideGroupName = NSLocalizedString("provideGroupName", comment: "")
+            static let posting = NSLocalizedString("posting", comment: "")
             static let selectedParticipantCount = NSLocalizedString("selectedParticipantCount", comment: "")
             
         }
@@ -142,6 +144,7 @@ struct 	LocalizedConstants {
         struct ViewControllerTitles {
             static let groupInfoEdit = NSLocalizedString("groupInfoEdit", comment: "")
             static let groupCreate = NSLocalizedString("groupCreate", comment: "")
+            static let advancedSettings = NSLocalizedString("advancedSettings", comment: "")
         }
     }
     
@@ -316,6 +319,21 @@ struct 	LocalizedConstants {
         static let delete = NSLocalizedString("delete", comment: "")
         static let exitGroup = NSLocalizedString("exitGroup", comment: "")
         static let GroupInformation = NSLocalizedString("GroupInformation", comment: "")
+    }
+    
+    struct SectionTitles {
+        static let commentSettings = NSLocalizedString("commentSettings", comment: "")
+        static let locationSettings = NSLocalizedString("locationSettings", comment: "")
+    }
+    
+    struct AdvancedSettingPrompts {
+        static let allowComments = NSLocalizedString("allowComments", comment: "")
+        static let allowLocation = NSLocalizedString("allowLocation", comment: "")
+        static let restrictComments = NSLocalizedString("restrictComments", comment: "")
+        static let restrictLocation = NSLocalizedString("restrictLocation", comment: "")
+        static let commentFeatureUpdateInfo = NSLocalizedString("commentFeatureUpdateInfo", comment: "")
+        static let locationFeatureUpdateInfo = NSLocalizedString("locationFeatureUpdateInfo", comment: "")
+        
     }
     
 }

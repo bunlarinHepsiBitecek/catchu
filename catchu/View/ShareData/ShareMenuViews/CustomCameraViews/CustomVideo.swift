@@ -48,6 +48,7 @@ extension CustomVideo {
         /// create session
         func createVideoSession() {
             self.videoSession = AVCaptureSession()
+            self.videoSession?.sessionPreset = .high
             
         }
         

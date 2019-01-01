@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct SearchTools {
+    var searchText: String
+    var searchIsProgress: Bool
+}
+
 class FriendsViewModel: BaseViewModel, CommonViewModel {
     
     var friendArray = [CommonViewModelItem]()
@@ -20,6 +25,10 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
     var selectedUserList = CommonDynamic([User]())
     
     var selectedCommonUserViewModel = CommonDynamic([CommonUserViewModel]())
+    
+    var searchedFriendArray = [CommonViewModelItem]()
+    
+    var searchTool = CommonDynamic(SearchTools(searchText: Constants.CharacterConstants.EMPTY, searchIsProgress: false))
     
     var currentPage = 1
     var totalNumberOfFriends = 0
@@ -185,6 +194,24 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
         
     }
     
+    func returnFriendArrayData(index: Int) -> CommonViewModelItem {
+        
+        if searchTool.value.searchIsProgress {
+            return searchedFriendArray[index]
+        } else {
+            return friendArray[index]
+        }
+        
+    }
+    
+    func returnFriendArrayCount() -> Int {
+        if searchTool.value.searchIsProgress {
+            return searchedFriendArray.count
+        } else {
+            return totalFriendCount.value
+        }
+    }
+    
     func findSelectedFriendCount() {
         
         var counter = 0
@@ -200,24 +227,6 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
         
         selectedFrientCount.value = counter
     }
-    
-    /*
-    func convertSelectedFriendListToUserList() {
-        
-        var temp = [User]()
-        
-        if let array = friendArray as? [CommonUserViewModel] {
-            for item in array {
-                if item.userSelected.value == .selected {
-                    if let user = item.user {
-                        temp.append(user)
-                    }
-                }
-            }
-        }
-        
-        selectedUserList.value = temp
-    }*/
     
     func convertSelectedFriendListToUserList() {
         
@@ -241,41 +250,48 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
         selectedCommonUserViewModel.value = tempCommonViewModelArray
     }
     
+    func triggerSectionTitleChange() {
+        if searchTool.value.searchIsProgress {
+            sectionTitle.value = .SearchResult
+        } else {
+            sectionTitle.value = .Friends
+        }
+    }
+    
+    // search mode functions
+    func returnSearchedFriendArrayCount() -> Int {
+        return searchedFriendArray.count
+    }
+    
     func searchFriendInTableViewData(inputText : String) {
         print("\(#function) starts")
         
-        state.value = .populate
+        // remove items from searchFriendArray
+        searchedFriendArray.removeAll()
         
-        
-        /*
         if let array = friendArray as? [CommonUserViewModel] {
             for item in array {
                 if let user = item.user {
                     if let name = user.name {
-                        if !name.hasPrefix(inputText) {
-                            item.isUserSearchable = .unSearchable
+                        if name.hasPrefix(inputText) {
+                            searchedFriendArray.append(item)
                             continue
                         }
-                        
-                    } else if let username = user.username {
-                        if !username.hasPrefix(inputText) {
-                            item.isUserSearchable = .unSearchable
+                    }
+                    
+                    if let username = user.username {
+                        if username.hasPrefix(inputText) {
+                            searchedFriendArray.append(item)
                             continue
                         }
                     }
                 }
             }
-        }*/
-
-    }
-    
-    func triggerSectionTitleChange(mode : SearcMode) {
-        switch mode {
-        case .active:
-            sectionTitle.value = .SearchResult
-        case .passive:
-            sectionTitle.value = .Friends
         }
+        
+        // update total
+        state.value = .populate
+        
     }
     
 }

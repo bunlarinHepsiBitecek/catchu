@@ -14,6 +14,7 @@ class SelectedFriendsViewModel: BaseViewModel {
     var operation = CommonDynamic(CollectionViewOperation.none)
     var selectedFriendListEmpty = CommonDynamic(CollectionViewActivation.disable)
     var selectedFriendListCount = CommonDynamic(Int())
+    var selectedFriendListMustBeEmpty = CommonDynamic(false)
     
     func appendItemToFriendArray(friend: CommonUserViewModel) {
         friendArray.append(friend)
@@ -30,7 +31,9 @@ class SelectedFriendsViewModel: BaseViewModel {
         selectedFriendListCount.value = friendArray.count
     }
     
-    
+    func returnFriendArrayCount() -> Int {
+        return friendArray.count
+    }
     
 }
 

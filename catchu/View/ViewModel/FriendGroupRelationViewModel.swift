@@ -11,5 +11,11 @@ import Foundation
 class FriendGroupRelationViewModel: BaseViewModel {
     
     var groupCreationRemovedParticipant = CommonDynamic(CommonUserViewModel())
+    var resetFriendRelationView = CommonDynamic(false)
+    var resetGroupRelationView = CommonDynamic(CommonGroupViewModel())
+    var nextButtonActivation = CommonDynamic(CommitButtonStates.passise)
+    
+    var selectedCommonUserViewModelList = Array<CommonUserViewModel>()
+    
     
 }

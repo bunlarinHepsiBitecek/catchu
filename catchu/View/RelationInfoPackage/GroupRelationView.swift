@@ -28,8 +28,7 @@ class GroupRelationView: UIView {
         temp.rowHeight = UITableViewAutomaticDimension
         temp.tableFooterView = UIView()
         
-        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
-        //temp.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        //temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
         
         temp.register(GroupRelationTableViewCell.self, forCellReuseIdentifier: GroupRelationTableViewCell.identifier)
         
@@ -54,6 +53,8 @@ class GroupRelationView: UIView {
         groupRelationViewModel.sectionTitle.unbind()
         groupRelationViewModel.selectedGroupList.unbind()
         groupRelationViewModel.groupRelationOperationStates.unbind()
+        groupRelationViewModel.newGroupAdded.unbind()
+        groupRelationViewModel.searchTool.unbind()
     }
     
 }
@@ -63,7 +64,6 @@ extension GroupRelationView {
 
     private func initializeView() {
         
-        self.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1)
         viewActivationManager(active: true, animated: false)
         
         addViews()
@@ -97,23 +97,19 @@ extension GroupRelationView {
     private func setupGroupRelationViewModelListeners() {
         // add listener for tableview state
         groupRelationViewModel.state.bind { (state) in
-            
             self.setLoadingAnimation(state)
-            
             switch state {
             case .populate:
                 self.reloadGroupTableView()
             default:
                 return
             }
-            
         }
         
         groupRelationViewModel.groupRelationOperationStates.bind { (operatinState) in
             switch operatinState {
             case .processing:
                 print("processing....")
-                
             case .done:
                 DispatchQueue.main.async {
                     self.deleteSelectedRow()
@@ -122,6 +118,32 @@ extension GroupRelationView {
             }
         }
         
+        groupRelationViewModel.newGroupAdded.bind { (newCommonGroupViewModel) in
+            // then add new item, it's automatically selected
+            self.addNewGroupToArray(newGroup: newCommonGroupViewModel)
+        }
+        
+        groupRelationViewModel.searchTool.bind { (searchTool) in
+            self.searchProcessManager(searchTool: searchTool)
+        }
+        
+    }
+    
+    private func searchProcessManager(searchTool: SearchTools) {
+        if searchTool.searchIsProgress {
+            if !searchTool.searchText.isEmpty {
+                self.searchProcess(inputText: searchTool.searchText)
+            }
+        } else {
+            groupRelationViewModel.triggerSectionTitleChange()
+            self.reloadGroupTableView()
+        }
+    }
+    
+    private func searchProcess(inputText : String) {
+        print("\(#function) starts")
+        groupRelationViewModel.searchGroupInTableViewData(inputText: inputText)
+        groupRelationViewModel.triggerSectionTitleChange()
     }
     
     private func startGettingUserGroups() {
@@ -185,6 +207,10 @@ extension GroupRelationView {
         }
     }
     
+    func getNewGroupOutside(newGroup: CommonGroupViewModel) {
+        groupRelationViewModel.newGroupAdded.value = newGroup
+    }
+    
     private func addTransitionToPresentationOfFriendRelationViewController() {
         
         let transition = CATransition()
@@ -211,6 +237,34 @@ extension GroupRelationView {
         
     }
     
+    private func addNewGroupToArray(newGroup: CommonViewModelItem) {
+        self.groupRelationViewModel.addNewGroup(newGroup: newGroup)
+        
+        guard let newGroupCommonGroupViewModel = newGroup as? CommonGroupViewModel else { return }
+        
+        let lastIndexPath = IndexPath(row: self.groupRelationViewModel.returnGroupArrayCount() - 1, section: 0)
+
+        DispatchQueue.main.async {
+            self.groupRelationViewModel.deselectAllGroup()
+            self.groupTableView.reloadData()
+            self.groupTableView.selectRow(at: lastIndexPath, animated: true, scrollPosition: .bottom)
+            
+            newGroupCommonGroupViewModel.groupSelected.value = .selected
+            
+            self.groupRelationViewModel.convertSelectedGroupViewModelToGroupList()
+        }
+
+    }
+    
+}
+
+// MARK: - functions called outside
+extension GroupRelationView {
+    
+    func triggerSearchProcess(searchTool: SearchTools) {
+        groupRelationViewModel.searchTool.value = searchTool
+    }
+    
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -221,19 +275,23 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
         return Constants.StaticViewSize.ConstraintValues.constraint_60
     }*/
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return groupRelationViewModel.sectionTitle.value.rawValue
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupRelationViewModel.groupArray.count
+        return groupRelationViewModel.returnGroupArrayCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = groupTableView.dequeueReusableCell(withIdentifier: GroupRelationTableViewCell.identifier, for: indexPath) as? GroupRelationTableViewCell else { return UITableViewCell() }
     
-        cell.initiateCellDesign(item: groupRelationViewModel.groupArray[indexPath.row])
+        cell.initiateCellDesign(item: groupRelationViewModel.returnGroupArrayData(index: indexPath.row))
 
         return cell
         
@@ -241,18 +299,24 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = groupTableView.cellForRow(at: indexPath) as? GroupRelationTableViewCell else { return }
+        
+        groupRelationViewModel.deselectAllGroup()
+        
         cell.setGroupSelectionState(state: .selected)
+        
+        print("cell group id : \(cell.groupViewModel?.group?.groupID)")
         
         groupRelationViewModel.convertSelectedGroupViewModelToGroupList()
         
     }
     
+    /*
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = groupTableView.cellForRow(at: indexPath) as? GroupRelationTableViewCell else { return }
         cell.setGroupSelectionState(state: .deSelected)
         
         groupRelationViewModel.convertSelectedGroupViewModelToGroupList()
-    }
+    }*/
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         

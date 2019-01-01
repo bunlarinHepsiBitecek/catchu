@@ -30,7 +30,7 @@ class FriendGroupRelationView: UIView {
     private var selectedFriendList = Array<User>()
     private var selectedGroupList = Array<Group>()
     
-    private var selectedCommonUserViewModelList = Array<CommonUserViewModel>()
+    //private var selectedCommonUserViewModelList = Array<CommonUserViewModel>()
     
     // to sync current participants with user friend array
     private var participantArray: Array<User>?
@@ -191,6 +191,13 @@ class FriendGroupRelationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        friendGroupRelationViewModel.groupCreationRemovedParticipant.unbind()
+        friendGroupRelationViewModel.resetFriendRelationView.unbind()
+        friendGroupRelationViewModel.resetGroupRelationView.unbind()
+        friendGroupRelationViewModel.nextButtonActivation.unbind()
+    }
+    
 }
 
 // MARK: - major functions
@@ -221,9 +228,11 @@ extension FriendGroupRelationView {
         
         configureSearchBarSettings()
         configureSegmentedButtonSettings()
+        addObserverForNextButtonActivation()
+        configureButtonSettings()
         addObserverToCounterSettings()
-        addObserverToNextButtonSettings()
-        addGroupCreationListeners()
+        addObserverForSelectedGroup()
+        listenGroupCreationChanges ()
 
         /*
         guard let friendRelationChoise = friendRelationChoise else { return }
@@ -260,6 +269,34 @@ extension FriendGroupRelationView {
         }
         
     }
+    
+    private func addObserverForNextButtonActivation() {
+        // add observer for group management process
+        friendGroupRelationViewModel.nextButtonActivation.bind { (state) in
+            self.nextButtonActivationManager(state: state)
+        }
+    }
+    
+    private func nextButtonActivationForGroupManagementProcess(_ activeSegment: Int) {
+        if activeSegment == 0 {
+            friendGroupRelationViewModel.nextButtonActivation.value = .passise
+        } else {
+            friendGroupRelationViewModel.nextButtonActivation.value = .active
+        }
+    }
+    
+    private func configureButtonSettings() {
+        guard let friendRelationPurpose = friendRelationPurpose else { return }
+        
+        switch friendRelationPurpose {
+        case .groupManagement:
+            cancelButton.setTitle(LocalizedConstants.TitleValues.ButtonTitle.back, for: .normal)
+            self.nextButtonActivationForGroupManagementProcess(returnSegmentedButtonIndex())
+        default:
+            return
+        }
+    }
+    
     
     /// OBSERVERS - begin
     /// Description : adding observer to counter labels on top information view
@@ -312,13 +349,13 @@ extension FriendGroupRelationView {
             print("commonUserViewModelList :\(commonUserViewModelList)")
             print("commonUserViewModelList.count :\(commonUserViewModelList.count)")
             
-            self.selectedCommonUserViewModelList = commonUserViewModelList
+            self.friendGroupRelationViewModel.selectedCommonUserViewModelList = commonUserViewModelList
             
         }
         
     }
     
-    private func addObserverToNextButtonSettings() {
+    private func addObserverForSelectedGroup() {
         
         guard let friendRelationChoise = friendRelationChoise else { return }
         
@@ -337,19 +374,58 @@ extension FriendGroupRelationView {
         
     }
     
+    private func nextButtonActivationManager(state: CommitButtonStates) {
+        switch state {
+        case .active:
+            nextButton.alpha = 1
+        case .passise:
+            nextButton.alpha = 0
+        }
+    }
     
-    private func addGroupCreationListeners() {
+    // group creation view listeners
+    private func listenGroupCreationChanges () {
         friendGroupRelationViewModel.groupCreationRemovedParticipant.bind { (commonUserViewModel) in
             print("commonUserViewModel : \(commonUserViewModel)")
             print("commonUserViewModel state : \(commonUserViewModel.userSelected.value)")
             self.triggerFriendSelectionViewItemRemoveProcess(commonUserViewModel: commonUserViewModel)
         }
+        
+        friendGroupRelationViewModel.resetFriendRelationView.bind { (finished) in
+            if finished {
+                self.clearFriendSelectionCollectionViewData(active : finished)
+                self.closeFriendSelectionCollectionView()
+            }
+        }
+        
+        friendGroupRelationViewModel.resetGroupRelationView.bind { (commonGroupViewModel) in
+            self.triggerNewGroupAddProcess(newGroup: commonGroupViewModel)
+            DispatchQueue.main.async {
+//                self.friendGroupActivationManager(selectedIndex: 0)
+                self.focusGroupSegment()
+            }
+        }
+        
     }
-    
     /// OBSERVERS - end
     
     private func triggerFriendSelectionViewItemRemoveProcess(commonUserViewModel: CommonUserViewModel) {
         friendRelationView.selectedFriendListAnimationManagement2(commonUserViewModel)
+    }
+    
+    private func clearFriendSelectionCollectionViewData(active: Bool) {
+        friendRelationView.callTriggerCollectionClear(active: active)
+    }
+    
+    private func closeFriendSelectionCollectionView() {
+        // in order to trigger close animation of friendselection collectionView
+        DispatchQueue.main.async {
+            self.friendRelationView.closeFriendSelectionCollectionView(activation: .disable)
+        }
+    }
+    
+    private func triggerNewGroupAddProcess(newGroup: CommonGroupViewModel) {
+        groupRelationView.getNewGroupOutside(newGroup: newGroup)
     }
     
     func nextButtonManagement(count : Int) {
@@ -519,7 +595,7 @@ extension FriendGroupRelationView {
     private func directToGroupCreationViewController() {
         
         let groupCreationViewController = NewGroupCreationViewController()
-        groupCreationViewController.groupCreationControllerViewModel = GroupCreationControllerViewModel(selectedCommonUserViewModelList: self.selectedCommonUserViewModelList, friendGroupRelationViewModel: friendGroupRelationViewModel)
+        groupCreationViewController.groupCreationControllerViewModel = GroupCreationControllerViewModel(selectedCommonUserViewModelList: self.friendGroupRelationViewModel.selectedCommonUserViewModelList, friendGroupRelationViewModel: friendGroupRelationViewModel)
         
         let navigationViewController = UINavigationController(rootViewController: groupCreationViewController)
         
@@ -544,9 +620,7 @@ extension FriendGroupRelationView {
             case .friend:
                 PostItems.shared.createSelectedFriendArray(userList: selectedFriendList)
             case .group:
-                
                 let activeSegment = returnSegmentedButtonIndex()
-                
                 if activeSegment == 0 {
                     if let groupid = selectedGroupList[0].groupID {
                         PostItems.shared.groupid = groupid
@@ -554,9 +628,9 @@ extension FriendGroupRelationView {
                 } else if activeSegment == 1 {
                     // to make a create new group process
                     self.directToGroupCreationViewController()
+                    // return statement is required. Because, if function does not return from this line, later it tries to set post target information before we set any value to it.
                     return
                 }
-                
             }
             
             // delegatePostView could be nil. User does not have to set delegation.
@@ -567,7 +641,13 @@ extension FriendGroupRelationView {
             delegate.dismissViewController()
             
         case .groupManagement:
-            return
+            switch friendRelationChoise {
+            case .friend:
+                // we have no need to get friend tab in group management page
+                return
+            case .group:
+                self.directToGroupCreationViewController()
+            }
             
         case .participant:
             
@@ -682,14 +762,40 @@ extension FriendGroupRelationView {
     @objc func segmentedButtonClicked(_ sender : UISegmentedControl) {
         print("\(#function)")
         
+        //resetSearchProcessAccordingToSegmentClicked()
+        
         guard let friendRelationChoise = friendRelationChoise else { return }
+        guard let friendRelationPurpose = friendRelationPurpose else { return }
         
         switch friendRelationChoise {
         case .group:
             self.friendGroupActivationManager(selectedIndex: sender.selectedSegmentIndex)
+            
+            switch friendRelationPurpose {
+            case .groupManagement:
+                self.nextButtonActivationForGroupManagementProcess(returnSegmentedButtonIndex())
+            default:
+                return
+            }
+            
         case .friend:
             return
         }
+    }
+    
+    private func resetSearchProcessAccordingToSegmentClicked() {
+        self.searchBar.resignFirstResponder()
+        self.searchBar.text = nil
+        
+        /*
+        let activeSegment = returnSegmentedButtonIndex()
+        let searchTool = SearchTools(searchText: Constants.CharacterConstants.EMPTY, searchIsProgress: false)
+        
+        if activeSegment == 0 {
+            friendRelationView.triggerSearchProcess(searchTool: searchTool)
+        } else if activeSegment == 1 {
+            groupRelationView.triggerSearchProcess(searchTool: searchTool)
+        }*/
     }
     
     private func friendGroupActivationManager(selectedIndex : Int) {
@@ -708,6 +814,11 @@ extension FriendGroupRelationView {
             self.nextButtonManagement(count: selectedFriendList.count)
         }
         
+    }
+    
+    private func focusGroupSegment() {
+        segmentedButton.selectedSegmentIndex = 0
+        friendGroupActivationManager(selectedIndex: 0)
     }
     
     private func activationManagerOfCounterInformationView(active : Bool, animated : Bool) {
@@ -743,6 +854,41 @@ extension FriendGroupRelationView {
         return segmentedButton.selectedSegmentIndex
     }
     
+    private func searchBarProgressManager(text: String){
+        print("\(#function)")
+        print("text : \(text)")
+        
+        var searchTool = SearchTools(searchText: text, searchIsProgress: false)
+        
+        if text.isEmpty {
+            searchTool.searchIsProgress = false
+        } else {
+            searchTool.searchIsProgress = true
+        }
+        
+        self.triggerSearchProcess(searchTool: searchTool)
+        
+    }
+    
+    private func triggerSearchProcess(searchTool: SearchTools) {
+        
+        guard let friendRelationChoise = friendRelationChoise else { return }
+        
+        switch friendRelationChoise {
+        case .friend:
+            friendRelationView.triggerSearchProcess(searchTool: searchTool)
+        case .group:
+            let activeSegment = self.returnSegmentedButtonIndex()
+            
+            if activeSegment == 0 {
+                groupRelationView.triggerSearchProcess(searchTool: searchTool)
+            } else if activeSegment == 1 {
+                friendRelationView.triggerSearchProcess(searchTool: searchTool)
+            }
+        }
+        
+    }
+    
 }
 
 // MARK: - UISearchBarDelegate
@@ -752,8 +898,12 @@ extension FriendGroupRelationView : UISearchBarDelegate {
         print("\(#function)")
         
         if let text = searchBar.text {
-            print("text : \(text)")
-            friendRelationView.searchTrigger(inputText: text)
+            self.searchBarProgressManager(text: text)
+            
+            if text.isEmpty {
+                searchBar.resignFirstResponder()
+                searchBar.setShowsCancelButton(false, animated: true)
+            }
         }
         
     }
@@ -769,6 +919,10 @@ extension FriendGroupRelationView : UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+        
+        searchBar.text = Constants.CharacterConstants.EMPTY
+        self.searchBarProgressManager(text: Constants.CharacterConstants.EMPTY)
+        
     }
     
 }

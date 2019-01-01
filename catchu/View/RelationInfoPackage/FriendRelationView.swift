@@ -36,7 +36,7 @@ class FriendRelationView: UIView {
         temp.rowHeight = UITableViewAutomaticDimension
         temp.tableFooterView = UIView()
         
-        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
+//        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
         //temp.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         temp.register(FriendRelationTableViewCell.self, forCellReuseIdentifier: FriendRelationTableViewCell.identifier)
@@ -78,6 +78,7 @@ class FriendRelationView: UIView {
         friendsViewModel.selectedFrientCount.unbind()
         friendsViewModel.totalFriendCount.unbind()
         friendsViewModel.selectedUserList.unbind()
+        friendsViewModel.searchTool.unbind()
     }
 }
 
@@ -110,7 +111,7 @@ extension FriendRelationView {
     private func initializeViewSettings() {
     
         addViews()
-        setupViewSettings()
+        addFriendViewModelListener()
         startGettingUserFriends()
         addSelectedFriendListObservers()
         viewActivationManager(active: false, animated: false)
@@ -177,16 +178,7 @@ extension FriendRelationView {
         }
     }
     
-    /*
-    func addGroupCreationRemovedParticipantListener(completion : @escaping (_ userViewModel : CommonUserViewModel) -> Void) {
-        
-        friendsViewModel.groupCreationRemovedParticipant.bind { (userViewModel) in
-            completion(userViewModel)
-        }
-        
-    }*/
-    
-    private func setupViewSettings() {
+    private func addFriendViewModelListener() {
         
         print("\(#function) starts")
         
@@ -216,7 +208,27 @@ extension FriendRelationView {
             
         }
         
+        friendsViewModel.searchTool.bind { (searchTools) in
+            self.searchProcessManager(searchTool: searchTools)
+        }
         
+    }
+    
+    private func searchProcessManager(searchTool: SearchTools) {
+        if searchTool.searchIsProgress {
+            if !searchTool.searchText.isEmpty {
+                self.searchProcess(inputText: searchTool.searchText)
+            }
+        } else {
+            friendsViewModel.triggerSectionTitleChange()
+            self.reloadFriendTableView()
+        }
+    }
+    
+    private func searchProcess(inputText : String) {
+        print("\(#function) starts")
+        friendsViewModel.searchFriendInTableViewData(inputText: inputText)
+        friendsViewModel.triggerSectionTitleChange()
     }
     
     private func startGettingUserFriends() {
@@ -230,12 +242,12 @@ extension FriendRelationView {
         
         DispatchQueue.main.async {
             
-            self.friendTableView.reloadData()
-            /*
+            //self.friendTableView.reloadData()
             UIView.transition(with: self.friendTableView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
                 self.friendTableView.reloadData()
                 
-            })*/
+            })
+            
         }
         
     }
@@ -258,9 +270,6 @@ extension FriendRelationView {
     
     private func friendSelectionCollectionAnimation(activation: CollectionViewActivation) {
         
-        print("\(#function) starts")
-        print("activation : \(activation)")
-        print("KAKAKAKAKAKA")
         switch activation {
         case .enable:
             self.friendSelectionViewHeightConstraint.constant = Constants.StaticViewSize.ViewSize.Height.height_100
@@ -271,13 +280,6 @@ extension FriendRelationView {
         UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
             self.layoutIfNeeded()
         }
-        
-        /*
-        UIView.transition(with: friendSelectionView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
-            
-            self.layoutIfNeeded()
-            
-        })*/
         
     }
     
@@ -305,15 +307,17 @@ extension FriendRelationView {
     
     func selectedFriendListAnimationManagement2(_ userViewModel: CommonUserViewModel) {
         if friendsViewModel.returnSelectedFriendCount() == 1 {
-            
+            print("PASS 1")
             friendsViewModel.checkIfSelectedFriendExist()
             friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
             
         } else if friendsViewModel.returnSelectedFriendCount() == 0 {
+            print("PASS 2")
             friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
             friendsViewModel.checkIfSelectedFriendExist()
             
         } else {
+            print("PASS 3")
             friendSelectionView.informSelectedFriendCollectionView(selectedItem: userViewModel)
         }
     }
@@ -376,14 +380,21 @@ extension FriendRelationView {
         
     }
     
+    func callTriggerCollectionClear(active : Bool) {
+        friendSelectionView.triggerCollectionClear(active: active)
+    }
     
+    func closeFriendSelectionCollectionView(activation : CollectionViewActivation) {
+        friendsViewModel.selectedListActivationState.value = activation
+    }
     
-    func searchTrigger(inputText : String) {
-        print("\(#function) starts")
-        
-        friendsViewModel.searchFriendInTableViewData(inputText: inputText)
-        
-        
+}
+
+// MARK: - functions called outside
+extension FriendRelationView {
+    
+    func triggerSearchProcess(searchTool: SearchTools) {
+        friendsViewModel.searchTool.value = searchTool
     }
     
 }
@@ -404,7 +415,7 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
     // number of rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // returning the total number of friends directly getting from the server
-        return friendsViewModel.totalNumberOfFriends
+        return friendsViewModel.returnFriendArrayCount()
     }
     
     // cell for row at
@@ -419,9 +430,9 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
             print("cell is loading process")
             cell.initiateCellDesign(item: .none)
         } else {
-            cell.initiateCellDesign(item: friendsViewModel.friendArray[indexPath.row])
-    
-            if checkIfParticipantUserExist(commonViewModelItem: friendsViewModel.friendArray[indexPath.row]) {
+            cell.initiateCellDesign(item: friendsViewModel.returnFriendArrayData(index: indexPath.row))
+            
+            if checkIfParticipantUserExist(commonViewModelItem: friendsViewModel.returnFriendArrayData(index: indexPath.row)) {
                 cell.disableCell()
             }
             
@@ -437,6 +448,9 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
         guard let cell = friendTableView.cellForRow(at: indexPath) as? FriendRelationTableViewCell else { return }
         
         cell.setUserSelectionState(state: .selected)
+        
+        print("cell friend userid : \(cell.userViewModel?.user?.userid)")
+        
         //selectedFriendListAnimationManagement(cell)
         selectedFriendListAnimationManagement2(cell.userViewModel!)
         friendsViewModel.findSelectedFriendCount()
@@ -447,6 +461,7 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         print("\(#function)")
         print("indexPaths : \(indexPaths)")
+        
         if indexPaths.contains(where: cellIsLoading) {
             friendsViewModel.getUserFollowersPageByPage()
         }

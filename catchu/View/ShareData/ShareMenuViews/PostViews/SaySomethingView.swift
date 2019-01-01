@@ -14,6 +14,8 @@ enum ViewObjects<T> {
 
 class SaySomethingView: UIView {
     
+    var saySomethingViewModel = SaySomethingViewModel()
+    
     weak var delegate : PostViewProtocols!
     weak var delegateCameraImageVideoHandlerProtocol : CameraImageVideoHandlerProtocol!
     
@@ -509,7 +511,8 @@ extension SaySomethingView {
             // there is nothing to post
             AlertViewManager.show(type: .error, placement: .top, body: LocalizedConstants.PostAttachmentInformation.thereIsNothingToPost)
         } else {
-            // let's share something
+            saySomethingTextView.resignFirstResponder()
+            saySomethingViewModel.startPostProcess()
         }
         
     }
@@ -862,6 +865,21 @@ extension SaySomethingView {
     func initiateVideoView() {
         print("delegate : \(delegate)")
         delegateCameraImageVideoHandlerProtocol.initiateVideoViewPermissionProcess()
+    }
+    
+}
+
+// MARK: - outside call functions
+extension SaySomethingView {
+    
+    func postProcessFinishListener(completion : @escaping (_ finish : Bool) -> Void) {
+        saySomethingViewModel.closePostPage.bind { (finish) in
+            completion(finish)
+        }
+    }
+    
+    func postProcessStateListener(completion : @escaping (_ state : PostProcessState) -> Void) {
+        saySomethingViewModel.postState.bind(completion)
     }
     
 }

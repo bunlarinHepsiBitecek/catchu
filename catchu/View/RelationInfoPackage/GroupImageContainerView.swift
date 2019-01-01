@@ -23,7 +23,7 @@ class GroupImageContainerView: UIView {
         temp.clipsToBounds = true
         temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         //temp.image = UIImage(named: "multiple_users.png")
-        temp.image = UIImage(named: "8771.jpg")
+        temp.image = UIImage(named: "multiple_users.png")
         
         temp.layer.insertSublayer(gradientViewForImageHolder, at: 0)
         
@@ -389,7 +389,11 @@ extension GroupImageContainerView {
                 
                 if let url = group.groupPictureUrl {
                     //self.imageHolder.setImagesFromCacheOrFirebaseForGroup(url)
-                    self.imageHolder.setImagesFromCacheOrDownloadWithTypes(url, type: .originals)
+                    if let urlToBeValidCheck = URL(string: url) {
+                        if UIApplication.shared.canOpenURL(urlToBeValidCheck) {
+                            self.imageHolder.setImagesFromCacheOrDownloadWithTypes(url, type: .originals)
+                        }
+                    }
                 }
                 
             }

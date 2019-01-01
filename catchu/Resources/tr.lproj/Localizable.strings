@@ -38,7 +38,8 @@
 // Button or Label promt values
 "addParticipantOrGroup" = "Kişi veya Grup Ekle";
 "addParticipant" = "Kişi Ekle";
-"cancel" = "Vazgeç";
+"Cancel" = "Vazgeç";
+"Back" = "Geri";
 "next" = "Ekle";
 "Friends" = "Arkadaşlar";
 "Groups" = "Gruplar";
@@ -71,6 +72,7 @@
 "groupCreate" = "Grup Oluşturma";
 "provideGroupName" = "Lütfen bir grup adı giriniz.";
 "selectedParticipantCount" = "Katılımcı Sayısı : ";
+"posting" = "Paylaşılıyor...";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
@@ -184,6 +186,18 @@
 
 // View Controller Titles
 "groupInfoEdit" = "Grup İsmi";
+"advancedSettings" = "Gelişmiş Ayarlar";
 
+// Section Titles
+"commentSettings" = "Yorum Ayarları";
+"locationSettings" = "Lokasyon Ayarları";
+
+// Advanced Settings Information Prompts
+"allowComments" = "Yoruma açık";
+"allowLocation" = "Lokasyon gösterimi açık";
+"restrictComments" = "Yoruma kapalı";
+"restrictLocation" = "Lokasyon gösterimi kapalı";
+"commentFeatureUpdateInfo" = "Bu özelliği paylaşımı yaptıktan sonra, paylaşım ayarlarından güncelleyebilirsiniz";
+"locationFeatureUpdateInfo" = "Bu özelliği paylaşımı yaptıktan sonra değiştiremezsiniz";
 
 

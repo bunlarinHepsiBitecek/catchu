@@ -82,6 +82,44 @@ class PostTopBarView: UIView {
         
     }()
     
+    lazy var moreOptionsButton: UIButton = {
+        let temp = UIButton(type: UIButtonType.system)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        
+        
+        // if you are using an imageview for a button, you need to bring it to forward to make it visible
+        temp.setImage(UIImage(named: "icon-more-vertical"), for: UIControlState.normal)
+        
+        if let buttonImage = temp.imageView {
+            temp.bringSubview(toFront: buttonImage)
+            
+            temp.imageView?.translatesAutoresizingMaskIntoConstraints = false
+            let safe = temp.safeAreaLayoutGuide
+            
+            NSLayoutConstraint.activate([
+                
+                (temp.imageView?.centerXAnchor.constraint(equalTo: safe.centerXAnchor))!,
+                (temp.imageView?.centerYAnchor.constraint(equalTo: safe.centerYAnchor))!,
+                (temp.imageView?.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_20))!,
+                (temp.imageView?.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_20))!,
+                
+                ])
+        }
+        
+        
+        //temp.titleLabel?.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        temp.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        temp.backgroundColor = UIColor.clear
+        temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        temp.addTarget(self, action: #selector(moreOptionsButtonPressed(_:)), for: .touchUpInside)
+        
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_18
+        
+        return temp
+        
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -155,6 +193,7 @@ extension PostTopBarView {
         self.addSubview(profilePictureContainerView)
         self.profilePictureContainerView.addSubview(profileImageView)
         self.addSubview(stackViewFollowers)
+        self.addSubview(moreOptionsButton)
         
         let safe = self.safeAreaLayoutGuide
         //let safeMainContainer = self.mainContainer.safeAreaLayoutGuide
@@ -190,6 +229,11 @@ extension PostTopBarView {
             informationLabel.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
             informationLabel.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_24)*/
             
+            moreOptionsButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_40),
+            moreOptionsButton.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_5),
+            moreOptionsButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_50),
+            moreOptionsButton.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_50),
+            
             ])
         
     }
@@ -202,6 +246,32 @@ extension PostTopBarView {
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
         self.layer.insertSublayer(gradient, at: 0)
+        
+    }
+    
+    @objc func moreOptionsButtonPressed(_ sender : UIButton) {
+        
+        let popOverController = MoreOptionsTableViewController()
+        popOverController.preferredContentSize = CGSize(width: UIScreen.main.bounds.width-Constants.StaticViewSize.ViewSize.Width.width_40, height: Constants.StaticViewSize.ViewSize.Height.height_300)
+        
+        // in order to have a navigation bar, its title and maybe bar button items
+        let navigationController = UINavigationController(rootViewController: popOverController)
+        
+        showPopup(navigationController, sourceView: sender)
+        
+    }
+    
+    
+    private func showPopup(_ controller: UIViewController, sourceView: UIView) {
+        let presentationController = PopOverControllerManager.configurePresentation(forController: controller)
+        presentationController.sourceView = sourceView
+        presentationController.sourceRect = sourceView.bounds
+        presentationController.permittedArrowDirections = [.down, .up]
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            
+            currentViewController.present(controller, animated: true, completion: nil)
+        }
         
     }
     

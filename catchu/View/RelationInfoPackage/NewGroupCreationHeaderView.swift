@@ -284,6 +284,24 @@ extension NewGroupCreationHeaderView {
         }
     }
     
+    private func startAnimationCommon(inputObject: UIView) {
+        
+        inputObject.transform = CGAffineTransform(scaleX: 0.9, y: 0.9) // buton view kucultulur
+        
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.50),  // yay sonme orani, arttikca yanip sonme artar
+            initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
+            options: UIViewAnimationOptions.allowUserInteraction,
+            animations: {
+                
+                inputObject.transform = CGAffineTransform.identity
+                
+                
+        })
+        inputObject.layoutIfNeeded()
+    }
+    
 }
 
 // MARK: - UITextFieldDelegate
@@ -303,6 +321,9 @@ extension NewGroupCreationHeaderView: UITextFieldDelegate {
 extension NewGroupCreationHeaderView: UIGestureRecognizerDelegate {
     
     @objc func startSettingGroupPhotoProcess(_ sender : UITapGestureRecognizer) {
+        
+        self.startAnimationCommon(inputObject: groupProfileImageContainer)
+        
         AlertControllerManager.shared.startActionSheetManager(type: .camera, operationType: ActionControllerOperationType.select, delegate: self, title: nil)
     }
     
@@ -345,7 +366,12 @@ extension NewGroupCreationHeaderView: CameraImageVideoHandlerProtocol {
     
         headerViewModel.groupImage.value = image
         
-        let tempImagePickerData = ImagePickerData(image: image, pathExtension: pathExtension, orientation: orientation)
+        let resizedImage = image.reSizeImage(orientation: orientation)
+        print("resizedImage : \(resizedImage)")
+        
+        guard let imageAsData = UIImageJPEGRepresentation(resizedImage!, 0.80) else { return }
+        
+        let tempImagePickerData = ImagePickerData(image: image, pathExtension: pathExtension, orientation: orientation, imageAsData: imageAsData)
         
         headerViewModel.imagePickerData.value = tempImagePickerData
         

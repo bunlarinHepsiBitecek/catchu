@@ -77,6 +77,8 @@ class FriendRelationTableViewCell: CommonTableCell, CommonDesignableCell {
         
         self.addViews()
         
+        self.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
+        
     }
     
     override func prepareForReuse() {
@@ -144,7 +146,11 @@ extension FriendRelationTableViewCell {
             }
             
             if let url = user.profilePictureUrl {
-                self.profileImageView.setImagesFromCacheOrFirebaseForFriend(url)
+                if let urlToBeValidCheck = URL(string: url) {
+                    if UIApplication.shared.canOpenURL(urlToBeValidCheck) {
+                        self.profileImageView.setImagesFromCacheOrFirebaseForFriend(url)
+                    }
+                }
             }
             
             userViewModel.userSelected.bindAndFire { [unowned self] in
@@ -200,13 +206,15 @@ extension FriendRelationTableViewCell {
     }
     
     private func setIconImage(state: TableViewRowSelected) {
-        switch state {
-        case .selected:
-            self.selectIcon.image = #imageLiteral(resourceName: "icon_checked_lightBlue")
-            self.selectIcon.layer.borderWidth = 0
-        case .deSelected:
-            self.selectIcon.image = nil
-            self.selectIcon.layer.borderWidth = 1
+        DispatchQueue.main.async {
+            switch state {
+            case .selected:
+                self.selectIcon.image = #imageLiteral(resourceName: "icon_checked_lightBlue")
+                self.selectIcon.layer.borderWidth = 0
+            case .deSelected:
+                self.selectIcon.image = nil
+                self.selectIcon.layer.borderWidth = 1
+            }
         }
     }
     

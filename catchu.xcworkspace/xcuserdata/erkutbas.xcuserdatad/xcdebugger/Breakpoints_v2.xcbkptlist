@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
-            timestampString = "567644006.7138799"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/AllowLocationAppearTableViewCell.swift"
+            timestampString = "568065626.000268"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
-            landmarkName = "returnPickedImage(image:pathExtension:orientation:)"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "switchButtonTriggered(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,44 +25,60 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
-            timestampString = "567644018.5093189"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/AllowLocationAppearTableViewCell.swift"
+            timestampString = "568065626.006313"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "addGroupImagePickerListener(completion:)"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "prepareForReuse()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/AllowCommentsTableViewCell.swift"
+            timestampString = "568065626.010488"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "changeCellTitle(active:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "catchu.NewGroupCreationHeaderView.addGroupImagePickerListener(completion: (catchu.ImagePickerData) -&gt; ()) -&gt; ()"
+                  symbolName = "catchu.AllowCommentsTableViewCell.(changeCellTitle in _6B2DF5C346625CCE8ADE7AB7E174C8F1)(active: Swift.Bool) -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
-                  timestampString = "567644018.7221889"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/AllowCommentsTableViewCell.swift"
+                  timestampString = "568064641.296966"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "239"
-                  endingLineNumber = "239"
-                  offsetFromSymbolStart = "37">
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "30">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (catchu.ImagePickerData) -&gt; () in catchu.NewGroupCreationHeaderView.addGroupImagePickerListener(completion: (catchu.ImagePickerData) -&gt; ()) -&gt; ()"
+                  symbolName = "closure #1 () -&gt; () in catchu.AllowCommentsTableViewCell.(changeCellTitle in _6B2DF5C346625CCE8ADE7AB7E174C8F1)(active: Swift.Bool) -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/RelationInfoPackage/NewGroupCreationHeaderView.swift"
-                  timestampString = "567644018.7257431"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/AllowCommentsTableViewCell.swift"
+                  timestampString = "568064641.298883"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "240"
-                  endingLineNumber = "240"
-                  offsetFromSymbolStart = "35">
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "34">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -73,14 +89,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/View/RelationInfoPackage/NewGroupCreationView.swift"
-            timestampString = "567644028.732901"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/AllowCommentsTableViewCell.swift"
+            timestampString = "568065626.015643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "addGroupImagePickerListener(completion:)"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "addSwitchListener()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "catchu.AllowCommentsTableViewCell.(addSwitchListener in _6B2DF5C346625CCE8ADE7AB7E174C8F1)() -&gt; ()"
+                  moduleName = "catchu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/AllowCommentsTableViewCell.swift"
+                  timestampString = "568064641.304033"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "29">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Bool) -&gt; () in catchu.AllowCommentsTableViewCell.(addSwitchListener in _6B2DF5C346625CCE8ADE7AB7E174C8F1)() -&gt; ()"
+                  moduleName = "catchu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/AllowCommentsTableViewCell.swift"
+                  timestampString = "568064641.306028"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -89,13 +137,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Controller/Relations/FriendGroupRelations/NewGroupCreationViewController.swift"
-            timestampString = "567644036.870958"
+            filePath = "catchu/View/ViewModel/PopOverViewModels/AllowCommentViewModel.swift"
+            timestampString = "568065626.017657"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
-            landmarkName = "addGroupCreationHeaderViewListeners()"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "init(switchValue:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "catchu.AllowCommentViewModel.__allocating_init(switchValue: Swift.Bool) -&gt; catchu.AllowCommentViewModel"
+                  moduleName = "catchu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ViewModel/PopOverViewModels/AllowCommentViewModel.swift"
+                  timestampString = "568064641.311175"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "13">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "catchu.AllowCommentViewModel.init(switchValue: Swift.Bool) -&gt; catchu.AllowCommentViewModel"
+                  moduleName = "catchu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ViewModel/PopOverViewModels/AllowCommentViewModel.swift"
+                  timestampString = "568064641.313053"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ViewModel/PopOverViewModels/MoreOptionsViewModel.swift"
+            timestampString = "568065626.019712"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "createMoreOptionsSections()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

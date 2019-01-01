@@ -17,8 +17,8 @@ class GroupCreationTableViewCell: CommonTableCell {
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = Constants.Cell.minimumLineSpacing_10
-        layout.minimumInteritemSpacing = Constants.Cell.minimumLineSpacing_10
+//        layout.minimumLineSpacing = Constants.Cell.minimumLineSpacing_10
+        layout.minimumInteritemSpacing = Constants.Cell.minimumLineSpacing_5
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
@@ -30,13 +30,14 @@ class GroupCreationTableViewCell: CommonTableCell {
         collectionView.isPagingEnabled = false
         collectionView.isScrollEnabled = false
         
+        collectionView.backgroundColor = UIColor.clear
+        
         collectionView.contentInset = UIEdgeInsets(top: Constants.StaticViewSize.ConstraintValues.constraint_15, left: Constants.StaticViewSize.ConstraintValues.constraint_5, bottom: Constants.StaticViewSize.ConstraintValues.constraint_15, right: Constants.StaticViewSize.ConstraintValues.constraint_5)
         
         collectionView.register(GroupCreationParticipantCollectionViewCell.self, forCellWithReuseIdentifier: GroupCreationParticipantCollectionViewCell.identifier)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        collectionView.backgroundColor = UIColor.clear
         
         return collectionView
         

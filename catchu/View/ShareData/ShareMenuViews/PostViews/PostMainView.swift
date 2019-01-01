@@ -17,6 +17,7 @@ class PostMainView: UIView {
 //    private var capturedCameraView : CustomCameraCapturedImageView!
     private var capturedCameraView : CapturedImageView!
     private var videoView : VideoView?
+    private var postFinishActivityView: PostFinishActivityView!
     
     weak var delegate : PostViewProtocols!
     
@@ -56,6 +57,9 @@ extension PostMainView {
         addCapturedCameraView()
         //addCustomVideoView()
         checkCustomVideoView()
+        
+        addPostFinishListener()
+        addPostFinishActivityView()
         
     }
     
@@ -202,6 +206,68 @@ extension PostMainView {
         } else {
             addCustomVideoView(immediatelyStartSession: true)
             //videoView?.activationManager(active: true)
+        }
+    }
+    
+    private func addPostFinishListener() {
+        guard let saySomethingView = saySomethingView else { return }
+        
+        saySomethingView.postProcessFinishListener { (finish) in
+            if finish {
+                // do something
+            }
+        }
+        
+        saySomethingView.postProcessStateListener { (state) in
+            switch state {
+            case .posting:
+                print("POSTING POSTING")
+                self.postFinishActivityView.viewActivationManager(active: true, animated: true)
+                return
+            case .posted:
+                return
+            case .none:
+                return
+            }
+        }
+    }
+    
+    // after post button clicked, animation page is activated
+    private func addPostFinishActivityView() {
+        
+        postFinishActivityView = PostFinishActivityView()
+        postFinishActivityView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(postFinishActivityView)
+        self.bringSubview(toFront: postFinishActivityView)
+        
+        let safe = self.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            postFinishActivityView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            postFinishActivityView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            postFinishActivityView.topAnchor.constraint(equalTo: safe.topAnchor),
+            postFinishActivityView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            ])
+        
+        postFinishActivityViewTimerListener()
+        
+    }
+    
+    private func postFinishActivityViewTimerListener() {
+        postFinishActivityView.activityStateListener { (state) in
+            switch state {
+            case .none:
+                return
+            case .running:
+                return
+            case .stopped:
+                self.postFinishActivityView.viewActivationManager(active: false, animated: false)
+                self.delegate.dismissPostViewForSuccessfullProcess()
+                return
+            }
         }
     }
     

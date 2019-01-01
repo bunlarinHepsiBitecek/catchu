@@ -110,6 +110,7 @@ struct Constants {
         
         struct ViewSize {
             struct Width {
+                static let width_300 : CGFloat = 300
                 static let width_250 : CGFloat = 250
                 static let width_200 : CGFloat = 200
                 static let width_180 : CGFloat = 180
@@ -134,12 +135,14 @@ struct Constants {
                 static let width_10 : CGFloat = 10
             }
             struct Height {
+                static let height_300 : CGFloat = 300
                 static let height_250 : CGFloat = 250
                 static let height_220 : CGFloat = 220
                 static let height_200 : CGFloat = 200
                 static let height_180 : CGFloat = 180
                 static let height_150 : CGFloat = 150
                 static let height_110 : CGFloat = 110
+                static let height_105 : CGFloat = 105
                 static let height_102 : CGFloat = 102
                 static let height_100 : CGFloat = 100
                 static let height_90 : CGFloat = 90
@@ -154,6 +157,7 @@ struct Constants {
                 static let height_40 : CGFloat = 40
                 static let height_36 : CGFloat = 36
                 static let height_30 : CGFloat = 30
+                static let height_25 : CGFloat = 25
                 static let height_24 : CGFloat = 24
                 static let height_22 : CGFloat = 22
                 static let height_20 : CGFloat = 20
@@ -285,6 +289,7 @@ struct Constants {
         static let imageCollectionViewMaxCellCount : CGFloat = 4
         static let minimumLineSpacing_Zero : CGFloat = 0
         static let minimumLineSpacing_10 : CGFloat = 10
+        static let minimumLineSpacing_5 : CGFloat = 5
         static let numberOfItemPerRow_3 : Int = 3
     }
     

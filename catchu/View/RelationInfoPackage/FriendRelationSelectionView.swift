@@ -49,6 +49,7 @@ class FriendRelationSelectionView: UIView {
     deinit {
         selectedFriendsViewModel.selectedFriendListEmpty.unbind()
         selectedFriendsViewModel.selectedFriendListCount.unbind()
+        selectedFriendsViewModel.selectedFriendListEmpty.unbind()
         
     }
     
@@ -59,6 +60,7 @@ extension FriendRelationSelectionView {
     
     private func initiateView() {
         addViews()
+        addClearCommandListener()
         //setupViewSettings()
     }
     
@@ -84,20 +86,6 @@ extension FriendRelationSelectionView {
             ])
         
     }
-    
-    /*
-    private func setupViewSettings() {
-        
-        selectedFriendsViewModel.operation.bind { (operation) in
-            self.collectionViewItemManager(operation: operation)
-        }
-        
-    }
-    
-    private func collectionViewItemManager(operation : CollectionViewOperation) {
-        print("\(#function) starts")
-        
-    }*/
     
     private func deSelectProcessOfItemInCollectionView(_ selectedItem: CommonUserViewModel) {
         selectedFriendsViewModel.removeItemFromFriendArray(friend: selectedItem)
@@ -138,21 +126,19 @@ extension FriendRelationSelectionView {
 
         switch selectedItem.userSelected.value {
         case .deSelected:
-            deSelectProcessOfItemInCollectionView(selectedItem)
+            self.deSelectProcessOfItemInCollectionView(selectedItem)
             
         case .selected:
-            selectProcessOfItemInCollectionView(selectedItem)
-
+            self.selectProcessOfItemInCollectionView(selectedItem)
+            
         }
         
     }
     
     func startObservingSelectedFriendList(completion : @escaping (_ activationInfo : CollectionViewActivation) -> Void) {
-        
         selectedFriendsViewModel.selectedFriendListEmpty.bind { (activationInfo) in
             completion(activationInfo)
         }
-        
     }
 
     // listens selected friend collectionview
@@ -164,11 +150,38 @@ extension FriendRelationSelectionView {
         
     }
     
+    func triggerCollectionClear(active : Bool) {
+        selectedFriendsViewModel.selectedFriendListMustBeEmpty.value = active
+    }
+    
+    private func addClearCommandListener() {
+        selectedFriendsViewModel.selectedFriendListMustBeEmpty.bind { (active) in
+            // to do
+            if active {
+                self.clearCollectionView()
+            }
+        }
+    }
+    
+    private func clearCollectionView() {
+        selectedFriendsViewModel.friendArray.removeAll()
+        // to erase selected friends 
+        selectedFriendsViewModel.selectedFriendListCount.value = selectedFriendsViewModel.returnFriendArrayCount()
+        
+        DispatchQueue.main.async {
+            self.selectedFriendCollectionView.reloadData()
+            self.selectedFriendCollectionView.collectionViewLayout.invalidateLayout()
+        }
+        
+        
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension FriendRelationSelectionView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("selectedFriendsViewModel.friendArray.count : \(selectedFriendsViewModel.friendArray.count)")
         return selectedFriendsViewModel.friendArray.count
     }
     

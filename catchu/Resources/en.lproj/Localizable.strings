@@ -54,6 +54,7 @@
 "addParticipantOrGroup" = "Add Participant or Group";
 "addParticipant" = "Add Participant";
 "Cancel" = "Cancel";
+"Back" = "Back";
 "next" = "Next";
 "Friends" = "Friends";
 "Groups" = "Groups";
@@ -86,6 +87,7 @@
 "groupCreate" = "Group Create";
 "provideGroupName" = "Please provide a group name.";
 "selectedParticipantCount" = "Selected Participant : ";
+"posting" = "Posting...";
 
 
 // Location Services
@@ -225,5 +227,16 @@
 
 // View Controller Titles
 "groupInfoEdit" = "Group Name";
+"advancedSettings" = "Advanced Settings";
 
+// Section Titles
+"commentSettings" = "Comment Settings";
+"locationSettings" = "Map Settings";
 
+// Advanced Settings Information Prompts
+"allowComments" = "Comment Allowed";
+"restrictComments" = "Comment Restricted";
+"allowLocation" = "Post Location Allowed";
+"restrictLocation" = "Post Location Restricted";
+"commentFeatureUpdateInfo" = "You can update this feature later in post settings";
+"locationFeatureUpdateInfo" = "This feature can not be changed after posted";

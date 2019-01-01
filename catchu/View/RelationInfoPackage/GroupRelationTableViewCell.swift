@@ -70,20 +70,10 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
         return label
     }()
     
-    /*
-     let username: UILabel = {
-     let label = UILabel()
-     label.font = UIFont.systemFont(ofSize: 14, weight: .light)
-     label.textColor = UIColor.lightGray
-     label.text = "catchuuser"
-     label.numberOfLines = 1
-     label.translatesAutoresizingMaskIntoConstraints = false
-     
-     return label
-     }()*/
-    
     override func initializeCellSettings() {
         print("\(#function) starts")
+        
+        self.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
         
         addViews()
         
@@ -99,6 +89,7 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     deinit {
         groupViewModel?.groupNameChanged.unbind()
         groupViewModel?.groupImageChanged.unbind()
+        groupViewModel?.groupSelected.unbind()
     }
 }
 
@@ -134,13 +125,6 @@ extension GroupRelationTableViewCell {
             selectIcon.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_20),
             selectIcon.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_20),
             
-            /*
-            moreIcon.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_20),
-            moreIcon.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
-            moreIcon.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_20),
-            moreIcon.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_20),
-            */
-            
             ])
     }
     
@@ -167,8 +151,7 @@ extension GroupRelationTableViewCell {
     }
     
     func initiateCellDesign(item: CommonViewModelItem?) {
-        print("initiateCellDesign")
-        
+
         guard let model = item as? CommonGroupViewModel else { return }
         
         self.groupViewModel = model
@@ -181,8 +164,11 @@ extension GroupRelationTableViewCell {
         }
         
         if let url = group.groupPictureUrl {
-            print("group id : \(group.groupID)")
-            self.groupProfileImageView.setImagesFromCacheOrDownloadWithTypes(url, type: ImageSizeTypes.thumbnails)
+            if let urlToBeCheckedValid = URL(string: url) {
+                if UIApplication.shared.canOpenURL(urlToBeCheckedValid) {
+                    self.groupProfileImageView.setImagesFromCacheOrDownloadWithTypes(url, type: ImageSizeTypes.thumbnails)
+                }
+            }
         }
         
         self.groupViewModel?.groupSelected.bindAndFire({ [unowned self] (selectedInfo) in

@@ -246,6 +246,7 @@ protocol PostViewProtocols : class  {
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void)
     func setPostTargetInformation(info : String)
     func returnAddedParticipants(participantArray: Array<User>)
+    func dismissPostViewForSuccessfullProcess()
 }
 
 extension PostViewProtocols {
@@ -259,6 +260,7 @@ extension PostViewProtocols {
     func selectedPostAttachmentAnimations(selectedAttachmentType : PostAttachmentTypes, completion : @escaping (_ finished : Bool) -> Void) {}
     func setPostTargetInformation(info : String) {}
     func returnAddedParticipants(participantArray: Array<User>) {}
+    func dismissPostViewForSuccessfullProcess() {}
 }
 
 protocol CameraImageVideoHandlerProtocol : class  {

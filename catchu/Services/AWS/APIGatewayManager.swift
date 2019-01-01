@@ -828,7 +828,59 @@ class APIGatewayManager: ApiGatewayInterface {
             }
         }
         
+    }
+    
+    /// Description: Create new group
+    ///
+    /// - Parameters:
+    ///   - group: created group object
+    ///   - adminUserid: creator user
+    ///   - participantList: group participants
+    ///   - completion: network result
+    func createNewGroup(groupName: String, groupPhotoUrl: String?, adminUserid: String, participantList: Array<User>, completion: @escaping (ConnectionResult<REGroupRequestResult>) -> Void) {
         
+        if adminUserid.isEmpty {
+            return
+        }
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                guard let groupRequest = REGroupRequest() else { return }
+                // minimum properties to create a group
+                groupRequest.groupName = groupName
+                if let url = groupPhotoUrl {
+                    groupRequest.groupPhotoUrl = url
+                }
+                groupRequest.userid = adminUserid
+                
+                groupRequest.requestType = RequestType.create_group.rawValue
+                
+                groupRequest.groupParticipantArray = [REGroupRequest_groupParticipantArray_item]()
+                
+                for item in participantList {
+                    let participantArrayItem = REGroupRequest_groupParticipantArray_item()
+                    participantArrayItem?.participantUserid = item.userid
+                    groupRequest.groupParticipantArray?.append(participantArrayItem!)
+                }
+                
+                self.client.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+                
+            }
+        }
+        
+    }
+    
+    /// Description : post operation
+    ///
+    /// - Parameters:
+    ///   - share: share data
+    ///   - completion: network result
+    func initiatePostProcess(share: Share, completion: @escaping (NetworkResult<REPostResponse>) -> Void) {
+        REAWSManager.shared.createPost(share: Share.shared, completion: completion)
     }
     
     func initiatePostOperations() {

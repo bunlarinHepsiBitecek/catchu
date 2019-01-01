@@ -311,6 +311,15 @@
 		A7B6BC2221A88AB700D11A78 /* StickerCommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC2121A88AB700D11A78 /* StickerCommonView.swift */; };
 		A7B6BC2421A8902300D11A78 /* CommonSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC2321A8902300D11A78 /* CommonSticker.swift */; };
 		A7B6BC2B21AAB23800D11A78 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC2A21AAB23800D11A78 /* DrawView.swift */; };
+		A7B9A75E21D9844300840330 /* GradientLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A75D21D9844300840330 /* GradientLabel.swift */; };
+		A7B9A76021DA67A800840330 /* PostFinishActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A75F21DA67A800840330 /* PostFinishActivityViewModel.swift */; };
+		A7B9A76321DB6C9800840330 /* MoreOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76221DB6C9800840330 /* MoreOptionsTableViewController.swift */; };
+		A7B9A76621DB6E4000840330 /* MoreOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76521DB6E4000840330 /* MoreOptionsViewModel.swift */; };
+		A7B9A76A21DB770D00840330 /* AllowCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76921DB770D00840330 /* AllowCommentsTableViewCell.swift */; };
+		A7B9A76C21DB780A00840330 /* AllowLocationAppearTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76B21DB780A00840330 /* AllowLocationAppearTableViewCell.swift */; };
+		A7B9A76E21DB840A00840330 /* AllowCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76D21DB840A00840330 /* AllowCommentViewModel.swift */; };
+		A7B9A77021DB842C00840330 /* AllowLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76F21DB842C00840330 /* AllowLocationViewModel.swift */; };
+		A7B9A77321DB95EF00840330 /* PopOverControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77221DB95EF00840330 /* PopOverControllerManager.swift */; };
 		A7C1C34A2195AE7B0096CEA6 /* SlideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C3492195AE7B0096CEA6 /* SlideMenuTableViewCell.swift */; };
 		A7C1C34C2196C8750096CEA6 /* ExplorePeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C34B2196C8750096CEA6 /* ExplorePeopleViewController.swift */; };
 		A7C1C34E2196F16A0096CEA6 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C34D2196F16A0096CEA6 /* ExploreView.swift */; };
@@ -343,6 +352,9 @@
 		A7E4F68F21B17BAA0063E00B /* FriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E4F68E21B17BAA0063E00B /* FriendsViewModel.swift */; };
 		A7E4F69121B17FC30063E00B /* FriendRelationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E4F69021B17FC30063E00B /* FriendRelationViewController.swift */; };
 		A7E4F69421B1B8BF0063E00B /* FriendGroupRelationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E4F69321B1B8BF0063E00B /* FriendGroupRelationView.swift */; };
+		A7E6A9A521D8BB9D00AA33AE /* SaySomethingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6A9A421D8BB9D00AA33AE /* SaySomethingViewModel.swift */; };
+		A7E6A9A721D8F43000AA33AE /* PostFinishActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6A9A621D8F43000AA33AE /* PostFinishActivityView.swift */; };
+		A7E6A9A921D901EE00AA33AE /* Catchu_Transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E6A9A821D901ED00AA33AE /* Catchu_Transparent.png */; };
 		A7E7802F218CD2AD00E76E3C /* CustomActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7802E218CD2AD00E76E3C /* CustomActivityIndicator.swift */; };
 		A7E78031218CD33500E76E3C /* CustomIndicatorAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E78030218CD33500E76E3C /* CustomIndicatorAnimator.swift */; };
 		A7E78036218F714800E76E3C /* ContactViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E78035218F714800E76E3C /* ContactViewController2.swift */; };
@@ -727,6 +739,15 @@
 		A7B6BC2121A88AB700D11A78 /* StickerCommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCommonView.swift; sourceTree = "<group>"; };
 		A7B6BC2321A8902300D11A78 /* CommonSticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSticker.swift; sourceTree = "<group>"; };
 		A7B6BC2A21AAB23800D11A78 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		A7B9A75D21D9844300840330 /* GradientLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLabel.swift; sourceTree = "<group>"; };
+		A7B9A75F21DA67A800840330 /* PostFinishActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFinishActivityViewModel.swift; sourceTree = "<group>"; };
+		A7B9A76221DB6C9800840330 /* MoreOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreOptionsTableViewController.swift; sourceTree = "<group>"; };
+		A7B9A76521DB6E4000840330 /* MoreOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreOptionsViewModel.swift; sourceTree = "<group>"; };
+		A7B9A76921DB770D00840330 /* AllowCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowCommentsTableViewCell.swift; sourceTree = "<group>"; };
+		A7B9A76B21DB780A00840330 /* AllowLocationAppearTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowLocationAppearTableViewCell.swift; sourceTree = "<group>"; };
+		A7B9A76D21DB840A00840330 /* AllowCommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowCommentViewModel.swift; sourceTree = "<group>"; };
+		A7B9A76F21DB842C00840330 /* AllowLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowLocationViewModel.swift; sourceTree = "<group>"; };
+		A7B9A77221DB95EF00840330 /* PopOverControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverControllerManager.swift; sourceTree = "<group>"; };
 		A7C1C3492195AE7B0096CEA6 /* SlideMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		A7C1C34B2196C8750096CEA6 /* ExplorePeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePeopleViewController.swift; sourceTree = "<group>"; };
 		A7C1C34D2196F16A0096CEA6 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
@@ -759,6 +780,9 @@
 		A7E4F68E21B17BAA0063E00B /* FriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewModel.swift; sourceTree = "<group>"; };
 		A7E4F69021B17FC30063E00B /* FriendRelationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationViewController.swift; sourceTree = "<group>"; };
 		A7E4F69321B1B8BF0063E00B /* FriendGroupRelationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGroupRelationView.swift; sourceTree = "<group>"; };
+		A7E6A9A421D8BB9D00AA33AE /* SaySomethingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaySomethingViewModel.swift; sourceTree = "<group>"; };
+		A7E6A9A621D8F43000AA33AE /* PostFinishActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFinishActivityView.swift; sourceTree = "<group>"; };
+		A7E6A9A821D901ED00AA33AE /* Catchu_Transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Catchu_Transparent.png; sourceTree = "<group>"; };
 		A7E7802E218CD2AD00E76E3C /* CustomActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActivityIndicator.swift; sourceTree = "<group>"; };
 		A7E78030218CD33500E76E3C /* CustomIndicatorAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIndicatorAnimator.swift; sourceTree = "<group>"; };
 		A7E78035218F714800E76E3C /* ContactViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController2.swift; sourceTree = "<group>"; };
@@ -1063,6 +1087,7 @@
 			children = (
 				A7E4F69221B1B89F0063E00B /* RelationInfoPackage */,
 				A7E7802D218CCD8D00E76E3C /* ActivityIndicator */,
+				A7E4F68D21B17B8D0063E00B /* ViewModel */,
 				45ABCA74215E274B00CB52B9 /* Login */,
 				A7D399C5214A435D00661132 /* Permission */,
 				A710F41F213FCD6D00ECC5DA /* ShareData */,
@@ -1077,6 +1102,7 @@
 		4564E44C20B96794003B0D16 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A7B9A76121DB6C1400840330 /* PopOvers */,
 				A70421FC21AED5430040AA8A /* Relations */,
 				A74CDB0620C3678C006DCE15 /* ContactPackage */,
 				4527E05120C85F2100ECB3D1 /* MainPackage */,
@@ -1088,6 +1114,7 @@
 		4564E44D20B96C14003B0D16 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A7B9A77121DB95CC00840330 /* PopOverManager */,
 				A7EFF98021CF0AD600B1A3DC /* MediaDownload */,
 				A77D987D215A0C6F002F9A02 /* Firebase */,
 				A7276D36210F6CB000CAC67C /* Swift */,
@@ -1315,7 +1342,6 @@
 		A722EC3021A3EF2900E9BD3B /* PostViews */ = {
 			isa = PBXGroup;
 			children = (
-				A7E4F68D21B17B8D0063E00B /* ViewModel */,
 				A722EC3121A3EFC500E9BD3B /* PostMainView.swift */,
 				A722EC3721A4057E00E9BD3B /* SaySomethingView.swift */,
 				A722EC3921A408B500E9BD3B /* PostTopBarView.swift */,
@@ -1327,6 +1353,10 @@
 				A7B6BC2A21AAB23800D11A78 /* DrawView.swift */,
 				A70421F821ACBE310040AA8A /* VideoView.swift */,
 				A70421FA21AD79AE0040AA8A /* CapturedVideoView.swift */,
+				A7E6A9A621D8F43000AA33AE /* PostFinishActivityView.swift */,
+				A7B9A75D21D9844300840330 /* GradientLabel.swift */,
+				A7B9A76921DB770D00840330 /* AllowCommentsTableViewCell.swift */,
+				A7B9A76B21DB780A00840330 /* AllowLocationAppearTableViewCell.swift */,
 			);
 			path = PostViews;
 			sourceTree = "<group>";
@@ -1700,6 +1730,7 @@
 		A79A766B20C5BDBE00FCE198 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A7E6A9A821D901ED00AA33AE /* Catchu_Transparent.png */,
 				A7F21B3B21C58F6C0015DB58 /* multiple_users.png */,
 				A722EC4521A5881800E9BD3B /* map.png */,
 				A722EC4121A5818D00E9BD3B /* notepad.png */,
@@ -1809,6 +1840,32 @@
 			path = GroupDetailTableViewCells;
 			sourceTree = "<group>";
 		};
+		A7B9A76121DB6C1400840330 /* PopOvers */ = {
+			isa = PBXGroup;
+			children = (
+				A7B9A76221DB6C9800840330 /* MoreOptionsTableViewController.swift */,
+			);
+			path = PopOvers;
+			sourceTree = "<group>";
+		};
+		A7B9A76421DB6E1B00840330 /* PopOverViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A7B9A76521DB6E4000840330 /* MoreOptionsViewModel.swift */,
+				A7B9A76D21DB840A00840330 /* AllowCommentViewModel.swift */,
+				A7B9A76F21DB842C00840330 /* AllowLocationViewModel.swift */,
+			);
+			path = PopOverViewModels;
+			sourceTree = "<group>";
+		};
+		A7B9A77121DB95CC00840330 /* PopOverManager */ = {
+			isa = PBXGroup;
+			children = (
+				A7B9A77221DB95EF00840330 /* PopOverControllerManager.swift */,
+			);
+			path = PopOverManager;
+			sourceTree = "<group>";
+		};
 		A7C1C351219716600096CEA6 /* ExploreViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -1877,6 +1934,8 @@
 		A7E4F68D21B17B8D0063E00B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				A7B9A76421DB6E1B00840330 /* PopOverViewModels */,
+				A7E6A9A321D8BB7A00AA33AE /* PostViewModels */,
 				A7AE5F9E21C63CA1008FD5AD /* GroupDetailViewModels */,
 				A7E4F68E21B17BAA0063E00B /* FriendsViewModel.swift */,
 				A716902B21B22E850039287B /* CommonDynamic.swift */,
@@ -1912,6 +1971,15 @@
 				A7EFF99021D3C81F00B1A3DC /* GroupCreationSectionHeaderView.swift */,
 			);
 			path = RelationInfoPackage;
+			sourceTree = "<group>";
+		};
+		A7E6A9A321D8BB7A00AA33AE /* PostViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A7E6A9A421D8BB9D00AA33AE /* SaySomethingViewModel.swift */,
+				A7B9A75F21DA67A800840330 /* PostFinishActivityViewModel.swift */,
+			);
+			path = PostViewModels;
 			sourceTree = "<group>";
 		};
 		A7E7802D218CCD8D00E76E3C /* ActivityIndicator */ = {
@@ -2155,6 +2223,7 @@
 				A7276D23210E12F800CAC67C /* awsconfiguration.json in Resources */,
 				A774AC9C2131A1C500848B79 /* back.png in Resources */,
 				4564E41A20B95576003B0D16 /* Assets.xcassets in Resources */,
+				A7E6A9A921D901EE00AA33AE /* Catchu_Transparent.png in Resources */,
 				4564E41820B95574003B0D16 /* Login.storyboard in Resources */,
 				A79A765F20C36BE400FCE198 /* Contact.storyboard in Resources */,
 				A721BFFB21177DE20037A62D /* Profile.storyboard in Resources */,
@@ -2283,6 +2352,7 @@
 				A71CC353215B417B002A2468 /* CameraGalleryFunctionView.swift in Sources */,
 				A716903C21B6D03F0039287B /* SelectedFriendsViewModel.swift in Sources */,
 				454285AC214A95FC00F68FAC /* REBucketUpload.swift in Sources */,
+				A7B9A76A21DB770D00840330 /* AllowCommentsTableViewCell.swift in Sources */,
 				4538A065217752010044A79D /* CountryViewController.swift in Sources */,
 				454285B7214A968400F68FAC /* REPostRequest.swift in Sources */,
 				45428598214A948A00F68FAC /* REFollowInfo.swift in Sources */,
@@ -2327,6 +2397,7 @@
 				A7EFF98F21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift in Sources */,
 				A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */,
 				A7C1C350219714790096CEA6 /* ExploreViewSlider.swift in Sources */,
+				A7B9A76021DA67A800840330 /* PostFinishActivityViewModel.swift in Sources */,
 				4538A05D217725E20044A79D /* RECountry.swift in Sources */,
 				A79A766720C4B48B00FCE198 /* ContactView.swift in Sources */,
 				A71F65B3216E032C002A7C5C /* PostItems.swift in Sources */,
@@ -2344,8 +2415,10 @@
 				A74240872147D3DB00E20A58 /* CustomVideo.swift in Sources */,
 				A762B75C2163FD6200DBB4EF /* FinalSharePageView.swift in Sources */,
 				A7C1C35921986AD70096CEA6 /* ContactList.swift in Sources */,
+				A7B9A76621DB6E4000840330 /* MoreOptionsViewModel.swift in Sources */,
 				A7C4F1C8213BD27E00C76EEF /* PhotoSpecialScrollView.swift in Sources */,
 				4535481521523C6C00FC81F5 /* CommentAccessoryView.swift in Sources */,
+				A7E6A9A521D8BB9D00AA33AE /* SaySomethingViewModel.swift in Sources */,
 				A7C1C34C2196C8750096CEA6 /* ExplorePeopleViewController.swift in Sources */,
 				A77D987C21591920002F9A02 /* CameraGalleryMenuView.swift in Sources */,
 				4564E41320B95574003B0D16 /* AppDelegate.swift in Sources */,
@@ -2359,10 +2432,13 @@
 				A722EC4821A5CA7E00E9BD3B /* PostContentCheckView.swift in Sources */,
 				A722EC2921A188E200E9BD3B /* ContactInvitationTableViewCell.swift in Sources */,
 				45ABCA76215E27BD00CB52B9 /* LoginView.swift in Sources */,
+				A7E6A9A721D8F43000AA33AE /* PostFinishActivityView.swift in Sources */,
+				A7B9A75E21D9844300840330 /* GradientLabel.swift in Sources */,
 				45356B2920C43C3C00E0733F /* LocationManager.swift in Sources */,
 				A7AE5FB321C7E3B7008FD5AD /* GroupInfoEditTableViewController.swift in Sources */,
 				A774ACA02131FF4300848B79 /* GroupInfoTableViewCell.swift in Sources */,
 				4564E46F20B999AD003B0D16 /* DesignableUITextField.swift in Sources */,
+				A7B9A76C21DB780A00840330 /* AllowLocationAppearTableViewCell.swift in Sources */,
 				A7D399C7214A446B00661132 /* CustomPermissionView.swift in Sources */,
 				45DABA9C21665BC80070840E /* LoaderTransition.swift in Sources */,
 				A7EFF99921D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift in Sources */,
@@ -2462,6 +2538,7 @@
 				A7EC57C52118BC7B0078F631 /* REGroupRequest.swift in Sources */,
 				A71CC35A215B4524002A2468 /* ImageCollectionViewCell2.swift in Sources */,
 				A7817AC42134BF7F00ECCF8C /* ParticipantSelectedCollectionViewCell.swift in Sources */,
+				A7B9A76E21DB840A00840330 /* AllowCommentViewModel.swift in Sources */,
 				4564E47620B9CBB2003B0D16 /* AlertViewSupport.swift in Sources */,
 				A7E7803B219052C000E76E3C /* CustomPostAlert.swift in Sources */,
 				454285A8214A95E200F68FAC /* REBaseResponse.swift in Sources */,
@@ -2502,6 +2579,7 @@
 				A71CC356215B43AB002A2468 /* PhotoLibraryCollectionViewCell2.swift in Sources */,
 				454285B9214A96C600F68FAC /* REFollowInfo_resultArray_item.swift in Sources */,
 				A7C1C357219869E80096CEA6 /* FacebookContactList.swift in Sources */,
+				A7B9A77021DB842C00840330 /* AllowLocationViewModel.swift in Sources */,
 				A7044D9F219974A700A64D10 /* FacebookContactRequestView.swift in Sources */,
 				454285A1214A95BA00F68FAC /* REPost.swift in Sources */,
 				454285A4214A95C800F68FAC /* REComment.swift in Sources */,
@@ -2519,6 +2597,7 @@
 				A7F35D902116811B005DA851 /* REFriendRequestList_error.swift in Sources */,
 				A7D4E9722150E9AE00081859 /* CustomAddingTextView.swift in Sources */,
 				A7E2F85521128CDE00214066 /* REFriendRequest.swift in Sources */,
+				A7B9A77321DB95EF00840330 /* PopOverControllerManager.swift in Sources */,
 				451E9F142139366300185925 /* MediaView.swift in Sources */,
 				A7817AC62134BFCF00ECCF8C /* ParticipantListTableViewCell.swift in Sources */,
 				A7E4F68F21B17BAA0063E00B /* FriendsViewModel.swift in Sources */,
@@ -2612,6 +2691,7 @@
 				A7276D5D2110C67900CAC67C /* REFriendList_resultArray_item.swift in Sources */,
 				454815BA215EB71F009684E1 /* ConfirmationView.swift in Sources */,
 				A77EC7D5215D1C1600AE3D3E /* CustomVideoView.swift in Sources */,
+				A7B9A76321DB6C9800840330 /* MoreOptionsTableViewController.swift in Sources */,
 				4542859A214A94C700F68FAC /* RECommentListResponse.swift in Sources */,
 				A7F21B3E21C5A53F0015DB58 /* GroupImageViewModel.swift in Sources */,
 				A79A768020C5CB1B00FCE198 /* FriendsTableViewCell.swift in Sources */,
@@ -2813,6 +2893,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.uren.catchu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OBJC_BRIDGING_HEADER = catchu/Services/AWS/Bridging_Header.h;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2835,6 +2916,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.uren.catchu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OBJC_BRIDGING_HEADER = catchu/Services/AWS/Bridging_Header.h;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

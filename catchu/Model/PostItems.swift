@@ -22,6 +22,8 @@ class PostItems {
     var messageScreenShot : UIImage?
     var privacyType: PrivacyType?
     var groupid: String?
+    var allowComments: Bool = true
+    var allowLocationAppear: Bool = true
     
     func clearPostItemsObjects() {
         
@@ -35,6 +37,8 @@ class PostItems {
         PostItems.shared.message = Constants.CharacterConstants.EMPTY
         PostItems.shared.groupid = Constants.CharacterConstants.EMPTY
         PostItems.shared.privacyType = PrivacyType.allFollowers
+        PostItems.shared.allowComments = true
+        PostItems.shared.allowLocationAppear = true
         
     }
     
