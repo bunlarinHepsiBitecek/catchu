@@ -19,6 +19,8 @@ struct Constants {
     static let CRASH_WARNING = "Something goes terribly wrong!"
     static let DEFAULT_PATH_EXT_JPG = "jpg"
     
+    static let ScreenBounds = UIScreen.main.bounds
+    
     struct Bundle {
         struct Path {
             static let Country = "Catchu.bundle/Data/countryCodes"
@@ -252,6 +254,14 @@ struct Constants {
         static let ReadMoreUnderlineColor: UIColor = UIColor.clear
         static let DefaultImageExtension: String = "jpg"
         static let DefaultVideoExtension: String = "mov"
+    }
+    
+    struct Profile {
+        static let Padding: CGFloat = 20.0
+        static let ImageWidthHeight: CGFloat = 50
+        static let GroupTableHeight: CGFloat = 120
+        static let CollectionMinimumLineSpacing: CGFloat = 1
+        static let CollectionItemPerLine: CGFloat = 3
     }
     
     struct Relation {

@@ -52,7 +52,6 @@ class CountryViewController: BaseTableViewController {
     }
     
     private func setupTableView() {
-//        tableView.delegate = self
         tableView.dataSource = viewModel
         tableView.sectionIndexTrackingBackgroundColor = UIColor.clear
         tableView.sectionIndexBackgroundColor = UIColor.clear

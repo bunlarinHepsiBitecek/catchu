@@ -72,10 +72,10 @@ class EditableProfileView: UIView {
         if let username = User.shared.username {
             usernameTextField.text = username
         }
-        if let website = User.shared.userWebsite {
+        if let website = User.shared.website {
             websiteTextField.text = website
         }
-        if let birthday = User.shared.userBirthday {
+        if let birthday = User.shared.birthday {
             birthDayTextField.text = birthday
         }
         if let email = User.shared.email {
@@ -84,8 +84,8 @@ class EditableProfileView: UIView {
         if let phone = User.shared.phone {
             phoneNumberTextField.text = "\(phone)"
         }
-        if let gender = User.shared.userGender {
-            genderTextField.text = gender
+        if let gender = User.shared.gender {
+            genderTextField.text = gender.toLocalized()
         }
         
         shortBioTextField.text = Constants.CharacterConstants.SPACE

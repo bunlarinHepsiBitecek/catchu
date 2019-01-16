@@ -8,23 +8,11 @@
 
 
 struct ConstanstViews {
-    struct Labels {
-        static let NoDataFoundLabel: UILabel = {
-            let label = UILabel()
-            label.text = LocalizedConstants.Feed.NoPostFound
-            label.textColor = UIColor.lightGray
-            label.textAlignment = .center
-            label.numberOfLines = 0
-            label.sizeToFit()
-            return label
-        }()
-    }
-    
     struct PageView {
         struct TabView {
             static let DefaultColor =  UIColor.gray
             static let CurrentColor =  UIColor.black
-            static let Font = UIFont.boldSystemFont(ofSize: 17)
+            static let Font = UIFont.boldSystemFont(ofSize: 20)
         }
     }
 }

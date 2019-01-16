@@ -15,6 +15,7 @@ struct 	LocalizedConstants {
     static let Error = NSLocalizedString("Error", comment: "")
     static let Warning = NSLocalizedString("Warning", comment: "")
     static let DefaultError = NSLocalizedString("DefaultError", comment: "")
+    static let Loading = NSLocalizedString("Loading", comment: "")
     
     struct Network {
         static let NoInternetConnection        = NSLocalizedString("NoInternetConnection", comment: "")
@@ -193,22 +194,52 @@ struct 	LocalizedConstants {
     
     struct Feed {
         static let NoPostFound = NSLocalizedString("NoPostFound", comment: "")
+        static let NoResultFound = NSLocalizedString("NoResultFound", comment: "")
         static let CatchU = NSLocalizedString("CatchU", comment: "")
-        static let Loading = NSLocalizedString("Loading", comment: "")
+        static let Loading = LocalizedConstants.Loading + "..."
         static let More = NSLocalizedString("More", comment: "")
         static let Comments = NSLocalizedString("Comments", comment: "")
         static let AddComment = NSLocalizedString("AddComment", comment: "")
         static let Send = NSLocalizedString("Send", comment: "")
         static let Reply = NSLocalizedString("Reply", comment: "")
+        static let Report = NSLocalizedString("Report", comment: "")
+        static let ItSpam = NSLocalizedString("ItSpam", comment: "")
+        static let ItInappropriate = NSLocalizedString("ItInappropriate", comment: "")
+        static let TurnOnComments = NSLocalizedString("TurnOnComments", comment: "")
+        static let TurnOffComments = NSLocalizedString("TurnOffComments", comment: "")
+        static let Delete = NSLocalizedString("Delete", comment: "")
     }
     
     struct Like {
+        static let Loading = LocalizedConstants.Loading + "..."
         static let Likes = NSLocalizedString("Likes", comment: "")
-        static let Loading = NSLocalizedString("Loading", comment: "")
         static let Follow = NSLocalizedString("Follow", comment: "")
         static let Following = NSLocalizedString("Following", comment: "")
         static let Requested = NSLocalizedString("Requested", comment: "")
         static let Unfollow = NSLocalizedString("Unfollow", comment: "")
+    }
+    
+    struct Profile {
+        static let Loading = LocalizedConstants.Loading + "..."
+        static let SendMessage = NSLocalizedString("Profile_Send_Message", comment: "")
+        static let Followers = NSLocalizedString("Profile_Followers", comment: "")
+        static let Following = NSLocalizedString("Profile_Following", comment: "")
+        static let Posts = NSLocalizedString("Profile_Posts", comment: "")
+        static let CaughtPosts = NSLocalizedString("Profile_Caught_Posts", comment: "")
+        static let Groups = NSLocalizedString("Profile_Groups", comment: "")
+        
+        static let ChangePhoto = NSLocalizedString("Profile_Change_Photo", comment: "")
+        static let Name = NSLocalizedString("Profile_Name", comment: "")
+        static let Username = NSLocalizedString("Profile_Username", comment: "")
+        static let Website = NSLocalizedString("Profile_Website", comment: "")
+        static let Bio = NSLocalizedString("Profile_Bio", comment: "")
+        static let Email = NSLocalizedString("Profile_Email", comment: "")
+        static let Phone = NSLocalizedString("Profile_Phone", comment: "")
+        static let Gender = NSLocalizedString("Profile_Gender", comment: "")
+        static let Birthday = NSLocalizedString("Profile_Birthday", comment: "")
+        static let GenderMale = NSLocalizedString("Profile_Gender_Male", comment: "")
+        static let GenderFemale = NSLocalizedString("Profile_Gender_Female", comment: "")
+        static let GenderUnspecified = NSLocalizedString("Profile_Gender_Unspecified", comment: "")
     }
     
     struct Notification {

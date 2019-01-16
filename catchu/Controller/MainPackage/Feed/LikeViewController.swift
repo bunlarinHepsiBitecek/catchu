@@ -8,24 +8,16 @@
 
 import UIKit
 
-class LikeViewController: BaseTableViewController {
-    
+class LikeViewController: BaseTableViewController, ConfigurableController {
     // MARK: Variable
-    let viewModel = LikeViewModel()
+    private var viewModel: LikeViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = LocalizedConstants.Like.Likes
+        navigationItem.title = LocalizedConstants.Like.Likes
         
         setupTableView()
-        // load likes data
-        self.viewModel.delegate = self
-        self.viewModel.loadData()
-    }
-    
-    func configure(post: Post, comment: Comment? = nil) {
-        self.viewModel.post = post
-        self.viewModel.comment = comment
+        setupViewModel()
     }
     
     func setupTableView() {
@@ -42,10 +34,33 @@ class LikeViewController: BaseTableViewController {
         
         setupRefreshControl()
     }
-
+    
+    func setupViewModel() {
+        viewModel.loadData()
+        
+        viewModel.reloadTableView.bind { [unowned self](_) in
+            self.reloadTableView()
+        }
+    }
+    
+    deinit {
+        viewModel.reloadTableView.unbind()
+    }
+    
+    func configure(viewModel: ViewModel) {
+        guard let viewModel = viewModel as? LikeViewModel else { return }
+        self.viewModel = viewModel
+    }
+    
 }
 
 extension LikeViewController {
+    
+    func reloadTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
     
     func setupRefreshControl() {
         refreshControl = UIRefreshControl()
@@ -56,15 +71,9 @@ extension LikeViewController {
     @objc func refreshData(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
             // Put your code which should be executed with a delay here
-//            self.viewModel.refreshData()
+            self.viewModel.refreshData()
             self.refreshControl!.endRefreshing()
         })
-    }
-}
-
-extension LikeViewController: LikeViewModelDelegete {
-    func updateTableView() {
-        self.tableView.reloadData()
     }
 }
 
@@ -83,7 +92,7 @@ extension LikeViewController {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: UserViewCell.identifier, for: indexPath) as? UserViewCell {
             
-            cell.configure(item: item)
+            cell.configure(viewModelItem: item)
             
             return cell
         }

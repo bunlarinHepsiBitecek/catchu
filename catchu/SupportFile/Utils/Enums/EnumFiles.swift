@@ -439,4 +439,39 @@ enum InformerGestureStates {
 enum FollowPageIndex {
     case followers
     case followings
+    case suggest
+    case loading
+    case paging
+    case populate
+    case empty
+    case error
+}
+
+enum CatchType: String {
+    case `public`
+    case `catch`
+}
+
+enum ReportType: String {
+    case spam
+    case inappropiate
+    case bug
+    case feedback
+}
+
+enum GenderType: String, CaseIterable {
+    case unspecified
+    case male
+    case female
+    
+    func toLocalized() -> String {
+        switch self {
+        case .unspecified:
+            return LocalizedConstants.Profile.GenderUnspecified
+        case .male:
+            return LocalizedConstants.Profile.GenderMale
+        case .female:
+            return LocalizedConstants.Profile.GenderFemale
+        }
+    }
 }

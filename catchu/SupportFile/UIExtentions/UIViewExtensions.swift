@@ -84,6 +84,20 @@ extension UIView {
         }
         return centerYAnchor
     }
+    
+    open var safeHeightAnchor: NSLayoutDimension {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.heightAnchor
+        }
+        return heightAnchor
+    }
+    
+    open var safeWidthAnchor: NSLayoutDimension {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.widthAnchor
+        }
+        return widthAnchor
+    }
 }
 
 extension UIViewController {

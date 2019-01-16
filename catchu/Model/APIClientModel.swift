@@ -14,6 +14,8 @@ class Location {
     var longitude: Double?
     var radius: Double?
     
+    init() {}
+    
     init(location: RELocation?) {
         guard let location = location else { return }
         
@@ -105,12 +107,15 @@ class Post {
     var isLiked: Bool?
     var likeCount: Int?
     var isCommentAllowed: Bool?
+    var isShowOnMap: Bool?
     var commentCount: Int?
     var createAt: String?
     var user: User?
     var privacyType: String?
     var allowList: [User]?
     var comments: [Comment]?
+    
+    init() {}
     
     init(post: REPost?) {
         guard let post = post else { return }
@@ -144,6 +149,9 @@ class Post {
         }
         if let isCommentAllowed = post.isCommentAllowed {
             self.isCommentAllowed = isCommentAllowed.boolValue
+        }
+        if let isShowOnMap = post.isShowOnMap {
+            self.isShowOnMap = isShowOnMap.boolValue
         }
         if let commentCount = post.commentCount {
             self.commentCount = commentCount.intValue
@@ -192,6 +200,15 @@ class Post {
     private func rounded(distance: Double, toPlaces places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (distance * divisor).rounded() / divisor
+    }
+    
+    func isOwnPost() -> Bool {
+        let isOwnPost = false
+        guard let postOwner = self.user else { return isOwnPost}
+        guard let postOwnerUserid = postOwner.userid else { return isOwnPost}
+        guard let loginUserid = User.shared.userid else { return isOwnPost}
+        
+        return loginUserid == postOwnerUserid
     }
     
 }
@@ -306,6 +323,12 @@ class Phone {
             phone.phoneNumber = NSNumber(value: phoneNumber)
         }
         return phone
+    }
+    
+    func getPhoneNumber() -> String {
+        let dialCode = self.dialCode ?? ""
+        let phoneNumber = self.phoneNumber ?? 0
+        return dialCode + "\(phoneNumber)"
     }
 }
 

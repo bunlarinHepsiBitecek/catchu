@@ -7,14 +7,17 @@
 //
 
 protocol MenuTabViewModelItem {
+    var icon: UIImage? {get set}
     var title: String {get set}
 }
 
 class MenuTabViewModelTitleItem: MenuTabViewModelItem {
+    var icon: UIImage?
     var title: String
     
-    init(title: String) {
+    init(title: String, icon: UIImage?) {
         self.title = title
+        self.icon = icon
     }
 }
 

@@ -10,21 +10,21 @@ import UIKit
 
 class UserViewCell: BaseTableCell, ConfigurableCell {
     
-    var item: ViewModelUser?
+    var viewModelItem: ViewModelUser!
     
     private let padding = Constants.Feed.Padding
     private let dimension = Constants.Feed.ImageWidthHeight
     
     lazy var profileImageView: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .red
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+
         return imageView
     }()
     
@@ -76,6 +76,9 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         contentStackView.distribution = .fillEqually
         contentStackView.spacing = padding
         
+        contentStackView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        contentStackView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
         let cellStackView = UIStackView(arrangedSubviews: [profileImageView, contentStackView])
         cellStackView.translatesAutoresizingMaskIntoConstraints = false
         cellStackView.alignment = .center
@@ -86,9 +89,18 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         
         self.contentView.addSubview(cellStackView)
         
+        // MARK: height and width constraint in stackview must be priority less then stack view zero height and width priority. Defauly priority equal 1000. Set to 999 cause of default priority cann't set .hight, .medium or .low
+        // second solution to set height and width constraint to lessThanOrEqualToConstant which stackview can handle to view height set to zero when hide it.
+        let imageHeightConstraint = profileImageView.safeHeightAnchor.constraint(equalToConstant: 50)
+        imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
+        
+        let imageWidthConstraint = profileImageView.safeWidthAnchor.constraint(equalToConstant: 50)
+        imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
+        
         NSLayoutConstraint.activate([
-            profileImageView.widthAnchor.constraint(equalToConstant: profileImageView.frame.width),
-            profileImageView.heightAnchor.constraint(equalToConstant: profileImageView.frame.height),
+            profileImageView.safeHeightAnchor.constraint(equalTo: profileImageView.safeWidthAnchor, multiplier: 1), // aspect ratio
+            imageHeightConstraint,
+            imageWidthConstraint,
             
             cellStackView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor),
             cellStackView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor),
@@ -97,11 +109,20 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
             ])
     }
     
-    func configure(item: ViewModelItem) {
-        guard let item = item as? ViewModelUser else { return }
-        guard let user = item.user else { return }
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        self.item = item
+        profileImageView.image = nil
+        name.text = nil
+        username.text = nil
+        followButton.setTitle(LocalizedConstants.Like.Loading, for: .normal)
+    }
+    
+    func configure(viewModelItem: ViewModelItem) {
+        guard let viewModelItem = viewModelItem as? ViewModelUser else { return }
+        guard let user = viewModelItem.user else { return }
+        
+        self.viewModelItem = viewModelItem
 
         if let name = user.name {
             self.name.text = name
@@ -119,9 +140,8 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
     }
     
     @objc func followProcess(_ sender: UIButton) {
-        guard let item = self.item else { return }
-        guard let user = item.user else { return }
-        let requestType = item.findRequestType()
+        guard let user = viewModelItem.user else { return }
+        let requestType = viewModelItem.findRequestType()
         if requestType == .defaultRequest {
             return
         }
@@ -133,7 +153,7 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
                 return
             }
         }
-        self.item?.sendRequestProcess()
+        self.viewModelItem.sendRequestProcess()
     }
     
     func unfollowAlertControll(image: UIImage? = nil, message: String? = nil) {
@@ -156,6 +176,9 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
             actionSheetController.view.addSubview(stackView)
             
             NSLayoutConstraint.activate([
+                imageView.widthAnchor.constraint(equalToConstant: 50),
+                imageView.heightAnchor.constraint(equalToConstant: 50),
+                
                 stackView.safeTopAnchor.constraint(equalTo: actionSheetController.view.safeTopAnchor, constant: padding),
                 stackView.safeCenterXAnchor.constraint(equalTo: actionSheetController.view.safeCenterXAnchor),
                 stackView.safeLeadingAnchor.constraint(equalTo: actionSheetController.view.safeLeadingAnchor),
@@ -164,7 +187,7 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         }
         
         let unfollowAction = UIAlertAction(title: LocalizedConstants.Like.Unfollow, style: .destructive) { (action) in
-            self.item?.sendRequestProcess()
+            self.viewModelItem.sendRequestProcess()
         }
         let cancelAction = UIAlertAction(title: LocalizedConstants.Cancel, style: .cancel, handler: nil)
         actionSheetController.addAction(unfollowAction)

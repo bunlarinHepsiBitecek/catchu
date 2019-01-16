@@ -76,7 +76,6 @@ extension CountryViewModel: UITableViewDelegate, UITableViewDataSource {
     // data method
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print("reload: \(indexPath)")
         let country = filteredCountries.value[indexPath.section][indexPath.row]
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: CountryViewCell.identifier, for: indexPath) as? CountryViewCell {

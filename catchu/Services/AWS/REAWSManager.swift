@@ -17,7 +17,7 @@ enum BackEndAPIError: Error {
     // The Server returned no data
     case missingDataError
     // Can't connect to the server (maybe offline?)
-    case connectionError(error: Error)
+    case connectionError()
     // The server responded with a non 200 status code
     case serverError(error: Error)
 }
@@ -29,7 +29,10 @@ enum NetworkResult<T> {
 
 protocol BackEndAPIInterface {
     func createPost(share: Share, completion: @escaping (NetworkResult<REPostResponse>)-> Void)
-    func getFeeds(page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void )
+    func getFeeds(postid: String, catchType: CatchType, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void )
+    func updatePost(post: Post, completion: @escaping (NetworkResult<REBaseResponse>) -> Void )
+    func deletePost(postid: String, completion: @escaping (NetworkResult<REBaseResponse>) -> Void )
+    func reportPost(postid: String, reportType: ReportType, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
     func getUploadUrl(imageCount: Int, imageExtension: String, videoCount: Int, videoExtension: String, completion : @escaping (NetworkResult<REBucketUploadResponse>) -> Void )
     func like(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
     func unlike(post: Post, commentid: String?, completion: @escaping (NetworkResult<REBaseResponse>) -> Void)
@@ -38,6 +41,10 @@ protocol BackEndAPIInterface {
     func getCountries(userid: String, completion: @escaping (NetworkResult<RECountryListResponse>)-> Void)
     func deleteUploadUrl(userid: String, delete: REBucketUploadResponse, completion: @escaping (NetworkResult<REBaseResponse>)-> Void)
     func searchUsersGet(searchText: String, page: Int, perPage: Int, completion: @escaping (NetworkResult<REUserListResponse>)-> Void)
+    func getUserProfilePosts(targetUserid: String, privacyType: PrivacyType, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void)
+    func getUserProfileCaught(privacyType: String?, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void)
+    func getUserProfileInfo(userid: String, requestedUserid: String, completion: @escaping (NetworkResult<REUserProfile>) -> Void)
+    func getUserGroups(requestType: RequestType, completion: @escaping (NetworkResult<REGroupRequestResult>) -> Void)
 }
 
 class REAWSManager: BackEndAPIInterface {
@@ -87,14 +94,10 @@ class REAWSManager: BackEndAPIInterface {
         baseRequest.user = userReq
         
         // TODO: Authorization
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
-                
-                self.apiClient.loginPost(userid: ownerUserid, authorization: tokenResult.token, body: baseRequest).continueWith { (task) -> Any? in
-                    self.processExpectingData(task: task, completion: completion)
-                    return nil
-                }
-                
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.loginPost(userid: ownerUserid, authorization: tokenResult.token, body: baseRequest).continueWith { (task) -> Any? in
+                self.processExpectingData(task: task, completion: completion)
+                return nil
             }
         }
         
@@ -219,12 +222,10 @@ class REAWSManager: BackEndAPIInterface {
         
         
         // TODO: Authorization
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            if finished {
-                self.apiClient.commonSignedurlGet(authorization: tokenResult.token, imagecount: imageCountStr, videocount: videoCountStr, videoextension: videoExtension, imageextension: imageExtension).continueWith { (task) -> Any? in
-                    self.processExpectingData(task: task, completion: completion)
-                    return nil
-                }
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.commonSignedurlGet(authorization: tokenResult.token, imagecount: imageCountStr, videocount: videoCountStr, videoextension: videoExtension, imageextension: imageExtension).continueWith { (task) -> Any? in
+                self.processExpectingData(task: task, completion: completion)
+                return nil
             }
         }
     }
@@ -232,19 +233,23 @@ class REAWSManager: BackEndAPIInterface {
     
     /// Get shared items to nearby current location within specified range
     /// - Parameters:
+    ///   - postid:
+    ///   - catchType: It a CatchType. Now public or catch
     ///   - page: Pagination purposel initial must be 1
     ///   - perPage: Result list item count per page
     ///   - radius: Radius value for searching location
     ///   - completion: A NetworkResult<REPostListResponse>
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func getFeeds(page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void) {
+    func getFeeds(postid: String, catchType: CatchType ,page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void) {
         guard Reachability.networkConnectionCheck() else { return }
         
         guard LocationManager.shared.currentLocation != nil else {
             print("\(#function) Lokasyon verisi bos")
             return
         }
+        
+//        guard let userid = User.shared.userid else { return }
         
         let latitude = String(LocationManager.shared.currentLocation.coordinate.latitude)
         let longitude = String(LocationManager.shared.currentLocation.coordinate.longitude)
@@ -258,17 +263,100 @@ class REAWSManager: BackEndAPIInterface {
         let perPageStr = "\(perPage)"
         
         // TODO: Authorization
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            
             self.apiClient.postsGeolocationPost(authorization: tokenResult.token, body: baseRequest, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
                 
                 print("\(#function) Result: \(task)")
                 self.processExpectingData(task: task, completion: completion)
                 return nil
             }
+
+            // TODO: Open
+//            self.apiClient.postsPostidGet(userid: userid, authorization: tokenResult.token, postid: postid, catchType: catchType.rawValue, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
+//
+//                print("\(#function) Result: \(task)")
+//                self.processExpectingData(task: task, completion: completion)
+//                return nil
+//            }
         }
         
     }
     
+    
+    /// Update own post, when comment is allowed change
+    /// - Parameters:
+    ///   - post: Updated login user's post
+    ///   - completion: A NetworkResult<REBaseResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func updatePost(post: Post, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
+        
+        guard let userid = User.shared.userid else { return }
+
+        guard let postid = post.postid else { return }
+        guard let isCommentAllowed = post.isCommentAllowed else { return }
+        
+        guard let postRequest = REPostRequest() else { return }
+        guard let updatedPost = REPost() else { return }
+        updatedPost.isCommentAllowed = NSNumber(value: isCommentAllowed)
+        
+        postRequest.post = updatedPost
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.postsPostidPatch(userid: userid, postid: postid, authorization: tokenResult.token, body: postRequest).continueWith { (task) -> Any? in
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            }
+        }
+    }
+    
+    /// Delete own post
+    /// - Parameters:
+    ///   - postid: Deleted postid
+    ///   - completion: A NetworkResult<REBaseResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func deletePost(postid: String, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
+        
+        guard let userid = User.shared.userid else { return }
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.postsPostidDelete(userid: userid, postid: postid, authorization: tokenResult.token).continueWith { (task) -> Any? in
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            }
+        }
+    }
+    
+    
+    /// Report related post
+    /// - Parameters:
+    ///   - postid: Postid which is reported
+    ///   - reportType: A ReportType
+    ///   - completion: A NetworkResult<REBaseResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func reportPost(postid: String, reportType: ReportType, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else { return }
+        
+        guard let userid = User.shared.userid else { return }
+        
+        guard let report = REReport() else { return }
+        report.type = reportType.rawValue
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.commonReportPost(userid: userid, authorization: tokenResult.token, body: report, relatedid: postid).continueWith { (task) -> Any? in
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            }
+        }
+    }
     
     
     /// Get posts comments with replies. This methot also use for get list of comment of comments
@@ -524,6 +612,7 @@ class REAWSManager: BackEndAPIInterface {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func searchUsersGet(searchText: String, page: Int, perPage: Int, completion: @escaping (NetworkResult<REUserListResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else {return}
 
         guard let userid = User.shared.userid else { return }
         
@@ -539,7 +628,122 @@ class REAWSManager: BackEndAPIInterface {
             })
             
         }
+    }
+    
+    
+    
+    
+    /// Gets the target users profile posts
+    ///
+    /// - Parameters:
+    ///   - targetUserid: User which is viewed profile
+    ///   - privacyType: A PrivacyType.
+    ///   - page: Pagination purposel initial must be 1
+    ///   - perPage: Result list item count per page
+    ///   - radius: Radius value for searching location
+    ///   - completion: A NetworkResult<REPostListResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func getUserProfilePosts(targetUserid: String, privacyType: PrivacyType, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else {return}
         
+        guard let userid = User.shared.userid else { return }
+        
+        let latitude = String(LocationManager.shared.currentLocation.coordinate.latitude)
+        let longitude = String(LocationManager.shared.currentLocation.coordinate.longitude)
+        let radius = String(radius)
+        
+        let pageStr = "\(page)"
+        let perPageStr = "\(perPage)"
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.usersUidPostsGet(userid: userid, uid: targetUserid, authorization: tokenResult.token, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr, privacyType: privacyType.stringValue).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+        }
+    }
+    
+    /// Gets the target users profile posts
+    ///
+    /// - Parameters:
+    ///   - privacyType: A PrivacyType.
+    ///   - page: Pagination purposel initial must be 1
+    ///   - perPage: Result list item count per page
+    ///   - radius: Radius value for searching location
+    ///   - completion: A NetworkResult<REPostListResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func getUserProfileCaught(privacyType: String?, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void) {
+        guard Reachability.networkConnectionCheck() else {return}
+        
+        guard let userid = User.shared.userid else { return }
+        
+        let latitude = String(LocationManager.shared.currentLocation.coordinate.latitude)
+        let longitude = String(LocationManager.shared.currentLocation.coordinate.longitude)
+        let radius = String(radius)
+        
+        let pageStr = "\(page)"
+        let perPageStr = "\(perPage)"
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            
+            self.apiClient.usersUidCaughtGet(userid: userid, uid: userid, authorization: tokenResult.token, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr, privacyType: privacyType).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+        }
+    }
+    
+    
+    /// Get Requested User Profile
+    ///
+    /// - Parameters:
+    ///   - userid: Login user's userid
+    ///   - requestedUserid: Requested user's userid
+    ///   - completion: A NetworkResult<REUserProfile>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func getUserProfileInfo(userid : String, requestedUserid: String, completion: @escaping (NetworkResult<REUserProfile>) -> Void) {
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, _) in
+            self.apiClient.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token).continueWith { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            }
+        }
+    }
+    
+    
+    /// Get Users Groups
+    ///
+    /// - Parameters:
+    ///   - requestType: Group operation request type
+    ///   - completion: A NetworkResult<REGroupRequestResult>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func getUserGroups(requestType: RequestType, completion: @escaping (NetworkResult<REGroupRequestResult>) -> Void) {
+        
+        guard let userid = User.shared.userid else { return }
+        guard let groupRequest = REGroupRequest() else { return }
+        
+        groupRequest.requestType = requestType.rawValue
+        groupRequest.userid = userid
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, _) in
+            self.apiClient.groupsPost(authorization: tokenResult.token, body: groupRequest).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+        }
     }
 }
 
@@ -617,7 +821,7 @@ extension REAWSManager {
         
         let postid = Constants.AWS_PATH_EMPTY
         
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, finished) in
             if finished {
                 
                 self.apiClient.postsPostidPost(postid: postid, authorization: tokenResult.token, body: postRequest).continueWith { (task) -> Any? in

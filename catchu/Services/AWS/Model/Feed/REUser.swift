@@ -1,5 +1,5 @@
 /*
- Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ Copyright 2010-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  
  Licensed under the Apache License, Version 2.0 (the "License").
  You may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 import Foundation
 import AWSCore
 
+
 @objcMembers
 public class REUser : AWSModel {
     
@@ -27,6 +28,7 @@ public class REUser : AWSModel {
     var profilePhotoUrl: String?
     var isPrivateAccount: NSNumber?
     var followStatus: String?
+    var bio: String?
     var provider: REProvider?
     
     public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
@@ -38,6 +40,7 @@ public class REUser : AWSModel {
         params["profilePhotoUrl"] = "profilePhotoUrl"
         params["isPrivateAccount"] = "isPrivateAccount"
         params["followStatus"] = "followStatus"
+        params["bio"] = "bio"
         params["provider"] = "provider"
         
         return params

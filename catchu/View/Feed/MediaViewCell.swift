@@ -172,7 +172,8 @@ class MediaViewVideoCell: BaseCollectionCell {
         playButton.setImage(UIImage(named: "play"), for: UIControlState())
         isPlaying = !isPlaying
         
-        let seekTime = CMTime(value: 0, timescale: 1)
+//        let seekTime = CMTime(value: 0, timescale: 1)
+        let seekTime = kCMTimeZero
         
         player?.seek(to: seekTime, completionHandler: { (completedSeek) in
             //perhaps do something later here

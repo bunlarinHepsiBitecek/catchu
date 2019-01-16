@@ -6,13 +6,125 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
-enum FeedViewModelItemType {
-    case post
-    //    case advert
+class FeedViewModel: BaseViewModel, ViewModel {
+    let sectionCount = 1
+    var page = 1
+    var perPage = 21
+    var postid = Constants.AWS_PATH_EMPTY
+    var catchType = CatchType.public
+    var radius: Double = 0.10
+    
+    var items = [FeedViewModelItem]()
+    
+    let state = Dynamic(TableViewState.suggest)
+    let changes = Dynamic(CellChanges())
+    
+    override func setup() {
+        super.setup()
+        LocationManager.shared.delegate = self
+    }
+    
+    /// call when first time to get data
+    func getData() {
+        LocationManager.shared.startUpdateLocation()
+    }
+    
+    /// call when pull to refresh
+    func refreshData() {
+        LocationManager.shared.startUpdateLocation()
+    }
+    
+    private func loadData() {
+        
+        // TODO: for test delete sil
+        if Constants.LOCALTEST {
+            guard Reachability.networkConnectionCheck() else { return }
+            state.value = .loading
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                self.populate(posts: [Post]())
+            })
+            return
+        }
+        // TODO: for test delete sil
+        
+        state.value = .loading
+        REAWSManager.shared.getFeeds(postid: postid, catchType: catchType, page: page, perPage: perPage, radius: radius) { [unowned self] result in
+            print("\(#function) working and get data")
+            self.handleResult(result)
+        }
+        
+    }
+    
+    func handleResult(_ result: NetworkResult<REPostListResponse>) {
+        switch result {
+        case .success(let response):
+            if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                print("Lambda Error: \(error)")
+                state.value = .error
+                return
+            }
+            
+            guard let posts = response.items else { return }
+            
+            var newItems = [Post]()
+            for post in posts {
+                newItems.append(Post(post: post))
+            }
+            if !newItems.isEmpty {
+                self.populate(posts: newItems)
+            } else {
+                state.value = items.count == 0 ? .empty : .populate
+            }
+            
+        case .failure(let apiError):
+            state.value = .error
+            switch apiError {
+            case .serverError(let error):
+                print("Server error: \(error)")
+            case .connectionError(let error) :
+                print("Connection error: \(error)")
+            case .missingDataError:
+                print("Missing Data Error")
+            }
+        }
+    }
+    
+    private func populate(posts: [Post]) {
+        var newItems = [FeedViewModelItem]()
+        for post in posts {
+            newItems.append(FeedViewModelItemPost(post: post))
+        }
+        setup(newItems: newItems)
+    }
+    
+    private func setup(newItems: [FeedViewModelItem]) {
+        // MARK: difference calculator
+        let oldData = flatten(items: items)
+        let newData = flatten(items: newItems)
+        let cellChanges = DifferenceCalculator.calculate(oldItems: oldData, newItems: newData)
+        
+        self.items = newItems
+        state.value = items.count == 0 ? .empty : .populate
+        self.changes.value = cellChanges
+    }
+    
+    private func flatten(items: [FeedViewModelItem]) -> [ReloadableCell<CellItem>] {
+        let reloadableItems = items
+            .enumerated()
+            .map { ReloadableCell(key: $0.element.id, value: $0.element.cellItems, index: $0.offset) }
+        
+        return reloadableItems
+    }
 }
 
-protocol FeedViewModelItem: BaseViewModelItem {
-    var type: FeedViewModelItemType { get }
+extension FeedViewModel: LocationManagerDelegate {
+    func didUpdateLocation() {
+        LocationManager.shared.stopUpdateLocation()
+        self.loadData()
+    }
+}
+
+protocol FeedViewModelItem: ViewModelItem {
     var id: String { get }
     var cellItems: [CellItem] { get }
 }
@@ -26,14 +138,7 @@ struct CellItem: Equatable {
     }
 }
 
-protocol FeedViewModelDelegete: class {
-    func apply(changes: CellChanges)
-}
-
-class FeedViewModelPostItem: FeedViewModelItem {
-    var type: FeedViewModelItemType {
-        return .post
-    }
+class FeedViewModelItemPost: FeedViewModelItem {
     var id: String {
         return post?.postid ?? ""
     }
@@ -43,9 +148,14 @@ class FeedViewModelPostItem: FeedViewModelItem {
     var post: Post?
     var expanded = false
     var currentPage: Int = 0
+    var isPostLiked = Dynamic(false)
     
     init(post: Post?) {
         self.post = post
+        
+        if let isLiked = post?.isLiked {
+            self.isPostLiked.value = isLiked
+        }
     }
     
     private func getCellItems() -> [CellItem] {
@@ -89,141 +199,134 @@ class FeedViewModelPostItem: FeedViewModelItem {
         
         return cellItems
     }
-}
-
-class FeedViewModel: BaseViewModel {
-    let sectionCount = 1
-    var page = 1
-    var perPage = 20
-    var items = [FeedViewModelItem]()
     
-    weak var delegate: FeedViewModelDelegete!
-    
-    override func setup() {
-        LocationManager.shared.delegate = self
-        LocationManager.shared.startUpdateLocation()
+    func likeUnlikePost() {
+        guard let post = self.post, let isLiked = post.isLiked else { return }
+        return isLiked ? unlike() : like()
     }
     
-    func refreshData() {
-        LocationManager.shared.startUpdateLocation()
-    }
-    
-    private func loadData() {
-        
-        // TODO: for test delete sil
-        if Constants.LOCALTEST {
-            LoaderController.shared.showLoader(style: .gray)
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                LoaderController.shared.removeLoader()
-                self.populate(posts: [Post]())
-            })
-            return
+    private func like() {
+        guard let post = self.post, let isLiked = post.isLiked, var likeCount = post.likeCount else { return
         }
-        // TODO: for test delete sil
         
-        LoaderController.shared.showLoader(style: .gray)
-        REAWSManager.shared.getFeeds(page: page, perPage: perPage, radius: Constants.Map.Radius) { [weak self]
-            result in
-            print("\(#function) working and get data")
-            LoaderController.shared.removeLoader()
-            self?.handleResult(result)
+        post.isLiked = !isLiked
+        likeCount += 1
+        post.likeCount = likeCount
+        REAWSManager.shared.like(post: post, commentid: nil) { (result) in
+            // result true
         }
+        
+        isPostLiked.value = post.isLiked ?? false
     }
     
-    func handleResult(_ result: NetworkResult<REPostListResponse>) {
-        switch result {
-        case .success(let response):
-            if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
-                print("Lambda Error: \(error)")
-                return
-            }
-            
-            guard let posts = response.items else { return }
-            
-            var newItems = [Post]()
-            for post in posts {
-                newItems.append(Post(post: post))
-            }
-            if !newItems.isEmpty {
-                self.populate(posts: newItems)
-            }
-        case .failure(let apiError):
-            switch apiError {
-            case .serverError(let error):
-                print("Server error: \(error)")
-            case .connectionError(let error) :
-                print("Connection error: \(error)")
-            case .missingDataError:
-                print("Missing Data Error")
-            }
+    private func unlike() {
+        guard let post = self.post, let isLiked = post.isLiked, var likeCount = post.likeCount else { return
         }
-    }
-    
-    private func populate(posts: [Post]) {
-        var newItems = [FeedViewModelItem]()
-        for post in posts {
-            newItems.append(FeedViewModelPostItem(post: post))
+        
+        post.isLiked = !isLiked
+        likeCount -= 1
+        post.likeCount = likeCount
+        REAWSManager.shared.unlike(post: post, commentid: nil) { (result) in
+            // result true
         }
-        setup(newItems: newItems)
+        isPostLiked.value = post.isLiked ?? false
     }
     
-    private func setup(newItems: [FeedViewModelItem]) {
-        // MARK: difference calculator
-        let oldData = flatten(items: items)
-        let newData = flatten(items: newItems)
-        let cellChanges = DifferenceCalculator.calculate(oldItems: oldData, newItems: newData)
+    // Turn Off Comments
+    func turnOffComments() {
+        guard let post = self.post else { return }
+        if !post.isOwnPost() {
+            fatalError("The post is not own post")
+        }
+        guard let isCommentAllowed = post.isCommentAllowed else { return }
+        post.isCommentAllowed = !isCommentAllowed
         
-        self.items = newItems
-        delegate?.apply(changes: cellChanges)
-        LoaderController.shared.removeLoader()
-    }
-    
-    private func flatten(items: [FeedViewModelItem]) -> [ReloadableCell<CellItem>] {
-        let reloadableItems = items
-            .enumerated()
-            .map { ReloadableCell(key: $0.element.id, value: $0.element.cellItems, index: $0.offset) }
-        
-        return reloadableItems
-    }
-    
-}
-
-extension FeedViewModel: LocationManagerDelegate {
-    func didUpdateLocation() {
-        LocationManager.shared.stopUpdateLocation()
-        self.loadData()
-    }
-}
-
-extension FeedViewModel: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionCount
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.row]
-        
-        switch item.type {
-        case .post:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: FeedViewCell.identifier, for: indexPath) as? FeedViewCell {
-                cell.selectionStyle = .none
-                
-                cell.configure(item: item, indexPath: indexPath)
-                
-                if let delegate = self.delegate as? FeedViewCellDelegate {
-                    cell.delegate = delegate
+        REAWSManager.shared.updatePost(post: post) { [unowned self] in
+            print("\(#function) working")
+            switch $0 {
+            case .success(let response):
+                if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                    
+                    post.isCommentAllowed = isCommentAllowed
+                    
+                    print("Lambda Error: \(error)")
+                    return
                 }
                 
-                return cell
+                
+                
+            case .failure(let apiError):
+                post.isCommentAllowed = isCommentAllowed
+                
+                switch apiError {
+                case .serverError(let error):
+                    print("Server error: \(error)")
+                case .connectionError(let error) :
+                    print("Connection error: \(error)")
+                case .missingDataError:
+                    print("Missing Data Error")
+                }
             }
-            return UITableViewCell()
         }
     }
     
     
+    /// Report Post
+    func reportPost(_ reportType: ReportType) {
+        guard let post = self.post else { return }
+        guard let postid = post.postid else { return }
+        
+        REAWSManager.shared.reportPost(postid: postid, reportType: reportType) { [unowned self] in
+            print("\(#function) working")
+            switch $0 {
+            case .success(let response):
+                if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                    print("Lambda Error: \(error)")
+                    return
+                }
+                
+            case .failure(let apiError):
+                switch apiError {
+                case .serverError(let error):
+                    print("Server error: \(error)")
+                case .connectionError(let error) :
+                    print("Connection error: \(error)")
+                case .missingDataError:
+                    print("Missing Data Error")
+                }
+            }
+        }
+    }
+    
+    func deletePost() {
+        guard let post = self.post else { return }
+        guard let postid = post.postid else { return }
+        
+        if !post.isOwnPost() {
+            debugPrint("Can not delete not owned post")
+            return
+        }
+        
+        REAWSManager.shared.deletePost(postid: postid) { [unowned self] in
+            print("\(#function) working")
+            switch $0 {
+            case .success(let response):
+                if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                    print("Lambda Error: \(error)")
+                    return
+                }
+                
+            case .failure(let apiError):
+                switch apiError {
+                case .serverError(let error):
+                    print("Server error: \(error)")
+                case .connectionError(let error) :
+                    print("Connection error: \(error)")
+                case .missingDataError:
+                    print("Missing Data Error")
+                }
+            }
+        }
+    }
+    
 }
-
