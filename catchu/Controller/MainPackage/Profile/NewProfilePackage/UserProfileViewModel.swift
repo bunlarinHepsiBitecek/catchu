@@ -161,7 +161,7 @@ class UserProfileViewModel: BaseViewModel, ViewModel {
             
             groupsRow.items.removeAll()
             for item in items {
-                groupsRow.items.append(Group(group: item))
+                groupsRow.items.append(Group(reGroup: item))
             }
             
         case .failure(let apiError):

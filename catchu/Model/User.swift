@@ -86,6 +86,25 @@ class User {
         }
     }
     
+    init(user : REUserProfileProperties?) {
+        guard let user = user else { return }
+        
+        if let userid = user.userid {
+            self.userid = userid
+        }
+        if let name = user.name {
+            self.name = name
+        }
+        if let username = user.username {
+            self.username = username
+        }
+        if let profilePhotoUrl = user.profilePhotoUrl {
+            self.profilePictureUrl = profilePhotoUrl
+        }
+        if let isPrivateAccount = user.isPrivateAccount {
+            self.isUserHasAPrivateAccount = isPrivateAccount.boolValue
+        }
+    }
     
     init (userProfile: REUserProfileProperties, relationInfo: REUserProfile_relationInfo) {
         self.userid = userProfile.userid!

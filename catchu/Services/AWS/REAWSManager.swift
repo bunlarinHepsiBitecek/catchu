@@ -17,7 +17,7 @@ enum BackEndAPIError: Error {
     // The Server returned no data
     case missingDataError
     // Can't connect to the server (maybe offline?)
-    case connectionError()
+    case connectionError(error: Error)
     // The server responded with a non 200 status code
     case serverError(error: Error)
 }

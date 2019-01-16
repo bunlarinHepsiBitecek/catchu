@@ -271,7 +271,7 @@ extension ContactList : UITableViewDelegate, UITableViewDataSource {
             
             guard let cell = tableViewContactList.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.contactSyncedTableViewCell, for: indexPath) as? UserViewCell else { return UITableViewCell() }
             
-            cell.configure(item: getViewModelUser(index: indexPath.row))
+            cell.configure(viewModelItem: getViewModelUser(index: indexPath.row))
             
             return cell
             

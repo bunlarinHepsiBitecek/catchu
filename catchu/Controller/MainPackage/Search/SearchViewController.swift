@@ -162,6 +162,8 @@ class SearchViewController: BaseTableViewController {
             footerView = noResultFoundView
         case .error:
             footerView = noResultFoundView
+        default:
+            footerView = nil
         }
         DispatchQueue.main.async {
             self.tableView.tableFooterView = footerView

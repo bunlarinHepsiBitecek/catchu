@@ -50,19 +50,6 @@ extension MainTabBarViewController {
         
     }
     
-    func add_ShareDataViewController2() {
-        
-        if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ShareDataViewController2) as? ShareDataViewController2 {
-            
-            addTransitionToPresentationOfShareViews()
-            tabBarHiddenManagement(hidden: true)
-            destinationController.delegate = self
-            destinationController.priorActiveTab = selectedIndexInfo
-            self.present(destinationController, animated: false, completion: nil)
-        }
-        
-    }
-    
     func add_PostViewController() {
         
         if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.PostViewController) as? PostViewController {

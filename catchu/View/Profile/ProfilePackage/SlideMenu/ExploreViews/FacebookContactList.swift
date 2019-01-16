@@ -190,7 +190,7 @@ extension FacebookContactList : UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableViewFacebookContactList.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.facebookContactTableViewCell, for: indexPath) as? UserViewCell else { return UITableViewCell()
         }
         
-        cell.configure(item: getViewModelUser(index: indexPath.row))
+        cell.configure(viewModelItem: getViewModelUser(index: indexPath.row))
         
         return cell
         

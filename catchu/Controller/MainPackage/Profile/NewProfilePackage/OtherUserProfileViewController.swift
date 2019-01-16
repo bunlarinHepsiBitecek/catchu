@@ -78,6 +78,8 @@ class OtherUserProfileViewController: BaseCollectionViewController {
             activityFooterView?.stopAnimating()
         case .error:
             activityFooterView?.stopAnimating()
+        default:
+            activityFooterView?.stopAnimating()
         }
     }
     

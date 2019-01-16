@@ -295,14 +295,13 @@ enum ExploreType {
 }
 
 enum TableViewState: String {
-    
     case suggest
     case loading
+    case paging
     case populate
     case empty
     case sectionReload
     case error
-    
 }
 
 enum TableViewSectionTitle : String {
@@ -439,12 +438,6 @@ enum InformerGestureStates {
 enum FollowPageIndex {
     case followers
     case followings
-    case suggest
-    case loading
-    case paging
-    case populate
-    case empty
-    case error
 }
 
 enum CatchType: String {

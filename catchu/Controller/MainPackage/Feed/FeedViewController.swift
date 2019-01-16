@@ -119,6 +119,8 @@ class FeedViewController: BaseTableViewController {
             backgroungView(isHidden: false)
         case .error:
             tableFooterView(view: nil)
+        default:
+            tableFooterView(view: nil)
         }
     }
     

@@ -106,12 +106,6 @@ class HomeViewController: BaseViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
         layout.estimatedItemSize = CGSize(width: 1, height: 1)
-//        let profileVC = UserProfileCollectionViewController(collectionViewLayout: layout)
-//        self.navigationController?.pushViewController(profileVC, animated: true)
-        
-//        let denemeCollectionView = DenemeCollectionViewController(collectionViewLayout: layout)
-//        self.navigationController?.pushViewController(denemeCollectionView, animated: true)
-        
         
         let dummyUser = User()
         dummyUser.profilePictureUrl = "https://picsum.photos/100/100/?random"
