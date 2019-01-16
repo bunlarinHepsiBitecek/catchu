@@ -10,39 +10,49 @@ class SearchViewModel: BaseViewModel, ViewModel {
     let sectionCount = 1
     var page = 1
     var perPage = 20
-    var items = [ViewModelItem]()
+    private var items = [ViewModelItem]()  // mutable array
+    var filteredItems = [ViewModelItem]()
     
-    var isLoading = Dynamic(false)
-    var reloadTableView = Dynamic(false)
+    var searchTimer: Timer?
+    let state = Dynamic(TableViewState.suggest)
     
-    private func populate(users: [User]) {
-        items.removeAll()
+    func search(text: String) {
+        let text = text.lowercased()
+        searchTimer?.invalidate()
+        print("timer basladi")
         
-        for user in users {
-            items.append(ViewModelUser(user: user))
-        }
-        
-        isLoading.value = false
-        reloadTableView.value = true
-    }
-    
-    func searchUsers(text: String) {
         if text.isEmpty {
             removeAll()
             return
         }
         
-        isLoading.value = true
+        
+        filterItems(text)
+        state.value = .loading
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+            print("tetiklendi")
+            self.searchUser(text)
+        })
+    }
+    
+    func filterItems(_ text: String) {
+        let filteredUser = items.compactMap {$0 as? ViewModelUser}.compactMap {$0.user}.filter {$0.name?.lowercased().range(of: text) != nil || $0.username?.lowercased().range(of: text) != nil }
+        filteredItems = filteredUser.compactMap {ViewModelUser(user: $0)}
+    }
+    
+    func removeAll() {
+        state.value = .suggest
+        items.removeAll()
+        
+        // MARK: ek
+        filteredItems = items
+    }
+    
+    func searchUser(_ text: String) {
         REAWSManager.shared.searchUsersGet(searchText: text, page: page, perPage: perPage) { (result) in
             print("\(#function) working and get data")
             self.handleResult(result)
         }
-    }
-    
-    func removeAll() {
-        items.removeAll()
-        isLoading.value = false
-        reloadTableView.value = true
     }
     
     private func handleResult(_ result: NetworkResult<REUserListResponse>) {
@@ -50,6 +60,7 @@ class SearchViewModel: BaseViewModel, ViewModel {
         case .success(let response):
             if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
                 print("Lambda Error: \(error)")
+                state.value = .error
                 return
             }
             
@@ -62,6 +73,7 @@ class SearchViewModel: BaseViewModel, ViewModel {
             self.populate(users: newItems)
             
         case .failure(let apiError):
+            state.value = .error
             switch apiError {
             case .serverError(let error):
                 print("Server error: \(error)")
@@ -71,6 +83,19 @@ class SearchViewModel: BaseViewModel, ViewModel {
                 print("Missing Data Error")
             }
         }
+    }
+    
+    private func populate(users: [User]) {
+        items.removeAll()
+        
+        for user in users {
+            items.append(ViewModelUser(user: user))
+        }
+        
+        // MARK: ek
+        filteredItems = items
+        
+        state.value = items.count == 0 ? .empty : .populate
     }
     
     

@@ -17,7 +17,11 @@ struct TabPageViewConfigurator {
 
 class TabPageViewController: UIPageViewController {
     
-    var selectedIndex: Int = 0
+    var selectedIndex: Int = 0 {
+        didSet {
+            menuTabView.selectAction.value = selectedIndex
+        }
+    }
     let configurator: TabPageViewConfigurator = TabPageViewConfigurator()
     
     lazy var menuTabView: MenuTabView = {
@@ -32,7 +36,7 @@ class TabPageViewController: UIPageViewController {
         return view
     }()
     
-    var items = [UIViewController]() {
+    var items: [(viewController: UIViewController, title: String, icon: UIImage?)] = [] {
         didSet {
             menuTabView.configure(items)
         }
@@ -77,13 +81,13 @@ class TabPageViewController: UIPageViewController {
         
         if direction == .forward {
             for tempIndex in selectedIndex...index {
-                self.setViewControllers([items[tempIndex]], direction: direction, animated: true) { [weak self](_) in
+                self.setViewControllers([items[tempIndex].viewController], direction: direction, animated: true) { [weak self](_) in
                     self?.selectedIndex = tempIndex
                 }
             }
         } else {
             for tempIndex in (index...selectedIndex).reversed() {
-                self.setViewControllers([items[tempIndex]], direction: direction, animated: true) { [weak self](_) in
+                self.setViewControllers([items[tempIndex].viewController], direction: direction, animated: true) { [weak self](_) in
                     self?.selectedIndex = tempIndex
                 }
             }
@@ -91,8 +95,10 @@ class TabPageViewController: UIPageViewController {
     }
     
     private func setupBinds() {
-        menuTabView.selectAction.bindAndFire { [unowned self] (index) in
-            self.scrollToPage(index)
+        menuTabView.selectAction.bind { [unowned self] (index) in
+            if self.selectedIndex != index {
+                self.scrollToPage(index)
+            }
         }
     }
     
@@ -127,7 +133,7 @@ extension TabPageViewController: UIPageViewControllerDelegate, UIPageViewControl
         index = isAfter ? index + 1 : index - 1
         
         if index >= 0 && index < items.count {
-            return items[index]
+            return items[index].viewController
         }
         
         return nil
@@ -141,7 +147,7 @@ extension TabPageViewController: UIPageViewControllerDelegate, UIPageViewControl
     }
     
     private func findIndex(_ viewController: UIViewController) -> Int? {
-        guard let index = items.map({$0}).index(of: viewController) else {
+        guard let index = items.map({$0.viewController}).index(of: viewController) else {
             return nil
         }
         return index
@@ -154,9 +160,6 @@ extension TabPageViewController: UIScrollViewDelegate {
         let selectedWidthSize = CGFloat(selectedIndex) * view.frame.width
         
         let scrollOffsetX = scrollView.contentOffset.x + selectedWidthSize - view.frame.width
-        
-        print("selected: \(selectedIndex) - scrollOffsetX: \(scrollOffsetX)")
-        
         self.menuTabView.scrollBarIndicator(contentOffsetX: scrollOffsetX, currentIndex: selectedIndex)
     }
     

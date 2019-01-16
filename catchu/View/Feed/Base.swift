@@ -40,6 +40,42 @@ class BaseTableViewController: UITableViewController {
     }
 }
 
+class BaseCollectionViewController: UICollectionViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        print("Receive memory warning from \(String(describing: self))")
+    }
+    
+    func setupViews() {
+        
+    }
+}
+
+class BaseCollectionReusableView: UICollectionReusableView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupViews() {
+        
+    }
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
+}
+
 class BaseView: UIView {
     
     override init(frame: CGRect) {
@@ -67,14 +103,22 @@ class BaseViewModel: NSObject {
     }
 }
 
-protocol BaseViewModelItem {}
-
 
 protocol ViewModel {}
 protocol ViewModelItem {}
 
+protocol SectionViewModel {
+    var headerTitle: String? { get }
+    var rowViewModels: [ViewModelItem] { set get }
+}
+
+
+protocol ConfigurableController {
+    func configure(viewModel: ViewModel)
+}
+
 protocol ConfigurableCell {
-    func configure(item: ViewModelItem)
+    func configure(viewModelItem: ViewModelItem)
 }
 
 //protocol ReusableCell {
@@ -133,6 +177,28 @@ class BaseTableCell: UITableViewCell {
         return String(describing: self)
     }
 }
+
+class BaseTableCellRightDetail: UITableViewCell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupViews() {
+        
+    }
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
+}
+
 
 //extension BaseTableCell {
 //

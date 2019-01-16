@@ -67,12 +67,11 @@ class MenuTabView: BaseView {
             ])
     }
     
-    func configure(_ items: [UIViewController]) {
+    func configure(_ items: [(viewController: UIViewController, title: String, icon: UIImage?)]) {
         viewModel.items.removeAll()
         
-        items.compactMap({$0}).forEach { (viewController) in
-            let title = viewController.title ?? "No Title"
-            viewModel.items.append(MenuTabViewModelTitleItem(title: title))
+        items.compactMap {$0}.forEach { (_, title, icon) in
+            viewModel.items.append(MenuTabViewModelTitleItem(title: title, icon: icon))
         }
         
         /// when need update constraint multiplier then deactive, change and activate again
@@ -92,10 +91,9 @@ class MenuTabView: BaseView {
         let maxIndex = viewModel.items.count - 1
         let minIndex = 0
         
-        print("lastContentOffsetX: \(lastContentOffsetX) - \(barIndicatorView.frame.midX)")
         barIndicatorViewLeadingConstraint.constant = lastContentOffsetX
         
-        print("midx: \(barIndicatorView.frame.midX) - frameWidth: \(frame.width * multiplier) - currentIndex: \(currentIndex)")
+//        print("midx: \(barIndicatorView.frame.midX) - frameWidth: \(frame.width * multiplier) - currentIndex: \(currentIndex)")
         
         var selectIndex = Int(barIndicatorView.frame.midX / (frame.width * multiplier))
         
@@ -112,7 +110,7 @@ class MenuTabView: BaseView {
     
     func selectTabViewCollectionCell(_ index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
-        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
     }
 }
 
@@ -126,7 +124,10 @@ extension MenuTabView: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectAction.value = indexPath.row
+        if selectAction.value != indexPath.row {
+            collectionView.deselectItem(at: indexPath, animated: false)
+            selectAction.value = indexPath.row
+        }
     }
     
 }

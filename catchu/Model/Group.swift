@@ -12,23 +12,27 @@ class Group {
     
     public static var shared = Group()
     
-    var groupID : String?
-    var adminUserID : String?
-    var groupName : String?
-    var groupPictureUrl : String?
-    var groupCreateDate : String?
-    var groupMembers : [User] = []
+    var groupID: String?
+    var adminUserID: String?
+    var groupName: String?
+    var groupPictureUrl: String?
+    var groupCreateDate: String?
+    var groupMembers: [User] = []
     
-    var indexPath : IndexPath?
+    var indexPath: IndexPath?
     
-    // var _groupDictionary : Dictionary<String, String> = [:]
-    var groupDictionary : Dictionary<String, Group> = [:]
-    var groupList : Array<Group> = []
-    var groupSortedList : Array<Group> = []
+    var groupDictionary: Dictionary<String, Group> = [:]
+    var groupList: Array<Group> = []
+    var groupSortedList: Array<Group> = []
     
+    init() {}
     
-    init() {
-        self.groupMembers = []
+    init(group: REGroupRequestResult_resultArray_item) {
+        self.groupID = group.groupid
+        self.adminUserID = group.groupAdmin
+        self.groupName = group.name
+        self.groupCreateDate = group.createAt
+        self.groupPictureUrl = group.groupPhotoUrl
     }
     
     func createSortedGroupList() {

@@ -84,6 +84,7 @@ enum RequestType : String {
     case add_participant_into_group = "ADD_PARTICIPANT_INTO_GROUP"
     case exit_group = "EXIT_GROUP"
     case create_group = "CREATE_GROUP"
+    case userGroups = "GET_AUTHENTICATED_USER_GROUP_LIST"
     
  
 }
@@ -202,4 +203,42 @@ enum SlideMenuViewTags {
 enum ExploreType {
     case facebook
     case contact
+}
+
+enum TableViewState: String {
+    case suggest
+    case loading
+    case paging
+    case populate
+    case empty
+    case error
+}
+
+enum CatchType: String {
+    case `public`
+    case `catch`
+}
+
+enum ReportType: String {
+    case spam
+    case inappropiate
+    case bug
+    case feedback
+}
+
+enum GenderType: String, CaseIterable {
+    case unspecified
+    case male
+    case female
+    
+    func toLocalized() -> String {
+        switch self {
+        case .unspecified:
+            return LocalizedConstants.Profile.GenderUnspecified
+        case .male:
+            return LocalizedConstants.Profile.GenderMale
+        case .female:
+            return LocalizedConstants.Profile.GenderFemale
+        }
+    }
 }

@@ -33,7 +33,7 @@ extension MainTabBarViewController {
         
         self.delegate = self
         
-        FirebaseManager.shared.checkUserLoggedIn()
+        let _ = FirebaseManager.shared.checkUserLoggedIn()
         SlideMenuLoader.shared.createSlider(inputView: self.view)
         
     }

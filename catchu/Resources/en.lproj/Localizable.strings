@@ -13,6 +13,7 @@
 "OK"              = "OK";
 "Error"           = "Error";
 "Warning"         = "Warning";
+"Loading"         = "Loading";
 
 "UserName"        = "User name";
 "Email"           = "Email";
@@ -136,21 +137,47 @@
 
 //Feed
 "NoPostFound" = "No post found nearby your current location";
+"NoResultFound" = "No result found";
 "CatchU" = "CatchU";
-"Loading" = "Loading...";
 "More" = "more";
 "Comments" = "Comments";
 "AddComment" = "Add a comment...";
 "Send" = "Send";
 "Reply" = "Reply";
+"Report" = "Report";
+"ItSpam" = "It's Spam";
+"ItInappropriate" = "It's Inappropriate";
+"TurnOnComments" = "Turn On Comments";
+"TurnOffComments" = "Turn Off Comments";
+"Delete" = "Delete";
 
 // Like
 "Likes" = "Likes";
-"Loading" = "Loading...";
 "Follow" = "Follow";
 "Following" = "Following";
 "Requested" = "Requested";
 "Unfollow" = "Unfollow";
+
+// Profile
+"Profile_Send_Message" = "Send Message";
+"Profile_Followers" = "Followers";
+"Profile_Following" = "Following";
+"Profile_Posts" = "Posts";
+"Profile_Caught_Posts" = "Caught Posts";
+"Profile_Groups" = "Groups";
+"Profile_Change_Photo" = "Change Profile Photo";
+"Profile_Name" = "Name";
+"Profile_Username" = "Username";
+"Profile_Website" = "Website";
+"Profile_Bio" = "Bio";
+"Profile_Email" = "Email";
+"Profile_Phone" = "Phone";
+"Profile_Gender" = "Gender";
+"Profile_Birthday" = "Birthday";
+"Profile_Gender_Male" = "Male";
+"Profile_Gender_Female" = "Female";
+"Profile_Gender_Unspecified" = "Unspecified";
+
 
 // Permission Statements
 "topicLabelForCamera" = "Please Allow Access to Camera";

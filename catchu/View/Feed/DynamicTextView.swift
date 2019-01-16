@@ -68,7 +68,7 @@ class DynamicTextView: UITextView {
     override var font: UIFont? {
         didSet {
             placeholderLabel.font = font
-//            invalidateIntrinsicContentSize()
+            invalidateIntrinsicContentSize()
         }
     }
     

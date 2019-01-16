@@ -1,5 +1,5 @@
 /*
- Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ Copyright 2010-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  
  Licensed under the Apache License, Version 2.0 (the "License").
  You may not use this file except in compliance with the License.
@@ -17,17 +17,22 @@
 import Foundation
 import AWSCore
 
+
 @objcMembers
 public class REUserProfile_relationInfo : AWSModel {
     
     var followerCount: String?
     var followingCount: String?
+    var postCount: NSNumber?
+    var catchCount: NSNumber?
     var followStatus: String?
     
     public override static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]!{
         var params:[AnyHashable : Any] = [:]
         params["followerCount"] = "followerCount"
         params["followingCount"] = "followingCount"
+        params["postCount"] = "postCount"
+        params["catchCount"] = "catchCount"
         params["followStatus"] = "followStatus"
         
         return params

@@ -94,13 +94,13 @@ class EditProfile4View: UIView {
         
         User.shared.name            = referenceOfRootView.editableProfileView.nameTextField.text!
         User.shared.username        = referenceOfRootView.editableProfileView.usernameTextField.text!
-        User.shared.userWebsite     = referenceOfRootView.editableProfileView.websiteTextField.text!
-        User.shared.userBirthday    = referenceOfRootView.editableProfileView.birthDayTextField.text!
+        User.shared.website     = referenceOfRootView.editableProfileView.websiteTextField.text!
+        User.shared.birthday    = referenceOfRootView.editableProfileView.birthDayTextField.text!
         User.shared.email           = referenceOfRootView.editableProfileView.emailTextField.text!
 
         // TODO: phone num
         //        User.shared.phone           = referenceOfRootView.editableProfileView.phoneNumberTextField.text!
-        User.shared.userGender      = referenceOfRootView.editableProfileView.genderTextField.text!
+//        User.shared.gender      = referenceOfRootView.editableProfileView.genderTextField.text!
         
 //        var temp = User()
 //

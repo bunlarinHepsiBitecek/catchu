@@ -112,10 +112,10 @@ extension UIImageView {
             return
         }
         
-        if Constants.LOCALTEST {
-            self.image = UIImage(named: "AppIcon")
-            return
-        }
+//        if Constants.LOCALTEST {
+//            self.image = UIImage(named: "microphoneMain.jpeg")
+//            return
+//        }
         
         URLSession.shared.dataTask(with: urlValue, completionHandler: { [weak self] (data, response, error) in
             if error != nil {

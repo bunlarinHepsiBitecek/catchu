@@ -10,9 +10,9 @@ import UIKit
 
 class MediaView: BaseView {
     
-    var item: FeedViewModelItem? {
+    var item: FeedViewModelItemPost? {
         didSet {
-            self.configure()
+            configure()
         }
     }
     
@@ -93,7 +93,7 @@ class MediaView: BaseView {
     }
     
     func configure() {
-        guard let item = item as? FeedViewModelPostItem, let post = item.post else { return }
+        guard let item = item, let post = item.post else { return }
         
         self.dataSource.populate(post: post)
         self.pageControl.numberOfPages = self.dataSource.items.count
@@ -110,17 +110,13 @@ class MediaView: BaseView {
 
 extension MediaView: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width, height: self.frame.height)
-    }
-    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
         let x = targetContentOffset.pointee.x
         pageControl.currentPage = Int(x / self.frame.width)
         
         /// Store current scrolled page in referens Model
-        if let item = self.item as? FeedViewModelPostItem {
+        if let item = self.item {
             item.currentPage = pageControl.currentPage
         }
     }
@@ -128,6 +124,11 @@ extension MediaView: UICollectionViewDelegate {
 }
 
 extension MediaView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.frame.width, height: self.frame.height)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }

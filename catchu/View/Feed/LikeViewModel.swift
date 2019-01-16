@@ -6,11 +6,7 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
-protocol LikeViewModelDelegete: class {
-    func updateTableView()
-}
-
-class LikeViewModel: BaseViewModel {
+class LikeViewModel: BaseViewModel, ViewModel {
     let sectionCount = 1
     var page = 1
     var perPage = 20
@@ -19,7 +15,7 @@ class LikeViewModel: BaseViewModel {
     var post: Post?
     var comment: Comment?
     
-    weak var delegate: LikeViewModelDelegete!
+    var reloadTableView = Dynamic(true)
     
     func loadData() {
 //        guard let post = self.post else { return }
@@ -31,6 +27,10 @@ class LikeViewModel: BaseViewModel {
 //            self?.handleResult(result)
 //        }
         dummyData()
+    }
+    
+    func refreshData() {
+        
     }
     
     private func handleResult(_ result: NetworkResult<REUserListResponse>) {
@@ -68,7 +68,7 @@ class LikeViewModel: BaseViewModel {
             let likeItem = ViewModelUser(user: user)
             items.append(likeItem)
         }
-        delegate?.updateTableView()
+        reloadTableView.value = true
     }
     
     func dummyData() {

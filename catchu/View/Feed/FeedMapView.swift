@@ -204,7 +204,7 @@ class UserMarkerView: MKMarkerAnnotationView {
     }
     
     class func userImageForAnnotation() -> UIImage {
-        let param: CGFloat = 40
+        let param: CGFloat = 20
         let roundRect = CGRect(x: 0, y: 0, width: param, height: param)
         let size = CGSize(width: param, height: param)
         
@@ -237,7 +237,7 @@ class UserMarkerView: MKMarkerAnnotationView {
         
         print("Result size: \(resultImg.size)")
         
-        return resultImg
+        return resultImg.withRenderingMode(.alwaysTemplate)
     }
     
     func userImageForAnnotationOrginal() -> UIImage {

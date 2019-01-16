@@ -8,15 +8,40 @@
 
 import UIKit
 
-fileprivate extension Selector {
-    static let pullToRefresh = #selector(FeedViewController.refreshData(_:))
-}
-
 class FeedViewController: BaseTableViewController {
     
-    // MARK: Variable
-    private let viewModel = FeedViewModel()
+    // MARK: - Variable
+    private var viewModel: FeedViewModel!
     
+    // MARK: - Views
+    lazy var activityIndicatorView: UIView = {
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.startAnimating()
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+        view.addSubview(activityIndicatorView)
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ])
+        
+        return view
+    }()
+    
+    let noResultFoundLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.text = LocalizedConstants.Feed.NoPostFound
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.sizeToFit()
+        return label
+    }()
+    
+    // MARK: - Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +50,7 @@ class FeedViewController: BaseTableViewController {
         guard checkLoginAuth() else { return }
         
         setupTableView()
-        barButtonTest()
+        setupViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,64 +71,87 @@ class FeedViewController: BaseTableViewController {
     }
     
     private func setupTableView() {
-        
-        viewModel.delegate = self
-        
-        tableView.dataSource = viewModel
-        tableView.delegate = self
-        
-        // Setup dynamic auto-resizing for comment cells
-//        tableView.estimatedRowHeight = 500
-//        tableView.rowHeight = UITableViewAutomaticDimension
-        
         tableView.separatorStyle = .none
-        
         tableView.register(FeedViewCell.self, forCellReuseIdentifier: FeedViewCell.identifier)
+        tableView.backgroundView = noResultFoundLabel
+        backgroungView(isHidden: true)
         
-        tableView.backgroundView = ConstanstViews.Labels.NoDataFoundLabel
-        tableView.backgroundView?.isHidden = true
-        
-        setupRefreshControl()
-    }
-    
-    // MARK : Sil
-    func barButtonTest() {
-        let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(buttonActionRight))
-        self.navigationItem.rightBarButtonItem = rightBarButton
-        
-        let leftBarButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonActionLeft))
-        self.navigationItem.leftBarButtonItem = leftBarButton
-    }
-    
-    @objc func buttonActionRight() {
-        let phoneViewController = PhoneViewController()
-        LoaderController.presentViewController(controller: phoneViewController)
-    }
-    
-    @objc func buttonActionLeft() {
-//        let feedMapView = FeedMapView()
-//        feedMapView.translatesAutoresizingMaskIntoConstraints = false
-//        self.view.addSubview(feedMapView)
-//
-//        NSLayoutConstraint.activate([
-//            feedMapView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
-//            feedMapView.safeBottomAnchor.constraint(equalTo: view.safeBottomAnchor),
-//            feedMapView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
-//            feedMapView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
-//            ])
-        
-        AlertViewManager.show(type: .error, body: "Ugur totosu buna bakiyor simdi")
-        
-    }
-}
-
-extension FeedViewController {
-    
-    func setupRefreshControl() {
         refreshControl = UIRefreshControl()
         refreshControl!.addTarget(self, action: .pullToRefresh, for: .valueChanged)
         refreshControl!.attributedTitle = NSAttributedString(string: LocalizedConstants.Feed.Loading)
     }
+    
+    private func setupViewModel() {
+        viewModel.getData()
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
+        viewModel.state.bindAndFire { [unowned self] in
+            print("state fired: \($0.rawValue)")
+            self.setFooterView($0)
+        }
+        
+        viewModel.changes.bindAndFire { [unowned self] in
+            print("changes fired:")
+            self.reloadTableView($0)
+        }
+    }
+    
+    deinit {
+        viewModel.state.unbind()
+        viewModel.changes.unbind()
+    }
+    
+    func setFooterView(_ state: TableViewState) {
+        backgroungView(isHidden: true)
+        switch state {
+        case .suggest:
+            tableFooterView(view: nil)
+        case .loading:
+            tableFooterView(view: activityIndicatorView)
+        case .paging:
+            tableFooterView(view: nil)
+        case .populate:
+            tableFooterView(view: nil)
+        case .empty:
+            tableFooterView(view: nil)
+            backgroungView(isHidden: false)
+        case .error:
+            tableFooterView(view: nil)
+        }
+    }
+    
+    func tableFooterView(view: UIView?) {
+        DispatchQueue.main.async {
+            self.tableView.tableFooterView = view
+        }
+    }
+    
+    func backgroungView(isHidden: Bool) {
+        DispatchQueue.main.async {
+            self.tableView.backgroundView?.isHidden = isHidden
+        }
+    }
+    
+    func reloadTableView(_ changes: CellChanges) {
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.reloadRows(at: changes.reloads, with: .fade)
+            self.tableView.insertRows(at: changes.inserts, with: .fade)
+            self.tableView.deleteRows(at: changes.deletes, with: .fade)
+            self.tableView.endUpdates()
+//            self.tableView.backgroundView?.isHidden = self.viewModel.items.count > 0
+        }
+    }
+    
+    func configure(viewModel: ViewModel) {
+        guard let viewModel = viewModel as? FeedViewModel else { return }
+        self.viewModel = viewModel
+    }
+}
+
+extension FeedViewController {
     
     @objc func refreshData(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
@@ -112,14 +160,15 @@ extension FeedViewController {
             self.refreshControl!.endRefreshing()
         })
     }
+    
 }
 
-extension FeedViewController: FeedViewCellDelegate {
+extension FeedViewController {
     
-    func updateTableView(indexPath: IndexPath?) {
+    func reloadTableCell(at indexPath: IndexPath?) {
         guard let indexPath = indexPath else { return }
         
-        if let item = viewModel.items[indexPath.row] as? FeedViewModelPostItem {
+        if let item = viewModel.items[indexPath.row] as? FeedViewModelItemPost {
             item.expanded = true
             
             guard let post = item.post else { return }
@@ -134,20 +183,38 @@ extension FeedViewController: FeedViewCellDelegate {
     }
 }
 
-extension FeedViewController: FeedViewModelDelegete {
-    func apply(changes: CellChanges) {
-        DispatchQueue.main.async {
-            self.tableView.beginUpdates()
-            self.tableView.reloadRows(at: changes.reloads, with: .fade)
-            self.tableView.insertRows(at: changes.inserts, with: .fade)
-            self.tableView.deleteRows(at: changes.deletes, with: .fade)
-            self.tableView.endUpdates()
-            
-            self.tableView.backgroundView?.isHidden = self.viewModel.items.count > 0
-        }
-        
+
+extension FeedViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.sectionCount
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.items.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = viewModel.items[indexPath.row]
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: FeedViewCell.identifier, for: indexPath) as? FeedViewCell {
+            
+            cell.configure(viewModel: item, indexPath: indexPath)
+            
+            // MARK: bind the cell
+            cell.readMore?.bind({ [unowned self] (indexPath) in
+                self.reloadTableCell(at: indexPath)
+            })
+            
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
 }
+
+fileprivate extension Selector {
+    static let pullToRefresh = #selector(FeedViewController.refreshData(_:))
+}
+
 
 

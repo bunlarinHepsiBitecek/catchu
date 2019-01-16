@@ -10,11 +10,13 @@ import UIKit
 
 struct Constants {
     // https://picsum.photos/45/45/?random
-    static let LOCALTEST = false
+    static let LOCALTEST = true
     static let CATCHU = "CatchU"
     static let TWITTER_CUSTOMER_KEY = "qSautcd7v9cuWd3FlH55HLBN6"
     static let TWITTER_CUSTOMER_SECRETKEY = "UQuANLyZKPCW3lRoagkc5VHGrLEYyLbMsXf0UVnkrcEThaJyEl"
     static let AWS_PATH_EMPTY = "empty" // used for aws lambda path param empty
+    
+    static let ScreenBounds = UIScreen.main.bounds
     
     struct Bundle {
         struct Path {
@@ -196,6 +198,14 @@ struct Constants {
         static let ReadMoreUnderlineColor: UIColor = UIColor.clear
         static let DefaultImageExtension: String = "jpg"
         static let DefaultVideoExtension: String = "mov"
+    }
+    
+    struct Profile {
+        static let Padding: CGFloat = 20.0
+        static let ImageWidthHeight: CGFloat = 50
+        static let GroupTableHeight: CGFloat = 120
+        static let CollectionMinimumLineSpacing: CGFloat = 1
+        static let CollectionItemPerLine: CGFloat = 3
     }
     
     struct Relation {

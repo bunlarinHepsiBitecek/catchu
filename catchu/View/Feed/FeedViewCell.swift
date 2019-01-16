@@ -8,16 +8,19 @@
 
 import UIKit
 
-protocol FeedViewCellDelegate: class {
-    func updateTableView(indexPath: IndexPath?)
+fileprivate extension Selector {
+    static let likePostAction = #selector(FeedViewCell.likePost)
+    static let showLocationAction = #selector(FeedViewCell.showLocation(_:))
+    static let viewCommentsAction = #selector(FeedViewCell.viewComments(_:))
+    static let viewLikeUsersAction = #selector(FeedViewCell.viewLikeUsers(_:))
+    static let showMoreAction = #selector(FeedViewCell.showMoreActionSheet)
 }
 
 class FeedViewCell: BaseTableCell {
     
-    var item: FeedViewModelItem?
-    var indexPath: IndexPath?
-    
-    weak var delegate: FeedViewCellDelegate!
+    var viewModel: FeedViewModelItemPost!
+    var indexPath: IndexPath!
+    var readMore: Dynamic<IndexPath>?
     
 //    private var shadowLayer: CAShapeLayer!
     private let padding = Constants.Feed.Padding
@@ -40,7 +43,6 @@ class FeedViewCell: BaseTableCell {
     lazy var mediaView: MediaView = {
         let view = MediaView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         return view
     }()
     
@@ -54,7 +56,6 @@ class FeedViewCell: BaseTableCell {
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         return imageView
     }()
     
@@ -64,7 +65,6 @@ class FeedViewCell: BaseTableCell {
         label.text = "catchuname"
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
-       
         return label
     }()
     
@@ -75,72 +75,58 @@ class FeedViewCell: BaseTableCell {
         label.text = "catchuuser"
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
-        
         return label
-    }()
-    
-    let moreButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "icon-more"), for: UIControlState())
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
     }()
     
     lazy var statusTextView: UITextView = {
         let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.backgroundColor = UIColor.clear
         textView.textContainer.lineFragmentPadding = 0 // textContainer always 5.0 left pedding
-
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        
         textView.delegate = self
         return textView
     }()
     
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "icon-like"), for: UIControlState())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(likePost), for: .touchUpInside)
+        button.setImage(UIImage(named: "icon-like"), for: UIControlState())
+        button.addTarget(self, action: .likePostAction, for: .touchUpInside)
         
         return button
     }()
     
     let likeCountLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
         label.numberOfLines = 1
         label.text = "0"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
         return label
         
     }()
     
     lazy var commentCountLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
         label.numberOfLines = 1
         label.text = "0"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
         return label
     }()
     
     lazy var likeIcon: UIImageView = {
         let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "icon-like")
         imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(viewLikeUsers(tapGestureRecognizer:)))
+        let tap = UITapGestureRecognizer(target: self, action: .viewLikeUsersAction)
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tap)
-        
         return imageView
     }()
     
@@ -150,11 +136,20 @@ class FeedViewCell: BaseTableCell {
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(viewComments(tapGestureRecognizer:)))
+        let tap = UITapGestureRecognizer(target: self, action: .viewCommentsAction)
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tap)
         
         return imageView
+    }()
+    
+    lazy var moreButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "icon-more"), for: UIControlState())
+
+        button.addTarget(self, action: .showMoreAction, for: .touchUpInside)
+        return button
     }()
     
     let timeAgoLabel: UILabel = {
@@ -175,11 +170,11 @@ class FeedViewCell: BaseTableCell {
         return label
     }()
     
-    lazy var locationButton: UIButton = {
+    lazy var showOnMapButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "icon-location"), for: UIControlState())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(showLocation(_:)), for: .touchUpInside)
+        button.addTarget(self, action: .showLocationAction, for: .touchUpInside)
         
         return button
     }()
@@ -187,6 +182,8 @@ class FeedViewCell: BaseTableCell {
     
     override func setupViews() {
         super.setupViews()
+        
+        selectionStyle = .none
         
         // MARK : It use in stack for lean view to right
         let spacer = UIView()
@@ -210,12 +207,11 @@ class FeedViewCell: BaseTableCell {
         mediaStackView.layoutMargins = UIEdgeInsets(top: 0, left: -padding, bottom: 0, right: -padding)
         mediaStackView.isLayoutMarginsRelativeArrangement = true
         
-        let locationStackView = UIStackView(arrangedSubviews: [distanceLabel, locationButton])
+        let locationStackView = UIStackView(arrangedSubviews: [distanceLabel, showOnMapButton])
         locationStackView.alignment = .fill
         locationStackView.distribution = .equalSpacing
         locationStackView.spacing = padding
         
-//        let timeDistanceStackView = UIStackView(arrangedSubviews: [timeAgoLabel, distanceLabel])
         let timeDistanceStackView = UIStackView(arrangedSubviews: [timeAgoLabel, locationStackView])
         timeDistanceStackView.alignment = .fill
         timeDistanceStackView.distribution = .equalCentering
@@ -224,7 +220,7 @@ class FeedViewCell: BaseTableCell {
         likeCommentStackView.alignment = .fill
         likeCommentStackView.distribution = .fill
         likeCommentStackView.spacing = padding/2
-        likeCommentStackView.setCustomSpacing(padding, after: likeCountLabel)
+        likeCommentStackView.setCustomSpacing(2*padding, after: likeCountLabel)
         
         let containerStackView = UIStackView(arrangedSubviews: [headerStackView, statusTextView, mediaStackView, timeDistanceStackView, likeCommentStackView,])
         containerStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -243,8 +239,8 @@ class FeedViewCell: BaseTableCell {
         NSLayoutConstraint.activate([
             
             // pin containerView to content
-            containerView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor, constant: padding),
-            containerView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor, constant: -padding),
+            containerView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor, constant: padding/2),
+            containerView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor, constant: -padding/2),
             containerView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor, constant: padding),
             containerView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor, constant: -padding),
             
@@ -256,13 +252,11 @@ class FeedViewCell: BaseTableCell {
             containerStackView.safeTrailingAnchor.constraint(equalTo: containerView.safeTrailingAnchor),
             containerStackView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor),
             ])
-        
-
     }
     
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
-        
+//    override func layoutIfNeeded() {
+//        super.layoutIfNeeded()
+//
         /// Custom cell subview actual size zero in layoutSubviews(), so override layoutIfNeeded
 //        if shadowLayer == nil {
 //            let cornerRadius: CGFloat = 15.0
@@ -280,32 +274,46 @@ class FeedViewCell: BaseTableCell {
 //
 //            containerView.layer.insertSublayer(shadowLayer, at: 0)
 //        }
+//    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        profileImageView.image = nil
+        name.text = nil
+        username.text = nil
+        
+        mediaView.isHidden = true
+        statusTextView.isHidden = true
+        commentIcon.isHidden = false
+        commentCountLabel.isHidden = false
+        showOnMapButton.isHidden = false
+        
+        likeCountLabel.text = nil
+        
+        commentCountLabel.text = nil
+        timeAgoLabel.text = nil
+        distanceLabel.text = nil
+        
+        likeButton.setImage(UIImage(named: "icon-like"), for: .normal)
     }
     
-    func configure(item: FeedViewModelItem, indexPath: IndexPath) {
-        guard let item = item as? FeedViewModelPostItem else { return }
-        self.item = item
+    func configure(viewModel: FeedViewModelItem, indexPath: IndexPath) {
+        guard let viewModel = viewModel as? FeedViewModelItemPost else { return }
+        self.viewModel = viewModel
         self.indexPath = indexPath
         
         // MARK: Post value converter
-        if let post = item.post {
-//            self.mediaView.post = post
-            self.mediaView.item = item
+        if let post = viewModel.post {
+            self.mediaView.item = viewModel
             if let attachments = post.attachments {
                 self.mediaView.isHidden = attachments.count > 0 ? false : true
-            } else {
-                self.mediaView.isHidden = true
             }
-            
-            print("\(indexPath) MediaView hide: \(self.mediaView.isHidden)")
             
             if let message = post.message {
                 statusTextView.isHidden = message.isEmpty
-                statusTextViewReadMore(expanded: item.expanded, text: message)
-            } else {
-                statusTextView.isHidden = true
+                statusTextViewReadMore(expanded: viewModel.expanded, text: message)
             }
-            print("statusTextView.isHidden: \(statusTextView.isHidden)")
             
             if let isLiked = post.isLiked {
                 let buttonImage = isLiked ? UIImage(named: "icon-like-filled") : UIImage(named: "icon-like")
@@ -314,9 +322,18 @@ class FeedViewCell: BaseTableCell {
             if let likeCount = post.likeCount {
                 self.likeCountLabel.text = "\(likeCount)"
             }
+            
             if let commentCount = post.commentCount {
                 self.commentCountLabel.text = "\(commentCount)"
             }
+            if let isCommentAllowed = post.isCommentAllowed {
+                commentIcon.isHidden = !isCommentAllowed
+                commentCountLabel.isHidden = !isCommentAllowed
+            }
+            if let isShowOnMap = post.isShowOnMap {
+                showOnMapButton.isHidden = !isShowOnMap
+            }
+            
             if let createAt = post.createAt {
                 self.timeAgoLabel.text = createAt.timeAgoSinceDate()
             }
@@ -334,8 +351,9 @@ class FeedViewCell: BaseTableCell {
                     self.profileImageView.loadAndCacheImage(url: profilePictureUrl)
                 }
             }
-            
         }
+        
+        bindViewModel()
     }
     
     func statusTextViewReadMore(expanded: Bool, text: String) {
@@ -349,43 +367,27 @@ class FeedViewCell: BaseTableCell {
         }
     }
     
-    @objc func likePost() {
-        
-        guard let item = item as? FeedViewModelPostItem else {
-            return
-        }
-        
-        guard let post = item.post else { return }
-        
-        guard let isLiked = post.isLiked else { return }
-        guard var likeCount = post.likeCount else { return }
-        
-        if isLiked {
-            post.isLiked = !isLiked
-            likeCount -= 1
-            post.likeCount = likeCount
-            self.likeButton.setImage(UIImage(named: "icon-like"), for: .normal)
-            REAWSManager.shared.unlike(post: post, commentid: nil) { (result) in
-                // result true
+    func bindViewModel() {
+        viewModel.isPostLiked.bind { [unowned self] in
+            // update like icon and like count
+            if $0 {
+                self.likeButton.setImage(UIImage(named: "icon-like-filled"), for: .normal)
+                self.animateLikeButton()
+            } else {
+                self.likeButton.setImage(UIImage(named: "icon-like"), for: .normal)
             }
-        } else {
-            post.isLiked = !isLiked
-            likeCount += 1
-            post.likeCount = likeCount
-            self.likeButton.setImage(UIImage(named: "icon-like-filled"), for: .normal)
             
-            REAWSManager.shared.like(post: post, commentid: nil) { (result) in
-                // result true
-            }
+            guard let viewModel = self.viewModel, let post = viewModel.post, let likeCount = post.likeCount else { return }
+            self.likeCountLabel.text = "\(likeCount)"
         }
-        
-        self.likeCountLabel.text = "\(likeCount)"
-        
+    }
+    
+    private func animateLikeButton() {
         self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) // buton view kucultulur
         UIView.animate(withDuration: 1.0,
                        delay: 0,
-                       usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
-            initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
+                       usingSpringWithDamping: 0.2,  // yay sonme orani, arttikca yanip sonme artar
+            initialSpringVelocity: 6,    // yay hizi, arttikca hizlanir
             options: UIViewAnimationOptions.allowUserInteraction,
             animations: {
                 self.likeButton.transform = CGAffineTransform.identity
@@ -394,62 +396,128 @@ class FeedViewCell: BaseTableCell {
         )
     }
     
-    @objc func viewComments(tapGestureRecognizer: UITapGestureRecognizer) {
-        guard let item = self.item as? FeedViewModelPostItem else { return }
-        guard let post = item.post else { return }
+    @objc func likePost() {
+        guard let viewModel = viewModel else { return }
+        viewModel.likeUnlikePost()
+    }
+    
+    @objc func viewComments(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        guard let viewModel = self.viewModel else { return }
+        guard let post = viewModel.post else { return }
         
         let commentViewController = CommentViewController()
         commentViewController.dataSource.post = post
         LoaderController.pushViewController(controller: commentViewController)
     }
     
-    @objc func viewLikeUsers(tapGestureRecognizer: UITapGestureRecognizer) {
-        guard let item = self.item as? FeedViewModelPostItem else { return }
-        guard let post = item.post else { return }
+    @objc func viewLikeUsers(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        guard let viewModel = self.viewModel else { return }
+        guard let post = viewModel.post else { return }
         guard let likeCount = post.likeCount else { return }
         
         if likeCount == 0 {
             return
         }
         
+        
+        let likeViewModel = LikeViewModel()
+        likeViewModel.post = post
+        
         let likeViewController = LikeViewController()
-        likeViewController.configure(post: post)
+        likeViewController.configure(viewModel: likeViewModel)
         LoaderController.pushViewController(controller: likeViewController)
     }
     
     @objc func showLocation(_ sender: UIButton) {
-        guard let item = self.item as? FeedViewModelPostItem else { return }
-        guard let post = item.post else { return }
+        guard let viewModel = self.viewModel else { return }
+        guard let post = viewModel.post else { return }
         guard let location = post.location else { return }
         
         
         let feedMapView = FeedMapView()
         feedMapView.location = location.convertToCLLocation()
         feedMapView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(feedMapView)
+        
+        guard let currentVC = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
+        }
+        currentVC.view.addSubview(feedMapView)
         
         NSLayoutConstraint.activate([
-            feedMapView.safeCenterXAnchor.constraint(equalTo: safeCenterXAnchor),
-            feedMapView.safeCenterYAnchor.constraint(equalTo: safeCenterYAnchor),
-            feedMapView.widthAnchor.constraint(equalToConstant: 300),
-            feedMapView.heightAnchor.constraint(equalToConstant: 400),
+            feedMapView.safeCenterXAnchor.constraint(equalTo: currentVC.view.safeCenterXAnchor),
+            feedMapView.safeCenterYAnchor.constraint(equalTo: currentVC.view.safeCenterYAnchor),
+            feedMapView.widthAnchor.constraint(equalToConstant: 250),
+            feedMapView.heightAnchor.constraint(equalToConstant: 300),
             ])
+    }
+    
+    @objc func showMoreActionSheet() {
+        guard let post = viewModel.post else { return }
+        guard let isCommentAllowed = post.isCommentAllowed else { return }
+        
+        /// Find current view controller to present action sheet
+        guard let currentController = LoaderController.currentViewController() else {
+            print("Current View controller can not be found for \(String(describing: self))")
+            return
+        }
+        
+        let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        if post.isOwnPost() {
+            /// Turn Off Comment of own post
+            let title = isCommentAllowed ? LocalizedConstants.Feed.TurnOffComments : LocalizedConstants.Feed.TurnOnComments
+            actionSheetController.addAction(
+                UIAlertAction(title: title, style: .default) { (_) in
+                    print("Turn Off Comments selected")
+//                    self.item.turnOffComments()
+            })
+            
+            /// Delete own post
+            actionSheetController.addAction(
+                UIAlertAction(title: LocalizedConstants.Feed.Delete, style: .destructive) { (_) in
+                    print("Delete selected")
+//                    self.item.deletePost()
+            })
+        } else {
+            /// Report the other post
+            actionSheetController.addAction(
+                UIAlertAction(title: LocalizedConstants.Feed.Report, style: .destructive) { (_) in
+                    print("Report selected")
+                    
+                    let reportActionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    
+                    reportActionSheetController.addAction(UIAlertAction(title: LocalizedConstants.Feed.ItSpam, style: .destructive) { (_) in
+                        print("ItSpam selected")
+//                        self.item.reportPost(.spam)
+                    })
+                    
+                    reportActionSheetController.addAction(UIAlertAction(title: LocalizedConstants.Feed.ItInappropriate, style: .destructive) { (_) in
+                        print("ItInappropriate selected")
+//                        self.item.reportPost(.inappropiate)
+                    })
+                    
+                    /// Report Cancel
+                    reportActionSheetController.addAction(
+                        UIAlertAction(title: LocalizedConstants.Cancel, style: .cancel) { (_) in
+                    })
+                    
+                    currentController.present(reportActionSheetController, animated: true, completion: nil)
+                    
+            })
+        }
+        
+        /// Cancel
+        actionSheetController.addAction(
+            UIAlertAction(title: LocalizedConstants.Cancel, style: .cancel) { (_) in
+            print("Cancel selected")
+        })
+        
+        currentController.present(actionSheetController, animated: true, completion: nil)
         
     }
     
 }
-
-//extension UITableViewCell {
-//
-//    /** Gets the owner tableView of the cell */
-//    var tableView: UITableView? {
-//        var view = self.superview
-//        while (view != nil && view!.isKind(of: UITableView.self) == false) {
-//            view = view!.superview
-//        }
-//        return view as? UITableView
-//    }
-//}
 
 extension FeedViewCell: UITextViewDelegate {
     
@@ -464,7 +532,11 @@ extension FeedViewCell: UITextViewDelegate {
             print("mention basildi")
         case LocalizedConstants.Feed.More :
             print("more basildi")
-            delegate.updateTableView(indexPath: self.indexPath)
+            if readMore == nil {
+                readMore = Dynamic(indexPath)
+            } else {
+                readMore?.value = indexPath
+            }
         default:
             print("just a regular url click")
         }

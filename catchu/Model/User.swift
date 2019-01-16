@@ -19,14 +19,16 @@ class User {
     var provider: String?
     var providerID: String?
     var profilePictureUrl: String?
-    var userBirthday: String?
-    var userGender: String?
+    var birthday: String?
+    var gender: GenderType?
     var phone: Phone?
-    var userWebsite: String?
+    var website: String?
+    var bio: String?
     var followStatus: FollowStatus?
-    
     var userFollowerCount: String?
     var userFollowingCount: String?
+    var userPostCount: Int?
+    var userCaughtCount: Int?
     
     // the attributes below is used for collectionView management
     var indexPathCollectionView: IndexPath!
@@ -76,15 +78,48 @@ class User {
         if let isPrivateAccount = user.isPrivateAccount {
             self.isUserHasAPrivateAccount = isPrivateAccount.boolValue
         }
+        if let bio = user.bio {
+            self.bio = bio
+        }
         if let followStatus = user.followStatus {
             self.followStatus = FollowStatus.convert(followStatus)
         }
+    }
+    
+    
+    init (userProfile: REUserProfileProperties, relationInfo: REUserProfile_relationInfo) {
+        self.userid = userProfile.userid!
+        self.name = userProfile.name!
+        self.username = userProfile.username!
+        self.profilePictureUrl = userProfile.profilePhotoUrl!
+        self.isUserHasAPrivateAccount = (userProfile.isPrivateAccount?.boolValue)!
+        self.birthday = userProfile.birthday
+        if let gender = userProfile.gender {
+            self.gender = GenderType.init(rawValue: gender)
+        }
+        self.email = userProfile.email
+        self.website = userProfile.website
+        self.bio = userProfile.bio
+        self.phone = Phone(phone: userProfile.phone)
+        self.provider = userProfile.provider?.providerType
+        self.providerID = userProfile.provider?.providerid
+        
+        self.userFollowerCount = relationInfo.followerCount
+        self.userFollowingCount = relationInfo.followingCount
+        self.userPostCount = relationInfo.postCount?.intValue
+        self.userCaughtCount = relationInfo.catchCount?.intValue
+        self.followStatus = FollowStatus.convert(relationInfo.followStatus)
     }
     
     var nameCompare: String {
         get {
             return self.name ?? ""
         }
+    }
+    
+    func getPhoneNumber() -> String {
+        guard let phone = self.phone else { return "" }
+        return phone.getPhoneNumber()
     }
     
     func appendElementIntoDictionary(key : String, value : String) {
@@ -155,8 +190,8 @@ class User {
         
         print("convertReUserDataToUserObject starts")
         
-        print("httpRequest username : \(httpRequest.userInfo?.username)")
-        print("httpRequest name : \(httpRequest.userInfo?.name)")
+        print("httpRequest username : \(String(describing: httpRequest.userInfo?.username))")
+        print("httpRequest name : \(String(describing: httpRequest.userInfo?.name))")
         
         if let data = httpRequest.userInfo {
             if let name = data.name {
@@ -169,10 +204,10 @@ class User {
                 self.profilePictureUrl = profilePhotoUrl
             }
             if let birthday = data.birthday {
-                self.userBirthday = birthday
+                self.birthday = birthday
             }
             if let gender = data.gender {
-                self.userGender = gender
+                self.gender = GenderType.init(rawValue: gender)
             }
             if let email = data.email {
                 self.email = email
@@ -181,7 +216,7 @@ class User {
                 self.phone = Phone(phone: phone)
             }
             if let website = data.website {
-                self.userWebsite = website
+                self.website = website
             }
             if let isPrivateAccount = data.isPrivateAccount {
                 isUserHasAPrivateAccount = isPrivateAccount.boolValue
@@ -229,12 +264,45 @@ class User {
         user.userid = self.userid
         user.name = self.name
         user.username = self.username
-        user.birthday = self.userBirthday
-        user.gender = self.userGender
+        user.birthday = self.birthday
+        user.gender = self.gender?.rawValue
         user.email = self.email
         user.phone = self.phone?.getPhone()
-        user.website = self.userWebsite
+        user.website = self.website
         return user
+    }
+    
+    /// use for Shared user daha update
+    func setUserProfile(_ userProfile: REUserProfile) {
+        guard let user = userProfile.userInfo, let relationInfo = userProfile.relationInfo else { return }
+        
+        self.userid = user.userid
+        self.name = user.name
+        self.username = user.username
+        self.profilePictureUrl = user.profilePhotoUrl!
+        if let isPrivateAccount = user.isPrivateAccount {
+            self.isUserHasAPrivateAccount = isPrivateAccount.boolValue
+        }
+        self.birthday = user.birthday
+        if let gender = user.gender {
+            self.gender = GenderType.init(rawValue: gender)
+        }
+        self.email = user.email
+        self.website = user.website
+        self.phone = Phone(phone: user.phone)
+        self.provider = user.provider?.providerType
+        self.providerID = user.provider?.providerid
+        
+        self.followStatus = FollowStatus.convert(relationInfo.followStatus)
+        self.userFollowerCount = relationInfo.followerCount
+        self.userFollowingCount = relationInfo.followingCount
+        
+        if let postCount = relationInfo.postCount {
+            self.userPostCount = postCount.intValue
+        }
+        if let catchCount = relationInfo.catchCount {
+            self.userCaughtCount = catchCount.intValue
+        }
     }
     
     func getUser() -> REUser? {
@@ -274,9 +342,7 @@ class User {
         }
         
         return provider!
-        
     }
-    
 }
 
 extension User {
