@@ -25,6 +25,8 @@ class PostItems {
     var allowComments: Bool = true
     var allowLocationAppear: Bool = true
     
+    var capturedImageEdited: Bool = false
+    
     func clearPostItemsObjects() {
         
         PostItems.shared.selectedOriginalImageArray?.removeAll()
@@ -39,6 +41,7 @@ class PostItems {
         PostItems.shared.privacyType = PrivacyType.allFollowers
         PostItems.shared.allowComments = true
         PostItems.shared.allowLocationAppear = true
+        PostItems.shared.capturedImageEdited = false
         
     }
     

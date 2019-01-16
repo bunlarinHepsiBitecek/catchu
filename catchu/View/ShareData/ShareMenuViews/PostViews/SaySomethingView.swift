@@ -937,6 +937,9 @@ extension SaySomethingView : UITextViewDelegate {
             }
         }
         
+        // everytime textViewDidChange triggers, set new value to postItems
+        PostItems.shared.message = textView.text
+        
         textViewContentAnimation(textView)
 
     }

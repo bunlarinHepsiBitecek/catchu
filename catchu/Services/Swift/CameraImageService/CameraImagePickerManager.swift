@@ -99,6 +99,9 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         picker.allowsEditing = true
         picker.sourceType = .savedPhotosAlbum
         picker.videoMaximumDuration = TimeInterval(15)
+        
+        picker.videoExportPreset = AVAssetExportPresetMediumQuality
+        
         picker.mediaTypes = [kUTTypeMovie as String]
         
         self.triggerViewControllerPresenter(controller: Controller<UIImagePickerController>.input(picker))
@@ -164,6 +167,17 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
             selectedImageFromPicker = originalPickedImage
         } else if let videoUrl = info[UIImagePickerControllerMediaURL] as? URL {
             selectedMediaFromPicker = videoUrl
+            
+            let data = NSData(contentsOf: selectedMediaFromPicker!)
+            print("video byte : \(data?.length)")
+            
+            let byteCount : Int = (data?.length)!
+            let bcf = ByteCountFormatter()
+            bcf.allowedUnits = [.useMB] // optional: restricts the units to MB only
+            bcf.countStyle = .file
+            let string = bcf.string(fromByteCount: Int64(byteCount))
+            print(string)
+            
         }
         
         picker.dismiss(animated: true) {

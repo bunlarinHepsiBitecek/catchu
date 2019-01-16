@@ -222,7 +222,7 @@ extension CapturedImageView {
         self.footerContainerView.addSubview(commitButton)
         
         capturedImage.translatesAutoresizingMaskIntoConstraints = false
-        capturedImage.contentMode = .scaleAspectFill
+        capturedImage.contentMode = .scaleAspectFit
         
         let safe = self.safeAreaLayoutGuide
         let safeMainContainer = self.mainContainerView.safeAreaLayoutGuide
@@ -698,13 +698,26 @@ extension CapturedImageView {
         
         PostItems.shared.appendNewItemToSelectedOriginalImageArray(image: self.returnCapturedImage())
         
+        let x = self.returnCapturedImage()
+        print("image mokoko : \(x)")
+        print("self.bound.size : \(self.bounds.size)")
+        
+        let imageOptionSize = CGSize(width: x.size.width, height: x.size.height)
+        print("imageOptionSize : \(imageOptionSize)")
+        
+        let imageRect = CGRect(x: 0, y: 0, width: x.size.width, height: x.size.height)
+        
         if let array = CommonSticker.shared.stickerArray {
             if !array.isEmpty {
+                
+                PostItems.shared.capturedImageEdited = true
+                
                 self.menuFooterHiddenManagement(hidden: true)
                 
-                UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0.0)
+                UIGraphicsBeginImageContextWithOptions(capturedImage.bounds.size, self.isOpaque, 0.0)
+                //UIGraphicsBeginImageContextWithOptions(imageOptionSize, self.isOpaque, 0.0)
                 
-                self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
+                self.drawHierarchy(in: capturedImage.bounds, afterScreenUpdates: true)
                 let snapShot = UIGraphicsGetImageFromCurrentImageContext()
                 
                 UIGraphicsEndImageContext()

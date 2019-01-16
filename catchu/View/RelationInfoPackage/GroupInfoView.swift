@@ -36,7 +36,7 @@ class GroupInfoView: UIView {
         temp.contentInsetAdjustmentBehavior = .automatic
         temp.rowHeight = UITableViewAutomaticDimension
         
-        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_85, bottom: 0, right: 0)
+        //temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_85, bottom: 0, right: 0)
         //temp.separatorColor = UIColor.groupTableViewBackground
         
         // cell registrations

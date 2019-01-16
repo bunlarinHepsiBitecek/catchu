@@ -17,8 +17,6 @@ class NotificationManager2 : NSObject, UNUserNotificationCenterDelegate {
     
     public static let shared = NotificationManager2()
     
-    
-    
     func registerForNotification() {
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound]) { (granted, error) in

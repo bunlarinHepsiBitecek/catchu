@@ -27,7 +27,7 @@ class CommonTableCell: UITableViewCell {
     }
 }
 
-class CommonMoreOptionsTableCell: UITableViewCell {
+class CommonMoreOptionsTableCell: CommonTableCell {
     
     lazy var stackViewAdvancedSettings: UIStackView = {
         
@@ -68,37 +68,55 @@ class CommonMoreOptionsTableCell: UITableViewCell {
         return temp
     }()
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initializeCellSettings()
-    }
+}
+
+class CommonSlideMenuTableCell: CommonTableCell {
+    lazy var slideMenuLabel: UILabel = {
+        let temp = UILabel()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)
+        temp.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        return temp
+    }()
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        fatalError("init(coder:) has not been implemented")
-    }
+    lazy var slideMenuImageView: UIImageView = {
+        let temp = UIImageView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        return temp
+    }()
     
-    func initializeCellSettings() {
-        
-    }
+    lazy var slideMenuBadgeContainer: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_12
+        return temp
+    }()
     
-    static var identifier: String {
-        return String(describing: self)
-    }
+    lazy var badgeLabel: UILabel = {
+        let temp = UILabel()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.semibold)
+        temp.contentMode = .center
+        temp.textAlignment = .center
+        temp.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        return temp
+    }()
     
 }
 
 class CommonCollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        initializeView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupViews() {
+    func initializeView() {
         
     }
     
@@ -107,6 +125,96 @@ class CommonCollectionCell: UICollectionViewCell {
     }
 }
 
+class CommonPageItemCell: CommonCollectionCell {
+    
+    lazy var pageItemStackView: UIStackView = {
+        let temp = UIStackView(arrangedSubviews: [pageTitle, pageSubTitle])
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.alignment = .fill
+        temp.axis = .vertical
+        temp.distribution = .fillProportionally
+        return temp
+    }()
+    
+    let pageTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        label.textColor = UIColor.lightGray
+        label.numberOfLines = 0
+        label.contentMode = .center
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let pageSubTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        label.textColor = UIColor.lightGray
+        label.numberOfLines = 0
+        label.contentMode = .center
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    override var isHighlighted: Bool {
+        didSet {
+            print("isHighlighted : \(isHighlighted)")
+            pageTitle.textColor = isHighlighted ? UIColor.black : UIColor.lightGray
+            pageSubTitle.textColor = isHighlighted ? UIColor.black : UIColor.lightGray
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            print("isSelected : \(isSelected)")
+            pageTitle.textColor = isSelected ? UIColor.black : UIColor.lightGray
+            pageSubTitle.textColor = isSelected ? UIColor.black : UIColor.lightGray
+        }
+    }
+}
+
+class CommonSectionHeaderView: UICollectionReusableView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initializeViewSettings()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initializeViewSettings() {
+        
+    }
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
+}
+
+class CommonFollowView: UIView {
+    lazy var tableView: UITableView = {
+        
+        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.isScrollEnabled = true
+        
+        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+        temp.rowHeight = UITableViewAutomaticDimension
+        temp.tableFooterView = UIView()
+        
+        temp.register(FriendRelationTableViewCell.self, forCellReuseIdentifier: FriendRelationTableViewCell.identifier)
+        
+        return temp
+        
+    }()
+}
 
 // view model protocols
 protocol CommonViewModel: class {
@@ -142,12 +250,30 @@ protocol CommonMoreOptionsModelItem {
     
 }
 
+protocol CommonSlideMenuTableCellViewModelItem {
+    var type : SlideMenuViewTags { get }
+    var cellTitle : String { get }
+    var cellImage: UIImage { get }
+    var rowCount : Int { get }
+    
+}
+
+protocol PageItems {
+    var title : String { get set }
+    var subTitle: String { get set }
+    var active: Bool { get set }
+}
+
 protocol CommonDesignableCellForGroupDetail {
     func initiateCellDesign(item: CommonGroupViewModelItem?)
 }
 
 protocol CommonDesignableCellForAdvancedCettings {
     func initiateCellDesign(item: CommonMoreOptionsModelItem?)
+}
+
+protocol CommonDesignableCellForSlideMenu {
+    func initiateCellDesign(item: CommonSlideMenuTableCellViewModelItem?)
 }
 
 protocol CommonDesignableCell {

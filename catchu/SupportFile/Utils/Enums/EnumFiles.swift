@@ -132,6 +132,7 @@ enum RequestType : String {
     case create_group = "CREATE_GROUP"
     case userGroups = "GET_AUTHENTICATED_USER_GROUP_LIST"
     case changeGroupAdmin = "CHANGE_GROUP_ADMIN"
+    case none = "NONE"
     
  
 }
@@ -182,7 +183,12 @@ enum ColorPalettes {
 }
 
 enum ApiGatewayClientErrors: Swift.Error {
+    case missingUserData
     case missingUserId
+    case missingRequestedUserid
+    case missingRequesterUserid
+    case missingRequestType
+    case missingCommonUserViewModel
     case missingGroupId
     case reGroupRequestObjectFailed
     case participantArrayCanNotBeEmpty
@@ -205,6 +211,7 @@ enum ClientPresentErrors: Swift.Error {
     case missingNewGroupImage
     case missingNewGroupName
     case missingUserid
+    case missingPostState
 }
 
 enum CastingErrors: Swift.Error {
@@ -308,6 +315,7 @@ enum TableViewSectionTitle : String {
 enum TableViewRowSelected : String {
     case selected
     case deSelected
+    case alreadyGroupParticipant
 }
 
 enum CollectionViewActivation : String {
@@ -403,4 +411,32 @@ enum TimerState {
     case running
     case stopped
     case none
+}
+
+enum DataFetchingState {
+    case fetching
+    case fetched
+    case none
+}
+
+enum ButtonOperation {
+    case confirm
+    case delete
+    case none
+}
+
+enum PostState {
+    case success
+    case failed
+}
+
+enum InformerGestureStates {
+    case tapped
+    case swipped
+    case none
+}
+
+enum FollowPageIndex {
+    case followers
+    case followings
 }

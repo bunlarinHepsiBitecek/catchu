@@ -273,14 +273,14 @@ class FriendsViewModel: BaseViewModel, CommonViewModel {
             for item in array {
                 if let user = item.user {
                     if let name = user.name {
-                        if name.hasPrefix(inputText) {
+                        if name.lowercased().hasPrefix(inputText.lowercased()) {
                             searchedFriendArray.append(item)
                             continue
                         }
                     }
                     
                     if let username = user.username {
-                        if username.hasPrefix(inputText) {
+                        if username.lowercased().hasPrefix(inputText.lowercased()) {
                             searchedFriendArray.append(item)
                             continue
                         }

@@ -1518,28 +1518,6 @@
             </objects>
             <point key="canvasLocation" x="13874.4" y="-2139.1625615763546"/>
         </scene>
-        <!--DropPin-->
-        <scene sceneID="d8S-do-kBF">
-            <objects>
-                <viewController id="5Zm-1L-BVM" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8Fr-Y1-BQG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pXi-5S-hHA">
-                                <rect key="frame" x="7" y="221" width="200" height="110"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="t8w-vb-HMu"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="DropPin" id="fJh-yP-DFM"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Tfj-Lr-JXe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1292" y="-1126"/>
-        </scene>
         <!--Final Note View Controller-->
         <scene sceneID="2Oe-TG-dC5">
             <objects>
@@ -1581,7 +1559,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="Xbu-ql-i90" kind="relationship" relationship="viewControllers" id="BSS-P0-xvm"/>
-                        <segue destination="5Zm-1L-BVM" kind="relationship" relationship="viewControllers" id="Jm0-U2-l7M"/>
+                        <segue destination="u11-gg-5DE" kind="relationship" relationship="viewControllers" id="nSn-QK-kiR"/>
                         <segue destination="rGg-cJ-mDB" kind="relationship" relationship="viewControllers" id="h7N-re-LiK"/>
                         <segue destination="4Zt-S3-GN5" kind="relationship" relationship="viewControllers" id="1pY-CB-4Qc"/>
                     </connections>
@@ -2144,7 +2122,7 @@
             </objects>
             <point key="canvasLocation" x="2376.8000000000002" y="-2076.3546798029556"/>
         </scene>
-        <!--Post View Controller-->
+        <!--Item-->
         <scene sceneID="v1s-iL-3Q1">
             <objects>
                 <viewController storyboardIdentifier="PostViewController" id="u11-gg-5DE" customClass="PostViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
@@ -2154,10 +2132,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="j8F-iq-b5M"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="TQC-di-8wX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L5d-eE-yuO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1308" y="-2065.270935960591"/>
+            <point key="canvasLocation" x="-1226" y="-1129"/>
         </scene>
     </scenes>
     <resources>

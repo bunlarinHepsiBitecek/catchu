@@ -131,6 +131,8 @@ extension FriendRelationSelectionView {
         case .selected:
             self.selectProcessOfItemInCollectionView(selectedItem)
             
+        case .alreadyGroupParticipant:
+            return
         }
         
     }

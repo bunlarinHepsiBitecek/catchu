@@ -170,7 +170,7 @@ class FriendGroupRelationView: UIView {
         return temp
     }()
     
-    init(frame: CGRect, delegate : ViewPresentationProtocols, delegatePostView : PostViewProtocols, friendRelationChoise: FriendRelationViewChoise, friendRelationPurpose: FriendRelationViewPurpose, participantArray: Array<User>?, selectedGroup: Group?) {
+    init(frame: CGRect, delegate : ViewPresentationProtocols, delegatePostView : PostViewProtocols?, friendRelationChoise: FriendRelationViewChoise, friendRelationPurpose: FriendRelationViewPurpose, participantArray: Array<User>?, selectedGroup: Group?) {
         super.init(frame: frame)
         self.delegate = delegate
         self.delegatePostView = delegatePostView
@@ -226,7 +226,7 @@ extension FriendGroupRelationView {
     
     private func configureViewSettings() {
         
-        configureSearchBarSettings()
+        setupSearchBarSettings()
         configureSegmentedButtonSettings()
         addObserverForNextButtonActivation()
         configureButtonSettings()
@@ -243,14 +243,17 @@ extension FriendGroupRelationView {
         
     }
     
-    private func configureSearchBarSettings() {
+    private func setupSearchBarSettings() {
         
+        searchBar.configureSearchBarSettings()
+        
+        /*
         let textFieldInsideSearchBar = searchBar.value(forKey: Constants.searchBarProperties.searchField) as? UITextField
-        
+
         textFieldInsideSearchBar?.textColor = UIColor.black
         textFieldInsideSearchBar?.backgroundColor = UIColor.lightGray
         
-        searchBar.searchBarStyle = .minimal
+        searchBar.searchBarStyle = .minimal*/
     }
     
     private func configureSegmentedButtonSettings() {

@@ -35,6 +35,7 @@ extension MainTabBarViewController {
         
         FirebaseManager.shared.checkUserLoggedIn()
         SlideMenuLoader.shared.createSlider(inputView: self.view)
+        InformerLoader.shared.createPostResult(inputView: self.view)
         
     }
     
@@ -42,8 +43,8 @@ extension MainTabBarViewController {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromTop
+        transition.type = kCATransitionFade
+        //transition.subtype = kCATransitionFromTop
         transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
         view.window!.layer.add(transition, forKey: kCATransition)
         
@@ -68,8 +69,7 @@ extension MainTabBarViewController {
             
             addTransitionToPresentationOfShareViews()
             tabBarHiddenManagement(hidden: true)
-            destinationController.delegate = self
-            destinationController.priorActiveTab = selectedIndexInfo
+            
             self.present(destinationController, animated: false, completion: nil)
         }
         
@@ -86,15 +86,22 @@ extension MainTabBarViewController : UITabBarControllerDelegate {
         print("tabBarController starts")
         print("tabBarController : \(tabBarController.selectedIndex)")
         
-        if tabBarController.selectedIndex == 1 {
-            
-            add_PostViewController()
-//            add_ShareDataViewController2()
-            
-        } else {
-            selectedIndexInfo = tabBarController.selectedIndex
-        }
+    }
+
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
+        if viewController.isKind(of: PostViewController.self) {
+            
+            if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.PostViewController) as? PostViewController {
+                
+                destinationController.modalPresentationStyle = .fullScreen
+                
+                self.present(destinationController, animated: true, completion: nil)
+                return false
+            }
+            
+        }
+        return true
     }
     
 }

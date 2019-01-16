@@ -208,7 +208,9 @@
 		A72AF21A21942E150050B685 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72AF21921942E150050B685 /* UserProfileViewController.swift */; };
 		A72AF21C219479880050B685 /* REPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72AF21B219479880050B685 /* REPhone.swift */; };
 		A72AF221219483FE0050B685 /* UserProfileMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72AF220219483FE0050B685 /* UserProfileMainView.swift */; };
-		A73194D121C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73194D021C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift */; };
+		A73044C621DEC9A5005C9811 /* PendingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73044C521DEC9A5005C9811 /* PendingRequestTableViewCell.swift */; };
+		A73044C821DF75EB005C9811 /* PendingRequestTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73044C721DF75EB005C9811 /* PendingRequestTableViewModel.swift */; };
+		A73044CA21DFA7BE005C9811 /* PendingRequestTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73044C921DFA7BE005C9811 /* PendingRequestTableCellViewModel.swift */; };
 		A7348E13217222BC005FB900 /* FilterColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7348E12217222BC005FB900 /* FilterColorCollectionViewCell.swift */; };
 		A735C57520D8447B00B7B1E2 /* 8771.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A735C57420D8447A00B7B1E2 /* 8771.jpg */; };
 		A7369AFE20C78830001692F4 /* ImageDownloadResizeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7369AFD20C78830001692F4 /* ImageDownloadResizeManagement.swift */; };
@@ -219,6 +221,8 @@
 		A74240822146DB4D00E20A58 /* CustomCameraCapturedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240812146DB4D00E20A58 /* CustomCameraCapturedImageView.swift */; };
 		A74240872147D3DB00E20A58 /* CustomVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74240862147D3DB00E20A58 /* CustomVideo.swift */; };
 		A755B56F2120752D00FD2573 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755B56E2120752D00FD2573 /* UIViewExtensions.swift */; };
+		A757C9D321EE289400E32B46 /* UISearchBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757C9D221EE289400E32B46 /* UISearchBarExtension.swift */; };
+		A757C9D521EE2F4300E32B46 /* SearchBarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757C9D421EE2F4300E32B46 /* SearchBarHeaderView.swift */; };
 		A75B4594213228C7009D2701 /* HeaderInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75B4593213228C7009D2701 /* HeaderInfoTableViewCell.swift */; };
 		A75B459621324865009D2701 /* AddParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75B459521324865009D2701 /* AddParticipantTableViewCell.swift */; };
 		A75B4598213307DE009D2701 /* ExitTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75B4597213307DE009D2701 /* ExitTableViewCell.swift */; };
@@ -307,10 +311,21 @@
 		A7AE5FAF21C7A979008FD5AD /* GroupParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AE5FAE21C7A979008FD5AD /* GroupParticipantTableViewCell.swift */; };
 		A7AE5FB321C7E3B7008FD5AD /* GroupInfoEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AE5FB221C7E3B7008FD5AD /* GroupInfoEditTableViewController.swift */; };
 		A7AE5FB521C7E774008FD5AD /* GroupInfoEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AE5FB421C7E774008FD5AD /* GroupInfoEditTableViewCell.swift */; };
+		A7AF54AB21EA50B8002682C7 /* DynamicPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54AA21EA50B8002682C7 /* DynamicPageView.swift */; };
+		A7AF54AE21EA5128002682C7 /* MutualFollowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54AD21EA5128002682C7 /* MutualFollowViewController.swift */; };
+		A7AF54B121EA53FC002682C7 /* DynamicPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54B021EA53FC002682C7 /* DynamicPageViewModel.swift */; };
+		A7AF54B321EA5E2C002682C7 /* PageItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54B221EA5E2C002682C7 /* PageItemCollectionViewCell.swift */; };
+		A7AF54B521EA7A9D002682C7 /* PageSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54B421EA7A9D002682C7 /* PageSliderView.swift */; };
+		A7AF54B721EB424E002682C7 /* FollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54B621EB424E002682C7 /* FollowersView.swift */; };
+		A7AF54B921EB4371002682C7 /* FollowersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54B821EB4371002682C7 /* FollowersViewModel.swift */; };
+		A7AF54BB21EB448A002682C7 /* FollowingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF54BA21EB448A002682C7 /* FollowingsView.swift */; };
 		A7B6BC2021A8817B00D11A78 /* StickerManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC1F21A8817B00D11A78 /* StickerManagementView.swift */; };
 		A7B6BC2221A88AB700D11A78 /* StickerCommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC2121A88AB700D11A78 /* StickerCommonView.swift */; };
 		A7B6BC2421A8902300D11A78 /* CommonSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC2321A8902300D11A78 /* CommonSticker.swift */; };
 		A7B6BC2B21AAB23800D11A78 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6BC2A21AAB23800D11A78 /* DrawView.swift */; };
+		A7B7527021E298BF00F5FF0A /* InformerLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B7526F21E298BF00F5FF0A /* InformerLoader.swift */; };
+		A7B7527221E2A09600F5FF0A /* InformerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B7527121E2A09600F5FF0A /* InformerView.swift */; };
+		A7B7529321E3FB8F00F5FF0A /* InformerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B7529221E3FB8F00F5FF0A /* InformerViewModel.swift */; };
 		A7B9A75E21D9844300840330 /* GradientLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A75D21D9844300840330 /* GradientLabel.swift */; };
 		A7B9A76021DA67A800840330 /* PostFinishActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A75F21DA67A800840330 /* PostFinishActivityViewModel.swift */; };
 		A7B9A76321DB6C9800840330 /* MoreOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76221DB6C9800840330 /* MoreOptionsTableViewController.swift */; };
@@ -320,6 +335,18 @@
 		A7B9A76E21DB840A00840330 /* AllowCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76D21DB840A00840330 /* AllowCommentViewModel.swift */; };
 		A7B9A77021DB842C00840330 /* AllowLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A76F21DB842C00840330 /* AllowLocationViewModel.swift */; };
 		A7B9A77321DB95EF00840330 /* PopOverControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77221DB95EF00840330 /* PopOverControllerManager.swift */; };
+		A7B9A77621DD3D4200840330 /* PendingRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77521DD3D4100840330 /* PendingRequestTableViewController.swift */; };
+		A7B9A77921DD579C00840330 /* SlideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77821DD579C00840330 /* SlideMenuViewModel.swift */; };
+		A7B9A77B21DE02C300840330 /* SlideMenuTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77A21DE02C300840330 /* SlideMenuTableViewModel.swift */; };
+		A7B9A77D21DE047800840330 /* SlideMenuTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77C21DE047800840330 /* SlideMenuTableView.swift */; };
+		A7B9A78021DE04F700840330 /* ExplorePeopleSlideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A77F21DE04F700840330 /* ExplorePeopleSlideMenuTableViewCell.swift */; };
+		A7B9A78221DE051000840330 /* PendingRequestSlideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78121DE051000840330 /* PendingRequestSlideMenuTableViewCell.swift */; };
+		A7B9A78421DE054C00840330 /* ManageGroupsSlideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78321DE054C00840330 /* ManageGroupsSlideMenuTableViewCell.swift */; };
+		A7B9A78621DE055800840330 /* SettingsSlideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78521DE055800840330 /* SettingsSlideMenuTableViewCell.swift */; };
+		A7B9A78821DE05ED00840330 /* ExploreViewSlideMenuTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78721DE05ED00840330 /* ExploreViewSlideMenuTableCellViewModel.swift */; };
+		A7B9A78A21DE060000840330 /* PendingRequestSlideMenuTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78921DE060000840330 /* PendingRequestSlideMenuTableCellViewModel.swift */; };
+		A7B9A78C21DE060F00840330 /* ManageGroupsSlideMenuTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78B21DE060F00840330 /* ManageGroupsSlideMenuTableCellViewModel.swift */; };
+		A7B9A78E21DE062100840330 /* SettingsSlideMenuTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9A78D21DE062100840330 /* SettingsSlideMenuTableCellViewModel.swift */; };
 		A7C1C34A2195AE7B0096CEA6 /* SlideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C3492195AE7B0096CEA6 /* SlideMenuTableViewCell.swift */; };
 		A7C1C34C2196C8750096CEA6 /* ExplorePeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C34B2196C8750096CEA6 /* ExplorePeopleViewController.swift */; };
 		A7C1C34E2196F16A0096CEA6 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C1C34D2196F16A0096CEA6 /* ExploreView.swift */; };
@@ -361,7 +388,6 @@
 		A7E78038218F739400E76E3C /* TopControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E78037218F739400E76E3C /* TopControlView.swift */; };
 		A7E7803B219052C000E76E3C /* CustomPostAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7803A219052C000E76E3C /* CustomPostAlert.swift */; };
 		A7E7803E2190AB6200E76E3C /* CustomNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7803D2190AB6200E76E3C /* CustomNotificationManager.swift */; };
-		A7E780402191A35600E76E3C /* CustomPostAlerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7803F2191A35600E76E3C /* CustomPostAlerManager.swift */; };
 		A7EC57C42118BC7B0078F631 /* REGroupRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57C02118BC790078F631 /* REGroupRequestResult.swift */; };
 		A7EC57C52118BC7B0078F631 /* REGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57C12118BC7A0078F631 /* REGroupRequest.swift */; };
 		A7EC57C62118BC7B0078F631 /* REGroupRequestResult_error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EC57C22118BC7A0078F631 /* REGroupRequestResult_error.swift */; };
@@ -636,7 +662,9 @@
 		A72AF21921942E150050B685 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		A72AF21B219479880050B685 /* REPhone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REPhone.swift; sourceTree = "<group>"; };
 		A72AF220219483FE0050B685 /* UserProfileMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileMainView.swift; sourceTree = "<group>"; };
-		A73194D021C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoParticipantTableViewCell.swift; sourceTree = "<group>"; };
+		A73044C521DEC9A5005C9811 /* PendingRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRequestTableViewCell.swift; sourceTree = "<group>"; };
+		A73044C721DF75EB005C9811 /* PendingRequestTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRequestTableViewModel.swift; sourceTree = "<group>"; };
+		A73044C921DFA7BE005C9811 /* PendingRequestTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRequestTableCellViewModel.swift; sourceTree = "<group>"; };
 		A7348E12217222BC005FB900 /* FilterColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		A735C57420D8447A00B7B1E2 /* 8771.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8771.jpg; sourceTree = "<group>"; };
 		A7369AFD20C78830001692F4 /* ImageDownloadResizeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadResizeManagement.swift; sourceTree = "<group>"; };
@@ -647,6 +675,8 @@
 		A74240812146DB4D00E20A58 /* CustomCameraCapturedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraCapturedImageView.swift; sourceTree = "<group>"; };
 		A74240862147D3DB00E20A58 /* CustomVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideo.swift; sourceTree = "<group>"; };
 		A755B56E2120752D00FD2573 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		A757C9D221EE289400E32B46 /* UISearchBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBarExtension.swift; sourceTree = "<group>"; };
+		A757C9D421EE2F4300E32B46 /* SearchBarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarHeaderView.swift; sourceTree = "<group>"; };
 		A75B4593213228C7009D2701 /* HeaderInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderInfoTableViewCell.swift; sourceTree = "<group>"; };
 		A75B459521324865009D2701 /* AddParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantTableViewCell.swift; sourceTree = "<group>"; };
 		A75B4597213307DE009D2701 /* ExitTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitTableViewCell.swift; sourceTree = "<group>"; };
@@ -735,10 +765,21 @@
 		A7AE5FAE21C7A979008FD5AD /* GroupParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupParticipantTableViewCell.swift; sourceTree = "<group>"; };
 		A7AE5FB221C7E3B7008FD5AD /* GroupInfoEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoEditTableViewController.swift; sourceTree = "<group>"; };
 		A7AE5FB421C7E774008FD5AD /* GroupInfoEditTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfoEditTableViewCell.swift; sourceTree = "<group>"; };
+		A7AF54AA21EA50B8002682C7 /* DynamicPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPageView.swift; sourceTree = "<group>"; };
+		A7AF54AD21EA5128002682C7 /* MutualFollowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutualFollowViewController.swift; sourceTree = "<group>"; };
+		A7AF54B021EA53FC002682C7 /* DynamicPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPageViewModel.swift; sourceTree = "<group>"; };
+		A7AF54B221EA5E2C002682C7 /* PageItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		A7AF54B421EA7A9D002682C7 /* PageSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSliderView.swift; sourceTree = "<group>"; };
+		A7AF54B621EB424E002682C7 /* FollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersView.swift; sourceTree = "<group>"; };
+		A7AF54B821EB4371002682C7 /* FollowersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersViewModel.swift; sourceTree = "<group>"; };
+		A7AF54BA21EB448A002682C7 /* FollowingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsView.swift; sourceTree = "<group>"; };
 		A7B6BC1F21A8817B00D11A78 /* StickerManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerManagementView.swift; sourceTree = "<group>"; };
 		A7B6BC2121A88AB700D11A78 /* StickerCommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCommonView.swift; sourceTree = "<group>"; };
 		A7B6BC2321A8902300D11A78 /* CommonSticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSticker.swift; sourceTree = "<group>"; };
 		A7B6BC2A21AAB23800D11A78 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		A7B7526F21E298BF00F5FF0A /* InformerLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformerLoader.swift; sourceTree = "<group>"; };
+		A7B7527121E2A09600F5FF0A /* InformerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformerView.swift; sourceTree = "<group>"; };
+		A7B7529221E3FB8F00F5FF0A /* InformerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformerViewModel.swift; sourceTree = "<group>"; };
 		A7B9A75D21D9844300840330 /* GradientLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLabel.swift; sourceTree = "<group>"; };
 		A7B9A75F21DA67A800840330 /* PostFinishActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFinishActivityViewModel.swift; sourceTree = "<group>"; };
 		A7B9A76221DB6C9800840330 /* MoreOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreOptionsTableViewController.swift; sourceTree = "<group>"; };
@@ -748,6 +789,18 @@
 		A7B9A76D21DB840A00840330 /* AllowCommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowCommentViewModel.swift; sourceTree = "<group>"; };
 		A7B9A76F21DB842C00840330 /* AllowLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowLocationViewModel.swift; sourceTree = "<group>"; };
 		A7B9A77221DB95EF00840330 /* PopOverControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverControllerManager.swift; sourceTree = "<group>"; };
+		A7B9A77521DD3D4100840330 /* PendingRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRequestTableViewController.swift; sourceTree = "<group>"; };
+		A7B9A77821DD579C00840330 /* SlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuViewModel.swift; sourceTree = "<group>"; };
+		A7B9A77A21DE02C300840330 /* SlideMenuTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuTableViewModel.swift; sourceTree = "<group>"; };
+		A7B9A77C21DE047800840330 /* SlideMenuTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuTableView.swift; sourceTree = "<group>"; };
+		A7B9A77F21DE04F700840330 /* ExplorePeopleSlideMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePeopleSlideMenuTableViewCell.swift; sourceTree = "<group>"; };
+		A7B9A78121DE051000840330 /* PendingRequestSlideMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRequestSlideMenuTableViewCell.swift; sourceTree = "<group>"; };
+		A7B9A78321DE054C00840330 /* ManageGroupsSlideMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageGroupsSlideMenuTableViewCell.swift; sourceTree = "<group>"; };
+		A7B9A78521DE055800840330 /* SettingsSlideMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSlideMenuTableViewCell.swift; sourceTree = "<group>"; };
+		A7B9A78721DE05ED00840330 /* ExploreViewSlideMenuTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewSlideMenuTableCellViewModel.swift; sourceTree = "<group>"; };
+		A7B9A78921DE060000840330 /* PendingRequestSlideMenuTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRequestSlideMenuTableCellViewModel.swift; sourceTree = "<group>"; };
+		A7B9A78B21DE060F00840330 /* ManageGroupsSlideMenuTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageGroupsSlideMenuTableCellViewModel.swift; sourceTree = "<group>"; };
+		A7B9A78D21DE062100840330 /* SettingsSlideMenuTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSlideMenuTableCellViewModel.swift; sourceTree = "<group>"; };
 		A7C1C3492195AE7B0096CEA6 /* SlideMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		A7C1C34B2196C8750096CEA6 /* ExplorePeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePeopleViewController.swift; sourceTree = "<group>"; };
 		A7C1C34D2196F16A0096CEA6 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
@@ -789,7 +842,6 @@
 		A7E78037218F739400E76E3C /* TopControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopControlView.swift; sourceTree = "<group>"; };
 		A7E7803A219052C000E76E3C /* CustomPostAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPostAlert.swift; sourceTree = "<group>"; };
 		A7E7803D2190AB6200E76E3C /* CustomNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationManager.swift; sourceTree = "<group>"; };
-		A7E7803F2191A35600E76E3C /* CustomPostAlerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPostAlerManager.swift; sourceTree = "<group>"; };
 		A7EC57C02118BC790078F631 /* REGroupRequestResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REGroupRequestResult.swift; sourceTree = "<group>"; };
 		A7EC57C12118BC7A0078F631 /* REGroupRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REGroupRequest.swift; sourceTree = "<group>"; };
 		A7EC57C22118BC7A0078F631 /* REGroupRequestResult_error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REGroupRequestResult_error.swift; sourceTree = "<group>"; };
@@ -1008,6 +1060,7 @@
 				4564E45820B9736C003B0D16 /* SupportFile */,
 				4564E44D20B96C14003B0D16 /* Services */,
 				4564E44C20B96794003B0D16 /* Controller */,
+				A7E4F68D21B17B8D0063E00B /* ViewModel */,
 				4564E44B20B9678D003B0D16 /* View */,
 				4564E44A20B96785003B0D16 /* Model */,
 				4564E44920B9676F003B0D16 /* Storyboard */,
@@ -1085,9 +1138,9 @@
 		4564E44B20B9678D003B0D16 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A7AF54A921EA509C002682C7 /* DynamicPageView */,
 				A7E4F69221B1B89F0063E00B /* RelationInfoPackage */,
 				A7E7802D218CCD8D00E76E3C /* ActivityIndicator */,
-				A7E4F68D21B17B8D0063E00B /* ViewModel */,
 				45ABCA74215E274B00CB52B9 /* Login */,
 				A7D399C5214A435D00661132 /* Permission */,
 				A710F41F213FCD6D00ECC5DA /* ShareData */,
@@ -1155,6 +1208,7 @@
 				A755B56E2120752D00FD2573 /* UIViewExtensions.swift */,
 				451E9F072139362100185925 /* UITextFieldExtensions.swift */,
 				4538A0702178E29A0044A79D /* UIButtonExtensions.swift */,
+				A757C9D221EE289400E32B46 /* UISearchBarExtension.swift */,
 			);
 			path = UIExtentions;
 			sourceTree = "<group>";
@@ -1231,6 +1285,8 @@
 		A70421FC21AED5430040AA8A /* Relations */ = {
 			isa = PBXGroup;
 			children = (
+				A7AF54AC21EA50CD002682C7 /* Follower_Following */,
+				A7B9A77421DD3D1A00840330 /* PendingRequest */,
 				A70421FD21AED56B0040AA8A /* FriendGroupRelations */,
 			);
 			path = Relations;
@@ -1357,6 +1413,8 @@
 				A7B9A75D21D9844300840330 /* GradientLabel.swift */,
 				A7B9A76921DB770D00840330 /* AllowCommentsTableViewCell.swift */,
 				A7B9A76B21DB780A00840330 /* AllowLocationAppearTableViewCell.swift */,
+				A7B7526F21E298BF00F5FF0A /* InformerLoader.swift */,
+				A7B7527121E2A09600F5FF0A /* InformerView.swift */,
 			);
 			path = PostViews;
 			sourceTree = "<group>";
@@ -1463,10 +1521,13 @@
 		A72AF2102192A5850050B685 /* SlideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				A73044C421DEC967005C9811 /* PendingRequestViews */,
+				A7B9A77E21DE04D700840330 /* SlideMenuTableViewCells */,
 				A7C1C351219716600096CEA6 /* ExploreViews */,
 				A72AF2112192A5A80050B685 /* SlideMenu.swift */,
 				A72AF214219326120050B685 /* SlideMenuLoader.swift */,
 				A7C1C3492195AE7B0096CEA6 /* SlideMenuTableViewCell.swift */,
+				A7B9A77C21DE047800840330 /* SlideMenuTableView.swift */,
 			);
 			path = SlideMenu;
 			sourceTree = "<group>";
@@ -1519,6 +1580,14 @@
 				A7F95F85219B20E700F9E8D9 /* UserProfileTopView.swift */,
 			);
 			path = ProfileViews;
+			sourceTree = "<group>";
+		};
+		A73044C421DEC967005C9811 /* PendingRequestViews */ = {
+			isa = PBXGroup;
+			children = (
+				A73044C521DEC9A5005C9811 /* PendingRequestTableViewCell.swift */,
+			);
+			path = PendingRequestViews;
 			sourceTree = "<group>";
 		};
 		A7369AFC20C787E0001692F4 /* ExistedLibraryExtensions */ = {
@@ -1840,6 +1909,44 @@
 			path = GroupDetailTableViewCells;
 			sourceTree = "<group>";
 		};
+		A7AF54A921EA509C002682C7 /* DynamicPageView */ = {
+			isa = PBXGroup;
+			children = (
+				A7AF54AA21EA50B8002682C7 /* DynamicPageView.swift */,
+				A7AF54B221EA5E2C002682C7 /* PageItemCollectionViewCell.swift */,
+				A7AF54B421EA7A9D002682C7 /* PageSliderView.swift */,
+				A7AF54B621EB424E002682C7 /* FollowersView.swift */,
+				A7AF54BA21EB448A002682C7 /* FollowingsView.swift */,
+				A757C9D421EE2F4300E32B46 /* SearchBarHeaderView.swift */,
+			);
+			path = DynamicPageView;
+			sourceTree = "<group>";
+		};
+		A7AF54AC21EA50CD002682C7 /* Follower_Following */ = {
+			isa = PBXGroup;
+			children = (
+				A7AF54AD21EA5128002682C7 /* MutualFollowViewController.swift */,
+			);
+			path = Follower_Following;
+			sourceTree = "<group>";
+		};
+		A7AF54AF21EA53E4002682C7 /* DynamicPageViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A7AF54B021EA53FC002682C7 /* DynamicPageViewModel.swift */,
+				A7AF54B821EB4371002682C7 /* FollowersViewModel.swift */,
+			);
+			path = DynamicPageViewModels;
+			sourceTree = "<group>";
+		};
+		A7B7529121E3FB7B00F5FF0A /* InformerViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A7B7529221E3FB8F00F5FF0A /* InformerViewModel.swift */,
+			);
+			path = InformerViewModels;
+			sourceTree = "<group>";
+		};
 		A7B9A76121DB6C1400840330 /* PopOvers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1864,6 +1971,40 @@
 				A7B9A77221DB95EF00840330 /* PopOverControllerManager.swift */,
 			);
 			path = PopOverManager;
+			sourceTree = "<group>";
+		};
+		A7B9A77421DD3D1A00840330 /* PendingRequest */ = {
+			isa = PBXGroup;
+			children = (
+				A7B9A77521DD3D4100840330 /* PendingRequestTableViewController.swift */,
+			);
+			path = PendingRequest;
+			sourceTree = "<group>";
+		};
+		A7B9A77721DD577F00840330 /* SlideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				A7B9A77821DD579C00840330 /* SlideMenuViewModel.swift */,
+				A7B9A77A21DE02C300840330 /* SlideMenuTableViewModel.swift */,
+				A7B9A78721DE05ED00840330 /* ExploreViewSlideMenuTableCellViewModel.swift */,
+				A7B9A78921DE060000840330 /* PendingRequestSlideMenuTableCellViewModel.swift */,
+				A7B9A78B21DE060F00840330 /* ManageGroupsSlideMenuTableCellViewModel.swift */,
+				A7B9A78D21DE062100840330 /* SettingsSlideMenuTableCellViewModel.swift */,
+				A73044C721DF75EB005C9811 /* PendingRequestTableViewModel.swift */,
+				A73044C921DFA7BE005C9811 /* PendingRequestTableCellViewModel.swift */,
+			);
+			path = SlideMenu;
+			sourceTree = "<group>";
+		};
+		A7B9A77E21DE04D700840330 /* SlideMenuTableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				A7B9A77F21DE04F700840330 /* ExplorePeopleSlideMenuTableViewCell.swift */,
+				A7B9A78121DE051000840330 /* PendingRequestSlideMenuTableViewCell.swift */,
+				A7B9A78321DE054C00840330 /* ManageGroupsSlideMenuTableViewCell.swift */,
+				A7B9A78521DE055800840330 /* SettingsSlideMenuTableViewCell.swift */,
+			);
+			path = SlideMenuTableViewCells;
 			sourceTree = "<group>";
 		};
 		A7C1C351219716600096CEA6 /* ExploreViews */ = {
@@ -1934,6 +2075,9 @@
 		A7E4F68D21B17B8D0063E00B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				A7AF54AF21EA53E4002682C7 /* DynamicPageViewModels */,
+				A7B7529121E3FB7B00F5FF0A /* InformerViewModels */,
+				A7B9A77721DD577F00840330 /* SlideMenu */,
 				A7B9A76421DB6E1B00840330 /* PopOverViewModels */,
 				A7E6A9A321D8BB7A00AA33AE /* PostViewModels */,
 				A7AE5F9E21C63CA1008FD5AD /* GroupDetailViewModels */,
@@ -1962,7 +2106,6 @@
 				A716903921B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift */,
 				A7FD8A5421BFBBCF0094E02B /* GroupRelationView.swift */,
 				A7FD8A5C21BFF4E50094E02B /* GroupRelationTableViewCell.swift */,
-				A73194D021C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift */,
 				A7CD3A2221C40AB300663001 /* ScretchableView.swift */,
 				A7F21B3921C55CDC0015DB58 /* GroupImageContainerView.swift */,
 				A7184EAD21C93693000BA72C /* GroupInfoView.swift */,
@@ -2011,7 +2154,6 @@
 			isa = PBXGroup;
 			children = (
 				A7E7803A219052C000E76E3C /* CustomPostAlert.swift */,
-				A7E7803F2191A35600E76E3C /* CustomPostAlerManager.swift */,
 			);
 			path = CustomPostAlert;
 			sourceTree = "<group>";
@@ -2338,6 +2480,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B9A77D21DE047800840330 /* SlideMenuTableView.swift in Sources */,
 				A79A767D20C5C7B500FCE198 /* FriendCollectionViewCell.swift in Sources */,
 				A7EFF99D21D4EE8200B1A3DC /* SectionHeaderViewModel.swift in Sources */,
 				A7F35DA22116F173005DA851 /* TakasiViewController.swift in Sources */,
@@ -2374,6 +2517,7 @@
 				454285B4214A962000F68FAC /* RECommentResponse.swift in Sources */,
 				A7E2F85D2114A6F700214066 /* REUserProfile.swift in Sources */,
 				A71D188C21A723FB00DFC4A9 /* CameraImagePickerManager.swift in Sources */,
+				A757C9D321EE289400E32B46 /* UISearchBarExtension.swift in Sources */,
 				A75B4598213307DE009D2701 /* ExitTableViewCell.swift in Sources */,
 				A7086B53215B554100C570C1 /* ImageManagementView.swift in Sources */,
 				A7812EB12124981400460117 /* SlidingView4.swift in Sources */,
@@ -2394,6 +2538,7 @@
 				A7EC57C92118C6DA0078F631 /* Group.swift in Sources */,
 				A7C1C34A2195AE7B0096CEA6 /* SlideMenuTableViewCell.swift in Sources */,
 				A755B56F2120752D00FD2573 /* UIViewExtensions.swift in Sources */,
+				A7B9A78621DE055800840330 /* SettingsSlideMenuTableViewCell.swift in Sources */,
 				A7EFF98F21D38C1D00B1A3DC /* NewGroupCreationHeaderView.swift in Sources */,
 				A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */,
 				A7C1C350219714790096CEA6 /* ExploreViewSlider.swift in Sources */,
@@ -2404,6 +2549,7 @@
 				A722EC2B21A2159A00E9BD3B /* SectionHeaderInfo.swift in Sources */,
 				A721C0052117AF560037A62D /* GroupTableViewCell.swift in Sources */,
 				45183F2D2179C54B00C11884 /* Countries.swift in Sources */,
+				A7B9A78E21DE062100840330 /* SettingsSlideMenuTableCellViewModel.swift in Sources */,
 				452001CD20CC253500C1ED22 /* ShareView.swift in Sources */,
 				A7EC57C62118BC7B0078F631 /* REGroupRequestResult_error.swift in Sources */,
 				A708792521295C020012C7F6 /* REUserProfile_relationInfo.swift in Sources */,
@@ -2417,8 +2563,12 @@
 				A7C1C35921986AD70096CEA6 /* ContactList.swift in Sources */,
 				A7B9A76621DB6E4000840330 /* MoreOptionsViewModel.swift in Sources */,
 				A7C4F1C8213BD27E00C76EEF /* PhotoSpecialScrollView.swift in Sources */,
+				A7B9A78C21DE060F00840330 /* ManageGroupsSlideMenuTableCellViewModel.swift in Sources */,
+				A7AF54AE21EA5128002682C7 /* MutualFollowViewController.swift in Sources */,
 				4535481521523C6C00FC81F5 /* CommentAccessoryView.swift in Sources */,
 				A7E6A9A521D8BB9D00AA33AE /* SaySomethingViewModel.swift in Sources */,
+				A7AF54B721EB424E002682C7 /* FollowersView.swift in Sources */,
+				A7B9A78821DE05ED00840330 /* ExploreViewSlideMenuTableCellViewModel.swift in Sources */,
 				A7C1C34C2196C8750096CEA6 /* ExplorePeopleViewController.swift in Sources */,
 				A77D987C21591920002F9A02 /* CameraGalleryMenuView.swift in Sources */,
 				4564E41320B95574003B0D16 /* AppDelegate.swift in Sources */,
@@ -2441,12 +2591,14 @@
 				A7B9A76C21DB780A00840330 /* AllowLocationAppearTableViewCell.swift in Sources */,
 				A7D399C7214A446B00661132 /* CustomPermissionView.swift in Sources */,
 				45DABA9C21665BC80070840E /* LoaderTransition.swift in Sources */,
+				A7B9A77621DD3D4200840330 /* PendingRequestTableViewController.swift in Sources */,
 				A7EFF99921D4D28200B1A3DC /* GroupCreationCellSizeCalculator.swift in Sources */,
 				451E9F152139366300185925 /* CachedImageView.swift in Sources */,
 				45DEEA9D20E16DB000FE484E /* Share.swift in Sources */,
 				A7EFF97F21CF038200B1A3DC /* ImageSizeManager.swift in Sources */,
 				A71F65AB21691705002A7C5C /* FinalSharedItemsView.swift in Sources */,
 				A7E78036218F714800E76E3C /* ContactViewController2.swift in Sources */,
+				A7B9A78221DE051000840330 /* PendingRequestSlideMenuTableViewCell.swift in Sources */,
 				A7FE5DF921C2539A00C7BCEC /* GroupInfoViewController.swift in Sources */,
 				A7EFF9A121D51B8700B1A3DC /* GroupCreationControllerViewModel.swift in Sources */,
 				A77D98782159175F002F9A02 /* VideoMenuView.swift in Sources */,
@@ -2466,6 +2618,7 @@
 				A7CD3A2321C40AB300663001 /* ScretchableView.swift in Sources */,
 				454815B8215EABB0009684E1 /* PasswordResetView.swift in Sources */,
 				A7184EAC21C9115C000BA72C /* GroupInfoEditViewModel.swift in Sources */,
+				A7AF54B321EA5E2C002682C7 /* PageItemCollectionViewCell.swift in Sources */,
 				A75E80A5212EA08F00EA0D03 /* MediaPermissionUnAuthorizedViewController.swift in Sources */,
 				A7AE5FB521C7E774008FD5AD /* GroupInfoEditTableViewCell.swift in Sources */,
 				A762B75E21641ADB00DBB4EF /* PostAttachmentView.swift in Sources */,
@@ -2476,6 +2629,7 @@
 				A7C1C3532197169B0096CEA6 /* ExploreChoiseCollectionViewCell.swift in Sources */,
 				A7AE5FAF21C7A979008FD5AD /* GroupParticipantTableViewCell.swift in Sources */,
 				A7130296214816EE005318BD /* CircleView.swift in Sources */,
+				A7B9A78A21DE060000840330 /* PendingRequestSlideMenuTableCellViewModel.swift in Sources */,
 				45AE7DF7216F99FA0081C6F6 /* LikeViewController.swift in Sources */,
 				A765A981213CC3C000881F1B /* CollectionViewConstants.swift in Sources */,
 				A7EC57D1211B31EC0078F631 /* REError.swift in Sources */,
@@ -2490,12 +2644,12 @@
 				4542859E214A94E200F68FAC /* REBaseRequest.swift in Sources */,
 				A708791D21276CE90012C7F6 /* Item1CollectionViewCell.swift in Sources */,
 				45A496EB217F577E00E6605B /* FeedMapView.swift in Sources */,
+				A7B9A78021DE04F700840330 /* ExplorePeopleSlideMenuTableViewCell.swift in Sources */,
 				A7B6BC2421A8902300D11A78 /* CommonSticker.swift in Sources */,
 				A716902C21B22E850039287B /* CommonDynamic.swift in Sources */,
 				451E9F1B213937E300185925 /* FeedViewController.swift in Sources */,
 				A722EC25219F130600E9BD3B /* ContactListManager.swift in Sources */,
 				A7F8F1DA21490F6A00EE45B6 /* CustomCapturedVideoView.swift in Sources */,
-				A73194D121C2A76500A009A3 /* GroupInfoParticipantTableViewCell.swift in Sources */,
 				A7D4E98321537CB000081859 /* CustomColorContainerView.swift in Sources */,
 				A75B459621324865009D2701 /* AddParticipantTableViewCell.swift in Sources */,
 				A7E7802F218CD2AD00E76E3C /* CustomActivityIndicator.swift in Sources */,
@@ -2521,8 +2675,10 @@
 				454285A6214A95D600F68FAC /* REPostResponse.swift in Sources */,
 				A722EC21219EB4D700E9BD3B /* UserProfileViewController2.swift in Sources */,
 				A7EC57CD211947490078F631 /* REGroupRequestResult_resultArrayParticipantList_item.swift in Sources */,
+				A73044CA21DFA7BE005C9811 /* PendingRequestTableCellViewModel.swift in Sources */,
 				A709F64B20FEA6A4003FF2C5 /* CognitoConfig.swift in Sources */,
 				4527E05520C8605800ECB3D1 /* MainTabBarViewController.swift in Sources */,
+				A7B7527221E2A09600F5FF0A /* InformerView.swift in Sources */,
 				451E9F012139318E00185925 /* REAWSManager.swift in Sources */,
 				A7EFF99F21D4FF3700B1A3DC /* FriendGroupRelationViewModel.swift in Sources */,
 				45A496E7217F4D5100E6605B /* PhoneViewConfirmationController.swift in Sources */,
@@ -2535,6 +2691,7 @@
 				A7EFF99521D4083C00B1A3DC /* GroupCreationTableViewCell.swift in Sources */,
 				A75B4594213228C7009D2701 /* HeaderInfoTableViewCell.swift in Sources */,
 				A774ACA42132077300848B79 /* GroupInformationHeaderView.swift in Sources */,
+				A73044C821DF75EB005C9811 /* PendingRequestTableViewModel.swift in Sources */,
 				A7EC57C52118BC7B0078F631 /* REGroupRequest.swift in Sources */,
 				A71CC35A215B4524002A2468 /* ImageCollectionViewCell2.swift in Sources */,
 				A7817AC42134BF7F00ECCF8C /* ParticipantSelectedCollectionViewCell.swift in Sources */,
@@ -2548,6 +2705,7 @@
 				451E9F122139366300185925 /* MediaViewCell.swift in Sources */,
 				A7044D9D21990B8200A64D10 /* REUserListResponse.swift in Sources */,
 				4542859C214A94D700F68FAC /* REComment_replies_item.swift in Sources */,
+				A7AF54AB21EA50B8002682C7 /* DynamicPageView.swift in Sources */,
 				451E9F122139366300185925 /* MediaViewCell.swift in Sources */,
 				45E8B5F0215A9806005AD00A /* CommentViewCell.swift in Sources */,
 				A7F35D912116811B005DA851 /* REFriendRequestList.swift in Sources */,
@@ -2555,16 +2713,19 @@
 				A7D4E9742151444700081859 /* ColorPaletteCollectionViewCell.swift in Sources */,
 				A7C1C34E2196F16A0096CEA6 /* ExploreView.swift in Sources */,
 				A7C92D8821500F5600432D70 /* CustomCapturedMainBackground.swift in Sources */,
+				A7B7529321E3FB8F00F5FF0A /* InformerViewModel.swift in Sources */,
 				A762893C215E56A40083EE57 /* CustomScrollViewContainer.swift in Sources */,
 				A762B74A216189AF00DBB4EF /* CustomFetchView.swift in Sources */,
 				A708792E212B250A0012C7F6 /* REGroupRequest_groupParticipantArray_item.swift in Sources */,
 				A7E2F85B2114A6F700214066 /* REUserProfile_error.swift in Sources */,
+				A7B7527021E298BF00F5FF0A /* InformerLoader.swift in Sources */,
 				45AE7DED216F813B0081C6F6 /* REProviderList.swift in Sources */,
 				A716903821B69CF30039287B /* FriendRelationSelectionView.swift in Sources */,
 				454285AB214A95FC00F68FAC /* REPostListResponse.swift in Sources */,
 				A7AE5FA421C63D00008FD5AD /* GroupParticipantsViewModel.swift in Sources */,
 				A708792121276CF80012C7F6 /* Item3CollectionViewCell.swift in Sources */,
 				A710F421213FCD8100ECC5DA /* ShareDataView.swift in Sources */,
+				A7B9A77B21DE02C300840330 /* SlideMenuTableViewModel.swift in Sources */,
 				451E9F1D213937F600185925 /* DropPinViewController.swift in Sources */,
 				A722EC23219EFA6600E9BD3B /* ContactRequestView.swift in Sources */,
 				A7EFF98621D2FC8D00B1A3DC /* NewGroupCreationView.swift in Sources */,
@@ -2573,6 +2734,7 @@
 				A71F65AF2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift in Sources */,
 				A7E2F847211131CC00214066 /* UIButtonCustomDesign.swift in Sources */,
 				458AAB302186425400F85A9B /* Dynamic.swift in Sources */,
+				A7B9A78421DE054C00840330 /* ManageGroupsSlideMenuTableViewCell.swift in Sources */,
 				A7E2F85C2114A6F700214066 /* REUserProfile_resultArray_item.swift in Sources */,
 				A774AC9A21319B3700848B79 /* GroupBridgeNavigationController.swift in Sources */,
 				A7E4F69121B17FC30063E00B /* FriendRelationViewController.swift in Sources */,
@@ -2583,12 +2745,12 @@
 				A7044D9F219974A700A64D10 /* FacebookContactRequestView.swift in Sources */,
 				454285A1214A95BA00F68FAC /* REPost.swift in Sources */,
 				454285A4214A95C800F68FAC /* REComment.swift in Sources */,
-				A7E780402191A35600E76E3C /* CustomPostAlerManager.swift in Sources */,
 				A7EFF99321D3D38100B1A3DC /* GroupCreationViewModel.swift in Sources */,
 				A7087917212756E00012C7F6 /* DataPage3CollectionViewCell.swift in Sources */,
 				A7ED7325216F3DE400E518FB /* FinalNoteViewController.swift in Sources */,
 				A7369AFE20C78830001692F4 /* ImageDownloadResizeManagement.swift in Sources */,
 				A72AF221219483FE0050B685 /* UserProfileMainView.swift in Sources */,
+				A757C9D521EE2F4300E32B46 /* SearchBarHeaderView.swift in Sources */,
 				A7184EAE21C93693000BA72C /* GroupInfoView.swift in Sources */,
 				45BFD5762191A50D00CA8C0E /* MenuTabViewModel.swift in Sources */,
 				A708792C212B23530012C7F6 /* EditProfileViewController.swift in Sources */,
@@ -2628,18 +2790,21 @@
 				A75F07F221354755001065AA /* SectionBasedParticipant.swift in Sources */,
 				A7087915212756C90012C7F6 /* DataPage2CollectionViewCell.swift in Sources */,
 				45BCD9F221414FDE00541729 /* CommentViewController.swift in Sources */,
+				A7AF54B121EA53FC002682C7 /* DynamicPageViewModel.swift in Sources */,
 				451E9F082139362200185925 /* UITextFieldExtensions.swift in Sources */,
 				45183F2F2179C56B00C11884 /* Country.swift in Sources */,
 				45BFD56E219097F500CA8C0E /* CatchViewController.swift in Sources */,
 				A7FD8A5F21BFF5850094E02B /* GroupRelationViewModel.swift in Sources */,
 				4564E47320B9A7FD003B0D16 /* Validation.swift in Sources */,
 				454285AE214A960600F68FAC /* REBucketUploadResponse.swift in Sources */,
+				A7AF54B921EB4371002682C7 /* FollowersViewModel.swift in Sources */,
 				A7812EAD21247EED00460117 /* MenuBar4.swift in Sources */,
 				A70421FB21AD79AE0040AA8A /* CapturedVideoView.swift in Sources */,
 				A7E7803E2190AB6200E76E3C /* CustomNotificationManager.swift in Sources */,
 				A762B74E2161B0F800DBB4EF /* CustomCroppedImage.swift in Sources */,
 				A7B6BC2221A88AB700D11A78 /* StickerCommonView.swift in Sources */,
 				A7AE5FAD21C7A183008FD5AD /* GroupExitTableViewCell.swift in Sources */,
+				A73044C621DEC9A5005C9811 /* PendingRequestTableViewCell.swift in Sources */,
 				A71F65B1216B7276002A7C5C /* FinalShareSaySomethingView.swift in Sources */,
 				45BFD57421919BA600CA8C0E /* MenuTabViewCell.swift in Sources */,
 				A77D98712158EC48002F9A02 /* ShareMenuViews.swift in Sources */,
@@ -2664,12 +2829,14 @@
 				A7E2F85321128CCC00214066 /* REResponse.swift in Sources */,
 				A77D3FD32131824B00D016D6 /* GroupInformationView.swift in Sources */,
 				A765A97D213CBD9100881F1B /* GroupCreateCollectionViewCell.swift in Sources */,
+				A7AF54B521EA7A9D002682C7 /* PageSliderView.swift in Sources */,
 				4538A05F217725F10044A79D /* RECountryListResponse.swift in Sources */,
 				A77D987F215A0C94002F9A02 /* FirebaseManager.swift in Sources */,
 				A7812EAF21247FED00460117 /* MenuBar4CollectionViewCell.swift in Sources */,
 				A7C1C362219906B90096CEA6 /* REProviderList.swift in Sources */,
 				A7FD8A5D21BFF4E50094E02B /* GroupRelationTableViewCell.swift in Sources */,
 				45E8B5F2215A9857005AD00A /* CommentView.swift in Sources */,
+				A7B9A77921DD579C00840330 /* SlideMenuViewModel.swift in Sources */,
 				A722EC2D21A2D9B200E9BD3B /* ExplorePeopleViewController.swift in Sources */,
 				A722EC3221A3EFC500E9BD3B /* PostMainView.swift in Sources */,
 				A79A765D20C368B700FCE198 /* TemporaryViewController.swift in Sources */,
@@ -2694,6 +2861,7 @@
 				A7B9A76321DB6C9800840330 /* MoreOptionsTableViewController.swift in Sources */,
 				4542859A214A94C700F68FAC /* RECommentListResponse.swift in Sources */,
 				A7F21B3E21C5A53F0015DB58 /* GroupImageViewModel.swift in Sources */,
+				A7AF54BB21EB448A002682C7 /* FollowingsView.swift in Sources */,
 				A79A768020C5CB1B00FCE198 /* FriendsTableViewCell.swift in Sources */,
 				A762B7462161116800DBB4EF /* CustomProgressBarLayer2.swift in Sources */,
 				4564E45A20B97387003B0D16 /* Constants.swift in Sources */,

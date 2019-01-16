@@ -55,6 +55,7 @@ extension AllowCommentsTableViewCell {
     private func setupViewSettings() {
         
         addSwitchButtonTarget()
+        self.selectionStyle = .none
         
     }
     

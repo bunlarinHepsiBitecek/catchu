@@ -11,19 +11,26 @@ import Foundation
 extension UIImage {
     
     // image resize, especially reduce the size of the content
-    func reSizeImage(orientation: ImageOrientation) -> UIImage? {
+    func reSizeImage(inputWidth: CGFloat) -> UIImage? {
         
-        // This is the rect that we've calculated out and this is what is actually used below
-        guard let rect = returnRectangles(imageOrientation: orientation) else { return nil }
-        guard let size = returnSize(imageOrientation: orientation) else { return nil }
+//        // This is the rect that we've calculated out and this is what is actually used below
+//        guard let rect = returnRectangles(imageOrientation: orientation) else { return nil }
+//        guard let size = returnSize(imageOrientation: orientation) else { return nil }
+//
+//        // Actually do the resizing to the rect using the ImageContext stuff
+//        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+//
+//        self.draw(in: rect)
         
-        // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        let canvasSize = CGSize(width: inputWidth, height: CGFloat(ceil(inputWidth/size.width * size.height)))
         
-        self.draw(in: rect)
-
+        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: canvasSize))
+        
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        
         
         return newImage!
         
@@ -58,6 +65,35 @@ extension UIImage {
             return nil
         }
     }
+    
+    func findImageOrientation() -> ImageOrientation {
+        if size.width > size.height {
+            return ImageOrientation.landScape
+        } else if size.width < size.height {
+            return ImageOrientation.portrait
+        } else if size.width == size.height {
+            return ImageOrientation.square
+        } else {
+            return ImageOrientation.other
+        }
+    }
 
+    func resizeImageWithOrientation() -> UIImage? {
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        guard let rect = returnRectangles(imageOrientation: self.findImageOrientation()) else { return nil }
+        guard let size = returnSize(imageOrientation: self.findImageOrientation()) else { return nil }
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        
+        self.draw(in: rect)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+        
+    }
     
 }

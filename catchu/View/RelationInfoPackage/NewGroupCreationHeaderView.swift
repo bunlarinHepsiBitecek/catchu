@@ -366,7 +366,7 @@ extension NewGroupCreationHeaderView: CameraImageVideoHandlerProtocol {
     
         headerViewModel.groupImage.value = image
         
-        let resizedImage = image.reSizeImage(orientation: orientation)
+        let resizedImage = image.reSizeImage(inputWidth: Constants.ImageResizeValues.Width.width_1080)
         print("resizedImage : \(resizedImage)")
         
         guard let imageAsData = UIImageJPEGRepresentation(resizedImage!, 0.80) else { return }

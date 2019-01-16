@@ -24,28 +24,27 @@ class FriendRelationViewController: UIViewController {
 
         setupViews()
         
+        
+        
     }
+    
+    
     
 }
 
 // MARK: - major functions
 extension FriendRelationViewController {
     
-    func setupViews() {
-        
+    private func setupViews() {
         viewConfiguration()
         addViews()
-        
     }
     
-    func viewConfiguration() {
+    private func viewConfiguration() {
         self.view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
-        
-        
     }
     
-    func addViews() {
+    private func addViews() {
         
         do {
             try addFriendRelationView()
@@ -68,11 +67,17 @@ extension FriendRelationViewController {
         //addFriendRelationView()
     }
     
-    func addFriendRelationView() throws {
+    private func addFriendRelationView() throws {
         
         guard let friendRelationChoise = friendRelationChoise else { throw ClientPresentErrors.missingViewControllerChoise }
         guard let friendRelationViewPurpose = friendRelationViewPurpose else { throw ClientPresentErrors.missingViewControllerPurpose }
-        guard let delegate = delegate else { throw ClientPresentErrors.missingDelegation }
+        //guard let delegate = delegate else { throw ClientPresentErrors.missingDelegation }
+        
+        if friendRelationViewPurpose == .participant || friendRelationViewPurpose == .post {
+            if delegate == nil {
+                throw ClientPresentErrors.missingDelegation
+            }
+        }
         
         friendRelationView = FriendGroupRelationView(frame: .zero, delegate: self, delegatePostView: delegate, friendRelationChoise: friendRelationChoise, friendRelationPurpose: friendRelationViewPurpose, participantArray: participantArray, selectedGroup: selectedGroup)
         
@@ -93,7 +98,7 @@ extension FriendRelationViewController {
         
     }
     
-    func addTransitionToPresentationOfFriendRelationViewController() {
+    private func addTransitionToPresentationOfFriendRelationViewController() {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03

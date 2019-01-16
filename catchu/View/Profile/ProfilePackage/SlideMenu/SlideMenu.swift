@@ -9,6 +9,10 @@
 import UIKit
 
 class SlideMenu: UIView {
+    
+    var slideMenuViewModel = SlideMenuViewModel()
+    
+    private var slideMenuTableView: SlideMenuTableView!
 
     private var userName : UILabel!
     private var userNameSurname : UILabel!
@@ -22,32 +26,31 @@ class SlideMenu: UIView {
     weak var delegate : ViewPresentationProtocols!
     
     lazy var mainView: UIView = {
-        
         let temp = UIView()
         temp.isUserInteractionEnabled = true
-        
         return temp
     }()
 
     lazy var topView: UIView = {
-        
         let temp = UIView()
         temp.isUserInteractionEnabled = true
+        temp.layer.shadowOffset = CGSize(width: -3, height: 3)
+        temp.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        temp.layer.shadowOpacity = 0.6
+        temp.layer.shadowRadius = 4
+        temp.layer.masksToBounds = false
         return temp
     }()
     
     lazy var profilePictureContainerView: UIView = {
-        
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_50
-        
         return temp
     }()
     
     lazy var profilePictureView: UIImageView = {
-        
         let temp = UIImageView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
@@ -56,42 +59,24 @@ class SlideMenu: UIView {
         temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_50
         temp.clipsToBounds = true
-        
         return temp
     }()
     
     lazy var stackView: UIStackView = {
-        
         let temp = UIStackView(arrangedSubviews: returnUserInformationViews())
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.alignment = .fill
         temp.axis = .vertical
         temp.distribution = .fillProportionally
-        
         return temp
     }()
     
     lazy var bodyView: UIView = {
-        
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        
         temp.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
-        
-        return temp
-    }()
-    
-    lazy var menuTableView: UITableView = {
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.grouped)
-        temp.translatesAutoresizingMaskIntoConstraints = false
-//        temp.separatorStyle = .singleLine
-        temp.dataSource = self
-        temp.delegate = self
-        
-        temp.register(SlideMenuTableViewCell.self, forCellReuseIdentifier: Constants.Collections.TableView.slideMenuTableViewCell)
-        
         return temp
     }()
     
@@ -118,14 +103,18 @@ class SlideMenu: UIView {
 // MARK: - major functions
 extension SlideMenu {
     
-    func initiateView() {
+    private func initiateView() {
         
         addViews()
+        addSlideMenuTableView()
         addSwipeGestureRecognizer()
+        askingForFollowerRequest()
+        addPendingRequestListeners()
+        addRefreshRequestListener()
         
     }
     
-    func addViews() {
+    private func addViews() {
         
         print("self.frame : \(self.frame)")
         
@@ -141,7 +130,9 @@ extension SlideMenu {
         self.profilePictureContainerView.addSubview(profilePictureView)
         self.topView.addSubview(stackView)
         
-        self.bodyView.addSubview(menuTableView)
+        self.mainView.bringSubview(toFront: topView)
+        
+        //self.bodyView.addSubview(menuTableView)
         
         let safe = self.safeAreaLayoutGuide
         let safeMain = self.mainView.safeAreaLayoutGuide
@@ -173,17 +164,42 @@ extension SlideMenu {
             //bodyView.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor),
             bodyView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height),
             
+            /*
             menuTableView.leadingAnchor.constraint(equalTo: safeBodyView.leadingAnchor),
             menuTableView.trailingAnchor.constraint(equalTo: safeBodyView.trailingAnchor),
             menuTableView.topAnchor.constraint(equalTo: safeBodyView.topAnchor),
             //menuTableView.bottomAnchor.constraint(equalTo: safeBodyView.bottomAnchor),
-            menuTableView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height)
+            menuTableView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height)*/
             
             ])
         
     }
     
-    func returnUserInformationViews() -> [UIView] {
+    private func addSlideMenuTableView() {
+        
+        let slideMenuHeight = self.frame.height - topView.frame.height
+        
+        slideMenuTableView = SlideMenuTableView(frame: CGRect(x: 0, y: 0, width: 0, height: slideMenuHeight))
+        slideMenuTableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.bodyView.addSubview(slideMenuTableView)
+        
+        let safeBodyView = self.bodyView.safeAreaLayoutGuide
+        
+        print("self.frame.height : \(self.frame.height)")
+        print("topView.frame.height : \(topView.frame.height)")
+        
+        NSLayoutConstraint.activate([
+            
+            slideMenuTableView.leadingAnchor.constraint(equalTo: safeBodyView.leadingAnchor),
+            slideMenuTableView.trailingAnchor.constraint(equalTo: safeBodyView.trailingAnchor),
+            slideMenuTableView.topAnchor.constraint(equalTo: safeBodyView.topAnchor),
+            slideMenuTableView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height)
+            
+            ])
+    }
+    
+    private func returnUserInformationViews() -> [UIView] {
         
         var viewArray = [UIView]()
         
@@ -207,25 +223,7 @@ extension SlideMenu {
         
     }
     
-    func setUserInformationToViews() {
-        print("setUserInformationToViews starts")
-        print("User.shared.name : \(User.shared.name)")
-        
-        if let name = User.shared.name {
-            self.userNameSurname.text = name
-        }
-        
-        if let userName = User.shared.username {
-            self.userName.text = userName
-        }
-        
-        if let profilePictureURL = User.shared.profilePictureUrl {
-            self.profilePictureView.setImagesFromCacheOrFirebaseForFriend(profilePictureURL)
-        }
-        
-    }
-    
-    func addShadowToProfileContainerView() {
+    private func addShadowToProfileContainerView() {
         
         print("addShadowToProfileContainerView starts")
         print("profilePictureView.bounds : \(profilePictureView.bounds)")
@@ -248,14 +246,15 @@ extension SlideMenu {
     
     }
     
-    func addGradientColorToTopView() {
+    private func addGradientColorToTopView() {
         
         if topView.bounds.height > 0 {
             if !topViewGradientColorAdded {
                 
                 let gradient = CAGradientLayer()
                 gradient.frame = topView.bounds
-                gradient.colors = [#colorLiteral(red: 0.137254902, green: 0.02745098039, blue: 0.3019607843, alpha: 1).cgColor, #colorLiteral(red: 0.8, green: 0.3254901961, blue: 0.2, alpha: 1).cgColor]
+                //gradient.colors = [#colorLiteral(red: 0.137254902, green: 0.02745098039, blue: 0.3019607843, alpha: 1).cgColor, #colorLiteral(red: 0.8, green: 0.3254901961, blue: 0.2, alpha: 1).cgColor]
+                gradient.colors = [#colorLiteral(red: 0.2156862745, green: 0.231372549, blue: 0.2666666667, alpha: 1).cgColor, #colorLiteral(red: 0.2588235294, green: 0.5254901961, blue: 0.9568627451, alpha: 1).cgColor]
                 topView.layer.insertSublayer(gradient, at: 0)
                 
                 topViewGradientColorAdded = true
@@ -264,9 +263,107 @@ extension SlideMenu {
         
     }
     
-    func setDelegate(delegate :ViewPresentationProtocols) {
+    private func askingForFollowerRequest() {
+        do {
+            try slideMenuViewModel.getUserFollowerRequestList()
+        } catch let error as ApiGatewayClientErrors {
+            if error == .missingUserId {
+                print("\(Constants.ALERT) userid is required.")
+            }
+        } catch {
+            print("\(Constants.CRASH_WARNING)")
+        }
+    }
     
+    private func addPendingRequestListeners() {
+        slideMenuViewModel.state.bind { (fetchState) in
+            self.pendingRequestStateHandler(fetchState: fetchState)
+        }
+    }
+    
+    private func pendingRequestStateHandler(fetchState: DataFetchingState) {
+        switch fetchState {
+        case .none:
+            return
+        case .fetching:
+            return
+        case .fetched:
+            self.activatePendingRequestBadgeData()
+            return
+        }
+    }
+    
+    private func activatePendingRequestBadgeData() {
+        // this means followRequestArray has data now
+        slideMenuTableView.activatePendingRequestBadgeData(value: "\(slideMenuViewModel.returnTotalRequestCount())")
+        slideMenuTableView.setFollowerRequestArray(followRequesterArray: slideMenuViewModel.followRequesterArray)
+    }
+    
+    private func addRefreshRequestListener() {
+        slideMenuTableView.refreshControlListener { (operationState) in
+            self.refreshProcessManagement(operationState: operationState)
+        }
+    }
+    
+    private func refreshProcessManagement(operationState: CRUD_OperationStates) {
+        switch operationState {
+        case .processing:
+            self.askingForFollowerRequest()
+        case .done:
+            return
+        }
+    }
+    
+}
+
+// MARK: - outside functions
+extension SlideMenu {
+    func setDelegate(delegate :ViewPresentationProtocols) {
         self.delegate = delegate
+    }
+    
+    func setUserInformationToViews() {
+        print("setUserInformationToViews starts")
+        print("User.shared.name : \(User.shared.name)")
+        
+        if let name = User.shared.name {
+            self.userNameSurname.text = name
+        }
+        
+        if let userName = User.shared.username {
+            self.userName.text = userName
+        }
+        
+        if let profilePictureURL = User.shared.profilePictureUrl {
+            self.profilePictureView.setImagesFromCacheOrFirebaseForFriend(profilePictureURL)
+        }
+    }
+    
+    private func presentViewControllers(inputSlideMenuType: SlideMenuViewTags) {
+        
+        SlideMenuLoader.shared.animateSlideMenu(active: false)
+        
+        switch inputSlideMenuType {
+        case .manageGroupOperations:
+            return
+        case .explore:
+            return
+        case .settings:
+            return
+        case .viewPendingFriendRequests:
+            self.presentFollowRequestTableViewControllers()
+            return
+        }
+        
+    }
+    
+    private func presentFollowRequestTableViewControllers() {
+        let pendingRequestController = PendingRequestTableViewController()
+        let navigationController = UINavigationController(rootViewController: pendingRequestController)
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            currentViewController.present(navigationController, animated: true, completion: nil)
+        }
         
     }
 }
@@ -303,38 +400,3 @@ extension SlideMenu : UIGestureRecognizerDelegate {
 
 }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
-extension SlideMenu : UITableViewDataSource, UITableViewDelegate {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return slideMenuViewTypeArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = menuTableView.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.slideMenuTableViewCell, for: indexPath) as? SlideMenuTableViewCell else { return UITableViewCell() }
-        
-        cell.setProperties(image: sliderMenuViewIcon[indexPath.row], slideMenuType: slideMenuViewTypeArray[indexPath.row], cellMenuString: sliderMenuViewLabel[indexPath.row])
-        
-        return cell
-        
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        let cell = menuTableView.cellForRow(at: indexPath) as? SlideMenuTableViewCell
-        
-        guard let cell = menuTableView.cellForRow(at: indexPath) as? SlideMenuTableViewCell else { return }
-        
-        if let slideMenuType = cell.slideMenuType {
-            delegate.directFromSlideMenu(inputSlideMenuType: slideMenuType)
-        }
-        
-        
-    }
-    
-}

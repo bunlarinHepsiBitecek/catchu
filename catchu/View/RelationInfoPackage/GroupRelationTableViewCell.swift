@@ -147,6 +147,8 @@ extension GroupRelationTableViewCell {
         case .deSelected:
             self.selectIcon.image = nil
             self.selectIcon.layer.borderWidth = 1
+        case .alreadyGroupParticipant:
+            return
         }
     }
     

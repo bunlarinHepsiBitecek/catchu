@@ -585,7 +585,7 @@ extension GroupImageContainerView: CameraImageVideoHandlerProtocol {
         //guard let imageAsData = UIImageJPEGRepresentation(image, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE)) else { return }
         //guard let imageAsData = UIImageJPEGRepresentation(image, 0.80) else { return }
         
-        let x = image.reSizeImage(orientation: orientation)
+        let x = image.reSizeImage(inputWidth: Constants.ImageResizeValues.Width.width_1080)
         print("x : \(x)")
         
         guard let imageAsData = UIImageJPEGRepresentation(x!, 0.80) else { return }

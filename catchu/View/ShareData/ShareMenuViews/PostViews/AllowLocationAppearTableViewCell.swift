@@ -55,6 +55,8 @@ extension AllowLocationAppearTableViewCell {
         
         addSwitchButtonTarget()
         
+        self.selectionStyle = .none
+        
     }
     
     private func resetCellSettings() {

@@ -13,8 +13,8 @@ class PostViewController: UIViewController {
     private var postMainView : PostMainView!
 //    private var capturedCameraView : CustomCameraCapturedImageView!
     
-    var priorActiveTab : Int!
-    weak var delegate : TabBarControlProtocols!
+    //var priorActiveTab : Int!
+    //weak var delegate : TabBarControlProtocols!
     
 //    override var preferredStatusBarStyle: UIStatusBarStyle {
 //        return .lightContent
@@ -122,35 +122,13 @@ extension PostViewController : PostViewProtocols {
         // clear post items, because user cancelled post process
         PostItems.shared.clearPostItemsObjects()
         
-        if let destionation = LoaderController.shared.currentViewController() as? MainTabBarViewController {
-            
-            destionation.selectedIndex = priorActiveTab
-        }
-        
-        guard delegate != nil else {
-            return
-        }
-        
-        addTransitionToPresentationOfShareViews()
-        delegate.tabBarHiddenManagement(hidden: false)
-        self.dismiss(animated: false, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
     
     func dismissPostViewForSuccessfullProcess() {
         
-        if let destionation = LoaderController.shared.currentViewController() as? MainTabBarViewController {
-            
-            destionation.selectedIndex = priorActiveTab
-        }
-        
-        guard delegate != nil else {
-            return
-        }
-        
-        addTransitionToPresentationOfShareViews()
-        delegate.tabBarHiddenManagement(hidden: false)
-        self.dismiss(animated: false, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
 }

@@ -57,7 +57,7 @@
 "failed" = "Opps 😭";
 "fetched" = "Fetched";
 "fetching" = "Fetching From ICloud";
-"tryAgain" = "Yeniden Deneyiniz! 🥰";
+"tryAgainButton" = "Yeniden Gönder";
 "follewers" = "Takipçiler";
 "follewings" = "Takiptesin";
 "connectToFacebook" = "Facebook ile bağlan";
@@ -73,6 +73,9 @@
 "provideGroupName" = "Lütfen bir grup adı giriniz.";
 "selectedParticipantCount" = "Katılımcı Sayısı : ";
 "posting" = "Paylaşılıyor...";
+"confirm" = "Onayla";
+"reject" = "Reddet";
+"Refreshing" = "Güncelleniyor...";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
@@ -92,9 +95,11 @@
 
 // notification variables
 "CatchSomething" = "Bir şey yakaladınız :)";
-"postSuccessMessage" = "Paylaşım Başarılı ✅";
+"postSuccessMessage" = "Paylaşım Başarılı";
 "postTitle" = "CatchU Paylaşım";
-"postFailedMessage" = "Bir sorun oluştu ❌";
+"postFailedMessage" = "Bir sorun oluştu";
+"tryAgain" = "Yeniden göndermek için basın";
+"tapToClose" = "Kapatmak için dokunun";
 
 // AWS Error explanations
 "confirmationCodeRequired" = "Lütfen doğrulama kodunu giriniz!";
@@ -166,6 +171,11 @@
 "invitePeopleOncatchU" = "Kişileri Davet Et          : ";
 "inviteFriendTitle" = "Arkadaşını Davet Et";
 "inviteFriendInformation" = "Davet için bir numara seç 😀";
+
+"explorePeopleCell" = "Kişileri Keşfet";
+"viewPendingRequestCell" = "Bekleyen İstekler";
+"manageGroupsCell" = "Grupları Yönet";
+"settingsCell" = "Ayalar";
 
 // Action sheet titles
 "cameraGalleryTitle" = "Kamera - Galeri";

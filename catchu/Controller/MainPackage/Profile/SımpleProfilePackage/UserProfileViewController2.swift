@@ -119,6 +119,14 @@ extension UserProfileViewController2 {
         }
         
     }
+    
+    private func presentFollowRequestTableViewControllers() {
+        let pendingRequestController = PendingRequestTableViewController()
+        
+        self.navigationController?.pushViewController(pendingRequestController, animated: true)
+        
+    }
+    
     /* viewController passing */
     
 }
@@ -184,6 +192,7 @@ extension UserProfileViewController2 : ViewPresentationProtocols {
         case .settings:
             return
         case .viewPendingFriendRequests:
+            self.presentFollowRequestTableViewControllers()
             return
         }
         

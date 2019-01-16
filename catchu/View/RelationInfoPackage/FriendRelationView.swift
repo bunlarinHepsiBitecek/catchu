@@ -239,7 +239,7 @@ extension FriendRelationView {
     }
     
     private func reloadFriendTableView() {
-        
+        print("\(#function) TAKAKAKAKAKAKA")
         DispatchQueue.main.async {
             
             //self.friendTableView.reloadData()
@@ -339,6 +339,7 @@ extension FriendRelationView {
         if friendRelationPurpose == .participant {
             for item in participantArray {
                 if user.userid == item.userid {
+                    commonUserViewModel.userSelected.value = .alreadyGroupParticipant
                     return true
                 }
             }
@@ -430,11 +431,19 @@ extension FriendRelationView: UITableViewDataSource, UITableViewDelegate, UITabl
             print("cell is loading process")
             cell.initiateCellDesign(item: .none)
         } else {
+            //checkIfParticipantUserExist(commonViewModelItem: friendsViewModel.returnFriendArrayData(index: indexPath.row))
+            
             cell.initiateCellDesign(item: friendsViewModel.returnFriendArrayData(index: indexPath.row))
             
             if checkIfParticipantUserExist(commonViewModelItem: friendsViewModel.returnFriendArrayData(index: indexPath.row)) {
                 cell.disableCell()
             }
+            
+            /*
+             bu fonksiyonu kapattık, cunku initiateCellDesign icerisindeki bindAndFire tableviewstate deselect select komutlarını main thread icerisinde queue alıyor. burada biz ana akısta cell icerisindeki datayı hızlı bir sekilde set ediyoruz. Fakat queue daki data daha sonra kumule calısınca bizim gri check isaretimizi nil yapıyor.
+            if checkIfParticipantUserExist(commonViewModelItem: friendsViewModel.returnFriendArrayData(index: indexPath.row)) {
+                cell.disableCell()
+            }*/
             
         }
         

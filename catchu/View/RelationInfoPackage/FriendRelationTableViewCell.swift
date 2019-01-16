@@ -102,6 +102,7 @@ extension FriendRelationTableViewCell {
         
         let safe = self.contentView.safeAreaLayoutGuide
         let safeProfileImage = self.profileImageView.safeAreaLayoutGuide
+        let safeSelectionIcon = self.selectIcon.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
@@ -111,6 +112,7 @@ extension FriendRelationTableViewCell {
             profileImageView.widthAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Width.width_50),
             
             stackViewForUserInfo.leadingAnchor.constraint(equalTo: safeProfileImage.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_20),
+            stackViewForUserInfo.trailingAnchor.constraint(equalTo: safeSelectionIcon.leadingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_20),
             stackViewForUserInfo.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
             
             selectIcon.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_20),
@@ -171,7 +173,8 @@ extension FriendRelationTableViewCell {
     }
     
     func disableCell() {
-        
+        print("\(#function)")
+        print("row adi : \(self.name.text)")
         self.name.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
         self.username.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         self.username.text = LocalizedConstants.TitleValues.LabelTitle.userAlreadyInGroup
@@ -206,7 +209,9 @@ extension FriendRelationTableViewCell {
     }
     
     private func setIconImage(state: TableViewRowSelected) {
+        print("\(#function)")
         DispatchQueue.main.async {
+            print("row adi : \(self.name.text) - state: \(state.rawValue)")
             switch state {
             case .selected:
                 self.selectIcon.image = #imageLiteral(resourceName: "icon_checked_lightBlue")
@@ -214,6 +219,8 @@ extension FriendRelationTableViewCell {
             case .deSelected:
                 self.selectIcon.image = nil
                 self.selectIcon.layer.borderWidth = 1
+            case .alreadyGroupParticipant:
+                self.selectIcon.image = UIImage(named: "check_mark_grey.png")
             }
         }
     }

@@ -164,7 +164,10 @@ struct Constants {
                 static let height_16 : CGFloat = 16
                 static let height_15 : CGFloat = 15
                 static let height_10 : CGFloat = 10
+                static let height_5 : CGFloat = 5
+                static let height_3 : CGFloat = 3
                 static let height_2 : CGFloat = 2
+                static let height_1 : CGFloat = 1
                 static let height_0 : CGFloat = 0
             }
         }
@@ -179,6 +182,7 @@ struct Constants {
             static let constraint_80 : CGFloat = 80
             static let constraint_70 : CGFloat = 70
             static let constraint_60 : CGFloat = 60
+            static let constraint_51 : CGFloat = 51
             static let constraint_50 : CGFloat = 50
             static let constraint_44 : CGFloat = 44
             static let constraint_42 : CGFloat = 42
@@ -189,6 +193,7 @@ struct Constants {
             static let constraint_15 : CGFloat = 15
             static let constraint_10 : CGFloat = 10
             static let constraint_5 : CGFloat = 5
+            static let constraint_1 : CGFloat = 1
             static let constraint_0 : CGFloat = 0
         }
         
@@ -234,6 +239,7 @@ struct Constants {
     struct Map {
         static let DistanceFilter: Double = 10.0
         static let ZoomDegree: Double = 0.02
+        static let ZoomDegree_0_0025: Double = 0.0025
         static let Radius: Double = 0.10
     }
     

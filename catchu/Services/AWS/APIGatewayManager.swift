@@ -874,6 +874,71 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
+    /// Description: retrives follow request list for authenticated user
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - completion: follower request list
+    /// - Author: Erkut Bas
+    func getUserFollowerRequests(userid: String, completion: @escaping (ConnectionResult<REFriendRequestList>) -> Void)
+    {
+        if userid.isEmpty {
+            return
+        }
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                let friendRequestBody = REFriendRequest()
+                friendRequestBody?.requesterUserid = userid
+                friendRequestBody?.requestType = RequestType.getRequestingFollowList.rawValue
+                
+                guard let body = friendRequestBody else { return }
+                
+                self.client.followRequestPost(authorization: tokenResult.token, body: body).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+                
+            }
+        }
+    }
+    
+    /// Description: accepts or rejects follow requests
+    ///
+    /// - Parameters:
+    ///   - requestedUserid: follow requested userid
+    ///   - requesterUserid: follow requester userid
+    ///   - requestType: reject or confirm follow request
+    ///   - completion: network result
+    /// - Author: Erkut Bas
+    func followRequestOperations(requestedUserid: String, requesterUserid: String, requestType: RequestType, completion: @escaping (ConnectionResult<REFriendRequestList>) -> Void) {
+    
+        if requestedUserid.isEmpty || requesterUserid.isEmpty {
+            return
+        }
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finish) in
+            if finish {
+                
+                let friendRequestBody = REFriendRequest()
+                friendRequestBody?.requestedUserid = requestedUserid
+                friendRequestBody?.requesterUserid = requesterUserid
+                friendRequestBody?.requestType = requestType.rawValue
+                
+                guard let body = friendRequestBody else { return }
+                
+                self.client.followRequestPost(authorization: tokenResult.token, body: body).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+                
+            }
+        }
+        
+    }
+    
+    
     /// Description : post operation
     ///
     /// - Parameters:

@@ -14,7 +14,7 @@ class CustomMapView: UIView {
     private var mapView : MKMapView!
     private var mapViewBottomCornerRadiuesDone : Bool = false
     
-    var zoom: CLLocationDegrees = Constants.Map.ZoomDegree
+    var zoom: CLLocationDegrees = Constants.Map.ZoomDegree_0_0025
     
     var coordinate: CLLocationCoordinate2D? {
         didSet {
@@ -150,6 +150,9 @@ extension CustomMapView : LocationManagerDelegate {
 //        self.coordinate = LocationManager.shared.currentLocation.coordinate
         mapView.centerCoordinate = LocationManager.shared.currentLocation.coordinate
         centerMap(coordinate: mapView.centerCoordinate)
+        
+        LocationManager.shared.stopUpdateLocation()
+        
     }
     
     

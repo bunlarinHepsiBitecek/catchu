@@ -60,7 +60,7 @@ class GroupCreationParticipantCollectionViewCell: CommonCollectionCell, CommonDe
         return label
     }()
     
-    override func setupViews() {
+    override func initializeView() {
         addSubviews()
     }
 }

@@ -35,6 +35,18 @@ class SaySomethingViewModel: CommonViewModel {
         case .success(let data):
             
             if let data = data as? REPostResponse {
+                if let businessError = data.error {
+                    if businessError.code != 1 {
+                        // to do
+                        //self.postResultNotification(granted: false)
+                        InformerLoader.shared.animateInformerViews(postState: .failed)
+                        return
+                    }
+                }
+                
+                //self.postResultNotification(granted: false)
+                InformerLoader.shared.animateInformerViews(postState: .success)
+                PostItems.shared.clearPostItemsObjects()
                 
             }
             
@@ -42,6 +54,7 @@ class SaySomethingViewModel: CommonViewModel {
             
             // if post process failes, inform user
             self.postResultNotification(granted: false)
+            InformerLoader.shared.animateInformerViews(postState: .failed)
             
             switch apiError {
             case .serverError(error: let error):

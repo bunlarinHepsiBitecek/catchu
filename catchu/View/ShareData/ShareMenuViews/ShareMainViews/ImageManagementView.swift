@@ -352,7 +352,6 @@ extension ImageManagementView {
             if PostItems.shared.selectedImageArray == nil {
                 PostItems.shared.selectedImageArray = Array<UIImage>()
             }
-            
             PostItems.shared.selectedImageArray!.append(croppedImage.returnImage())
             
         }
@@ -366,7 +365,6 @@ extension ImageManagementView {
             if PostItems.shared.selectedImageArray == nil {
                 PostItems.shared.selectedImageArray = Array<UIImage>()
             }
-            
             PostItems.shared.selectedImageArray!.append(customSelectedImageContainer.returnImage())
             
         }

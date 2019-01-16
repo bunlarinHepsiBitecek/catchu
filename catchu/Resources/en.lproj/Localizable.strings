@@ -72,7 +72,7 @@
 "failed" = "Failed";
 "fetched" = "Fetched From ICloud";
 "fetching" = "Fetching From ICloud";
-"tryAgain" = "Try Again";
+"tryAgainButton" = "Try Again";
 "follewers" = "Followers";
 "follewings" = "Follewings";
 "connectToFacebook" = "Connect to Facebook";
@@ -88,7 +88,9 @@
 "provideGroupName" = "Please provide a group name.";
 "selectedParticipantCount" = "Selected Participant : ";
 "posting" = "Posting...";
-
+"confirm" = "Confirm";
+"reject" = "Reject";
+"Refreshing" = "Refreshing...";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";
@@ -111,9 +113,11 @@
 
 // notification variables
 "CatchSomething" = "You caught something :)";
-"postSuccessMessage" = "Posted Successfully ✅";
+"postSuccessMessage" = "Posted Successfully";
 "postTitle" = "CatchU Post";
-"postFailedMessage" = "Something goes wrong ❌";
+"postFailedMessage" = "Something goes wrong";
+"tryAgain" = "Tap to try again";
+"tapToClose" = "Tap to Close";
 
 // AWS Error explanations
 "confirmationCodeRequired" = "Please enter confirmation code";
@@ -208,6 +212,11 @@
 "inviteFriendTitle" = "Invite Friend";
 "inviteFriendInformation" = "Choise a phone to send invitations";
 
+"explorePeopleCell" = "Explore People";
+"viewPendingRequestCell" = "View Pending Request";
+"manageGroupsCell" = "Manage Groups";
+"settingsCell" = "Settings";
+
 // Action sheet titles
 "cameraGalleryTitle" = "Camera - Gallery";
 "cameraGalleryExplanation" = "Choose from gallery or take a new photo";
@@ -240,3 +249,5 @@
 "restrictLocation" = "Post Location Restricted";
 "commentFeatureUpdateInfo" = "You can update this feature later in post settings";
 "locationFeatureUpdateInfo" = "This feature can not be changed after posted";
+
+

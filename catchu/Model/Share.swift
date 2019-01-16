@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import AVFoundation
 
 struct ShareMedia {
     let media: Media
@@ -19,7 +20,8 @@ struct ShareMedia {
         switch self.type {
         case .image:
             guard let image = self.image else { return nil }
-            return UIImageJPEGRepresentation(image, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE))
+            //return UIImageJPEGRepresentation(image, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE))
+            return UIImageJPEGRepresentation(image, 0.80)
         case .video:
             do {
                 guard let localUrl = self.localUrl else { return nil }
@@ -65,20 +67,28 @@ class Share {
         
         // images
         if let imageArray = PostItems.shared.selectedImageArray {
-            
             if let image = imageArray.first {
-                let tempShareMedia = ShareMedia(media: Media(inputExtension: "jpeg"), type: .image, image: image, localUrl: nil)
+
+                var sharedImage = UIImage()
                 
+                if PostItems.shared.capturedImageEdited {
+                    sharedImage = image
+                } else {
+                    if let resizedImage = image.reSizeImage(inputWidth: Constants.ImageResizeValues.Width.width_1080) {
+                        print("resizedImage : \(resizedImage)")
+                        sharedImage = resizedImage
+                    }
+                }
+                
+                let tempShareMedia = ShareMedia(media: Media(inputExtension: "jpeg"), type: .image, image: sharedImage, localUrl: nil)
                 if Share.shared.images == nil {
                     Share.shared.images = [ShareMedia]()
                 } else {
                     Share.shared.images?.removeAll()
                 }
-                
                 Share.shared.images?.append(tempShareMedia)
-
+                
             }
-            
             print("imageArray.count : \(imageArray.count)")
         }
         
@@ -95,6 +105,7 @@ class Share {
                 }
                 
                 Share.shared.videos?.append(tempShareMedia)
+                
                 
             }
             
@@ -127,7 +138,7 @@ class Share {
                 }
                 
             case .everyone:
-                return
+                break
                 
             case .group:
                 if let groupid = PostItems.shared.groupid {
@@ -135,7 +146,7 @@ class Share {
                 }
                 
             case .myself:
-                return
+                break
                 
             default:
                 break

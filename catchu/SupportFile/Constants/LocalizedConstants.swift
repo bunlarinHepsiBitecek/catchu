@@ -109,12 +109,14 @@ struct 	LocalizedConstants {
             static let enableAccessGallery = NSLocalizedString("enableAccessGallery", comment: "")
             static let enableAccessCamera = NSLocalizedString("enableAccessCamera", comment: "")
             static let enableAccessMicrophone = NSLocalizedString("enableAccessMicrophone", comment: "")
-            static let tryAgain = NSLocalizedString("tryAgain", comment: "")
+            static let tryAgain = NSLocalizedString("tryAgainButton", comment: "")
             static let connectToFacebook = NSLocalizedString("connectToFacebook", comment: "")
             static let connectToContacts = NSLocalizedString("connectToContacts", comment: "")
             static let enableAccessContacts = NSLocalizedString("enableAccessContacts", comment: "")
             static let invite = NSLocalizedString("invite", comment: "")
             static let post = NSLocalizedString("post", comment: "")
+            static let confirm = NSLocalizedString("confirm", comment: "")
+            static let reject = NSLocalizedString("reject", comment: "")
             
         }
         
@@ -138,6 +140,7 @@ struct 	LocalizedConstants {
             static let provideGroupName = NSLocalizedString("provideGroupName", comment: "")
             static let posting = NSLocalizedString("posting", comment: "")
             static let selectedParticipantCount = NSLocalizedString("selectedParticipantCount", comment: "")
+            static let refreshing = NSLocalizedString("Refreshing", comment: "")
             
         }
         
@@ -214,6 +217,8 @@ struct 	LocalizedConstants {
         static let postSuccessMessage = NSLocalizedString("postSuccessMessage", comment: "")
         static let postTitle = NSLocalizedString("postTitle", comment: "")
         static let postFailedMessage = NSLocalizedString("postFailedMessage", comment: "")
+        static let tryAgain = NSLocalizedString("tryAgain", comment: "")
+        static let tapToClose = NSLocalizedString("tapToClose", comment: "")
         
     }
     
@@ -292,6 +297,10 @@ struct 	LocalizedConstants {
         static let invitePeopleOncatchU = NSLocalizedString("invitePeopleOncatchU", comment: "")
         static let inviteFriendTitle = NSLocalizedString("inviteFriendTitle", comment: "")
         static let inviteFriendInformation = NSLocalizedString("inviteFriendInformation", comment: "")
+        static let explorePeopleCell = NSLocalizedString("explorePeopleCell", comment: "")
+        static let viewPendingRequestCell = NSLocalizedString("viewPendingRequestCell", comment: "")
+        static let manageGroupsCell = NSLocalizedString("manageGroupsCell", comment: "")
+        static let settingsCell = NSLocalizedString("settingsCell", comment: "")
         
     }
     

@@ -26,8 +26,16 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addCustomFetchTemporary()
+        self.view.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         
+        let button = UIButton(frame: CGRect(x: 50, y: 300, width: 100, height: 100))
+        button.isUserInteractionEnabled = true
+        button.addTarget(self, action: #selector(TemporaryViewController.tktktk(_:)), for: .touchUpInside)
+        button.setTitle("cancel", for: .normal)
+        button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.view.addSubview(button)
+        
+        addCustomFetchTemporary()
         // Do any additional setup after loading the view.
         
     }
@@ -39,6 +47,10 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
 //
 //    }
     
+    @objc func tktktk(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func logoutButtonClick(_ sender: UIButton) {
         FirebaseManager.shared.logout()
     }
@@ -48,6 +60,8 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
         takasi += 10
         
         customFetch!.setProgress(progress: takasi)
+        
+        InformerLoader.shared.animateInformerViews(postState: .success)
         
     }
     
@@ -410,12 +424,7 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
             
             ])*/
         
-        let deneme = NewGroupCreationViewController()
-        let nav = UINavigationController(rootViewController: deneme)
-        
-        self.present(nav, animated: false, completion: {
-            print("presented")
-        })
+        InformerLoader.shared.animateInformerViews(postState: .failed)
         
     }
 }
