@@ -291,28 +291,23 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      
      @param userid
+     @param perPage
+     @param page
      @param authorization
      
      return type: REFriendList
      */
-    public func friendsGet(userid: String, page: String?, perPage: String?, authorization: String) -> AWSTask<REFriendList> {
+    public func friendsGet(userid: String, perPage: String?, page: String?, authorization: String?) -> AWSTask<REFriendList> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": authorization
+            "Authorization": authorization!
         ]
         
         var queryParameters:[String:Any] = [:]
+        queryParameters["perPage"] = perPage
         queryParameters["userid"] = userid
-        
-        if let page = page {
-            queryParameters["page"] = page
-        }
-        
-        if let perPage = perPage {
-            queryParameters["perPage"] = perPage
-        }
-        
+        queryParameters["page"] = page
         
         let pathParameters:[String:Any] = [:]
         
@@ -404,40 +399,6 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         let pathParameters:[String:Any] = [:]
         
         return self.invokeHTTPRequest("POST", urlString: "/login", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
-    }
-    
-    
-    /*
-     
-     
-     @param authorization
-     @param body
-     @param longitude
-     @param perPage
-     @param latitude
-     @param radius
-     @param page
-     
-     return type: REPostListResponse
-     */
-    public func postsGeolocationPost(authorization: String, body: REBaseRequest, longitude: String?, perPage: String?, latitude: String?, radius: String?, page: String?) -> AWSTask<REPostListResponse> {
-        let headerParameters = [
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": authorization,
-            
-            ]
-        
-        var queryParameters:[String:Any] = [:]
-        queryParameters["longitude"] = longitude
-        queryParameters["perPage"] = perPage
-        queryParameters["latitude"] = latitude
-        queryParameters["radius"] = radius
-        queryParameters["page"] = page
-        
-        let pathParameters:[String:Any] = [:]
-        
-        return self.invokeHTTPRequest("POST", urlString: "/posts/geolocation", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REPostListResponse.self) as! AWSTask<REPostListResponse>
     }
     
     
@@ -768,18 +729,21 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      @param userid
      @param requestedUserid
      @param authorization
+     @param shortInfo
      
      return type: REUserProfile
      */
-    public func usersGet(userid: String, requestedUserid: String, authorization: String) -> AWSTask<REUserProfile> {
+    public func usersGet(userid: String, requestedUserid: String, authorization: String, shortInfo: String?) -> AWSTask<REUserProfile> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
             "userid": userid,
-            "Authorization": authorization
-        ]
+            "Authorization": authorization,
+            
+            ]
         
         var queryParameters:[String:Any] = [:]
+        queryParameters["shortInfo"] = shortInfo
         queryParameters["requestedUserid"] = requestedUserid
         
         let pathParameters:[String:Any] = [:]
@@ -900,6 +864,39 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         pathParameters["uid"] = uid
         
         return self.invokeHTTPRequest("GET", urlString: "/users/{uid}/caught", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REPostListResponse.self) as! AWSTask<REPostListResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param uid
+     @param authorization
+     @param perPage
+     @param requestType
+     @param page
+     
+     return type: REFollowInfoListResponse
+     */
+    public func usersUidFollowGet(userid: String, uid: String, authorization: String, perPage: String?, requestType: String?, page: String?) -> AWSTask<REFollowInfoListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        var queryParameters:[String:Any] = [:]
+        queryParameters["perPage"] = perPage
+        queryParameters["requestType"] = requestType
+        queryParameters["page"] = page
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["uid"] = uid
+        
+        return self.invokeHTTPRequest("GET", urlString: "/users/{uid}/follow", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REFollowInfoListResponse.self) as! AWSTask<REFollowInfoListResponse>
     }
     
     

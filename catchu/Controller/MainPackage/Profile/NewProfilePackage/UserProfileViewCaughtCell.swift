@@ -15,7 +15,6 @@ class UserProfileViewCaughtCell: BaseTableCellRightDetail, ConfigurableCell {
         textLabel?.text = nil
         selectionStyle = .none
         accessoryType = .none
-        viewModelItem.caughtCount.unbind()
     }
     
     func configure(viewModelItem: ViewModelItem) {
@@ -25,13 +24,7 @@ class UserProfileViewCaughtCell: BaseTableCellRightDetail, ConfigurableCell {
         selectionStyle = .default
         accessoryType = .disclosureIndicator
         
-        setupViewModel()
-    }
-    
-    func setupViewModel() {
-        viewModelItem.caughtCount.bindAndFire { [unowned self] (count) in
-            self.detailTextLabel?.text = "\(count)"
-        }
+        self.detailTextLabel?.text = "\(viewModelItem.caughtCount)"
     }
     
     @objc func caughtPosts() {

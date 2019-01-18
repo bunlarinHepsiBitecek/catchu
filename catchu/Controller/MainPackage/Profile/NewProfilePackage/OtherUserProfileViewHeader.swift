@@ -179,8 +179,7 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
             separatorView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor),
             ])
         
-        fillFollowerFollowingButtons(followerTitle: "", followingTitle: "")
-//        layer.insertSublayer(gradientLayer, at: 0)
+        fillFollowerFollowingButtons(followerCount: "", followingCount: "")
     }
     
     override func layoutSubviews() {
@@ -258,34 +257,25 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
         
         if let userFollowerCount = user.userFollowerCount, let userFollowingCount = user.userFollowingCount {
             if let followerCount = Int(userFollowerCount), let followingCount = Int(userFollowingCount)  {
-                fillFollowerFollowingButtons(followerTitle: roundedWithAbbreviations(followerCount), followingTitle: roundedWithAbbreviations(followingCount))
+                
+                let formattedFollowerCount = Formatter.roundedWithAbbreviations(followerCount)
+                let formattedFollowingCount = Formatter.roundedWithAbbreviations(followingCount)
+                
+                fillFollowerFollowingButtons(followerCount: formattedFollowerCount, followingCount: formattedFollowingCount)
             }
         }
     }
     
-    private func fillFollowerFollowingButtons(followerTitle: String, followingTitle: String) {
-        let followersString = self.followAttributeString(title: followerTitle, subtitle: LocalizedConstants.Profile.Followers)
-        self.followersButton.setAttributedTitle(followersString, for: .normal)
-        
-        
-        let followingString = self.followAttributeString(title: followingTitle, subtitle: LocalizedConstants.Profile.Following)
-        self.followingButton.setAttributedTitle(followingString, for: .normal)
+    private func fillFollowerFollowingButtons(followerCount: String, followingCount: String) {
+        let followersString = self.followAttributeString(title: followerCount, subtitle: LocalizedConstants.Profile.Followers)
+        let followingString = self.followAttributeString(title: followingCount, subtitle: LocalizedConstants.Profile.Following)
+        DispatchQueue.main.async {
+            self.followersButton.setAttributedTitle(followersString, for: .normal)
+            self.followingButton.setAttributedTitle(followingString, for: .normal)
+        }
     }
     
-    func roundedWithAbbreviations(_ count: Int) -> String {
-        let number = Double(count)
-        let thousand = number / 1000
-        let million = number / 1000000
-        if million >= 1.0 {
-            return "\(round(million*10)/10)M"
-        }
-        else if thousand >= 1.0 {
-            return "\(round(thousand*10)/10)K"
-        }
-        else {
-            return "\(Int(number))"
-        }
-    }
+    
 }
 
 fileprivate extension Selector {

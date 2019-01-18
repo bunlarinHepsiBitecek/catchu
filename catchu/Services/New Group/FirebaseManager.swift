@@ -338,6 +338,29 @@ class FirebaseManager {
             return false
         }
     }
+    
+    /// Get current user short info
+    class func getUserShortInfo() {
+        guard let userid = User.shared.userid else { return }
+        REAWSManager.shared.getUserProfileInfo(userid: userid, requestedUserid: userid, isShortInfo: true) { (result) in
+            switch result {
+            case .success(let response):
+                if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                    return
+                }
+                User.shared.setUserProfile(response)
+            case .failure(let apiError):
+                switch apiError {
+                case .serverError(let error):
+                    print("Server error: \(error)")
+                case .connectionError(let error) :
+                    print("Connection error: \(error)")
+                case .missingDataError:
+                    print("Missing Data Error")
+                }
+            }
+        }
+    }
 }
 
 extension FirebaseManager {

@@ -35,10 +35,11 @@ class UserProfileViewController: BaseTableViewController {
         return activityIndicatorView
     }()
     
-    let profileHeaderView: UserProfileHeaderView = {
+    lazy var profileHeaderView: UserProfileHeaderView = {
         let view = UserProfileHeaderView()
         view.frame.size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         print("profileHeaderView: \(view.frame.size)")
+//        view.configure(viewModel: viewModel)
         return view
     }()
     
@@ -61,7 +62,7 @@ class UserProfileViewController: BaseTableViewController {
     }
     
     func setupTableView() {
-//        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: .zero, style: .grouped)
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
         
@@ -72,11 +73,11 @@ class UserProfileViewController: BaseTableViewController {
         
         refreshControl = UIRefreshControl()
         refreshControl!.addTarget(self, action: .pullToRefresh, for: .valueChanged)
-        
     }
     
     func setupHeaderView() {
         self.tableView.tableHeaderView = profileHeaderView
+        self.tableView.tableFooterView = UIView()
     }
     
     private func setupNavigation() {
@@ -104,22 +105,27 @@ class UserProfileViewController: BaseTableViewController {
     
     deinit {
         viewModel.state.unbind()
+        viewModel.changes.unbind()
     }
     
     private func setupViewModel() {
         viewModel.getUserInfo()
+        viewModel.getUserGroups()
         viewModel.state.bindAndFire { [unowned self] in
             self.stateAnimate($0)
         }
+        viewModel.changes.bind { [unowned self] in
+            self.reloadTableView($0)
+        }
     }
     
-    func stateAnimate(_ state: TableViewState) {
+    private func stateAnimate(_ state: TableViewState) {
         switch state {
         case .loading:
             showLoadingIndicator()
             reloadTableView()
         case .populate:
-            profileHeaderView.frame.size = profileHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+            headerViewConfig()
             stopLoadingIndicator()
             reloadTableView()
         case .error:
@@ -134,21 +140,39 @@ class UserProfileViewController: BaseTableViewController {
             self.tableView.reloadData()
         }
     }
+    
+    func reloadTableView(_ changes: CellChanges) {
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.reloadRows(at: changes.reloads, with: .fade)
+            self.tableView.insertRows(at: changes.inserts, with: .fade)
+            self.tableView.deleteRows(at: changes.deletes, with: .fade)
+            self.tableView.endUpdates()
+        }
+    }
+    
+    func headerViewConfig() {
+        DispatchQueue.main.async {
+            self.profileHeaderView.configure(viewModel: self.viewModel)
+            self.profileHeaderView.frame.size = self.profileHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        }
+    }
 }
 
 extension UserProfileViewController {
     func showLoadingIndicator() {
-//        activityIndicatorView.startAnimating()
-//        view.addSubview(activityIndicatorView)
-//        NSLayoutConstraint.activate([
-//            activityIndicatorView.safeCenterXAnchor.constraint(equalTo: view.safeCenterXAnchor),
-//            activityIndicatorView.safeCenterYAnchor.constraint(equalTo: view.safeCenterYAnchor),
-//            ])
+        activityIndicatorView.startAnimating()
+        view.addSubview(activityIndicatorView)
+        NSLayoutConstraint.activate([
+            activityIndicatorView.safeCenterXAnchor.constraint(equalTo: view.safeCenterXAnchor),
+            activityIndicatorView.safeCenterYAnchor.constraint(equalTo: view.safeCenterYAnchor),
+            ])
     }
     func stopLoadingIndicator() {
-//        activityIndicatorView.stopAnimating()
-//        activityIndicatorView.removeFromSuperview()
-        
+        DispatchQueue.main.async {
+            self.activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.removeFromSuperview()
+        }
     }
     
     @objc func refreshData() {
@@ -218,6 +242,30 @@ extension UserProfileViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         return viewModel.items[section].headerTitle
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("didSelectRow: \(indexPath)")
+        
+        let item = viewModel.items[indexPath.section].rowViewModels[indexPath.row]
+        switch (item as! UserProfileViewModelItem).type {
+        case .post:
+            let userPostsViewModel = UserPostsViewModel()
+            let userPostsViewController = UserPostsViewController()
+            userPostsViewController.viewModel = userPostsViewModel
+            self.navigationController?.pushViewController(userPostsViewController, animated: true)
+        case .caught:
+            let userPostsViewModel = UserPostsViewModel()
+            let layout = UICollectionViewFlowLayout()
+            layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+            layout.estimatedItemSize = CGSize(width: 1, height: 1)
+            
+            let userPostsViewCollectionController = UserPostsViewCollectionController(collectionViewLayout: layout)
+            userPostsViewCollectionController.viewModel = userPostsViewModel
+            self.navigationController?.pushViewController(userPostsViewCollectionController, animated: true)
+        default:
+            return
+        }
     }
     
 }

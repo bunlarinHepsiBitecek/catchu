@@ -35,6 +35,9 @@ class UserProfileHeaderView: BaseView {
         imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
         imageWidthConstraint.isActive = true
         
+        // aspect ratio
+        imageView.safeWidthAnchor.constraint(equalTo: imageView.safeHeightAnchor, multiplier: 1).isActive = true
+        
         return imageView
     }()
     
@@ -43,7 +46,7 @@ class UserProfileHeaderView: BaseView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = UIColor.black
-        label.text = "catchuname"
+        label.text = User.shared.name
         label.numberOfLines = 1
         return label
     }()
@@ -53,8 +56,8 @@ class UserProfileHeaderView: BaseView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.textColor = UIColor.black
-        label.text = "Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio Özloş bio"
         label.numberOfLines = 0
+        label.text = User.shared.bio
         label.preferredMaxLayoutWidth = self.frame.width
         return label
     }()
@@ -98,8 +101,17 @@ class UserProfileHeaderView: BaseView {
             ])
     }
     
-    func configure() {
-        
+    func configure(viewModel: ViewModel) {
+        guard let viewModel = viewModel as? UserProfileViewModel else { return }
+        if let profileImageUrl = viewModel.user.profilePictureUrl {
+            profileImageView.loadAndCacheImage(url: profileImageUrl)
+        }
+        if let name = viewModel.user.name {
+            nameLabel.text = name
+        }
+        if let bioText = viewModel.user.bio {
+            bioLabel.text = bioText
+        }
     }
     
     @objc func followProcess(_ sender: UIButton) {

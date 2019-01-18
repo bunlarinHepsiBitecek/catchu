@@ -17,7 +17,7 @@ class UserProfileViewGroupsCell: BaseTableCell, ConfigurableCell {
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
         layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
-        layout.estimatedItemSize = CGSize(width: 120, height: 120)
+        layout.estimatedItemSize = CGSize(width: 1, height: 1)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +67,7 @@ extension UserProfileViewGroupsCell: UICollectionViewDelegateFlowLayout {
     /// item size height must be less then collection view height. So, -top inset and -bottom inset
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        let width = Constants.Profile.GroupTableHeight - collectionView.layoutMargins.left - collectionView.layoutMargins.right
+        let width = Constants.Profile.GroupTableWidth - collectionView.layoutMargins.left - collectionView.layoutMargins.right
         let height = Constants.Profile.GroupTableHeight - collectionView.layoutMargins.top - collectionView.layoutMargins.bottom
 
         return CGSize(width: width, height: height)

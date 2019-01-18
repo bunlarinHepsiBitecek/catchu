@@ -15,7 +15,6 @@ class UserProfileViewPostCell: BaseTableCellRightDetail, ConfigurableCell {
         textLabel?.text = nil
         selectionStyle = .none
         accessoryType = .none
-        viewModelItem.postCount.unbind()
     }
     
     func configure(viewModelItem: ViewModelItem) {
@@ -26,13 +25,7 @@ class UserProfileViewPostCell: BaseTableCellRightDetail, ConfigurableCell {
         selectionStyle = .default
         accessoryType = .disclosureIndicator
         
-        setupViewModel()
-    }
-    
-    func setupViewModel() {
-        viewModelItem.postCount.bindAndFire { [unowned self] (count) in
-            self.detailTextLabel?.text = "\(count)"
-        }
+        self.detailTextLabel?.text = "\(viewModelItem.postCount)"
     }
     
     @objc func posts() {

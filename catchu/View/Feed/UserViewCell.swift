@@ -24,6 +24,18 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         imageView.layer.borderColor = UIColor.lightGray.cgColor
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
+        
+        // MARK: height and width constraint in stackview must be priority less then stack view zero height and width priority. Defauly priority equal 1000. Set to 999 cause of default priority cann't set .hight, .medium or .low
+        // second solution to set height and width constraint to lessThanOrEqualToConstant which stackview can handle to view height set to zero when hide it.
+        let imageHeightConstraint = imageView.safeHeightAnchor.constraint(equalToConstant: dimension)
+        imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
+        imageHeightConstraint.isActive = true
+        
+        let imageWidthConstraint = imageView.safeWidthAnchor.constraint(equalToConstant: dimension)
+        imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
+        imageWidthConstraint.isActive = true
+        // aspect ratio
+        imageView.safeWidthAnchor.constraint(equalTo: imageView.safeHeightAnchor, multiplier: 1).isActive = true
 
         return imageView
     }()
@@ -88,20 +100,7 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         cellStackView.isLayoutMarginsRelativeArrangement = true
         
         self.contentView.addSubview(cellStackView)
-        
-        // MARK: height and width constraint in stackview must be priority less then stack view zero height and width priority. Defauly priority equal 1000. Set to 999 cause of default priority cann't set .hight, .medium or .low
-        // second solution to set height and width constraint to lessThanOrEqualToConstant which stackview can handle to view height set to zero when hide it.
-        let imageHeightConstraint = profileImageView.safeHeightAnchor.constraint(equalToConstant: 50)
-        imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
-        
-        let imageWidthConstraint = profileImageView.safeWidthAnchor.constraint(equalToConstant: 50)
-        imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
-        
         NSLayoutConstraint.activate([
-            profileImageView.safeHeightAnchor.constraint(equalTo: profileImageView.safeWidthAnchor, multiplier: 1), // aspect ratio
-            imageHeightConstraint,
-            imageWidthConstraint,
-            
             cellStackView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor),
             cellStackView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor),
             cellStackView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor),
@@ -131,11 +130,17 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         if let username = user.username {
             self.username.text = username
         }
-        if let followStatus = user.followStatus {
-            followStatus.configure(followButton)
-        }
         if let profilePictureUrl = user.profilePictureUrl {
             self.profileImageView.loadAndCacheImage(url: profilePictureUrl)
+        }
+        followButtonStatusUpdate()
+    }
+    
+    // MARK: After follow actioned then update button label
+    private func followButtonStatusUpdate() {
+        guard let user = viewModelItem.user else { return }
+        if let followStatus = user.followStatus {
+            Formatter.configure(followStatus, followButton)
         }
     }
     
@@ -149,22 +154,27 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         // MARK: when user account is private and ask for unfollow request
         if let isPrivateAccount = user.isUserHasAPrivateAccount {
             if isPrivateAccount && requestType == .deleteFollow {
-                unfollowAlertControll(image: profileImageView.image, message: username.text)
+                unfollowAlertControl(image: profileImageView.image, username: username.text)
                 return
             }
         }
-        self.viewModelItem.sendRequestProcess()
+        viewModelItem.sendRequestProcess()
+        followButtonStatusUpdate()
     }
     
-    func unfollowAlertControll(image: UIImage? = nil, message: String? = nil) {
+    func unfollowAlertControl(image: UIImage? = nil, username: String?) {
+        let title = username ?? ""
+        let underImageTitle = "\n\n\(title)"
+        let actionTitle = image == nil ? title : underImageTitle
         
-        let actionTitle = image == nil ? nil : "\n\n"
-        
-        let actionSheetController = UIAlertController(title: actionTitle, message: message, preferredStyle: .actionSheet)
+        let actionSheetController = UIAlertController(title: actionTitle, message: LocalizedConstants.UserMessages.UnfollowMessage, preferredStyle: .actionSheet)
         
         if image != nil {
             let padding: CGFloat = 10
-            let imageView = UIImageView(image: image)
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+            imageView.image = image
+            imageView.layer.cornerRadius = imageView.frame.height / 2
+            imageView.clipsToBounds = true
             
             let stackView = UIStackView(arrangedSubviews: [imageView])
             stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -188,6 +198,7 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
         
         let unfollowAction = UIAlertAction(title: LocalizedConstants.Like.Unfollow, style: .destructive) { (action) in
             self.viewModelItem.sendRequestProcess()
+            self.followButtonStatusUpdate()
         }
         let cancelAction = UIAlertAction(title: LocalizedConstants.Cancel, style: .cancel, handler: nil)
         actionSheetController.addAction(unfollowAction)

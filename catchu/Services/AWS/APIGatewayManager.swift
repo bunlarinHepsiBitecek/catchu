@@ -123,7 +123,7 @@ class APIGatewayManager: ApiGatewayInterface {
     func getUserProfileInfo(userid : String, requestedUserid: String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            self.client.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token).continueWith { (task) -> Any? in
+            self.client.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token, shortInfo: "").continueWith { (task) -> Any? in
                 
                 if task.error != nil {
                     
@@ -524,7 +524,7 @@ class APIGatewayManager: ApiGatewayInterface {
                 
                 guard let userid = User.shared.userid else { return }
                 
-                client.friendsGet(userid: userid, page: "1", perPage: "30", authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                client.friendsGet(userid: userid, perPage: "30", page: "1", authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
                     
                     if taskFriendList.error != nil {
                         
@@ -574,7 +574,7 @@ class APIGatewayManager: ApiGatewayInterface {
             
             if finished {
                 
-                self.client.friendsGet(userid: userid, page: String(page), perPage: String(perPage), authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
+                self.client.friendsGet(userid: userid, perPage: String(perPage), page: String(page), authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
                     
                     self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
                     

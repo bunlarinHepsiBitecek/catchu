@@ -30,13 +30,13 @@ class MainTabBarViewController: UITabBarController {
 extension MainTabBarViewController {
     
     func viewDidLoadOperations() {
-        
         self.delegate = self
         
         let _ = FirebaseManager.shared.checkUserLoggedIn()
         SlideMenuLoader.shared.createSlider(inputView: self.view)
         InformerLoader.shared.createPostResult(inputView: self.view)
         
+        FirebaseManager.getUserShortInfo()
     }
     
     func addTransitionToPresentationOfShareViews() {

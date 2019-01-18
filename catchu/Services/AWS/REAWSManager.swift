@@ -43,7 +43,7 @@ protocol BackEndAPIInterface {
     func searchUsersGet(searchText: String, page: Int, perPage: Int, completion: @escaping (NetworkResult<REUserListResponse>)-> Void)
     func getUserProfilePosts(targetUserid: String, privacyType: PrivacyType, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void)
     func getUserProfileCaught(privacyType: String?, page: Int, perPage: Int, radius: Double, completion: @escaping (NetworkResult<REPostListResponse>) -> Void)
-    func getUserProfileInfo(userid: String, requestedUserid: String, completion: @escaping (NetworkResult<REUserProfile>) -> Void)
+    func getUserProfileInfo(userid: String, requestedUserid: String, isShortInfo: Bool?, completion: @escaping (NetworkResult<REUserProfile>) -> Void)
     func getUserGroups(requestType: RequestType, completion: @escaping (NetworkResult<REGroupRequestResult>) -> Void)
 }
 
@@ -249,15 +249,11 @@ class REAWSManager: BackEndAPIInterface {
             return
         }
         
-//        guard let userid = User.shared.userid else { return }
+        guard let userid = User.shared.userid else { return }
         
         let latitude = String(LocationManager.shared.currentLocation.coordinate.latitude)
         let longitude = String(LocationManager.shared.currentLocation.coordinate.longitude)
         let radius = String(radius)
-        
-        guard let baseRequest = REBaseRequest() else { return }
-        baseRequest.user = REUser()
-        baseRequest.user?.userid = User.shared.userid
         
         let pageStr = "\(page)"
         let perPageStr = "\(perPage)"
@@ -265,20 +261,13 @@ class REAWSManager: BackEndAPIInterface {
         // TODO: Authorization
         FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
             
-            self.apiClient.postsGeolocationPost(authorization: tokenResult.token, body: baseRequest, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
-                
+            // TODO: Open
+            self.apiClient.postsPostidGet(userid: userid, authorization: tokenResult.token, postid: postid, catchType: catchType.rawValue, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
+
                 print("\(#function) Result: \(task)")
                 self.processExpectingData(task: task, completion: completion)
                 return nil
             }
-
-            // TODO: Open
-//            self.apiClient.postsPostidGet(userid: userid, authorization: tokenResult.token, postid: postid, catchType: catchType.rawValue, longitude: longitude, perPage: perPageStr, latitude: latitude, radius: radius, page: pageStr).continueWith { (task) -> Any? in
-//
-//                print("\(#function) Result: \(task)")
-//                self.processExpectingData(task: task, completion: completion)
-//                return nil
-//            }
         }
         
     }
@@ -705,13 +694,15 @@ class REAWSManager: BackEndAPIInterface {
     /// - Parameters:
     ///   - userid: Login user's userid
     ///   - requestedUserid: Requested user's userid
+    ///   - isShortInfo: When set true return only user info
     ///   - completion: A NetworkResult<REUserProfile>
     /// - Returns: void
     /// - Author: Remzi Yildirim
-    func getUserProfileInfo(userid : String, requestedUserid: String, completion: @escaping (NetworkResult<REUserProfile>) -> Void) {
+    func getUserProfileInfo(userid : String, requestedUserid: String, isShortInfo: Bool?, completion: @escaping (NetworkResult<REUserProfile>) -> Void) {
+        let readShortInfo = isShortInfo?.description ?? ""
         
         FirebaseManager.shared.getIdToken { [unowned self](tokenResult, _) in
-            self.apiClient.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token).continueWith { (task) -> Any? in
+            self.apiClient.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token, shortInfo: readShortInfo).continueWith { (task) -> Any? in
                 
                 print("\(#function) Result: \(task)")
                 self.processExpectingData(task: task, completion: completion)

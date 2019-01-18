@@ -242,6 +242,10 @@ struct 	LocalizedConstants {
         static let GenderUnspecified = NSLocalizedString("Profile_Gender_Unspecified", comment: "")
     }
     
+    struct UserMessages {
+        static let UnfollowMessage = NSLocalizedString("UserMessages_Unfollow_Message", comment: "")
+    }
+    
     struct Notification {
         
         static let CatchSomething = NSLocalizedString("CatchSomething", comment: "")
