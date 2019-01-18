@@ -1399,13 +1399,6 @@
 			path = CameraImageService;
 			sourceTree = "<group>";
 		};
-		A722EC1F219EB3E600E9BD3B /* SımpleProfilePackage */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "SımpleProfilePackage";
-			sourceTree = "<group>";
-		};
 		A722EC3021A3EF2900E9BD3B /* PostViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -2204,7 +2197,6 @@
 		A7F35D9321168408005DA851 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A722EC1F219EB3E600E9BD3B /* SımpleProfilePackage */,
 				A72AF21821942DF40050B685 /* NewProfilePackage */,
 				A7C4F1A8213913DC00C76EEF /* PermissionPackage */,
 				A7C4F1A7213913C600C76EEF /* ProfilePackage */,
