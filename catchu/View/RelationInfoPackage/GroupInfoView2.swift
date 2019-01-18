@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupInfoView2: UIView {
+class GroupInfoView: UIView {
 
     private let statusBarHeight = UIApplication.shared.statusBarFrame.height
     private let groupImageContainerViewHeight : CGFloat = 150
@@ -18,7 +18,6 @@ class GroupInfoView2: UIView {
     
     private let groupDetailViewModel = GroupDetailViewModel()
     
-    var group: Group?
     var groupViewModel : CommonGroupViewModel?
     
     lazy var groupDetailTableView: UITableView = {
@@ -61,15 +60,10 @@ class GroupInfoView2: UIView {
         self.initializeView()
     }*/
     
-    init(frame: CGRect, group: Group, groupViewModel: CommonGroupViewModel) {
+    init(frame: CGRect, groupViewModel: CommonGroupViewModel) {
         super.init(frame: frame)
-        self.group = group
-        self.groupDetailViewModel.group = self.group
         self.groupViewModel = groupViewModel
         self.groupDetailViewModel.groupViewModel = self.groupViewModel
-        
-        self.groupViewModel?.groupNameChanged.value = "zalala"
-        print("popo : group : \(self.group?.groupID)")
         
         self.initializeView()
     }
@@ -86,7 +80,7 @@ class GroupInfoView2: UIView {
 }
 
 // MARK: - major functions
-extension GroupInfoView2 {
+extension GroupInfoView {
     
     private func initializeView() {
         
@@ -142,11 +136,10 @@ extension GroupInfoView2 {
             
             ])
         
-    }
-    
-    // observe view controller dismiss operation
-    func addObserverForGroupInfoDismiss(completion : @escaping (_ state : GroupImageProcess) -> Void) {
-        groupImageContainerView.startCancelButtonObserver(completion: completion)
+        groupImageContainerView.startListenStackViewGroupTitleTapped { (tapped) in
+            // to do
+        }
+        
     }
     
     private func addGroupDetailViewModelListeners() {
@@ -169,7 +162,6 @@ extension GroupInfoView2 {
                 self.groupImageContainerView.setParticipantCount(participantCount: totalCount)
             }
         }
-        
         
     }
     
@@ -203,26 +195,30 @@ extension GroupInfoView2 {
         
     }
     
-    private func directGroupInfoEditViewController(groupViewModel: CommonGroupViewModel) {
+    private func directGroupInfoEditViewController(groupNameViewModel: GroupNameViewModel) {
         print("\(#function)")
         
         if let currentViewController = LoaderController.currentViewController() {
             
             let groupInfoEditViewController = GroupInfoEditTableViewController()
-            groupInfoEditViewController.groupViewModel = groupViewModel
+            groupInfoEditViewController.groupNameViewModel = groupNameViewModel
             
             let groupInfoEditNavigationController = UINavigationController(rootViewController: groupInfoEditViewController)
             
             currentViewController.present(groupInfoEditNavigationController, animated: true, completion: nil)
         }
         
-        
+    }
+    
+    // observe view controller dismiss operation
+    func addObserverForGroupInfoDismiss(completion : @escaping (_ state : GroupImageProcess) -> Void) {
+        groupImageContainerView.startCancelButtonObserver(completion: completion)
     }
     
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-extension GroupInfoView2 : UITableViewDelegate, UITableViewDataSource {
+extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return groupDetailViewModel.returnSectionCount()
@@ -318,10 +314,8 @@ extension GroupInfoView2 : UITableViewDelegate, UITableViewDataSource {
         case .name:
             // to do
             if let groupNameViewModel = groupDetailObject as? GroupNameViewModel {
-                if let groupViewModel = groupNameViewModel.groupViewModel {
-                    groupViewModel.groupNameChanged.value = "koko"
-                    self.directGroupInfoEditViewController(groupViewModel: groupViewModel)
-                }
+                self.directGroupInfoEditViewController(groupNameViewModel: groupNameViewModel)
+                
             }
         default:
             return
@@ -332,7 +326,7 @@ extension GroupInfoView2 : UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - scroll override functions
-extension GroupInfoView2 {
+extension GroupInfoView {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
