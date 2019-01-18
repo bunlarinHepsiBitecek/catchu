@@ -157,12 +157,6 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
     
     func presentFriendViewController() {
         
-        if let destinationViewController = UIStoryboard(name: Constants.StoryBoardID.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ContactViewController) as? ContactViewController {
-
-            present(destinationViewController, animated: true, completion: nil)
-            
-        }
-        
     }
     
     func getUserFriendList(completion : @escaping (_ result : Bool) -> Void) {
