@@ -1147,19 +1147,9 @@ extension SaySomethingView : ActionSheetProtocols {
         case .selectedVideoDelete:
             PostItems.shared.emptySelectedVideoUrl()
             contentAnimationManagement(postContentType: .video, active: false)
-        
-        case .gotoUserInfo:
+        default:
             return
-        case .makeGroupAdmin:
-            return
-        case .exitGroup:
-            return
-            
-        case .addNewParticipant:
-            return
-            
         }
-        
     }
     
 }

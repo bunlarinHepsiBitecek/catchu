@@ -17,8 +17,23 @@ class DynamicPageView: UIView {
     private var totalPageSliderHeight : CGFloat = 0
     private var activePage: Int = 0
     private var userScrollBegin: Bool = false
+    private var scrollViewPagesAdded: Bool = false
     
-    lazy var containerScrollView: UIScrollView = {
+    lazy var containerScrollView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+        return temp
+    }()
+    
+    lazy var pageContentView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+        return temp
+    }()
+    
+    lazy var pageItemsScrollView: UIScrollView = {
         let temp = UIScrollView()
         temp.contentSize = CGSize(width: self.frame.width * CGFloat(dynamicPageViewModel.returnPageItemsCount()), height: 0)
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -51,12 +66,10 @@ class DynamicPageView: UIView {
         collectionView.isPagingEnabled = true
         collectionView.isScrollEnabled = true
         
-        collectionView.register(PageItemCollectionViewCell.self, forCellWithReuseIdentifier: PageItemCollectionViewCell.identifier)
-        //collectionView.register(PageSliderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: PageSliderView.identifier)
-        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
         collectionView.backgroundColor = UIColor.clear
+        
+        collectionView.register(PageItemCollectionViewCell.self, forCellWithReuseIdentifier: PageItemCollectionViewCell.identifier)
         
         return collectionView
         
@@ -84,6 +97,14 @@ class DynamicPageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        print("******* : \(containerScrollView.frame)")
+        addPageViewIntoScrollView()
+        
+    }
+    
 }
 
 // MARK: - major functions
@@ -93,8 +114,8 @@ extension DynamicPageView {
         
         addViews()
         addPageSliderView()
-        addScrollView()
-        addPageViewIntoScrollView()
+        addContainerScrollView()
+        //addPageViewIntoScrollView()
         
     }
     
@@ -107,7 +128,7 @@ extension DynamicPageView {
             
             pageItemCollectionView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             pageItemCollectionView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            pageItemCollectionView.topAnchor.constraint(equalTo: safe.topAnchor),
+            pageItemCollectionView.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_5),
             pageItemCollectionView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_40)
             
             ])
@@ -135,36 +156,44 @@ extension DynamicPageView {
             ])
         
         totalPageSliderHeight += Constants.StaticViewSize.ViewSize.Height.height_1
-        
     }
     
-    private func addScrollView() {
+    func addContainerScrollView()  {
         self.addSubview(containerScrollView)
+        self.containerScrollView.addSubview(pageItemsScrollView)
         
         let safe = self.safeAreaLayoutGuide
         let safePageSliderView = self.pageSliderView.safeAreaLayoutGuide
+        let safeContainerScrollView = self.containerScrollView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
             containerScrollView.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             containerScrollView.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
             containerScrollView.topAnchor.constraint(equalTo: safePageSliderView.bottomAnchor),
-            containerScrollView.bottomAnchor.constraint(equalTo: safe.bottomAnchor)
+            containerScrollView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            
+            pageItemsScrollView.leadingAnchor.constraint(equalTo: safeContainerScrollView.leadingAnchor),
+            pageItemsScrollView.trailingAnchor.constraint(equalTo: safeContainerScrollView.trailingAnchor),
+            pageItemsScrollView.topAnchor.constraint(equalTo: safeContainerScrollView.topAnchor),
+            pageItemsScrollView.bottomAnchor.constraint(equalTo: safeContainerScrollView.bottomAnchor),
             
             ])
         
     }
     
     private func addPageViewIntoScrollView() {
-        
-        print("containerScrollViewFrame : \(containerScrollView.frame)")
+        print("containerScrollView : \(containerScrollView.frame)")
         print("self.frame : \(self.frame)")
-        
+
         var xCoordinate : CGFloat = 0
+        
         for item in dynamicPageViewModel.viewArray {
-            item.frame = CGRect(x: xCoordinate, y: CGFloat(0), width: self.frame.width, height: self.frame.height - (totalPageSliderHeight))
+            item.frame = CGRect(x: xCoordinate, y: CGFloat(0), width: containerScrollView.frame.width, height: containerScrollView.frame.height)
+            self.pageItemsScrollView.addSubview(item)
+            
             xCoordinate += self.frame.width
-            self.containerScrollView.addSubview(item)
+            
         }
         
         self.arrangeActivePageSettings(activePage: activePage)
@@ -181,8 +210,8 @@ extension DynamicPageView {
     }
     
     private func scrollToSelectedPage(selectedIndex: Int) {
-        print("containerScrollView.frame.width : \(containerScrollView.frame.width)")
-        containerScrollView.setContentOffset(CGPoint(x: self.frame.width * CGFloat(selectedIndex), y: containerScrollView.frame.origin.y), animated: true)
+        print("pageItemsScrollView.frame.width : \(pageItemsScrollView.frame.width)")
+        pageItemsScrollView.setContentOffset(CGPoint(x: self.frame.width * CGFloat(selectedIndex), y: pageItemsScrollView.frame.origin.y), animated: true)
         self.selectPageItem(selectedIndex: selectedIndex)
     }
     
@@ -197,6 +226,16 @@ extension DynamicPageView {
         }
         
         pageItemCollectionView.selectItem(at: targetIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+    }
+    
+    private func addPageViewsIntoScrollView() {
+        print("containerScrollView frame : \(containerScrollView.frame)")
+        if containerScrollView.frame.height > 0 {
+            if !scrollViewPagesAdded {
+                addPageViewIntoScrollView()
+                scrollViewPagesAdded = true
+            }
+        }
     }
     
 }

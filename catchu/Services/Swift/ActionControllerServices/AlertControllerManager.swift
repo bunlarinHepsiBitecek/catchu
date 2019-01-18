@@ -14,7 +14,7 @@ class AlertControllerManager {
     
     weak var delegate : ActionSheetProtocols!
     
-    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?, title: String?) {
+    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?, title: String?, image: UIImage? = nil) {
         
         self.delegate = delegate
         
@@ -29,19 +29,19 @@ class AlertControllerManager {
             }
         case .groupInformation:
             presentGroupInformationViewController()
-            
         case .userInformation:
             if let operationType = operationType {
                 startUserInformationOperations(title: title!, operationType: operationType)
             }
-            
         case .newParticipant:
             if let title = title {
                 startAddingNewParticipantProcess(title: title)
             }
+        case .removeFollower:
+            startRemovingProcess()
+            if let image = image {
+            }
         }
-        
-        
     }
     
     private func starCameraOperations(operationType : ActionControllerOperationType) {
@@ -199,6 +199,43 @@ class AlertControllerManager {
         alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.add, style: .default, handler: { (action) in
             // to do
             self.delegate.returnOperations(selectedProcessType: .addNewParticipant)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
+            // to do
+        }))
+        
+        alertController.view.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        
+        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
+        
+    }
+    
+    private func startRemovingProcess() {
+        
+        let alertController = UIAlertController(title: "KOKO", message: nil, preferredStyle: .actionSheet)
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Height.height_50))
+        imageView.image = UIImage(named: "8771.jpg")
+        
+        alertController.view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safe = alertController.view.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            imageView.topAnchor.constraint(equalTo: safe.topAnchor),
+            //imageView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: 200),
+            imageView.widthAnchor.constraint(equalToConstant: 200)
+            
+            ])
+        
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.add, style: .default, handler: { (action) in
+            // to do
+            self.delegate.returnOperations(selectedProcessType: .removeFollower)
         }))
         
         alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in

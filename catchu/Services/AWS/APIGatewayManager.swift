@@ -114,7 +114,6 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
-    
     /// To get user profile information from neo4j USER node properties
     ///
     /// - Parameters:
@@ -123,31 +122,21 @@ class APIGatewayManager: ApiGatewayInterface {
     func getUserProfileInfo(userid : String, requestedUserid: String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
             self.client.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token).continueWith { (task) -> Any? in
                 
                 if task.error != nil {
-                    
                     print("error : \(String(describing: task.error?.localizedDescription))")
-                    
                     AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                    
                     LoaderController.shared.removeLoader()
-                    
                 } else {
-                    
                     if (task.result?.error?.code?.boolValue)! {
-                        
                         if let result = task.result {
-                            
                             completion(result, true)
                         }
-                        
                     }
-                    
                 }
-                
                 return nil
-                
             }
         }
         
@@ -204,7 +193,6 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
-    
     /// To get a list of participant of a specific group
     ///
     /// - Parameters:
@@ -235,325 +223,17 @@ class APIGatewayManager: ApiGatewayInterface {
                         LoaderController.shared.removeLoader()
         
                     } else {
-        
                         print("task result : \(task.result?.resultArrayParticipantList?.count)")
-        
                         if let result = task.result {
-        
                             completion(result, true)
-        
                         }
-        
                     }
-        
                     return nil
                 })
-                
             }
         }
         
-        //        client.groupsPost(body: inputBody!).continueWith { (task) -> Any? in
-        //
-        //            if task.error != nil {
-        //
-        //                print("error : \(String(describing: task.error?.localizedDescription))")
-        //
-        //                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-        //
-        //                LoaderController.shared.removeLoader()
-        //
-        //            } else {
-        //
-        //                print("task result : \(task.result?.resultArrayParticipantList?.count)")
-        //
-        //                if let result = task.result {
-        //
-        //                    completion(result, true)
-        //
-        //                }
-        //
-        //            }
-        //
-        //            return nil
-        //
-        //        }
-        
     }
-    
-    
-    /// To update group information
-    ///
-    /// - Parameters:
-    ///   - requestType: to decide which operations will be processed in lambda
-    ///   - groupBody: group objects
-    ///   - completion: result and boolean value for completion
-    func updateGroupInformation(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
-        
-        print("updateGroupInformation starts")
-        
-        //        groupBody.displayGroupAttributes()
-        
-        //        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-        //
-        //            if task.error != nil {
-        //
-        //                print("task.error : \(task.error)")
-        //
-        //                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-        //
-        //                LoaderController.shared.removeLoader()
-        //
-        //            } else {
-        //
-        //                if let result = task.result {
-        //
-        //                    if let error = result.error {
-        //
-        //                        if error.code != 1 {
-        //
-        //                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-        //
-        //                        }
-        //
-        //                    }
-        //
-        //                    LoaderController.shared.removeLoader()
-        //
-        //                    completion(result, true)
-        //
-        //                }
-        //
-        //            }
-        //
-        //            return nil
-        //
-        //        }
-        
-    }
-    
-    
-    /// To add one or more new participants into the existing group
-    ///
-    /// - Parameters:
-    ///   - groupBody: group object
-    ///   - completion: result and completion parameter
-    func addNewParticipantsToExistingGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
-        
-        print("addNewParticipantsToExistingGroup starts")
-        
-        groupBody.displayGroupAttributes()
-        
-        //        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-        //
-        //            if task.error != nil {
-        //
-        //                print("task.error : \(task.error)")
-        //
-        //                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-        //
-        //                LoaderController.shared.removeLoader()
-        //
-        //            } else {
-        //
-        //                if let result = task.result {
-        //
-        //                    if let error = result.error {
-        //
-        //                        if error.code != 1 {
-        //
-        //                            AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: error.message!, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-        //
-        //                        }
-        //
-        //                    }
-        //
-        //                    LoaderController.shared.removeLoader()
-        //
-        //                    completion(result, true)
-        //
-        //                }
-        //
-        //            }
-        //
-        //            return nil
-        //
-        //        }
-        
-    }
-    
-    
-    /// To remove a participant from group or remove yourself
-    ///
-    /// - Parameters:
-    ///   - groupBody: group object of REGroupRequest
-    ///   - completion: completion object
-    func removeParticipantFromGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
-        
-        //        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-        //
-        //            if task.error != nil {
-        //
-        //                print("Remove from group failed")
-        //
-        //            } else {
-        //
-        //                if let result = task.result {
-        //
-        //                    if let error = result.error {
-        //
-        //                        if error.code != 1 {
-        //
-        //                            print("Error code : \(error.code)")
-        //                            print("Error message : \(error.message)")
-        //
-        //                        } else {
-        //
-        //                            print("Remove from group is ok!")
-        //                            completion(result, true)
-        //
-        //                        }
-        //
-        //                    }
-        //
-        //                }
-        //
-        //            }
-        //
-        //            return nil
-        //
-        //        }
-        
-        
-    }
-    
-    func createNewGroup(groupBody : REGroupRequest, completion :  @escaping (_ httpResult : REGroupRequestResult, _ response : Bool) -> Void) {
-        
-        //        client.groupsPost(body: groupBody).continueWith { (task) -> Any? in
-        //
-        //            if task.error != nil {
-        //
-        //                print("Remove from group failed")
-        //
-        //            } else {
-        //
-        //                if let result = task.result {
-        //
-        //                    if let error = result.error {
-        //
-        //                        if error.code != 1 {
-        //
-        //                            print("Error code : \(error.code)")
-        //                            print("Error message : \(error.message)")
-        //
-        //                        } else {
-        //
-        //                            print("Remove from group is ok!")
-        //                            completion(result, true)
-        //
-        //                        }
-        //
-        //                    }
-        //
-        //                }
-        //
-        //            }
-        //
-        //            return nil
-        //
-        //        }
-        
-    }
-    
-    
-    /// Function Below triggers a group of events in a row. Firstly get download and upload urls from server. Then update group image url in neo4j.
-    ///
-    /// - Parameter inputImage: images selected from gallery or taken already
-//    func startImageUploadProcess(inputImage : UIImage, inputGroup: Group, completion : @escaping (_ response : Bool, _ s3result : RECommonS3BucketResult, _ updatedGroupObject : Group) -> Void) {
-//
-//        REAWSManager.shared.getSignedUpload { (s3BucketResult) in
-//
-//            // check getting upload and download url request from lambda is ok or not
-//            if let error = s3BucketResult.error {
-//                if let errorCode = error.code {
-//                    if errorCode.boolValue {
-//
-//                        // if everyting is all right, let's update group photo url with new one retrieved from s3 lambda service
-//                        print("s3BucketResult : \(String(describing: s3BucketResult.downloadUrl))")
-//                        print("s3BucketResult : \(String(describing: s3BucketResult.signedUrl))")
-//
-//                        // call upload image directly s3 from client
-//                        REAWSManager.shared.uploadFileToS3WithImageInput(inputImage: inputImage, commonS3BucketResult: s3BucketResult, completion: { (response) in
-//
-//                            // upload process is ok, call apigateway to update group information
-//                            if response {
-//
-//                                // update photoUrl of inputGroup
-//                                inputGroup.groupPictureUrl = s3BucketResult.downloadUrl
-//
-//                                APIGatewayManager.shared.updateGroupInformation(groupBody: Group.shared.returnGroupRequestForUpdateProcess(inputGroup: inputGroup), completion: { (groupRequestResult, groupProcessResponse) in
-//
-//                                    // group information update process in neo4j is ok
-//                                    if groupProcessResponse {
-//
-//                                        completion(true, s3BucketResult, inputGroup)
-//
-//                                    }
-//                                })
-//                            }
-//                        })
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
-    
-    
-    /// To get friendList fron neo4j
-    ///
-    /// - Parameters:
-    ///   - userid: Authenticated userid
-    ///   - completion: comletion REFriendList, result
-    func getUserFriendList(userid : String, completion :  @escaping (_ httpResult : REFriendList, _ response : Bool) -> Void) {
-        
-        let client = RECatchUMobileAPIClient.default()
-        
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            
-            if finished {
-                
-                guard let userid = User.shared.userid else { return }
-                
-                client.friendsGet(userid: userid, page: "1", perPage: "30", authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
-                    
-                    if taskFriendList.error != nil {
-                        
-                        print("getting friend list failed")
-                        
-                    } else {
-                        
-                        print("getting friend list ok")
-                        
-                        if let result = taskFriendList.result {
-                            
-                            completion(result, true)
-                            
-                        }
-                        
-                        //User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
-                        
-                    }
-                    
-                    return nil
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
-    
     
     /// Description : get user followers from server.
     ///
@@ -574,7 +254,7 @@ class APIGatewayManager: ApiGatewayInterface {
             
             if finished {
                 
-                self.client.friendsGet(userid: userid, page: String(page), perPage: String(perPage), authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
+                self.client.friendsGet(userid: userid, perPage: String(perPage), page: String(page), authorization: tokenResult.token).continueWith(block: { (awsTask) -> Any? in
                     
                     self.prepareRetrievedDataFromApigateway(task: awsTask, completion: completion)
                     
@@ -1094,23 +774,43 @@ class APIGatewayManager: ApiGatewayInterface {
                         print("userListResponse.error : \(userListResponse.error)")
                     } else {
                         if let result = userListResponse.result {
-                            
                             if let error = result.error {
                                 if error.code != 1 {
                                     //completion(.failure(error))
                                 }
                             }
-                            
                             completion(.success(result))
-                            
                         }
-                        
                     }
-                    
                     return nil
-                    
                 })
-                
+            }
+        }
+    }
+
+    /// Description: getting user followers or followings list according to request type
+    ///
+    /// - Parameters:
+    ///   - userid: logged in userid
+    ///   - requesterUserid: other profile userid
+    ///   - page: page number
+    ///   - perPage: count for per page
+    ///   - requestType: request type - followers or followings
+    ///   - completion: follow info list
+    /// - Throws: throws apigateway requeired parameters error
+    /// - Author: Erkut Bas
+    func getUserFollowInfo(userid: String, requesterUserid: String, page: Int, perPage: Int, requestType: RequestType, completion: @escaping (ConnectionResult<REFollowInfoListResponse>) -> Void) throws {
+        
+        if userid.isEmpty || requesterUserid.isEmpty {
+            throw ApiGatewayClientErrors.missingUserId
+        }
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            if finished {
+                self.client.usersUidFollowGet(userid: userid, uid: requesterUserid, authorization: tokenResult.token, perPage: String(perPage), requestType: requestType.rawValue, page: String(page)).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
             }
             
         }

@@ -196,7 +196,6 @@ extension PendingRequestTableViewCell {
         
         let safe = self.contentView.safeAreaLayoutGuide
         let safeParticipantImage = self.requesterImageView.safeAreaLayoutGuide
-        let safeStackViewForProcessButtons = self.stackViewForProcessButtons.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             

@@ -10,6 +10,8 @@ import UIKit
 
 class SearchBarHeaderView: UIView {
 
+    private var searchHeaderViewModel = SearchHeaderViewModel()
+    
     lazy var searchBar: UISearchBar = {
         let temp = UISearchBar()
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -58,10 +60,43 @@ extension SearchBarHeaderView {
         searchBar.configureSearchBarSettings()
     }
     
+    func getSearchActions(completion : @escaping (_ searchTool: SearchTools) -> Void) {
+        searchHeaderViewModel.searchTool.bind(completion)
+    }
+    
 }
 
 // MARK: - UISearchBarDelegate
 extension SearchBarHeaderView: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("\(#function)")
+        
+        if let text = searchBar.text {
+            if !text.isEmpty {
+                searchHeaderViewModel.searchTool.value = SearchTools(searchText: text, searchIsProgress: true)
+            } else {
+                searchHeaderViewModel.searchTool.value = SearchTools(searchText: text, searchIsProgress: false)
+            }
+        }
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print("\(#function)")
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("\(#function)")
+        searchBar.resignFirstResponder()
+        searchBar.text = nil
+        searchHeaderViewModel.searchTool.value = SearchTools(searchText: Constants.CharacterConstants.EMPTY, searchIsProgress: false)
+        
+    }
     
 }
 

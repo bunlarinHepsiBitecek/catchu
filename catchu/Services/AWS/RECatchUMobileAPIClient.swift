@@ -291,28 +291,23 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      
      
      @param userid
+     @param perPage
+     @param page
      @param authorization
      
      return type: REFriendList
      */
-    public func friendsGet(userid: String, page: String?, perPage: String?, authorization: String) -> AWSTask<REFriendList> {
+    public func friendsGet(userid: String, perPage: String?, page: String?, authorization: String?) -> AWSTask<REFriendList> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": authorization
+            "Authorization": authorization!
         ]
         
         var queryParameters:[String:Any] = [:]
+        queryParameters["perPage"] = perPage
         queryParameters["userid"] = userid
-        
-        if let page = page {
-            queryParameters["page"] = page
-        }
-        
-        if let perPage = perPage {
-            queryParameters["perPage"] = perPage
-        }
-        
+        queryParameters["page"] = page
         
         let pathParameters:[String:Any] = [:]
         
@@ -900,6 +895,39 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         pathParameters["uid"] = uid
         
         return self.invokeHTTPRequest("GET", urlString: "/users/{uid}/caught", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REPostListResponse.self) as! AWSTask<REPostListResponse>
+    }
+    
+    
+    /*
+     
+     
+     @param userid
+     @param uid
+     @param authorization
+     @param perPage
+     @param requestType
+     @param page
+     
+     return type: REFollowInfoListResponse
+     */
+    public func usersUidFollowGet(userid: String, uid: String, authorization: String, perPage: String?, requestType: String?, page: String?) -> AWSTask<REFollowInfoListResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "userid": userid,
+            "Authorization": authorization,
+            
+            ]
+        
+        var queryParameters:[String:Any] = [:]
+        queryParameters["perPage"] = perPage
+        queryParameters["requestType"] = requestType
+        queryParameters["page"] = page
+        
+        var pathParameters:[String:Any] = [:]
+        pathParameters["uid"] = uid
+        
+        return self.invokeHTTPRequest("GET", urlString: "/users/{uid}/follow", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REFollowInfoListResponse.self) as! AWSTask<REFollowInfoListResponse>
     }
     
     

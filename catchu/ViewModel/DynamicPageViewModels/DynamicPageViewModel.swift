@@ -13,6 +13,7 @@ class DynamicPageViewModel {
     
     var pageItemCollectionViewState = CommonDynamic(CollectionViewState.empty)
     var viewArray = [UIView]()
+    var pageItemCollectionViewTitleListener = CommonDynamic(String())
     
     func returnPageItemsCount() -> Int {
         return viewArray.count

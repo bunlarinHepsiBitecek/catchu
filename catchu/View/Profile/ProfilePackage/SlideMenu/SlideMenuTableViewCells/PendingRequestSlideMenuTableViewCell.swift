@@ -97,11 +97,25 @@ extension PendingRequestSlideMenuTableViewCell {
         
         pendingRequestSlideMenuTableCellViewModel.badgeData.bind { (value) in
             DispatchQueue.main.async {
-                self.badgeLabel.text = value
-                self.badgeActivationManager(active: true, animated: true)
+                self.badgeDataSetter(value: value)
             }
         }
         
+    }
+    
+    private func badgeDataSetter(value: String) {
+        if let integerValue = Int(value) {
+            if integerValue == 0 {
+                self.badgeActivationManager(active: false, animated: true)
+            } else {
+                self.badgeLabel.text = value
+                self.badgeActivationManager(active: true, animated: true)
+            }
+            
+        } else {
+            self.badgeLabel.text = value
+            self.badgeActivationManager(active: false, animated: false)
+        }
     }
     
     func setBadgeDataFromOutside(value : String) {

@@ -32,6 +32,7 @@ enum ActionControllerType {
     case groupInformation
     case userInformation
     case newParticipant
+    case removeFollower
 
 }
 
@@ -54,6 +55,7 @@ enum ActionButtonOperation {
     case makeGroupAdmin
     case exitGroup
     case addNewParticipant
+    case removeFollower
 }
 
 enum MediaType: String {
@@ -133,8 +135,9 @@ enum RequestType : String {
     case userGroups = "GET_AUTHENTICATED_USER_GROUP_LIST"
     case changeGroupAdmin = "CHANGE_GROUP_ADMIN"
     case none = "NONE"
-    
- 
+    case followers = "followers"
+    case followings = "followings"
+
 }
 
 enum CallerViewController {
@@ -421,6 +424,7 @@ enum DataFetchingState {
 enum ButtonOperation {
     case confirm
     case delete
+    case more
     case none
 }
 

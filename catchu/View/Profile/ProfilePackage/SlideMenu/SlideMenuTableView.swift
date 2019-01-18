@@ -121,7 +121,7 @@ extension SlideMenuTableView {
         print("gotoExplorePeopleViewController starts")
         
         let mutualFollowViewController = MutualFollowViewController()
-        mutualFollowViewController.activePageType = .followings
+        mutualFollowViewController.activePageType = .followers
         
         if let currentViewController = LoaderController.currentViewController() {
             if let navigationController = currentViewController.navigationController {

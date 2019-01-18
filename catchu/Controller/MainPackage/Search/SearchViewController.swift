@@ -43,8 +43,6 @@ class SearchViewController: BaseTableViewController {
         return view
     }()
     
-    
-    
     lazy var noResultFoundView: UIView = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

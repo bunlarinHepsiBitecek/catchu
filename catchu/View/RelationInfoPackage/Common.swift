@@ -216,6 +216,129 @@ class CommonFollowView: UIView {
     }()
 }
 
+fileprivate extension Selector {
+    static let confirm = #selector(CommonFollowTableViewCell.confirmButtonTapped(_:))
+    static let delete = #selector(CommonFollowTableViewCell.deleteButtonTapped(_:))
+}
+
+class CommonFollowTableViewCell: CommonTableCell {
+    
+    lazy var userImageView: UIImageView = {
+        let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Width.width_50))
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.image = nil
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .red
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    lazy var mainStackView: UIStackView = {
+        
+        let temp = UIStackView(arrangedSubviews: [stackViewForUserInfo, stackViewForProcessButtons])
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.alignment = .fill
+        temp.axis = .horizontal
+        temp.distribution = .fillEqually
+        
+        return temp
+    }()
+    
+    lazy var stackViewForUserInfo: UIStackView = {
+        
+        let temp = UIStackView(arrangedSubviews: [name, username])
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.alignment = .fill
+        temp.axis = .vertical
+        temp.distribution = .fillProportionally
+        
+        return temp
+    }()
+    
+    let name: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let username: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        label.textColor = UIColor.lightGray
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    lazy var stackViewForProcessButtons: UIStackView = {
+        
+        let temp = UIStackView(arrangedSubviews: [followButton, moreButton])
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.spacing = 5
+        temp.alignment = .fill
+        temp.axis = .horizontal
+        temp.distribution = .fill
+        
+        return temp
+    }()
+    
+    lazy var followButton: UIButton = {
+        
+        let temp = UIButton(type: UIButtonType.system)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.addTarget(self, action: .confirm, for: UIControlEvents.touchUpInside)
+        temp.setTitle("Follow", for: UIControlState.normal)
+        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControlState.normal)
+        temp.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold)
+        temp.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.5882352941, blue: 0.9529411765, alpha: 1)
+        temp.layer.cornerRadius = 5
+        
+        return temp
+        
+    }()
+    
+    lazy var moreButton: UIButton = {
+        
+        let temp = UIButton(type: UIButtonType.system)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.addTarget(self, action: .delete, for: UIControlEvents.touchUpInside)
+        temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        let image = UIImage(named: "baseline_more_horiz_black_18pt")
+        temp.setImage(image, for: UIControlState.normal)
+        temp.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        temp.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+        return temp
+        
+    }()
+    
+    @objc func deleteButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc func confirmButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    func configureCellSettings() {
+        
+    }
+    
+}
+
 // view model protocols
 protocol CommonViewModel: class {
     
