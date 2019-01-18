@@ -133,6 +133,10 @@
 		45E8B5F8215A9B3A005AD00A /* APIClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E8B5F7215A9B3A005AD00A /* APIClientModel.swift */; };
 		45EA663821D53DC500335E8D /* OtherUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA663721D53DC500335E8D /* OtherUserProfileViewController.swift */; };
 		45EAA6FF21EF2EA30074FA87 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA6FE21EF2EA30074FA87 /* LoadingCell.swift */; };
+		45EAA70221F081060074FA87 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70121F081060074FA87 /* Formatter.swift */; };
+		45EAA70421F0A7010074FA87 /* UserPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */; };
+		45EAA70621F0D1CC0074FA87 /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */; };
+		45EAA70821F0DCC80074FA87 /* UserPostsViewCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */; };
 		45EF8F5C21A586830036EC92 /* REReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF8F5B21A586830036EC92 /* REReport.swift */; };
 		45EF8F5E21A587460036EC92 /* REFollowInfoListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF8F5D21A587460036EC92 /* REFollowInfoListResponse.swift */; };
 		45F88B5321C7980600979FCA /* UserProfileCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */; };
@@ -586,6 +590,10 @@
 		45E8B5F7215A9B3A005AD00A /* APIClientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientModel.swift; sourceTree = "<group>"; };
 		45EA663721D53DC500335E8D /* OtherUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserProfileViewController.swift; sourceTree = "<group>"; };
 		45EAA6FE21EF2EA30074FA87 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		45EAA70121F081060074FA87 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
+		45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewModel.swift; sourceTree = "<group>"; };
+		45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewController.swift; sourceTree = "<group>"; };
+		45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewCollectionController.swift; sourceTree = "<group>"; };
 		45EF8F5B21A586830036EC92 /* REReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REReport.swift; sourceTree = "<group>"; };
 		45EF8F5D21A587460036EC92 /* REFollowInfoListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFollowInfoListResponse.swift; sourceTree = "<group>"; };
 		45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCollectionViewController.swift; sourceTree = "<group>"; };
@@ -1237,6 +1245,7 @@
 				4564E47B20BBC022003B0D16 /* Loader */,
 				4564E47420B9CB7D003B0D16 /* AlertWarning */,
 				4564E47120B9A7AB003B0D16 /* Validations */,
+				45EAA70021F080E10074FA87 /* Formatter */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1278,6 +1287,14 @@
 				454815BB215EB8C1009684E1 /* RegisterView.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		45EAA70021F080E10074FA87 /* Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				45EAA70121F081060074FA87 /* Formatter.swift */,
+			);
+			path = Formatter;
 			sourceTree = "<group>";
 		};
 		A70421FC21AED5430040AA8A /* Relations */ = {
@@ -1584,6 +1601,9 @@
 				45E883E321D61528000515DD /* OtherUserProfileViewModel.swift */,
 				45E883E721D64A3C000515DD /* OtherUserProfileViewHeader.swift */,
 				45EAA6FE21EF2EA30074FA87 /* LoadingCell.swift */,
+				45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */,
+				45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */,
+				45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */,
 			);
 			path = NewProfilePackage;
 			sourceTree = "<group>";
@@ -2617,6 +2637,7 @@
 				A774ACA2213204FB00848B79 /* GroupInfoHeaderTableViewCell.swift in Sources */,
 				A722EC3821A4057E00E9BD3B /* SaySomethingView.swift in Sources */,
 				45A8F9A521999229000CB357 /* REProvider.swift in Sources */,
+				45EAA70621F0D1CC0074FA87 /* UserPostsViewController.swift in Sources */,
 				45AE7DE9216F4CDC0081C6F6 /* REProvider.swift in Sources */,
 				A716903A21B69EC20039287B /* FriendRelationSelectionCollectionViewCell.swift in Sources */,
 				A742407E214694C600E20A58 /* CustomCamera.swift in Sources */,
@@ -2678,6 +2699,7 @@
 				454285A6214A95D600F68FAC /* REPostResponse.swift in Sources */,
 				A7EC57CD211947490078F631 /* REGroupRequestResult_resultArrayParticipantList_item.swift in Sources */,
 				A73044CA21DFA7BE005C9811 /* PendingRequestTableCellViewModel.swift in Sources */,
+				45EAA70421F0A7010074FA87 /* UserPostsViewModel.swift in Sources */,
 				A709F64B20FEA6A4003FF2C5 /* CognitoConfig.swift in Sources */,
 				45EAA6FF21EF2EA30074FA87 /* LoadingCell.swift in Sources */,
 				4527E05520C8605800ECB3D1 /* MainTabBarViewController.swift in Sources */,
@@ -2808,6 +2830,7 @@
 				A7812EAD21247EED00460117 /* MenuBar4.swift in Sources */,
 				A70421FB21AD79AE0040AA8A /* CapturedVideoView.swift in Sources */,
 				A7E7803E2190AB6200E76E3C /* CustomNotificationManager.swift in Sources */,
+				45EAA70821F0DCC80074FA87 /* UserPostsViewCollectionController.swift in Sources */,
 				A762B74E2161B0F800DBB4EF /* CustomCroppedImage.swift in Sources */,
 				A7B6BC2221A88AB700D11A78 /* StickerCommonView.swift in Sources */,
 				A7AE5FAD21C7A183008FD5AD /* GroupExitTableViewCell.swift in Sources */,
@@ -2849,6 +2872,7 @@
 				A7C92D862150075400432D70 /* CustomCameraView.swift in Sources */,
 				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
 				A7C1C35E219884F00096CEA6 /* FacebookContactListManager.swift in Sources */,
+				45EAA70221F081060074FA87 /* Formatter.swift in Sources */,
 				A7F21B3A21C55CDC0015DB58 /* GroupImageContainerView.swift in Sources */,
 				451E9F132139366300185925 /* MediaViewModel.swift in Sources */,
 				A7EFF99B21D4ED9700B1A3DC /* GroupCreationTableViewCellViewModel.swift in Sources */,

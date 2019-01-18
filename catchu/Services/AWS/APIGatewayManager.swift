@@ -122,8 +122,7 @@ class APIGatewayManager: ApiGatewayInterface {
     func getUserProfileInfo(userid : String, requestedUserid: String, completion :  @escaping (_ httpResult : REUserProfile, _ response : Bool) -> Void) {
         
         FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            
-            self.client.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token).continueWith { (task) -> Any? in
+            self.client.usersGet(userid: userid, requestedUserid: requestedUserid, authorization: tokenResult.token, shortInfo: "").continueWith { (task) -> Any? in
                 
                 if task.error != nil {
                     print("error : \(String(describing: task.error?.localizedDescription))")

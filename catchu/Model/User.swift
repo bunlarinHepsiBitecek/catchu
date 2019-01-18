@@ -302,6 +302,7 @@ class User {
         if let isPrivateAccount = user.isPrivateAccount {
             self.isUserHasAPrivateAccount = isPrivateAccount.boolValue
         }
+        self.bio = user.bio
         self.birthday = user.birthday
         if let gender = user.gender {
             self.gender = GenderType.init(rawValue: gender)
@@ -398,22 +399,6 @@ extension User {
             default:
                 return FollowStatus.none
             }
-        }
-        
-        func configure(_ button: UIButton) {
-            let facebookColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-            let title = self.toString
-            let titleColor: UIColor = self == .none ? UIColor.white : UIColor.black
-            let borderColor: UIColor = self == .none ? facebookColor : UIColor.lightGray
-            let backgroundColor: UIColor = self == .none ? facebookColor : UIColor.white
-            let alpha: CGFloat = self == .own ? 0 : 1
-            
-            button.setTitle(title, for: .normal)
-            button.setTitleColor(titleColor, for: .normal)
-            button.backgroundColor = backgroundColor
-            button.alpha = alpha
-            
-            button.layer.borderColor = borderColor.cgColor
         }
     }
 }

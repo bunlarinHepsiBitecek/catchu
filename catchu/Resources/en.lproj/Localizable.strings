@@ -197,6 +197,8 @@
 "Profile_Gender_Female" = "Female";
 "Profile_Gender_Unspecified" = "Unspecified";
 
+// User Messages
+"UserMessages_Unfollow_Message" = "No body knows what your are doing 😉";
 
 // Permission Statements
 "topicLabelForCamera" = "Please Allow Access to Camera";

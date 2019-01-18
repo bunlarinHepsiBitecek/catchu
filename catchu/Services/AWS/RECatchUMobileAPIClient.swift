@@ -405,40 +405,6 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
     /*
      
      
-     @param authorization
-     @param body
-     @param longitude
-     @param perPage
-     @param latitude
-     @param radius
-     @param page
-     
-     return type: REPostListResponse
-     */
-    public func postsGeolocationPost(authorization: String, body: REBaseRequest, longitude: String?, perPage: String?, latitude: String?, radius: String?, page: String?) -> AWSTask<REPostListResponse> {
-        let headerParameters = [
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": authorization,
-            
-            ]
-        
-        var queryParameters:[String:Any] = [:]
-        queryParameters["longitude"] = longitude
-        queryParameters["perPage"] = perPage
-        queryParameters["latitude"] = latitude
-        queryParameters["radius"] = radius
-        queryParameters["page"] = page
-        
-        let pathParameters:[String:Any] = [:]
-        
-        return self.invokeHTTPRequest("POST", urlString: "/posts/geolocation", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REPostListResponse.self) as! AWSTask<REPostListResponse>
-    }
-    
-    
-    /*
-     
-     
      @param userid
      @param authorization
      @param postid
@@ -763,18 +729,21 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
      @param userid
      @param requestedUserid
      @param authorization
+     @param shortInfo
      
      return type: REUserProfile
      */
-    public func usersGet(userid: String, requestedUserid: String, authorization: String) -> AWSTask<REUserProfile> {
+    public func usersGet(userid: String, requestedUserid: String, authorization: String, shortInfo: String?) -> AWSTask<REUserProfile> {
         let headerParameters = [
             "Content-Type": "application/json",
             "Accept": "application/json",
             "userid": userid,
-            "Authorization": authorization
-        ]
+            "Authorization": authorization,
+            
+            ]
         
         var queryParameters:[String:Any] = [:]
+        queryParameters["shortInfo"] = shortInfo
         queryParameters["requestedUserid"] = requestedUserid
         
         let pathParameters:[String:Any] = [:]

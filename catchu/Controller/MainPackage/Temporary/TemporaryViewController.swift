@@ -157,6 +157,137 @@ class TemporaryViewController: UIViewController, UNUserNotificationCenterDelegat
     
     func presentFriendViewController() {
         
+        if let destinationViewController = UIStoryboard(name: Constants.StoryBoardID.Contact, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ContactViewController) as? ContactViewController {
+
+            present(destinationViewController, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
+    func getUserFriendList(completion : @escaping (_ result : Bool) -> Void) {
+        
+        let client = RECatchUMobileAPIClient.default()
+        
+        guard let userid = User.shared.userid else { return }
+        
+        // TODO: Authorization
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            if finished {
+                client.friendsGet(userid: userid, perPage: "30", page: "1", authorization: tokenResult.token).continueWith { (taskFriendList) -> Any? in
+                    
+                    if taskFriendList.error != nil {
+                        
+                        print("getting friend list failed")
+                        print("result : \(taskFriendList.error)")
+                        print("result : \(taskFriendList.result)")
+                        completion(false)
+                        
+                    } else {
+                        
+                        print("getting friend list ok")
+                        
+                        User.shared.appendElementIntoFriendListAWS(httpResult: taskFriendList.result!)
+                        
+                    }
+                    
+                    completion(true)
+                    
+                    return nil
+                    
+                }
+            
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                
+                if finished {
+                    
+                    let input = REGroupRequest()
+                    
+                    input?.requestType = RequestType.get_group_participant_list.rawValue
+                    input?.groupid = "group1"
+                    
+                    client.groupsPost(authorization: tokenResult.token, body: input!).continueWith(block: { (task) -> Any? in
+                        
+                        print("yarrrroooooo")
+                        
+                        if task.error != nil {
+                            
+                            print("Error : \(task.error)")
+                            
+                        } else {
+                            
+                            print("task result : \(task.result?.error)")
+                            
+                            completion(true)
+                            
+                            
+                        }
+                        
+                        return nil
+                        
+                    })
+                    
+                }
+                
+            })
+            
+            
+            
+        }
+        
+//        // gecici silinecek
+//        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+//
+//            if finished {
+//
+//
+//
+//
+//            }
+//
+//        }
+
+    }
+    
+    func startFriendViewPresentation() {
+        
+        print("userFriendList count : \(User.shared.userFriendList.count)")
+        
+        if User.shared.userFriendList.count > 0 {
+            
+            self.presentFriendViewController()
+            
+        } else {
+            
+            LoaderController.shared.showLoader()
+            
+            getUserFriendList { (result) in
+                
+                if result {
+                    LoaderController.shared.removeLoader()
+                    
+                    /*
+                     eger viewControlleri async olarak present etmessen asagidaki gibi bir warning aliyorsun. Bunun nedeni, sen ayns olarak amazondan data cekiyorsun ve bunu bir completion handler a bagliyorsun ve main thread dispatch acmadan main thread icerisinde view controller present etmeye calisiyorsun. Bu noktada segmented button labellari sonradan geliyor, asyn transaction main thread e yetisemiyor. O yuzden viewcontroller i asagidaki gibi asyn olarak call edeceksin.
+                     
+                     Warningn : This application is modifying the autolayout engine from a background thread after the engine was accessed from the main thread. This can lead to engine corruption and weird crashes
+                     */
+                    DispatchQueue.main.async {
+                        
+                        self.presentFriendViewController()
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            print("erkut")
+            
+        }
+        
     }
     
     @IBAction func printData(_ sender: Any) {

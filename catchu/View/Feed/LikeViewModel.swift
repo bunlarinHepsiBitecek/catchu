@@ -145,9 +145,9 @@ class ViewModelUser: ViewModelItem {
         if requestType == .defaultRequest {
             return
         }
-        
         guard let userid = User.shared.userid else { return }
         
+        updateFollowStatus(requestType)
         REAWSManager.shared.requestRelationProcess(requestType: requestType, userid: userid, targetUserid: targetUserid) { [weak self] resut in
             self?.handleResult(resut)
         }
@@ -155,7 +155,7 @@ class ViewModelUser: ViewModelItem {
     
     func findRequestType() -> RequestType {
         guard let user = self.user else { return .defaultRequest }
-        guard let followStatus = user.followStatus else { return .defaultRequest}
+        guard let followStatus = user.followStatus else { return .defaultRequest }
         let isPrivateAccount = user.isUserHasAPrivateAccount ?? false
         
         switch followStatus {
@@ -170,6 +170,21 @@ class ViewModelUser: ViewModelItem {
         }
     }
     
+    private func updateFollowStatus(_ requestType: RequestType) {
+        guard let user = self.user else { return }
+        
+        switch requestType {
+        case .createFollowDirectly:
+            user.followStatus = User.FollowStatus.following
+        case .followRequest:
+            user.followStatus = User.FollowStatus.pending
+        case .deleteFollow, .deletePendingFollowRequest:
+            user.followStatus = User.FollowStatus.none
+        default:
+            return
+        }
+    }
+    
     private func handleResult(_ result: NetworkResult<REFriendRequestList>) {
         switch result {
         case .success(let response):
@@ -177,7 +192,6 @@ class ViewModelUser: ViewModelItem {
                 print("Lambda Error: \(error)")
                 return
             }
-            
         case .failure(let apiError):
             switch apiError {
             case .serverError(let error):

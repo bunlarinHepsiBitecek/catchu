@@ -20,7 +20,7 @@ class SearchViewController: BaseTableViewController {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.text = LocalizedConstants.SearchBar.searching
         label.textColor = UIColor.gray
         label.textAlignment = .center
@@ -39,28 +39,13 @@ class SearchViewController: BaseTableViewController {
             stackView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor, constant: 20),
             stackView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 20),
             ])
-        
         return view
     }()
     
-    lazy var noResultFoundView: UIView = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 17)
-        label.text = LocalizedConstants.Feed.NoResultFound
-        label.textColor = UIColor.lightGray
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        label.sizeToFit()
-        
-        
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
-        view.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.safeTopAnchor.constraint(equalTo: view.safeTopAnchor, constant: 20),
-            label.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 10),
-            label.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
-            ])
+    let noResultFoundView: TableViewStateResultView = {
+        let view = TableViewStateResultView()
+        view.setup(imageName: nil, title: nil, subtitle: LocalizedConstants.Feed.NoResultFound)
+        view.frame.size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         return view
     }()
     
@@ -117,29 +102,22 @@ class SearchViewController: BaseTableViewController {
     
     
     func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.register(UserViewCell.self, forCellReuseIdentifier: UserViewCell.identifier)
-        
         tableView.keyboardDismissMode = .interactive
-        
-//        tableView.tableHeaderView = searchController.searchBar
         if #available(iOS 11.0, *) {
             // For iOS 11 and later, place the search bar in the navigation bar.
             navigationItem.searchController = searchController
-
             // Make the search bar always visible.
             navigationItem.hidesSearchBarWhenScrolling = false
         } else {
             // For iOS 10 and earlier, place the search controller's search bar in the table view's header.
             tableView.tableHeaderView = searchController.searchBar
         }
+        
+        tableView.register(UserViewCell.self, forCellReuseIdentifier: UserViewCell.identifier)
     }
     
     func setupViewModel() {
         viewModel.state.bindAndFire { [unowned self](state) in
-            print("state fire: \(state.rawValue)")
             self.setFooterView(state)
             self.reloadTableView()
         }
@@ -187,13 +165,11 @@ extension SearchViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return viewModel.items.count
         return viewModel.filteredItems.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-//        let item = viewModel.items[indexPath.row]
         let item = viewModel.filteredItems[indexPath.row]
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: UserViewCell.identifier, for: indexPath) as? UserViewCell {
@@ -233,18 +209,15 @@ extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdat
 }
 
 
-class TableViewStateStack: BaseView {
+class TableViewStateResultView: BaseView {
     
     let activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
         
-        activityIndicatorView.backgroundColor = .green
-        
         return activityIndicatorView
     }()
-    
     
     let stateImageView: UIImageView = {
         let imageView = UIImageView()
@@ -255,29 +228,29 @@ class TableViewStateStack: BaseView {
         return imageView
     }()
     
-    let titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.text = "Connection Error"
         label.textColor = UIColor.darkGray
         label.textAlignment = .center
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.sizeToFit()
+        label.preferredMaxLayoutWidth = self.frame.width
         return label
     }()
     
-    let subtitleLabel: UILabel = {
+    lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.text = "Please check your internet connection"
         label.textColor = UIColor.lightGray
         label.textAlignment = .center
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.sizeToFit()
+        label.preferredMaxLayoutWidth = self.frame.width
         return label
     }()
     
@@ -300,6 +273,8 @@ class TableViewStateStack: BaseView {
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
         stackView.spacing = 16
+        stackView.layoutMargins = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
     
@@ -318,7 +293,7 @@ class TableViewStateStack: BaseView {
     }
     
     func setup(imageName: String?, title: String?, subtitle: String?) {
-        activityIndicatorView.isHidden = true
+        activityIndicatorView.stopAnimating()
         
         if let imageName = imageName {
             stateImageView.image = UIImage(named: imageName)
@@ -343,5 +318,4 @@ class TableViewStateStack: BaseView {
         
         titleStackView.isHidden = titleLabel.isHidden && subtitleLabel.isHidden
     }
-    
 }

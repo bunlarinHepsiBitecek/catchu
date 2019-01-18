@@ -259,7 +259,8 @@ struct Constants {
     struct Profile {
         static let Padding: CGFloat = 20.0
         static let ImageWidthHeight: CGFloat = 50
-        static let GroupTableHeight: CGFloat = 120
+        static let GroupTableWidth: CGFloat = 136
+        static let GroupTableHeight: CGFloat = 176
         static let CollectionMinimumLineSpacing: CGFloat = 1
         static let CollectionItemPerLine: CGFloat = 3
     }

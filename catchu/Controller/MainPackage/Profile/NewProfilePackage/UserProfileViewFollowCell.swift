@@ -37,18 +37,18 @@ class UserProfileViewFollowCell: BaseTableCell, ConfigurableCell {
     
     lazy var followInfoStackView: UIStackView = {
         
-        let layoutMargin = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        let separator = self.createSeparator(color: .black)
+        let layoutMargin = UIEdgeInsets(top: padding/2, left: padding, bottom: padding/2, right: padding)
+        let separatorView = self.createSeparatorView(color: .black)
         
-        let stackView = UIStackView(arrangedSubviews: [followersButton, separator, followingButton])
+        let stackView = UIStackView(arrangedSubviews: [followersButton, separatorView, followingButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
-        stackView.spacing = 10
+        stackView.spacing = padding
         stackView.layoutMargins = layoutMargin
         stackView.isLayoutMarginsRelativeArrangement = true
         
-        separator.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.6).isActive = true
+        separatorView.heightAnchor.constraint(equalTo: followersButton.heightAnchor, multiplier: 1).isActive = true
         
         return stackView
     }()
@@ -58,7 +58,6 @@ class UserProfileViewFollowCell: BaseTableCell, ConfigurableCell {
         
         contentView.addSubview(followInfoStackView)
         NSLayoutConstraint.activate([
-//            followInfoStackView.safeCenterXAnchor.constraint(equalTo: contentView.safeCenterXAnchor),
             followInfoStackView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor),
             followInfoStackView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor),
             followInfoStackView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor),
@@ -69,25 +68,23 @@ class UserProfileViewFollowCell: BaseTableCell, ConfigurableCell {
     func configure(viewModelItem: ViewModelItem) {
         guard let viewModelItem = viewModelItem as? UserProfileViewModelItemFollow else { return }
         self.viewModelItem = viewModelItem
-        setupViewModel()
+        
+        let formattedFollowerCount = Formatter.roundedWithAbbreviations(viewModelItem.followerCount)
+        let formattedFollowingCount = Formatter.roundedWithAbbreviations(viewModelItem.followingCount)
+        fillFollowerFollowingButtons(followerCount: formattedFollowerCount, followingCount: formattedFollowingCount)
     }
     
-
-    func setupViewModel() {
-        viewModelItem.followerCount.bindAndFire { [unowned self] (_) in
-            let followersString = self.followAttributeString(title: self.viewModelItem.formattFollowersCount(), subtitle: LocalizedConstants.Profile.Followers)
-            self.followersButton.setAttributedTitle(followersString, for: .normal)
-        }
+    private func fillFollowerFollowingButtons(followerCount: String, followingCount: String) {
+        let followersString = Formatter.followAttributeString(title: followerCount, subtitle: LocalizedConstants.Profile.Followers)
+        let followingString = Formatter.followAttributeString(title: followingCount, subtitle: LocalizedConstants.Profile.Following)
         
-        viewModelItem.followingCount.bindAndFire { [unowned self] (_) in
-            let followingString = self.followAttributeString(title: self.viewModelItem.formattFollowingCount(), subtitle: LocalizedConstants.Profile.Following)
+        DispatchQueue.main.async {
+            self.followersButton.setAttributedTitle(followersString, for: .normal)
             self.followingButton.setAttributedTitle(followingString, for: .normal)
         }
     }
     
-    
-    
-    private func createSeparator(color : UIColor) -> UIView {
+    private func createSeparatorView(color : UIColor) -> UIView {
         let separator = UIView()
         let widthConstraint = separator.widthAnchor.constraint(equalToConstant: 1)
         widthConstraint.priority = UILayoutPriority(999)
@@ -95,29 +92,6 @@ class UserProfileViewFollowCell: BaseTableCell, ConfigurableCell {
         separator.backgroundColor = color
         return separator
     }
-    
-    func followAttributeString(title: String, subtitle: String) -> NSMutableAttributedString {
-        let style = NSMutableParagraphStyle()
-        style.alignment = .center
-        style.lineBreakMode = .byWordWrapping
-        
-        let titleAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .headline),
-            NSAttributedStringKey.paragraphStyle: style
-        ]
-        
-        let subtitleAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline),
-            NSAttributedStringKey.paragraphStyle: style
-        ]
-        
-        let attributedString = NSMutableAttributedString(string: title, attributes: titleAttributes)
-        attributedString.append(NSAttributedString(string: "\n"))
-        attributedString.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
-        
-        return attributedString
-    }
-    
     
     @objc func followersList() {
         print("\(#function) run")
