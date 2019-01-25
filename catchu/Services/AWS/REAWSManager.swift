@@ -799,19 +799,22 @@ extension REAWSManager {
         post.location = location
         post.attachments = attachments
         post.message = Share.shared.message
-//        post.privacyType = PrivacyType.allFollowers.stringValue
         post.privacyType = share.privacyType?.stringValue
         post.groupid = share.groupid
-        
         if let allowList = share.allowList {
             post.allowList = User.shared.getREUSerList(inputUserList: allowList)
+        }
+        if let isCommentAllowed = share.isCommentAllowed {
+            post.isCommentAllowed = NSNumber(booleanLiteral: isCommentAllowed)
+        }
+        if let isShowOnMap = share.isShowOnMap {
+            post.isShowOnMap = NSNumber(booleanLiteral: isShowOnMap)
         }
         
         guard let postRequest = REPostRequest() else { return }
         postRequest.post = post
         
         let postid = Constants.AWS_PATH_EMPTY
-        
         FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, finished) in
             if finished {
                 

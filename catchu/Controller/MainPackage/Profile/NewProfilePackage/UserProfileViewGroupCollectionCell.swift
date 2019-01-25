@@ -94,7 +94,7 @@ class UserProfileViewGroupCollectionCell: BaseCollectionCell {
     }
     
     func configure(item: Group) {
-        if let groupPictureUrl = item.groupPictureUrl {
+        if let groupPictureUrl = item.groupPictureUrl, !groupPictureUrl.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             profileImageView.loadAndCacheImage(url: groupPictureUrl)
         } else {
             if let name = item.groupName {

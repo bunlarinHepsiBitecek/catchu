@@ -205,11 +205,11 @@ class FeedViewModelItemPost: FeedViewModelItem {
         return isLiked ? unlike() : like()
     }
     
-    private func like() {
-        guard let post = self.post, let isLiked = post.isLiked, var likeCount = post.likeCount else { return
+    func like() {
+        guard let post = self.post, var likeCount = post.likeCount else { return
         }
         
-        post.isLiked = !isLiked
+        post.isLiked = true
         likeCount += 1
         post.likeCount = likeCount
         REAWSManager.shared.like(post: post, commentid: nil) { (result) in
@@ -219,11 +219,11 @@ class FeedViewModelItemPost: FeedViewModelItem {
         isPostLiked.value = post.isLiked ?? false
     }
     
-    private func unlike() {
-        guard let post = self.post, let isLiked = post.isLiked, var likeCount = post.likeCount else { return
+    func unlike() {
+        guard let post = self.post, var likeCount = post.likeCount else { return
         }
         
-        post.isLiked = !isLiked
+        post.isLiked = false
         likeCount -= 1
         post.likeCount = likeCount
         REAWSManager.shared.unlike(post: post, commentid: nil) { (result) in

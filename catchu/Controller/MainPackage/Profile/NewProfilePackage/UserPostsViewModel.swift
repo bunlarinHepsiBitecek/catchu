@@ -143,10 +143,13 @@ extension UserPostsViewModel {
             let post = Post()
             post.postid = "post\(index)"
             post.message = "post\(index) message"
-            let media = Media()
-            media.type = "image"
-            media.url = "https://picsum.photos/\(index*10)/\(index*10)/?random"
-            post.attachments = [media]
+            let media1 = Media()
+            media1.type = "image"
+            media1.url = "https://picsum.photos/\(index*10)/\(index*10)/?random"
+            let media2 = Media()
+            media2.type = "image"
+            media2.url = "https://picsum.photos/\(index*11)/\(index*11)/?random"
+            post.attachments = [media1, media2]
             post.location = Location()
             post.location?.latitude = 41.013303
             post.location?.longitude = 28.93119
@@ -154,6 +157,7 @@ extension UserPostsViewModel {
             post.isLiked = true
             post.isCommentAllowed = true
             post.isShowOnMap = true
+            post.likeCount = 23
             post.commentCount = 79
             post.user = User()
             post.user?.userid = "userid\(index)"

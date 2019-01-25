@@ -31,7 +31,7 @@ class UserPostsViewCollectionController: BaseCollectionViewController {
         
         collectionView?.register(CollectionFooterActivityView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: CollectionFooterActivityView.identifier)
     }
- 
+    
     private func setupViewModel() {
         viewModel.getUserPosts()
         viewModel.state.bindAndFire { [unowned self] in
@@ -41,6 +41,11 @@ class UserPostsViewCollectionController: BaseCollectionViewController {
         viewModel.changes.bind { [unowned self] in
             self.reloadCollectionView($0)
         }
+    }
+    
+    deinit {
+        viewModel.state.unbind()
+        viewModel.changes.unbind()
     }
     
     private func stateAnimate(_ state: TableViewState) {

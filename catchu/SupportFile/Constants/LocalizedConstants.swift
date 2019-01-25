@@ -193,6 +193,8 @@ struct 	LocalizedConstants {
     }
     
     struct Feed {
+        static let Public = NSLocalizedString("Feed_Public", comment: "")
+        static let Catch = NSLocalizedString("Feed_Catch", comment: "")
         static let NoPostFound = NSLocalizedString("NoPostFound", comment: "")
         static let NoResultFound = NSLocalizedString("NoResultFound", comment: "")
         static let CatchU = NSLocalizedString("CatchU", comment: "")
