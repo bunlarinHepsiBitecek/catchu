@@ -10,8 +10,8 @@ import UIKit
 
 class FacebookContactRequestView: UIView {
     
-    weak var delegate : SlideMenuProtocols!
-
+    private var facebookContactRequestViewModel = FacebookContactRequestViewModel()
+    
     lazy var containerView: UIView = {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -85,10 +85,8 @@ class FacebookContactRequestView: UIView {
     }
     */
     
-    init(frame: CGRect, delegate : SlideMenuProtocols) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.delegate = delegate
-        
         initializeViewSettings()
     }
     
@@ -101,11 +99,11 @@ class FacebookContactRequestView: UIView {
 // MARK: - major functions
 extension FacebookContactRequestView {
     
-    func initializeViewSettings() {
+    private func initializeViewSettings() {
         addViews()
     }
     
-    func addViews() {
+    private func addViews() {
         
         self.addSubview(containerView)
         self.containerView.addSubview(iconContainer)
@@ -157,31 +155,12 @@ extension FacebookContactRequestView {
         
     }
     
-    func activationManager(active : Bool) {
-        
-        if active {
-            self.alpha = 1
-        } else {
-            self.alpha = 0
-        }
+    func listenConnectionRequestTriggered(completion: @escaping(_ triggered: Bool) -> Void) {
+        facebookContactRequestViewModel.connectionTriggered.bind(completion)
     }
     
     @objc func startGettingFacebookFriends(_ sender : UIButton) {
-        
-        print("startGettingFacebookFriends starts")
-        
-        FacebookContactListManager.shared.initiateFacebookContactListProcess { (finish) in
-            
-            if finish {
-                FacebookContactListManager.shared.getFacebookFriendsExistedInCatchU(completion: { (finish) in
-                    if finish {
-                        self.delegate.dismissView(active: false)
-                        self.delegate.dataLoadTrigger()
-                    }
-                })
-            }
-        }
-        
+        facebookContactRequestViewModel.connectionTriggered.value = true
     }
     
 }

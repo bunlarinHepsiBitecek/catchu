@@ -1,18 +1,16 @@
 //
-//  FollowersTableCellViewModel.swift
+//  ExploreFacebookContactTableCellViewModel.swift
 //  catchu
 //
-//  Created by Erkut Baş on 1/17/19.
+//  Created by Erkut Baş on 1/24/19.
 //  Copyright © 2019 Remzi YILDIRIM. All rights reserved.
 //
 
 import Foundation
 
-class FollowersTableCellViewModel: CommonViewModel {
+class ExploreFacebookContactTableCellViewModel {
     
     var commonUserViewModel: CommonUserViewModel?
-    var buttonProcessData = CommonDynamic(FollowRequestOperationData(buttonOperation: ButtonOperation.none, requesterUserid: Constants.CharacterConstants.EMPTY, operationState: CRUD_OperationStates.done))
-    var viewModelNetworkOperationType = FollowOperationType.none
     
     init(commonUserViewModel: CommonUserViewModel) {
         self.commonUserViewModel = commonUserViewModel
@@ -25,15 +23,6 @@ class FollowersTableCellViewModel: CommonViewModel {
             }
         }
         return nil
-    }
-    
-    func returnFollowersUserid() -> String? {
-        guard let commonUserViewModel = commonUserViewModel else { return nil }
-        guard let user = commonUserViewModel.user else { return nil }
-        guard let userid = user.userid else { return nil }
-        
-        return userid
-
     }
     
     func findRequestType() -> RequestType {
@@ -61,25 +50,7 @@ class FollowersTableCellViewModel: CommonViewModel {
         let requestType = findRequestType()
         updateFollowStatus(requestType)
         
-        viewModelNetworkOperationType = .followProcess
-        
         APIGatewayManager.shared.followRequestOperations(requestedUserid: requestedUserid, requesterUserid: requesterUserid, requestType: requestType) { (result) in
-            self.handleAwsTaskResponse(networkResult: result)
-        }
-        
-    }
-    
-    func removeFromFollowers() {
-        
-        guard let userid = User.shared.userid else { return }
-        guard let follower = returnUser() else { return }
-        guard let followerUserid = follower.userid else { return }
-        
-        updateButtonProcessData(operationState: .processing, requesterUserid: followerUserid, buttonOperation: .more)
-        
-        viewModelNetworkOperationType = .removeProcess
-        
-        APIGatewayManager.shared.followRequestOperations(requestedUserid: userid, requesterUserid: followerUserid, requestType: .removeFromFollower) { (result) in
             self.handleAwsTaskResponse(networkResult: result)
         }
         
@@ -93,20 +64,9 @@ class FollowersTableCellViewModel: CommonViewModel {
                     print("Lambda error : \(String(describing: businessError.message))")
                     return
                 }
-            }
-            
-            viewModelNetworkOperationType = FollowOperationType.none
-            
-            switch viewModelNetworkOperationType {
-            case .removeProcess:
-                print("Follower Remove has done.")
-                buttonProcessData.value.operationState = .done
                 
-            case .followProcess:
-                // for success, there is nothing to do :)
-                return
-            default:
-                return
+                // for success, nothing to do
+                
             }
             
         case .failure(let apiError):
@@ -122,15 +82,8 @@ class FollowersTableCellViewModel: CommonViewModel {
                 print("missing data")
                 
             }
+            
         }
-    }
-    
-    func updateButtonProcessData(operationState: CRUD_OperationStates, requesterUserid: String, buttonOperation: ButtonOperation) {
-        
-        let temp = FollowRequestOperationData(buttonOperation: buttonOperation, requesterUserid: requesterUserid, operationState: operationState)
-        
-        buttonProcessData.value = temp
-        
     }
     
     private func updateFollowStatus(_ requestType: RequestType) {
@@ -147,4 +100,5 @@ class FollowersTableCellViewModel: CommonViewModel {
             return
         }
     }
+    
 }

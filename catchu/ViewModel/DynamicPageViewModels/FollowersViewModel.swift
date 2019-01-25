@@ -10,16 +10,20 @@ import Foundation
 
 class FollowersViewModel: CommonViewModel {
 
+    var user: User!
     var followersArray = [CommonViewModelItem]()
     var state = CommonDynamic(TableViewState.suggest)
-    var totalFollowersCount = CommonDynamic(Int())
     var searchedFollowerArray = [CommonViewModelItem]()
+    var totalNumberOfFollowers = CommonDynamic(Int())
+    var refreshProcessState = CommonDynamic(CRUD_OperationStates.done)
+    var flagForFetchMore : Bool = false
     
     var searchTool = CommonDynamic(SearchTools(searchText: Constants.CharacterConstants.EMPTY, searchIsProgress: false))
+    // it's used for trigger tableview reload process from cell
+    var removeFollowerOperationsState = CommonDynamic(FollowRequestOperationCellResult(state: .done, requesterUserid: Constants.CharacterConstants.EMPTY, buttonOperation: .none))
     
     var currentPage = 1
-    var totalNumberOfFollowers = 0
-    var totalNumberOfFollowersGet : Bool = false
+    var totalNumberOfFollowersRetrievedFromServer = 0
     var perPage = 40
     
     // servera kaç defa gidildiğini test etmek için yazıldı
@@ -27,6 +31,10 @@ class FollowersViewModel: CommonViewModel {
     
     // to control fetch process
     private var isFetchInProgress = false
+    
+    init(user: User) {
+        self.user = user
+    }
     
     var currentFollowersArrayCount : Int {
         return followersArray.count
@@ -50,7 +58,7 @@ class FollowersViewModel: CommonViewModel {
         
         do {
             
-            try APIGatewayManager.shared.getUserFollowInfo(userid: userid, requesterUserid: selectedProfileUserid, page: currentPage, perPage: perPage, requestType: .followers, completion: { (result) in
+            try APIGatewayManager.shared.getUserFollowInfo(requesterUserid: userid, requestedUserid: selectedProfileUserid, page: currentPage, perPage: perPage, requestType: .followers, completion: { (result) in
                 self.handleAwsTaskResponse(networkResult: result)
             })
             
@@ -65,19 +73,27 @@ class FollowersViewModel: CommonViewModel {
         
     }
     
-    private func createFollowerArrayData(reUserList : [REUser])  {
+    func getUserFollowersPageByPage2() {
         print("\(#function) starts")
         
-        // remove all items in FollowerArray
-        //followersArray.removeAll()
-        
-        for item in reUserList {
-            let newUser = User(user: item)
-            followersArray.append(CommonUserViewModel(user: newUser))
+        //state.value = .loading
+        guard let userid = User.shared.userid else { return }
+        guard let requestedUserid = self.user.userid else { return }
+
+        do {
+            
+            try APIGatewayManager.shared.getUserFollowInfo(requesterUserid: userid, requestedUserid: requestedUserid, page: currentPage, perPage: perPage, requestType: .followers, completion: { (result) in
+                self.handleAwsTaskResponse(networkResult: result)
+            })
+            
+        } catch let error as ApiGatewayClientErrors {
+            if error == .missingUserId {
+                print("\(#function) : missing userid")
+            }
         }
-        
-        state.value = followersArray.count == 0 ? .empty : .populate
-        
+        catch  {
+            print("")
+        }
     }
     
     /// Description : CommonViewModel protocol
@@ -94,27 +110,17 @@ class FollowersViewModel: CommonViewModel {
                 
                 if let businessError = data.error, let code = businessError.code, code != ApiLambdaError.success.rawValue {
                     print("Lambda error : \(String(describing: businessError.message))")
+                    return
                 }
                 
                 if let resultArray = data.items {
-                    currentPage += 1
-                    
                     if let count = data.totalNumberOfPeople {
-                        
-                        if !self.totalNumberOfFollowersGet {
-                            self.totalNumberOfFollowers = count.intValue
-                            print("self.totalNumberOfFollowers : \(self.totalNumberOfFollowers)")
-                            self.totalFollowersCount.value = totalNumberOfFollowers
-                            self.totalNumberOfFollowersGet = true
-                        }
-                        
+                        totalNumberOfFollowers.value = Int(count)
                     }
-                    
-                    self.createFollowerArrayData(reUserList: resultArray)
-                    // total user count is set to observe from top view
-                    //self.totalFollowerCount.value = resultArray.count
-                    print("self.totalFollowerCount.value : \(self.totalFollowersCount.value)")
-                    self.isFetchInProgress = false
+                    if resultArray.count > 0 {
+                        currentPage += 1
+                        self.createFollowerArrayData(reUserList: resultArray)
+                    }
                 }
                 
             }
@@ -137,6 +143,25 @@ class FollowersViewModel: CommonViewModel {
         
     }
     
+    private func createFollowerArrayData(reUserList : [REUser])  {
+        print("\(#function) starts")
+        
+        if refreshProcessState.value == .processing {
+            // remove all items in FollowerArray
+            followersArray.removeAll()
+        }
+        
+        for item in reUserList {
+            let newUser = User(user: item)
+            followersArray.append(CommonUserViewModel(user: newUser))
+        }
+        
+        refreshProcessState.value = .done
+        state.value = followersArray.count == 0 ? .empty : .populate
+        flagForFetchMore = false
+        
+    }
+    
     func returnFollowerArrayData(index: Int) -> CommonViewModelItem {
         
         if searchTool.value.searchIsProgress {
@@ -148,11 +173,13 @@ class FollowersViewModel: CommonViewModel {
     }
     
     func returnFollowerArrayCount() -> Int {
+        
         if searchTool.value.searchIsProgress {
             return searchedFollowerArray.count
         } else {
-            return totalFollowersCount.value
+            return followersArray.count
         }
+        
     }
     
     func searchFollowersInTableViewData(inputText : String) {
@@ -185,6 +212,40 @@ class FollowersViewModel: CommonViewModel {
         //searchTool.value.searchIsProgress = true
         state.value = .populate
         
+    }
+    
+    func removeFollowerFromFollowersArray(userid: String) {
+        
+        if let commonUserViewModelArray = followersArray as? [CommonUserViewModel] {
+            if let index = commonUserViewModelArray.firstIndex(where: { $0.user?.userid == userid}) {
+                followersArray.remove(at: index)
+            }
+        }
+        
+        if searchTool.value.searchIsProgress {
+            if let commonUserViewModelArray = searchedFollowerArray as? [CommonUserViewModel] {
+                if let index = commonUserViewModelArray.firstIndex(where: { $0.user?.userid == userid}) {
+                    searchedFollowerArray.remove(at: index)
+                }
+            }
+            
+        }
+        
+        totalNumberOfFollowers.value -= 1
+        
+    }
+    
+    func fetchMoreProcess() {
+        if !flagForFetchMore {
+            print("more data is going to be fetched")
+            flagForFetchMore = true
+            getUserFollowersPageByPage2()
+        }
+    }
+    
+    func refreshProcess() {
+        currentPage = 1
+        getUserFollowersPageByPage2()
     }
     
 }

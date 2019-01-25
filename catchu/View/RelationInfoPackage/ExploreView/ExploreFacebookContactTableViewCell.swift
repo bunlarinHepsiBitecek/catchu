@@ -1,32 +1,27 @@
 //
-//  FollowersTableViewCell.swift
+//  ExploreFacebookContactTableViewCell.swift
 //  catchu
 //
-//  Created by Erkut Baş on 1/17/19.
+//  Created by Erkut Baş on 1/24/19.
 //  Copyright © 2019 Remzi YILDIRIM. All rights reserved.
 //
 
 import UIKit
 
-class FollowersTableViewCell: CommonFollowTableViewCell, CommonDesignableCell {
+class ExploreFacebookContactTableViewCell: CommonFollowTableViewCell, CommonDesignableCell {
     
-    private var followersTableCellViewModel : FollowersTableCellViewModel!
-
+    private var exploreFacebookContactTableCellViewModel : ExploreFacebookContactTableCellViewModel!
+    
     override func initializeCellSettings() {
         addViews()
         configureCellSettings()
-    }
-    
-    override func deleteButtonTapped(_ sender: UIButton) {
-        print("\(#function)")
-        if let user = followersTableCellViewModel.returnUser() {
-            AlertControllerManager.shared.startActionSheetManager(type: .removeFollower, operationType: nil, delegate: self, title: "KOKO", user: user)
-        }
+        configureStackView()
+
     }
     
     override func confirmButtonTapped(_ sender: UIButton) {
         print("\(#function)")
-        followersTableCellViewModel.followButtonProcess()
+        exploreFacebookContactTableCellViewModel.followButtonProcess()
         followButtonStatusUpdate()
     }
     
@@ -36,23 +31,23 @@ class FollowersTableViewCell: CommonFollowTableViewCell, CommonDesignableCell {
     
     override func followButtonStatusUpdate() {
         print("\(#function)")
-        guard let user = followersTableCellViewModel.returnUser() else { return }
+        guard let user = exploreFacebookContactTableCellViewModel.returnUser() else { return }
         if let followStatus = user.followStatus {
-            print("username : \(user.username)")
+            print("POPOPOPO")
             print("user followStatus : \(followStatus)")
             Formatter.configure(followStatus, followButton)
         }
     }
-
+    
 }
 
 // MARK: - major functions
-extension FollowersTableViewCell {
+extension ExploreFacebookContactTableViewCell {
     
     private func addViews() {
         self.contentView.addSubview(userImageView)
         self.contentView.addSubview(mainStackView)
-
+        
         let safe = self.contentView.safeAreaLayoutGuide
         let safeUserImageView = self.userImageView.safeAreaLayoutGuide
         
@@ -73,16 +68,16 @@ extension FollowersTableViewCell {
         
     }
     
-    private func removeFollower() {
-        print("\(#function)")
-        followersTableCellViewModel.removeFromFollowers()
+    private func configureStackView() {
+        stackViewForProcessButtons.arrangedSubviews[1].isHidden = true
+        stackViewForProcessButtons.arrangedSubviews[1].alpha = 0
     }
     
     func initiateCellDesign(item: CommonViewModelItem?) {
-
+        
         if let userViewModel = item as? CommonUserViewModel {
             
-            followersTableCellViewModel = FollowersTableCellViewModel(commonUserViewModel: userViewModel)
+            exploreFacebookContactTableCellViewModel = ExploreFacebookContactTableCellViewModel(commonUserViewModel: userViewModel)
             
             self.userImageView.alpha = 1
             self.username.alpha = 1
@@ -90,7 +85,7 @@ extension FollowersTableViewCell {
             self.moreButton.alpha = 1
             self.followButton.alpha = 1
             
-            guard let commonUserViewModel = followersTableCellViewModel.commonUserViewModel else { return }
+            guard let commonUserViewModel = exploreFacebookContactTableCellViewModel.commonUserViewModel else { return }
             guard let user = commonUserViewModel.user else { return }
             
             if let userName = user.username {
@@ -118,35 +113,6 @@ extension FollowersTableViewCell {
             self.followButton.alpha = 0
         }
         
-//        followersTableCellViewModel.followOperation.bind { (operationData) in
-//            self.triggerFollowRequestOperations(operationData: operationData)
-//        }
-        
-    }
-    
-    func listenButtonOperations(completion: @escaping (_ buttonProcessData: FollowRequestOperationData) -> Void) {
-        followersTableCellViewModel.buttonProcessData.bind { (buttonProcessData) in
-            completion(buttonProcessData)
-        }
-
-    }
-    
-    func returnCellUserid() -> String {
-        return followersTableCellViewModel.returnFollowersUserid()!
-    }
-    
-}
-
-// MARK: - ActionSheetProtocols
-extension FollowersTableViewCell: ActionSheetProtocols {
-    
-    func returnOperations(selectedProcessType: ActionButtonOperation) {
-        switch selectedProcessType {
-        case .removeFollower:
-            self.removeFollower()
-        default:
-            return
-        }
     }
     
 }

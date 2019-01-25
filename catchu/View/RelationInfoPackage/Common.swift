@@ -265,6 +265,7 @@ class CommonFollowTableViewCell: CommonTableCell {
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "YArro "
         
         return label
     }()
@@ -275,6 +276,7 @@ class CommonFollowTableViewCell: CommonTableCell {
         label.textColor = UIColor.lightGray
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "KOKO"
         
         return label
     }()
@@ -303,7 +305,8 @@ class CommonFollowTableViewCell: CommonTableCell {
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold)
         temp.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.5882352941, blue: 0.9529411765, alpha: 1)
         temp.layer.cornerRadius = 5
-        
+        temp.layer.borderWidth = 0.5
+
         return temp
         
     }()
@@ -334,6 +337,10 @@ class CommonFollowTableViewCell: CommonTableCell {
     }
     
     func configureCellSettings() {
+        
+    }
+    
+    func followButtonStatusUpdate() {
         
     }
     
@@ -382,9 +389,8 @@ protocol CommonSlideMenuTableCellViewModelItem {
 }
 
 protocol PageItems {
-    var title : String { get set }
-    var subTitle: String { get set }
-    var active: Bool { get set }
+    var title : String? { get set }
+    var subTitle: String? { get set }
 }
 
 protocol CommonDesignableCellForGroupDetail {

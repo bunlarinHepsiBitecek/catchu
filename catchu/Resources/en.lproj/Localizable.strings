@@ -92,6 +92,10 @@
 "confirm" = "Confirm";
 "reject" = "Reject";
 "Refreshing" = "Refreshing...";
+"followInfo" = "Follow Info";
+"Remove" = "Remove";
+"removeFollower" = "Remove Follower?";
+"removeFollowerInfo" = "No body knows what you are doing 😇.";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";

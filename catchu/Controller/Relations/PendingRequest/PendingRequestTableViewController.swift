@@ -117,11 +117,14 @@ extension PendingRequestTableViewController {
                     }
                     
                     self.tableView.endUpdates()
+                    
+                    self.manageTableViewScrollProperty(active: true)
                 }
 
             }
 
         case .processing:
+            self.manageTableViewScrollProperty(active: false)
             return
         }
         
@@ -144,6 +147,10 @@ extension PendingRequestTableViewController {
             }
         }
         return nil
+    }
+    
+    private func manageTableViewScrollProperty(active: Bool) {
+        tableView.isScrollEnabled = active
     }
     
 }

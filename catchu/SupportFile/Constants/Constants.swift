@@ -99,6 +99,7 @@ struct Constants {
             static let cornerRadius_28 : CGFloat = 28
             static let cornerRadius_25 : CGFloat = 25
             static let cornerRadius_23 : CGFloat = 23
+            static let cornerRadius_22 : CGFloat = 22
             static let cornerRadius_20 : CGFloat = 20
             static let cornerRadius_18 : CGFloat = 18
             static let cornerRadius_15 : CGFloat = 15
@@ -126,6 +127,7 @@ struct Constants {
                 static let width_56 : CGFloat = 56
                 static let width_50 : CGFloat = 50
                 static let width_48 : CGFloat = 48
+                static let width_46 : CGFloat = 46
                 static let width_44 : CGFloat = 44
                 static let width_40 : CGFloat = 40
                 static let width_36 : CGFloat = 36
@@ -138,11 +140,15 @@ struct Constants {
             }
             struct Height {
                 static let height_300 : CGFloat = 300
+                static let height_280 : CGFloat = 280
+                static let height_270 : CGFloat = 270
+                static let height_260 : CGFloat = 260
                 static let height_250 : CGFloat = 250
                 static let height_220 : CGFloat = 220
                 static let height_200 : CGFloat = 200
                 static let height_180 : CGFloat = 180
                 static let height_150 : CGFloat = 150
+                static let height_130 : CGFloat = 130
                 static let height_110 : CGFloat = 110
                 static let height_105 : CGFloat = 105
                 static let height_102 : CGFloat = 102
@@ -155,6 +161,7 @@ struct Constants {
                 static let height_56 : CGFloat = 56
                 static let height_50 : CGFloat = 50
                 static let height_48 : CGFloat = 48
+                static let height_46 : CGFloat = 46
                 static let height_44 : CGFloat = 44
                 static let height_40 : CGFloat = 40
                 static let height_36 : CGFloat = 36

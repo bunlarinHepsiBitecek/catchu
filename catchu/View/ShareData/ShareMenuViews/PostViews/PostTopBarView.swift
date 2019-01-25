@@ -34,7 +34,7 @@ class PostTopBarView: UIView {
     }()
     
     lazy var profileImageView: UIImageView = {
-        let temp = UIImageView()
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_70, height: Constants.StaticViewSize.ViewSize.Height.height_70))
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.image = UIImage(named: "8771.jpg")
@@ -73,7 +73,6 @@ class PostTopBarView: UIView {
         
         let temp = UILabel()
         temp.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-        temp.text = "erkutbas"
         temp.textAlignment = .left
         temp.contentMode = .center
         temp.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -171,6 +170,7 @@ extension PostTopBarView {
         
         configureView()
         addViews()
+        setUserData()
         
     }
     
@@ -247,6 +247,22 @@ extension PostTopBarView {
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
         self.layer.insertSublayer(gradient, at: 0)
         
+    }
+    
+    private func setUserData() {
+        
+        if let username = User.shared.username {
+            self.userNameLabel.text = username
+            self.profileImageView.setImageInitialPlaceholder(username, circular: true)
+        }
+        
+        if let url = User.shared.profilePictureUrl {
+            if let urlToBeValidCheck = URL(string: url) {
+                if UIApplication.shared.canOpenURL(urlToBeValidCheck) {
+                    self.profileImageView.setImagesFromCacheOrFirebaseForFriend(url)
+                }
+            }
+        }
     }
     
     @objc func moreOptionsButtonPressed(_ sender : UIButton) {

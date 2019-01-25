@@ -137,6 +137,7 @@ enum RequestType : String {
     case none = "NONE"
     case followers = "followers"
     case followings = "followings"
+    case removeFromFollower = "removeFromFollower"
 
 }
 
@@ -442,6 +443,12 @@ enum InformerGestureStates {
 enum FollowPageIndex {
     case followers
     case followings
+}
+
+enum FollowOperationType {
+    case removeProcess
+    case followProcess
+    case none
 }
 
 enum CatchType: String {

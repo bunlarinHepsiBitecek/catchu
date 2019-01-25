@@ -627,11 +627,10 @@ class APIGatewayManager: ApiGatewayInterface {
         REAWSManager.shared.createPost(share: Share.shared, completion: completion)
     }
     
+    // for try again flow
     func initiatePostOperations() {
         
         Share.shared.convertPostItemsToShare()
-        
-//        afterPostOperations(granted: false)
         
         REAWSManager.shared.createPost(share: Share.shared) { (result) in
 
@@ -658,9 +657,6 @@ class APIGatewayManager: ApiGatewayInterface {
     }
     
     func afterPostOperations(granted : Bool) {
-        
-        print("afterPostOperations starts")
-        print("LoaderController.currentViewController() : \(LoaderController.currentViewController())")
         
         var imageAttachmentArray = [UIImage]()
         
@@ -705,52 +701,6 @@ class APIGatewayManager: ApiGatewayInterface {
         }
         
     }
-
-    
-    /// used for syns facebook friends and catchU followers
-    ///
-    /// - Parameters:
-    ///   - userid: authenticated userid
-    ///   - providerList: facebook friends list
-    ///   - completion: user list retrieved from api gateway stored in neo4j
-    /// - Author: Erkut Bas
-    func initiateFacebookContactExploreProcess(userid : String, providerList : REProviderList, completion : @escaping (ConnectionResult<REUserListResponse>) -> ()) {
-        
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-        
-            if finished {
-                
-                guard let userid = User.shared.userid else { return }
-                
-                self.client.usersProvidersPost(userid: userid, authorization: tokenResult.token, body: providerList).continueWith(block: { (userListResponse) -> Any? in
-                    
-                    if userListResponse.error != nil {
-                        print("userListResponse.error : \(userListResponse.error)")
-                    } else {
-                        if let result = userListResponse.result {
-                            
-                            if let error = result.error {
-                                if error.code != 1 {
-                                    //completion(.failure(error))
-                                }
-                            }
-                            
-                            completion(.success(result))
-                            
-                        }
-                        
-                    }
-                 
-                    return nil
-                    
-                })
-                
-            }
-            
-        }
-        
-    }
-    
     
     /// used for syns device contact list - friends and catchU followers
     ///
@@ -798,18 +748,74 @@ class APIGatewayManager: ApiGatewayInterface {
     ///   - completion: follow info list
     /// - Throws: throws apigateway requeired parameters error
     /// - Author: Erkut Bas
-    func getUserFollowInfo(userid: String, requesterUserid: String, page: Int, perPage: Int, requestType: RequestType, completion: @escaping (ConnectionResult<REFollowInfoListResponse>) -> Void) throws {
+    func getUserFollowInfo(requesterUserid: String, requestedUserid: String, page: Int, perPage: Int, requestType: RequestType, completion: @escaping (ConnectionResult<REFollowInfoListResponse>) -> Void) throws {
         
-        if userid.isEmpty || requesterUserid.isEmpty {
+        if requesterUserid.isEmpty || requestedUserid.isEmpty {
             throw ApiGatewayClientErrors.missingUserId
         }
         
         FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
             if finished {
-                self.client.usersUidFollowGet(userid: userid, uid: requesterUserid, authorization: tokenResult.token, perPage: String(perPage), requestType: requestType.rawValue, page: String(page)).continueWith(block: { (task) -> Any? in
+                self.client.usersUidFollowGet(userid: requesterUserid, uid: requestedUserid, authorization: tokenResult.token, perPage: String(perPage), requestType: requestType.rawValue, page: String(page)).continueWith(block: { (task) -> Any? in
                     self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
                     return nil
                 })
+            }
+            
+        }
+        
+    }
+    
+    /// used for syns facebook friends and catchU followers
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - providerList: facebook friends list
+    ///   - completion: user list retrieved from api gateway stored in neo4j
+    /// - Author: Erkut Bas
+    func initiateFacebookContactExploreProcess(userid : String, providerList : REProviderList, completion : @escaping (ConnectionResult<REUserListResponse>) -> ()) {
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            if finished {
+                
+                guard let userid = User.shared.userid else { return }
+                
+                self.client.usersProvidersPost(userid: userid, authorization: tokenResult.token, body: providerList).continueWith(block: { (userListResponse) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: userListResponse, completion: completion)
+                    return nil
+                    
+                })
+            }
+        }
+    }
+    
+    /// Description: it's used to remove a follower from authenticated user follower list
+    ///
+    /// - Parameters:
+    ///   - userid: logged in userid
+    ///   - followerUserid: follower userid
+    ///   - completion: network result
+    /// - Author: Erkut Bas
+    func removeFollower(userid: String, followerUserid: String, completion: @escaping(ConnectionResult<REFriendRequestList>) -> Void) throws {
+        
+        if userid.isEmpty || followerUserid.isEmpty {
+            throw ApiGatewayClientErrors.missingUserId
+        }
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            if finished {
+                
+                let requestBody = REFriendRequest()
+                requestBody?.requesterUserid = userid
+                requestBody?.requestedUserid = followerUserid
+                requestBody?.requestType = RequestType.removeFromFollower.rawValue
+                
+                self.client.followRequestPost(authorization: userid, body: requestBody!).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+
             }
             
         }

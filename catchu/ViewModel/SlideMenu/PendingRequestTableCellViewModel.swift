@@ -16,7 +16,6 @@ struct FollowRequestOperationData {
 
 struct FollowRequestOperationCellResult {
     var state: CRUD_OperationStates
-    var tag: Int
     var requesterUserid: String
     var buttonOperation: ButtonOperation
 }
@@ -26,7 +25,7 @@ class PendingRequestTableCellViewModel: CommonViewModel {
     var commonUserViewModel: CommonUserViewModel?
     var followOperation = CommonDynamic(FollowRequestOperationData(buttonOperation: .none, requesterUserid: Constants.CharacterConstants.EMPTY, operationState: .done))
     // it's used for trigger tableview reload process from cell
-    var followOperationStateForController = CommonDynamic(FollowRequestOperationCellResult(state: .done, tag: 0, requesterUserid: Constants.CharacterConstants.EMPTY, buttonOperation: .none))
+    var followOperationStateForController = CommonDynamic(FollowRequestOperationCellResult(state: .done, requesterUserid: Constants.CharacterConstants.EMPTY, buttonOperation: .none))
     
     init(commonUserViewModel: CommonUserViewModel) {
         self.commonUserViewModel = commonUserViewModel
@@ -111,9 +110,9 @@ class PendingRequestTableCellViewModel: CommonViewModel {
         return followRequestOperationData
     }
     
-    func updateFollowRequestOperationCellResult(operationState: CRUD_OperationStates, itemTag: Int, buttonOperationData: ButtonOperation) -> FollowRequestOperationCellResult {
+    func updateFollowRequestOperationCellResult(operationState: CRUD_OperationStates, buttonOperationData: ButtonOperation) -> FollowRequestOperationCellResult {
         
-        let followRequestOperationCellResult = FollowRequestOperationCellResult(state: operationState, tag: itemTag, requesterUserid: returnCellUserid()!, buttonOperation: buttonOperationData)
+        let followRequestOperationCellResult = FollowRequestOperationCellResult(state: operationState, requesterUserid: returnCellUserid()!, buttonOperation: buttonOperationData)
         
         return followRequestOperationCellResult
     }

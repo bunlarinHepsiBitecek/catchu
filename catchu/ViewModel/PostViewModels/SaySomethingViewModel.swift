@@ -16,6 +16,8 @@ class SaySomethingViewModel: CommonViewModel {
     func startPostProcess() {
         print("\(#function)")
         
+        guard Reachability.networkConnectionCheck() else {return}
+        
         postState.value = .posting
         
         // singleton post items are being converted to share data

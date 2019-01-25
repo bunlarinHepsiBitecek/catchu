@@ -298,9 +298,19 @@ class FacebookContactListManager {
             } else {
                 startGraphRequestForFacebookFriends(token: token.tokenString, completion: completion)
             }
-        } else {
-            initiateGetFacebookFriendListByLoggedIn(completion: completion)
         }
+        
+        /*else {
+            initiateGetFacebookFriendListByLoggedIn(completion: completion)
+        }*/
+        
+    }
+    
+    func initiateFacebookContactListProcessByConnectionRequest(completion : @escaping (_ finish : Bool) -> Void) {
+        
+        print("initiateFacebookContactListProcess starts")
+        
+        initiateGetFacebookFriendListByLoggedIn(completion: completion)
         
     }
     

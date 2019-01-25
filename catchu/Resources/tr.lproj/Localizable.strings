@@ -76,6 +76,10 @@
 "confirm" = "Onayla";
 "reject" = "Reddet";
 "Refreshing" = "Güncelleniyor...";
+"followInfo" = "Takip Bilgisi";
+"Remove" = "Kaldır";
+"removeFollower" = "Takipçiyi Sil?";
+"removeFollowerInfo" = "Kimse onu listenden çıkardığını bilmeyecek 😇.";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";

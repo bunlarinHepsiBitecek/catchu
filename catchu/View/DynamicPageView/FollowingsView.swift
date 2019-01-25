@@ -10,7 +10,7 @@ import UIKit
 
 class FollowingsView: UIView {
     
-    var followingsViewModel = FollowingsViewModel()
+    var followingsViewModel: FollowingsViewModel!
     
     lazy var searchBarHeaderView: SearchBarHeaderView = {
         let temp = SearchBarHeaderView()
@@ -29,7 +29,6 @@ class FollowingsView: UIView {
         // delegations
         temp.delegate = self
         temp.dataSource = self
-        temp.prefetchDataSource = self
         
         temp.separatorStyle = UITableViewCellSeparatorStyle.none
         temp.rowHeight = UITableViewAutomaticDimension
@@ -37,13 +36,21 @@ class FollowingsView: UIView {
         
         temp.register(FollowingsTableViewCell.self, forCellReuseIdentifier: FollowingsTableViewCell.identifier)
         
+        // refresh control
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        refreshControl.addTarget(self, action: #selector(FollowingsView.triggerRefreshProcess(_:)), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: LocalizedConstants.TitleValues.LabelTitle.refreshing)
+        
+        temp.refreshControl = refreshControl
+        
         return temp
         
     }()
     
-    init(frame: CGRect, active: Bool) {
+    init(frame: CGRect, user: User) {
         super.init(frame: frame)
-        self.active = active
+        followingsViewModel = FollowingsViewModel(user: user)
         initializeViewSettings()
     }
 
@@ -69,6 +76,7 @@ extension FollowingsView {
         addHeaderViewToTableView()
         startGettingUserFollowings()
         getSearchHeaderListener()
+        setTitleData()
         
     }
     
@@ -96,7 +104,7 @@ extension FollowingsView {
     }
     
     private func startGettingUserFollowings() {
-        followingsViewModel.getUserFollowingsPageByPage(selectedProfileUserid: User.shared.userid!)
+        followingsViewModel.state.value = .loading
     }
     
     private func addFollowingsViewModelListener() {
@@ -108,14 +116,35 @@ extension FollowingsView {
         followingsViewModel.searchTool.bind { (searchTool) in
             self.triggerSearchProcess(searchTool: searchTool)
         }
+        
+        followingsViewModel.refreshProcessState.bind { (operationState) in
+            self.handleRefreshControllState(state: operationState)
+        }
+    }
+    
+    private func handleRefreshControllState(state: CRUD_OperationStates) {
+        switch state {
+        case .processing:
+            self.followingsViewModel.refreshProcess()
+        case .done:
+            self.refreshControllerActivationManager(active: false)
+        }
     }
     
     private func dataFethingStateManager(state: TableViewState) {
         self.setLoadingAnimation(state)
         
         switch state {
+        case .loading:
+            print("loading")
+            self.followingsViewModel.getUserFollowingsPageByPage()
         case .populate:
+            print("populate")
             self.reloadFollowingsTableView()
+        case .paging:
+            print("paging")
+            followingsViewModel.fetchMoreProcess(selectedProfileUserid: User.shared.userid!)
+            
         default:
             return
         }
@@ -128,7 +157,7 @@ extension FollowingsView {
             loadingView.setInformation(state)
             
             switch state {
-            case .populate:
+            case .populate, .paging:
                 self.followingsTableView.tableFooterView = nil
             default:
                 self.followingsTableView.tableFooterView = loadingView
@@ -140,10 +169,12 @@ extension FollowingsView {
     private func reloadFollowingsTableView() {
         print("\(#function)")
         DispatchQueue.main.async {
-            //self.friendTableView.reloadData()
+            /*
             UIView.transition(with: self.followingsTableView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
                 self.followingsTableView.reloadData()
-            })
+            })*/
+            
+            self.followingsTableView.reloadData()
         }
     }
     
@@ -167,9 +198,37 @@ extension FollowingsView {
         followingsViewModel.searchFollowingsInTableViewData(inputText: searchTool.searchText)
     }
     
+    private func setTitleData() {
+        if let followingCount = followingsViewModel.user.userFollowingCount {
+            self.title = followingCount
+        }
+    }
+    
+    private func refreshControllerActivationManager(active: Bool) {
+        
+        DispatchQueue.main.async {
+            guard let refreshControl = self.followingsTableView.refreshControl else { return }
+            
+            if active {
+                refreshControl.beginRefreshing()
+            } else {
+                refreshControl.endRefreshing()
+            }
+        }
+        
+    }
+    
+    func listenTotalNumberOfFollowingsChanges(completion : @escaping(_ count: Int) -> Void) {
+        followingsViewModel.totalFollowingsCount.bind(completion)
+    }
+    
+    @objc func triggerRefreshProcess(_ sender: UIRefreshControl) {
+        followingsViewModel.refreshProcessState.value = .processing
+    }
+    
 }
 
-extension FollowingsView: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+extension FollowingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return followingsViewModel.returnFollowingArrayCount()
@@ -179,51 +238,39 @@ extension FollowingsView: UITableViewDelegate, UITableViewDataSource, UITableVie
         
         guard let cell = followingsTableView.dequeueReusableCell(withIdentifier: FollowingsTableViewCell.identifier, for: indexPath) as? FollowingsTableViewCell else { return UITableViewCell() }
         
-        if cellIsLoading(for: indexPath) {
-            cell.initiateCellDesign(item: .none)
-        } else {
-            cell.initiateCellDesign(item: followingsViewModel.returnFollowingArrayData(index: indexPath.row))
-            
-            if indexPath.row % 2 == 0 {
-                cell.followButton.setTitle("Follow", for: .normal)
-            } else {
-                cell.followButton.setTitle("Following", for: .normal)
-            }
-        }
+        cell.initiateCellDesign(item: followingsViewModel.returnFollowingArrayData(index: indexPath.row))
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains(where: cellIsLoading) {
-            followingsViewModel.getUserFollowingsPageByPage(selectedProfileUserid: User.shared.userid!)
+}
+
+// MARK: - UIScrollViewDelegate
+extension FollowingsView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let offsetY = scrollView.contentOffset.y
+        let contentHeigth = scrollView.contentSize.height
+        
+        if offsetY > (contentHeigth - scrollView.frame.height) {
+            followingsViewModel.state.value = .paging
         }
         
     }
-    
 }
 
 // MARK: - MenuSlideItems
 extension FollowingsView: PageItems {
-    var active: Bool {
+    var title: String? {
         get {
-            return false
+            return followingsViewModel.user.userFollowingCount!
         }
         set {
             _ = newValue
         }
     }
     
-    var title: String {
-        get {
-            return "500"
-        }
-        set {
-            _ = newValue
-        }
-    }
-    
-    var subTitle: String {
+    var subTitle: String? {
         get {
             return LocalizedConstants.TitleValues.LabelTitle.following
         }

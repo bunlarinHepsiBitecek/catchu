@@ -91,7 +91,7 @@ extension FacebookContactList {
     
     func addRequestView() {
         
-        requestView = FacebookContactRequestView(frame: .zero, delegate: self)
+        requestView = FacebookContactRequestView(frame: .zero)
         requestView?.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(requestView!)
@@ -112,11 +112,15 @@ extension FacebookContactList {
     }
     
     func activateFacebookRequestView(active : Bool) {
-        if active {
-            requestView.alpha = 1
-        } else {
-            requestView.alpha = 0
+        
+        DispatchQueue.main.async {
+            if active {
+                self.requestView.alpha = 1
+            } else {
+                self.requestView.alpha = 0
+            }
         }
+        
     }
     
     
@@ -208,9 +212,11 @@ extension FacebookContactList : SlideMenuProtocols {
     
     func dataLoadTrigger() {
         
-        UIView.transition(with: self.tableViewFacebookContactList, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
-            self.tableViewFacebookContactList.reloadData()
-        })
+        DispatchQueue.main.async {
+            UIView.transition(with: self.tableViewFacebookContactList, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+                self.tableViewFacebookContactList.reloadData()
+            })
+        }
         
     }
 }
@@ -219,4 +225,13 @@ extension FacebookContactList : SlideMenuProtocols {
 extension FacebookContactList : ViewModelItem {
     
 }
+
+/*
+friend_id : Optional(115956679414837)
+friend_id : Optional(110308636646672)
+friend_id : Optional(107261273621343)
+friend_id : Optional(103744900641426)
+friend_id : Optional(103625797322004)
+friend_id : Optional(102306370787300)
+friend_id : Optional(101367054217013)*/
 

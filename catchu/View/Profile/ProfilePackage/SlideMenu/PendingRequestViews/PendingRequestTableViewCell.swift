@@ -264,6 +264,10 @@ extension PendingRequestTableViewCell {
     
     private func triggerFollowRequestOperations(operationData: FollowRequestOperationData) {
         
+        DispatchQueue.main.async {
+            self.pendingRequestTableCellViewModel.followOperationStateForController.value = self.pendingRequestTableCellViewModel.updateFollowRequestOperationCellResult(operationState: operationData.operationState, buttonOperationData: operationData.buttonOperation)
+        }
+        
         switch operationData.operationState {
         case .processing:
             
@@ -282,11 +286,6 @@ extension PendingRequestTableViewCell {
             
         case .done:
             self.cellButtonsVisibiltyManager(buttonOperation: operationData.buttonOperation, active: false)
-            
-            // UIView.tag must be used in main thread
-            DispatchQueue.main.async {
-                self.pendingRequestTableCellViewModel.followOperationStateForController.value = self.pendingRequestTableCellViewModel.updateFollowRequestOperationCellResult(operationState: operationData.operationState, itemTag: self.confirmButton.tag, buttonOperationData: operationData.buttonOperation)
-            }
             
         }
         

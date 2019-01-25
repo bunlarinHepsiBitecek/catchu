@@ -41,10 +41,10 @@ class RelationCollectionLoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        print("\(self) deinits")
-        activityIndicator.stopAnimating()
-    }
+//    deinit {
+//        print("\(self) deinits")
+//        activityIndicator.stopAnimating()
+//    }
     
 }
 

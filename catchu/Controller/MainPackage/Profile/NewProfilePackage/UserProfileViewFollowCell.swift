@@ -84,6 +84,15 @@ class UserProfileViewFollowCell: BaseTableCell, ConfigurableCell {
         }
     }
     
+    func fillFollowerButtons(followerCount: Int) {
+        let formattedFollowerCount = Formatter.roundedWithAbbreviations(followerCount)
+        let followersString = Formatter.followAttributeString(title: formattedFollowerCount, subtitle: LocalizedConstants.Profile.Followers)
+        
+        DispatchQueue.main.async {
+            self.followersButton.setAttributedTitle(followersString, for: .normal)
+        }
+    }
+    
     private func createSeparatorView(color : UIColor) -> UIView {
         let separator = UIView()
         let widthConstraint = separator.widthAnchor.constraint(equalToConstant: 1)
@@ -95,12 +104,34 @@ class UserProfileViewFollowCell: BaseTableCell, ConfigurableCell {
     
     @objc func followersList() {
         print("\(#function) run")
-        
+        self.triggerMutualFollowViewController(pageType: .followers)
     }
     
     @objc func followingList() {
         print("\(#function) run")
-        
+        self.triggerMutualFollowViewController(pageType: .followings)
     }
     
+}
+
+// MARK: - followers, following list flow
+extension UserProfileViewFollowCell {
+    
+    private func triggerMutualFollowViewController(pageType: FollowPageIndex) {
+        let mutualFollowViewController = MutualFollowViewController()
+        mutualFollowViewController.user = self.viewModelItem.user
+        mutualFollowViewController.activePageType = pageType
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            if let navigationController = currentViewController.navigationController {
+                navigationController.pushViewController(mutualFollowViewController, animated: true)
+            } else {
+                currentViewController.present(mutualFollowViewController, animated: true, completion: nil)
+            }
+        }
+        
+        mutualFollowViewController.listenUpdatedFollowersCount { (count) in
+            self.fillFollowerButtons(followerCount: count)
+        }
+    }
 }

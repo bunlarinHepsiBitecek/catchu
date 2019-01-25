@@ -14,7 +14,7 @@ class AlertControllerManager {
     
     weak var delegate : ActionSheetProtocols!
     
-    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?, title: String?, image: UIImage? = nil) {
+    func startActionSheetManager(type : ActionControllerType, operationType: ActionControllerOperationType?, delegate : ActionSheetProtocols?, title: String?, user: User? = nil) {
         
         self.delegate = delegate
         
@@ -38,8 +38,8 @@ class AlertControllerManager {
                 startAddingNewParticipantProcess(title: title)
             }
         case .removeFollower:
-            startRemovingProcess()
-            if let image = image {
+            if let user = user {
+                startRemovingProcess(user: user)
             }
         }
     }
@@ -211,29 +211,38 @@ class AlertControllerManager {
         
     }
     
-    private func startRemovingProcess() {
+    
+    /// Description: remove from followers
+    ///
+    /// - Parameter user: follower
+    /// - Author: Erkut Bas
+    private func startRemovingProcess(user: User) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let alertController = UIAlertController(title: "KOKO", message: nil, preferredStyle: .actionSheet)
+        let removeAlertView = RemoveAlertView(frame: .zero, user: user)
         
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Height.height_50))
-        imageView.image = UIImage(named: "8771.jpg")
-        
-        alertController.view.addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        alertController.view.addSubview(removeAlertView)
+        removeAlertView.translatesAutoresizingMaskIntoConstraints = false
         
         let safe = alertController.view.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
             
-            imageView.topAnchor.constraint(equalTo: safe.topAnchor),
-            //imageView.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 200),
-            imageView.widthAnchor.constraint(equalToConstant: 200)
+            removeAlertView.topAnchor.constraint(equalTo: safe.topAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_10),
+            removeAlertView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            removeAlertView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - Constants.StaticViewSize.ConstraintValues.constraint_40),
+            removeAlertView.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_100),
             
             ])
         
+        print("alertController.view :\(alertController.view.frame)")
         
-        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.add, style: .default, handler: { (action) in
+        alertController.view.translatesAutoresizingMaskIntoConstraints = false
+        alertController.view.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_260).isActive = true
+        
+        removeAlertView.backgroundColor = UIColor.clear
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.remove, style: .destructive, handler: { (action) in
             // to do
             self.delegate.returnOperations(selectedProcessType: .removeFollower)
         }))
@@ -241,9 +250,7 @@ class AlertControllerManager {
         alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
             // to do
         }))
-        
-        alertController.view.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        
+
         self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
         
     }

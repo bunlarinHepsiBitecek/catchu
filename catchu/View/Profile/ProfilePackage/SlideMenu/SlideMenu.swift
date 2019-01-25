@@ -132,16 +132,9 @@ extension SlideMenu {
         
         self.mainView.bringSubview(toFront: topView)
         
-        //self.bodyView.addSubview(menuTableView)
-        
-        let safe = self.safeAreaLayoutGuide
         let safeMain = self.mainView.safeAreaLayoutGuide
         let safeTopMain = self.topView.safeAreaLayoutGuide
-        let safeBodyView = self.bodyView.safeAreaLayoutGuide
         let safeProfilePictureContainerView = self.profilePictureContainerView.safeAreaLayoutGuide
-        
-        print("superview : \(self.superview)")
-        print("superview : \(self.superview)")
         
         NSLayoutConstraint.activate([
             
@@ -163,13 +156,6 @@ extension SlideMenu {
             bodyView.topAnchor.constraint(equalTo: safeTopMain.bottomAnchor),
             //bodyView.bottomAnchor.constraint(equalTo: safeMain.bottomAnchor),
             bodyView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height),
-            
-            /*
-            menuTableView.leadingAnchor.constraint(equalTo: safeBodyView.leadingAnchor),
-            menuTableView.trailingAnchor.constraint(equalTo: safeBodyView.trailingAnchor),
-            menuTableView.topAnchor.constraint(equalTo: safeBodyView.topAnchor),
-            //menuTableView.bottomAnchor.constraint(equalTo: safeBodyView.bottomAnchor),
-            menuTableView.heightAnchor.constraint(equalToConstant: self.frame.height - topView.frame.height)*/
             
             ])
         

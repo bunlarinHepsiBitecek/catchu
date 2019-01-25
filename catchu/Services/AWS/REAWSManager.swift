@@ -807,6 +807,13 @@ extension REAWSManager {
             post.allowList = User.shared.getREUSerList(inputUserList: allowList)
         }
         
+        if let isCommentAllowed = share.isCommentAllowed {
+            post.isCommentAllowed = NSNumber(booleanLiteral: isCommentAllowed)
+        }
+        if let isShowOnMap = share.isShowOnMap {
+            post.isShowOnMap = NSNumber(booleanLiteral: isShowOnMap)
+        }
+        
         guard let postRequest = REPostRequest() else { return }
         postRequest.post = post
         

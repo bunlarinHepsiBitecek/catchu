@@ -20,10 +20,22 @@ class FollowingsTableViewCell: CommonFollowTableViewCell, CommonDesignableCell {
 
     override func confirmButtonTapped(_ sender: UIButton) {
         print("\(#function)")
+        followingsTableCellViewModel.followButtonProcess()
+        followButtonStatusUpdate()
     }
     
     override func configureCellSettings() {
         self.selectionStyle = .none
+    }
+    
+    override func followButtonStatusUpdate() {
+        print("\(#function)")
+        guard let user = followingsTableCellViewModel.returnUser() else { return }
+        if let followStatus = user.followStatus {
+            print("POPOPOPO")
+            print("user followStatus : \(followStatus)")
+            Formatter.configure(followStatus, followButton)
+        }
     }
 }
 
@@ -58,7 +70,7 @@ extension FollowingsTableViewCell {
         stackViewForProcessButtons.arrangedSubviews[1].isHidden = true
         stackViewForProcessButtons.arrangedSubviews[1].alpha = 0
     }
-    
+
     func initiateCellDesign(item: CommonViewModelItem?) {
         
         if let userViewModel = item as? CommonUserViewModel {
@@ -88,6 +100,9 @@ extension FollowingsTableViewCell {
             if let url = user.profilePictureUrl {
                 self.userImageView.setImagesFromCacheOrFirebaseForFriend(url)
             }
+            
+            self.followButtonStatusUpdate()
+            
         } else {
             self.userImageView.alpha = 0
             self.username.alpha = 0

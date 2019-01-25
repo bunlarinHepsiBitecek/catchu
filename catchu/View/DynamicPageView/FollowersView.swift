@@ -10,7 +10,7 @@ import UIKit
 
 class FollowersView: UIView {
     
-    var followersViewModel = FollowersViewModel()
+    var followersViewModel: FollowersViewModel!
     
     lazy var searchBarHeaderView: SearchBarHeaderView = {
         let temp = SearchBarHeaderView()
@@ -29,7 +29,7 @@ class FollowersView: UIView {
         // delegations
         temp.delegate = self
         temp.dataSource = self
-        temp.prefetchDataSource = self
+//        temp.prefetchDataSource = self
         
         temp.separatorStyle = UITableViewCellSeparatorStyle.none
         temp.rowHeight = UITableViewAutomaticDimension
@@ -37,13 +37,21 @@ class FollowersView: UIView {
         
         temp.register(FollowersTableViewCell.self, forCellReuseIdentifier: FollowersTableViewCell.identifier)
         
+        // refresh control
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        refreshControl.addTarget(self, action: #selector(FollowersView.triggerRefreshProcess(_:)), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: LocalizedConstants.TitleValues.LabelTitle.refreshing)
+        
+        temp.refreshControl = refreshControl
+        
         return temp
         
     }()
 
-    init(frame: CGRect, active: Bool) {
+    init(frame: CGRect, user: User) {
         super.init(frame: frame)
-        self.active = active
+        followersViewModel = FollowersViewModel(user: user)
         initializeViewSettings()
     }
     
@@ -61,8 +69,8 @@ class FollowersView: UIView {
     
     deinit {
         followersViewModel.state.unbind()
-        followersViewModel.totalFollowersCount.unbind()
         followersViewModel.searchTool.unbind()
+        followersViewModel.refreshProcessState.unbind()
     }
     
 }
@@ -77,6 +85,7 @@ extension FollowersView {
         addHeaderViewToTableView()
         startGettingUserFriends()
         getSearchHeaderListener()
+        setTitleData()
         
     }
     
@@ -105,7 +114,8 @@ extension FollowersView {
     }
     
     private func startGettingUserFriends() {
-        followersViewModel.getUserFollowersPageByPage(selectedProfileUserid: User.shared.userid!)
+        followersViewModel.state.value = .loading
+        
     }
     
     private func addFriendViewModelListener() {
@@ -117,14 +127,34 @@ extension FollowersView {
         followersViewModel.searchTool.bind { (searchTool) in
             self.triggerSearchProcess(searchTool: searchTool)
         }
+        
+        followersViewModel.refreshProcessState.bind { (operationState) in
+            self.handleRefreshControllState(state: operationState)
+        }
+    }
+    
+    private func handleRefreshControllState(state: CRUD_OperationStates) {
+        switch state {
+        case .processing:
+            self.followersViewModel.refreshProcess()
+        case .done:
+            self.refreshControllerActivationManager(active: false)
+        }
     }
     
     private func dataFethingStateManager(state: TableViewState) {
         self.setLoadingAnimation(state)
         
         switch state {
+        case .loading:
+            print("loading")
+            self.followersViewModel.getUserFollowersPageByPage2()
         case .populate:
+            print("populate")
             self.reloadFollowersTableView()
+        case .paging:
+            print("paging")
+            followersViewModel.fetchMoreProcess()
         default:
             return
         }
@@ -137,7 +167,7 @@ extension FollowersView {
             loadingView.setInformation(state)
             
             switch state {
-            case .populate:
+            case .populate, .paging:
                 self.followersTableView.tableFooterView = nil
             default:
                 self.followersTableView.tableFooterView = loadingView
@@ -149,10 +179,14 @@ extension FollowersView {
     private func reloadFollowersTableView() {
         print("\(#function)")
         DispatchQueue.main.async {
-            //self.friendTableView.reloadData()
+
+            /*
             UIView.transition(with: self.followersTableView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
                 self.followersTableView.reloadData()
-            })
+            })*/
+            
+            self.followersTableView.reloadData()
+            
         }
     }
     
@@ -161,6 +195,9 @@ extension FollowersView {
     /// - Parameter indexPath: indexPath
     /// - Returns: boolean
     private func cellIsLoading(for indexPath: IndexPath) -> Bool {
+        print("indexPath.row >= followersViewModel.currentFollowersArrayCount : \(indexPath.row >= followersViewModel.currentFollowersArrayCount)")
+        print("indexPath.row : \(indexPath.row)")
+        print("followersViewModel.currentFollowersArrayCount : \(followersViewModel.currentFollowersArrayCount)")
         return indexPath.row >= followersViewModel.currentFollowersArrayCount
         
     }
@@ -176,24 +213,82 @@ extension FollowersView {
         followersViewModel.searchFollowersInTableViewData(inputText: searchTool.searchText)
     }
     
-    private func listenButtonProcessInCell(buttonProcessData: FollowerCellButtonProcessData) {
+    private func listenButtonProcessInCell(buttonProcessData: FollowRequestOperationData) {
         
         if buttonProcessData.buttonOperation == .more {
-            switch buttonProcessData.state {
+            switch buttonProcessData.operationState {
             case .done:
-                // remove cell from followers list
-                print("takasi more a bastı")
-                return
-            default:
-                return
+                DispatchQueue.main.async {
+                    self.followersViewModel.removeFollowerFromFollowersArray(userid: buttonProcessData.requesterUserid)
+                    
+                    if let indexPath = self.findItemIndexPathInVisibleCell(followerUserid: buttonProcessData.requesterUserid) {
+                        
+                        self.followersTableView.beginUpdates()
+                        
+                        if buttonProcessData.buttonOperation == .more {
+                            self.followersTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.right)
+                        }
+                        
+                        self.manageTableViewScrollProperty(active: true)
+                        self.followersTableView.endUpdates()
+                    }
+                    
+                }
+            case .processing:
+                self.manageTableViewScrollProperty(active: false)
             }
         }
+    }
+    
+    private func findItemIndexPathInVisibleCell(followerUserid: String) -> IndexPath? {
+        if let visibleIndexPath = followersTableView.indexPathsForVisibleRows {
+            for item in visibleIndexPath {
+                if let cell = followersTableView.cellForRow(at: item) as? FollowersTableViewCell {
+                    if followerUserid == cell.returnCellUserid() {
+                        return item
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func manageTableViewScrollProperty(active: Bool) {
+        followersTableView.isScrollEnabled = active
+    }
+    
+    private func setTitleData() {
+        if let followerCount = followersViewModel.user.userFollowerCount {
+            self.title = followerCount
+        }
+    }
+    
+    private func refreshControllerActivationManager(active: Bool) {
+        
+        DispatchQueue.main.async {
+            guard let refreshControl = self.followersTableView.refreshControl else { return }
+            
+            if active {
+                refreshControl.beginRefreshing()
+            } else {
+                refreshControl.endRefreshing()
+            }
+        }
+        
+    }
+    
+    func listenTotalNumberOfFollowersChanges(completion : @escaping(_ count: Int) -> Void) {
+        followersViewModel.totalNumberOfFollowers.bind(completion)
+    }
+    
+    @objc func triggerRefreshProcess(_ sender: UIRefreshControl) {
+        followersViewModel.refreshProcessState.value = .processing
     }
     
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching
-extension FollowersView: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+extension FollowersView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return followersViewModel.returnFollowerArrayCount()
@@ -203,11 +298,7 @@ extension FollowersView: UITableViewDelegate, UITableViewDataSource, UITableView
         
         guard let cell = followersTableView.dequeueReusableCell(withIdentifier: FollowersTableViewCell.identifier, for: indexPath) as? FollowersTableViewCell else { return UITableViewCell() }
         
-        if cellIsLoading(for: indexPath) {
-            cell.initiateCellDesign(item: .none)
-        } else {
-            cell.initiateCellDesign(item: followersViewModel.returnFollowerArrayData(index: indexPath.row))
-        }
+        cell.initiateCellDesign(item: followersViewModel.returnFollowerArrayData(index: indexPath.row))
         
         cell.listenButtonOperations { (buttonProcessData) in
             self.listenButtonProcessInCell(buttonProcessData: buttonProcessData)
@@ -216,36 +307,34 @@ extension FollowersView: UITableViewDelegate, UITableViewDataSource, UITableView
         return cell
     }
     
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains(where: cellIsLoading) {
-            followersViewModel.getUserFollowersPageByPage(selectedProfileUserid: User.shared.userid!)
+}
+
+// MARK: - UIScrollViewDelegate
+extension FollowersView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let offsetY = scrollView.contentOffset.y
+        let contentHeigth = scrollView.contentSize.height
+        
+        if offsetY > (contentHeigth - scrollView.frame.height) {
+            followersViewModel.state.value = .paging
         }
         
     }
-    
 }
 
 // MARK: - MenuSlideItems
 extension FollowersView: PageItems {
-    var active: Bool {
+    var title: String? {
         get {
-            return false
+            return followersViewModel.user.userFollowerCount!
         }
         set {
             _ = newValue
         }
     }
     
-    var title: String {
-        get {
-            return "300"
-        }
-        set {
-            _ = newValue
-        }
-    }
-    
-    var subTitle: String {
+    var subTitle: String? {
         get {
             return LocalizedConstants.TitleValues.LabelTitle.followers
         }
@@ -253,4 +342,5 @@ extension FollowersView: PageItems {
             _ = newValue
         }
     }
+    
 }

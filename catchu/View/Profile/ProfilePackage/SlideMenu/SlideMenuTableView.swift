@@ -118,20 +118,6 @@ extension SlideMenuTableView {
     
     private func gotoExplorePeopleViewController() {
         
-        print("gotoExplorePeopleViewController starts")
-        
-        let mutualFollowViewController = MutualFollowViewController()
-        mutualFollowViewController.activePageType = .followers
-        
-        if let currentViewController = LoaderController.currentViewController() {
-            if let navigationController = currentViewController.navigationController {
-                navigationController.pushViewController(mutualFollowViewController, animated: true)
-            } else {
-                currentViewController.present(mutualFollowViewController, animated: true, completion: nil)
-            }
-        }
-        
-        /*
         if let destination = UIStoryboard(name: Constants.Storyboard.Name.Profile, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.ExplorePeopleViewController) as? ExplorePeopleViewController {
             
             if let currentViewController = LoaderController.currentViewController() {
@@ -142,8 +128,20 @@ extension SlideMenuTableView {
                 }
             }
             
-        }*/
+        }
         
+    }
+    
+    private func gotoExploreViewContoller() {
+        let exploreViewController = ExploreViewController()
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            if let navigationController = currentViewController.navigationController {
+                navigationController.pushViewController(exploreViewController, animated: true)
+            } else {
+                currentViewController.present(exploreViewController, animated: true, completion: nil)
+            }
+        }
     }
     
     private func gotoPendingRequestViewController() {
@@ -184,7 +182,8 @@ extension SlideMenuTableView {
         
         switch slideMenuType {
         case .explore:
-            gotoExplorePeopleViewController()
+            //gotoExplorePeopleViewController()
+            gotoExploreViewContoller()
         case .viewPendingFriendRequests:
             gotoPendingRequestViewController()
         case .manageGroupOperations:

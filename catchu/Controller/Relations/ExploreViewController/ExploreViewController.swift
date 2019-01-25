@@ -1,27 +1,23 @@
 //
-//  MutualFollowViewController.swift
+//  ExploreViewController.swift
 //  catchu
 //
-//  Created by Erkut Baş on 1/12/19.
+//  Created by Erkut Baş on 1/22/19.
 //  Copyright © 2019 Remzi YILDIRIM. All rights reserved.
 //
 
 import UIKit
 
-class MutualFollowViewController: UIViewController {
-  
-    private var mutualFollowViewModel = MutualFollowViewModel()
-    
-    private var followersView: FollowersView!
-    private var followingsView: FollowingsView!
-    
-    var user: User?
-    
-    var activePageType: FollowPageIndex?
+class ExploreViewController: UIViewController {
 
+    private var exploreFacebookContactView: ExploreFacebookContactsView!
+    private var exploreContactView: ExplorePhoneContactView!
+    
+    var exploreType: ExploreType?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         do {
             try prepareControllerSettings()
         } catch let error as ClientPresentErrors {
@@ -44,19 +40,17 @@ class MutualFollowViewController: UIViewController {
         super.viewWillDisappear(animated)
         
     }
-
+    
 }
 
 // MARK: - major functions
-extension MutualFollowViewController {
+extension ExploreViewController {
     
     private func prepareControllerSettings() throws {
         
-        guard let user = user else { throw ClientPresentErrors.missingUserid }
-        followersView = FollowersView(frame: .zero, user: user)
-        followingsView = FollowingsView(frame: .zero, user: user)
-        
-        listenTotalNumberOfFollowersChanges()
+//        guard let user = user else { throw ClientPresentErrors.missingUserid }
+        exploreContactView = ExplorePhoneContactView()
+        exploreFacebookContactView = ExploreFacebookContactsView()
         
         addViews()
     }
@@ -74,16 +68,16 @@ extension MutualFollowViewController {
         
         var activePage = 0
         
-        if let activePageType = activePageType {
-            switch activePageType{
-            case .followers:
+        if let exploreType = exploreType {
+            switch exploreType{
+            case .facebook:
                 activePage = 0
-            case .followings:
+            case .contact:
                 activePage = 1
             }
         }
         
-        let viewArray : [UIView] = [followersView, followingsView]
+        let viewArray : [UIView] = [exploreFacebookContactView, exploreContactView]
         
         let dynamicPageView = DynamicPageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), viewArray: viewArray, activePage: activePage)
         
@@ -102,16 +96,6 @@ extension MutualFollowViewController {
             
             ])
         
-    }
-    
-    private func listenTotalNumberOfFollowersChanges() {
-        followersView.listenTotalNumberOfFollowersChanges { (count) in
-            self.mutualFollowViewModel.updatedFollowerCount.value = count
-        }
-    }
-    
-    func listenUpdatedFollowersCount(completion: @escaping(_ count: Int) -> Void) {
-        mutualFollowViewModel.updatedFollowerCount.bind(completion)
     }
     
 }

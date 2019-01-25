@@ -11,26 +11,18 @@ import UIKit
 extension UIImageView {
     
     func setImagesFromCacheOrFirebaseForFriend(_ urlString: String) {
-        print("setImagesFromCacheOrFirebaseForFriend starts")
-        
         self.image = nil
         
         if let tempImage = SectionBasedFriend.shared.cachedFriendProfileImages.object(forKey: urlString as NSString) {
             
             image = tempImage
             
-            print("CACHE YES")
-            
         } else {
-            
-            print("CACHE NO")
             
             if !urlString.isEmpty {
                 
 //                let url = URL(string: urlString)
                 if let url = URL(string: urlString) {
-                    
-                    print("url : \(url)")
                     
                     let request = URLRequest(url: url)
                     
@@ -67,20 +59,11 @@ extension UIImageView {
     }
     
     func setImagesFromCacheOrFirebaseForGroup(_ urlString: String) {
-        print("setImagesFromCacheOrFirebaseForFriend starts")
-        
         self.image = nil
         
         if let tempImage = SectionBasedGroup.shared.cachedGroupImages.object(forKey: urlString as NSString) {
-            
             image = tempImage
-            
-            print("CACHE YES")
-            
         } else {
-            
-            print("CACHE NO")
-            
             if !urlString.isEmpty {
                 
                 if let url = URL(string: urlString) {

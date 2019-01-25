@@ -28,9 +28,9 @@ class ExplorePeopleViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let img = UIImage()
-        self.navigationController?.navigationBar.shadowImage = img
-        self.navigationController?.navigationBar.setBackgroundImage(img, for: UIBarMetrics.default)
+//        let img = UIImage()
+//        self.navigationController?.navigationBar.shadowImage = img
+//        self.navigationController?.navigationBar.setBackgroundImage(img, for: UIBarMetrics.default)
         
     }
 }

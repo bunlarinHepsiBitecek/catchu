@@ -142,7 +142,8 @@ struct 	LocalizedConstants {
             static let posting = NSLocalizedString("posting", comment: "")
             static let selectedParticipantCount = NSLocalizedString("selectedParticipantCount", comment: "")
             static let refreshing = NSLocalizedString("Refreshing", comment: "")
-            
+            static let followInfo = NSLocalizedString("followInfo", comment: "")
+
         }
         
         struct ViewControllerTitles {
@@ -355,6 +356,9 @@ struct 	LocalizedConstants {
         static let gotoInfo = NSLocalizedString("gotoInfo", comment: "")
         static let makeGroupAdmin = NSLocalizedString("makeGroupAdmin", comment: "")
         static let add = NSLocalizedString("Add", comment: "")
+        static let remove = NSLocalizedString("Remove", comment: "")
+        static let removeFollower = NSLocalizedString("removeFollower", comment: "")
+        static let removeFollowerInfo = NSLocalizedString("removeFollowerInfo", comment: "")
     }
     
     struct TableViewRowActionTitles {

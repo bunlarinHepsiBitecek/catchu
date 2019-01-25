@@ -42,6 +42,8 @@ class Share {
     var videos: [ShareMedia]?
     var message: String?
     var privacyType: PrivacyType?
+    var isCommentAllowed: Bool?
+    var isShowOnMap: Bool?
     var allowList: [User]?
     var groupid: String?
     // MARK:

@@ -10,16 +10,17 @@ import Foundation
 
 class FollowingsViewModel: CommonViewModel {
     
+    var user: User!
     var followingsArray = [CommonViewModelItem]()
     var state = CommonDynamic(TableViewState.suggest)
     var totalFollowingsCount = CommonDynamic(Int())
     var searchedFollowingArray = [CommonViewModelItem]()
+    var refreshProcessState = CommonDynamic(CRUD_OperationStates.done)
+    var flagForFetchMore : Bool = false
     
     var searchTool = CommonDynamic(SearchTools(searchText: Constants.CharacterConstants.EMPTY, searchIsProgress: false))
     
     var currentPage = 1
-    var totalNumberOfFollowings = 0
-    var totalNumberOfFollowingsGet : Bool = false
     var perPage = 40
     
     // servera kaç defa gidildiğini test etmek için yazıldı
@@ -28,29 +29,25 @@ class FollowingsViewModel: CommonViewModel {
     // to control fetch process
     private var isFetchInProgress = false
     
+    init(user: User) {
+        self.user = user
+    }
+    
     var currentFollowingsArrayCount : Int {
         return followingsArray.count
     }
     
-    func getUserFollowingsPageByPage(selectedProfileUserid: String) {
+    func getUserFollowingsPageByPage() {
         print("\(#function) starts")
         print("currentPage : \(currentPage)")
-        print("isFetchInProgress : \(isFetchInProgress)")
         // let's tell view, data is loading
-        state.value = .loading
         
         guard let userid = User.shared.userid else { return }
-        
-        guard !isFetchInProgress else {
-            return
-        }
-        
-        self.isFetchInProgress = true
-        print("isFetchInProgress : \(isFetchInProgress)")
+        guard let requestedUserid = self.user.userid else { return }
         
         do {
             
-            try APIGatewayManager.shared.getUserFollowInfo(userid: userid, requesterUserid: selectedProfileUserid, page: currentPage, perPage: perPage, requestType: .followings, completion: { (result) in
+            try APIGatewayManager.shared.getUserFollowInfo(requesterUserid: userid, requestedUserid: requestedUserid, page: currentPage, perPage: perPage, requestType: .followings, completion: { (result) in
                 self.handleAwsTaskResponse(networkResult: result)
             })
             
@@ -60,23 +57,8 @@ class FollowingsViewModel: CommonViewModel {
             }
         }
         catch  {
-            print("")
+            print("\(Constants.CRASH_WARNING)")
         }
-        
-    }
-    
-    private func createFollowingArrayData(reUserList : [REUser])  {
-        print("\(#function) starts")
-        
-        // remove all items in FollowingArray
-        //FollowingsArray.removeAll()
-        
-        for item in reUserList {
-            let newUser = User(user: item)
-            followingsArray.append(CommonUserViewModel(user: newUser))
-        }
-        
-        state.value = followingsArray.count == 0 ? .empty : .populate
         
     }
     
@@ -94,27 +76,14 @@ class FollowingsViewModel: CommonViewModel {
                 
                 if let businessError = data.error, let code = businessError.code, code != ApiLambdaError.success.rawValue {
                     print("Lambda error : \(String(describing: businessError.message))")
+                    return
                 }
                 
                 if let resultArray = data.items {
-                    currentPage += 1
-                    
-                    if let count = data.totalNumberOfPeople {
-                        
-                        if !self.totalNumberOfFollowingsGet {
-                            self.totalNumberOfFollowings = count.intValue
-                            print("self.totalNumberOfFollowings : \(self.totalNumberOfFollowings)")
-                            self.totalFollowingsCount.value = totalNumberOfFollowings
-                            self.totalNumberOfFollowingsGet = true
-                        }
-                        
+                    if resultArray.count > 0 {
+                        currentPage += 1
+                        self.createFollowingArrayData(reUserList: resultArray)
                     }
-                    
-                    self.createFollowingArrayData(reUserList: resultArray)
-                    // total user count is set to observe from top view
-                    //self.totalFollowingCount.value = resultArray.count
-                    print("self.totalFollowingCount.value : \(self.totalFollowingsCount.value)")
-                    self.isFetchInProgress = false
                 }
                 
             }
@@ -137,6 +106,25 @@ class FollowingsViewModel: CommonViewModel {
         
     }
     
+    private func createFollowingArrayData(reUserList : [REUser])  {
+        print("\(#function) starts")
+        
+        if refreshProcessState.value == .processing {
+            // remove all items in followingsArray
+            followingsArray.removeAll()
+        }
+        
+        for item in reUserList {
+            let newUser = User(user: item)
+            followingsArray.append(CommonUserViewModel(user: newUser))
+        }
+        
+        refreshProcessState.value = .done
+        state.value = followingsArray.count == 0 ? .empty : .populate
+        flagForFetchMore = false
+        
+    }
+    
     func returnFollowingArrayData(index: Int) -> CommonViewModelItem {
         
         if searchTool.value.searchIsProgress {
@@ -151,7 +139,7 @@ class FollowingsViewModel: CommonViewModel {
         if searchTool.value.searchIsProgress {
             return searchedFollowingArray.count
         } else {
-            return totalFollowingsCount.value
+            return followingsArray.count
         }
     }
     
@@ -185,6 +173,19 @@ class FollowingsViewModel: CommonViewModel {
         //searchTool.value.searchIsProgress = true
         state.value = .populate
         
+    }
+    
+    func fetchMoreProcess(selectedProfileUserid: String) {
+        if !flagForFetchMore {
+            print("more data is going to be fetched")
+            flagForFetchMore = true
+            getUserFollowingsPageByPage()
+        }
+    }
+    
+    func refreshProcess() {
+        currentPage = 1
+        getUserFollowingsPageByPage()
     }
     
 }

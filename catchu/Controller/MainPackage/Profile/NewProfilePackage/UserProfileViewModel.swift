@@ -62,6 +62,9 @@ class UserProfileViewModel: BaseViewModel, ViewModel {
     }
     
     private func setupRowData() {
+        
+        followRow.user = self.user
+        
         if let userFollower = user.userFollowerCount, let followerCount = Int(userFollower) {
             followRow.followerCount = followerCount
         }
@@ -153,6 +156,7 @@ class UserProfileViewModelItemFollow: UserProfileViewModelItem {
     var type: UserProfileViewModelItemType {
         return .follow
     }
+    var user: User!
     var followerCount: Int = 0
     var followingCount: Int = 0
 }
