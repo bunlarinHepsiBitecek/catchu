@@ -80,6 +80,7 @@
 		454815B8215EABB0009684E1 /* PasswordResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454815B7215EABB0009684E1 /* PasswordResetView.swift */; };
 		454815BA215EB71F009684E1 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454815B9215EB71F009684E1 /* ConfirmationView.swift */; };
 		454815BC215EB8C1009684E1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454815BB215EB8C1009684E1 /* RegisterView.swift */; };
+		4549C2EC21FA231500854403 /* UserPostsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4549C2EB21FA231500854403 /* UserPostsPageViewController.swift */; };
 		4564E41320B95574003B0D16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564E41220B95574003B0D16 /* AppDelegate.swift */; };
 		4564E41820B95574003B0D16 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4564E41620B95574003B0D16 /* Login.storyboard */; };
 		4564E41D20B95576003B0D16 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4564E41B20B95576003B0D16 /* LaunchScreen.storyboard */; };
@@ -534,6 +535,7 @@
 		454815B7215EABB0009684E1 /* PasswordResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetView.swift; sourceTree = "<group>"; };
 		454815B9215EB71F009684E1 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
 		454815BB215EB8C1009684E1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		4549C2EB21FA231500854403 /* UserPostsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsPageViewController.swift; sourceTree = "<group>"; };
 		4564E40F20B95574003B0D16 /* catchu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catchu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4564E41220B95574003B0D16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4564E41720B95574003B0D16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
@@ -1606,6 +1608,7 @@
 				45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */,
 				45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */,
 				45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */,
+				4549C2EB21FA231500854403 /* UserPostsPageViewController.swift */,
 			);
 			path = NewProfilePackage;
 			sourceTree = "<group>";
@@ -2787,6 +2790,7 @@
 				450C139221B8098900B3811C /* UserProfileViewCaughtCell.swift in Sources */,
 				A7087932212B79960012C7F6 /* EditProfile4TableViewCell.swift in Sources */,
 				45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */,
+				4549C2EC21FA231500854403 /* UserPostsPageViewController.swift in Sources */,
 				45EA663821D53DC500335E8D /* OtherUserProfileViewController.swift in Sources */,
 				A71F65AF2169181F002A7C5C /* FinalSelectedVideoCollectionViewCell.swift in Sources */,
 				A7E2F847211131CC00214066 /* UIButtonCustomDesign.swift in Sources */,

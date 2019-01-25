@@ -45,8 +45,6 @@ class FeedViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = LocalizedConstants.Feed.CatchU
-        
         guard checkLoginAuth() else { return }
         
         setupTableView()

@@ -66,6 +66,7 @@ class TabPageViewController: UIPageViewController {
         
         scrollToPage(selectedIndex)
         menuTabView.selectTabViewCollectionCell(selectedIndex)
+        
     }
     
     /// find scroll view in pageviewcontroller and set delegate

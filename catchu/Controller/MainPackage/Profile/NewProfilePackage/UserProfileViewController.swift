@@ -155,6 +155,7 @@ class UserProfileViewController: BaseTableViewController {
         DispatchQueue.main.async {
             self.profileHeaderView.configure(viewModel: self.viewModel)
             self.profileHeaderView.frame.size = self.profileHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+            print("profileHeaderViewConfig: \(self.profileHeaderView.frame.size)")
         }
     }
 }
@@ -179,6 +180,7 @@ extension UserProfileViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
             // Put your code which should be executed with a delay here
             self.viewModel.getUserInfo()
+            self.viewModel.getUserGroups()
             self.refreshControl!.endRefreshing()
         })
     }

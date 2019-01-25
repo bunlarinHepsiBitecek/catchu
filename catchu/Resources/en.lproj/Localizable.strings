@@ -173,6 +173,8 @@
 "TurnOnComments" = "Turn On Comments";
 "TurnOffComments" = "Turn Off Comments";
 "Delete" = "Delete";
+"Feed_Public" = "Public";
+"Feed_Catch" = "Catch";
 
 // Like
 "Likes" = "Likes";

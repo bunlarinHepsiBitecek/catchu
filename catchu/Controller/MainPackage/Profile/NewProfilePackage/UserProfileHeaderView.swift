@@ -10,7 +10,7 @@ class UserProfileHeaderView: BaseView {
     
     // MARK: - Variables
     private let padding = Constants.Profile.Padding
-    private let dimension: CGFloat = 80
+    private let dimension: CGFloat = 100
     private let textTintColor = UIColor.white
     
     // MARK: - View
@@ -59,6 +59,7 @@ class UserProfileHeaderView: BaseView {
         label.numberOfLines = 0
         label.text = User.shared.bio
         label.preferredMaxLayoutWidth = self.frame.width
+        label.sizeToFit()
         return label
     }()
     
@@ -77,13 +78,13 @@ class UserProfileHeaderView: BaseView {
     
     func setup() {
         let layoutMargin = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
+
         let nameBioStackView = UIStackView(arrangedSubviews: [nameLabel, bioLabel])
         nameBioStackView.axis = .vertical
         nameBioStackView.alignment = .fill
         nameBioStackView.distribution = .fill
         nameBioStackView.spacing = padding / 2
-        
+
         let profileStackView = UIStackView(arrangedSubviews: [profileImageView, nameBioStackView])
         profileStackView.translatesAutoresizingMaskIntoConstraints = false
         profileStackView.alignment = .top
@@ -91,7 +92,7 @@ class UserProfileHeaderView: BaseView {
         profileStackView.spacing = padding
         profileStackView.layoutMargins = layoutMargin
         profileStackView.isLayoutMarginsRelativeArrangement = true
-        
+
         addSubview(profileStackView)
         NSLayoutConstraint.activate([
             profileStackView.safeTopAnchor.constraint(equalTo: safeTopAnchor),

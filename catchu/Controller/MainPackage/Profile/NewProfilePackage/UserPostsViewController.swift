@@ -55,7 +55,6 @@ class UserPostsViewController: BaseTableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

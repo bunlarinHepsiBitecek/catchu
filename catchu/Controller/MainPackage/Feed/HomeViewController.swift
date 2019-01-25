@@ -14,7 +14,6 @@ class HomeViewController: BaseViewController {
     
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-//        searchBar.searchBarStyle = .default
         searchBar.sizeToFit()
         searchBar.delegate = self
         
@@ -36,15 +35,13 @@ class HomeViewController: BaseViewController {
         
         let feedViewModel = FeedViewModel()
         let feedVC1 = FeedViewController()
-        feedVC1.title = "Public"
         feedVC1.configure(viewModel: feedViewModel)
         let catchVC1 = CatchViewController()
         catchVC1.view.backgroundColor = .yellow
-        catchVC1.title = "Catch"
         
         var items: [(viewController: UIViewController, title: String, icon: UIImage?)] = []
-        items.append((viewController: feedVC1, title: "Public", icon: UIImage(named: "earth")))
-        items.append((viewController: catchVC1, title: "Catch", icon: UIImage(named: "Catchu.png")))
+        items.append((viewController: feedVC1, title: LocalizedConstants.Feed.Public, icon: UIImage(named: "earth")))
+        items.append((viewController: catchVC1, title: LocalizedConstants.Feed.Catch, icon: UIImage(named: "Catchu.png")))
         
         pageViewController.items = items
         
@@ -57,7 +54,6 @@ class HomeViewController: BaseViewController {
         self.view.addSubview(menuTabView)
         
         addChild(to: containerView, pageViewController)
-
         NSLayoutConstraint.activate([
             menuTabView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
             menuTabView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
@@ -69,20 +65,21 @@ class HomeViewController: BaseViewController {
             containerView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
             containerView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
             ])
-        
     }
     
     func setupSearchViewBar() {
-        self.navigationItem.titleView = searchBar
+//        self.navigationItem.titleView = searchBar
         
-        let rightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(buttonActionRight))
+        let leftButton = UIBarButtonItem(image: UIImage(named: "search-3"), style: .plain, target: self, action: .searchAction)
+        let rightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: .messageAction)
+        
+        self.navigationItem.leftBarButtonItem = leftButton
         self.navigationItem.rightBarButtonItem = rightButton
     }
     
-    let mapView = FeedMapView()
-    var isShowen = false
-    @objc func buttonActionRight() {
-        
+//    let mapView = FeedMapView()
+//    var isShowen = false
+    @objc func messages() {
 //        if isShowen {
 //            mapView.removeFromSuperview()
 //        } else {
@@ -122,6 +119,11 @@ class HomeViewController: BaseViewController {
         self.navigationController?.pushViewController(otherProfileVC, animated: true)
     }
     
+    @objc func presentSearchNavigation() {
+        let searchNavigationController = UINavigationController(rootViewController: SearchViewController())
+        self.present(searchNavigationController, animated: true, completion: nil)
+    }
+    
     func containerAddChildViewController(_ childViewController: UIViewController, containerView: UIView) {
         self.addChildViewController(childViewController)
         childViewController.view.frame = containerView.bounds
@@ -139,4 +141,10 @@ extension HomeViewController: UISearchBarDelegate {
         self.present(searchNavigationController, animated: true, completion: nil)
         return false
     }
+}
+
+
+fileprivate extension Selector {
+    static let searchAction = #selector(HomeViewController.presentSearchNavigation)
+    static let messageAction = #selector(HomeViewController.messages)
 }

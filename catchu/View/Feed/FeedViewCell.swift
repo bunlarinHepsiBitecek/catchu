@@ -10,6 +10,7 @@ import UIKit
 
 fileprivate extension Selector {
     static let likePostAction = #selector(FeedViewCell.likePost)
+    static let doubleClickLikePostAction = #selector(FeedViewCell.doubleClickLikePost)
     static let showLocationAction = #selector(FeedViewCell.showLocation(_:))
     static let viewCommentsAction = #selector(FeedViewCell.viewComments(_:))
     static let viewLikeUsersAction = #selector(FeedViewCell.viewLikeUsers(_:))
@@ -22,7 +23,6 @@ class FeedViewCell: BaseTableCell {
     var indexPath: IndexPath!
     var readMore: Dynamic<IndexPath>?
     
-//    private var shadowLayer: CAShapeLayer!
     private let padding = Constants.Feed.Padding
     private let dimension = Constants.Feed.ImageWidthHeight
     
@@ -43,6 +43,12 @@ class FeedViewCell: BaseTableCell {
     lazy var mediaView: MediaView = {
         let view = MediaView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: .doubleClickLikePostAction)
+        tapGesture.numberOfTapsRequired = 2
+        tapGesture.delegate = self
+        view.addGestureRecognizer(tapGesture)
+        
         return view
     }()
     
@@ -253,28 +259,6 @@ class FeedViewCell: BaseTableCell {
             containerStackView.safeBottomAnchor.constraint(equalTo: containerView.safeBottomAnchor),
             ])
     }
-    
-//    override func layoutIfNeeded() {
-//        super.layoutIfNeeded()
-//
-        /// Custom cell subview actual size zero in layoutSubviews(), so override layoutIfNeeded
-//        if shadowLayer == nil {
-//            let cornerRadius: CGFloat = 15.0
-//
-//            shadowLayer = CAShapeLayer()
-//
-//            shadowLayer.path = UIBezierPath(roundedRect: containerView.bounds, cornerRadius: cornerRadius).cgPath
-//            shadowLayer.fillColor = UIColor.white.cgColor
-//
-//            shadowLayer.shadowColor = UIColor.lightGray.cgColor
-//            shadowLayer.shadowPath = shadowLayer.path
-//            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-//            shadowLayer.shadowOpacity = 0.8
-//            shadowLayer.shadowRadius = 7
-//
-//            containerView.layer.insertSublayer(shadowLayer, at: 0)
-//        }
-//    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -514,7 +498,15 @@ class FeedViewCell: BaseTableCell {
         })
         
         currentController.present(actionSheetController, animated: true, completion: nil)
-        
+    }
+    
+    @objc func handleTap() {
+        print("handleTap double clicked")
+    }
+    
+    @objc func doubleClickLikePost() {
+        guard let viewModel = viewModel else { return }
+        viewModel.like()
     }
     
 }
