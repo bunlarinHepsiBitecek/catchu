@@ -145,18 +145,21 @@
 "helpCatchU" = "Help CathcU to get access your photos 😜";
 
 // Editable profile view 
-"Name" = "Name";
-"Username" = "Username";
-"Website" = "Website";
-"Bio" = "Bio";
-"Birthday" = "Birthday";
-"Email" = "Email";
-"Phone" = "Phone";
-"Gender" = "Gender";
-"Next" = "Next";
-"SelectCountry" = "Select Country";
-"AllCountries" = "All Countries";
-"WillReceiveSMS" = "You will receive confirmation SMS after next button click.";
+"EditableProfile_Name" = "Name";
+"EditableProfile_Username" = "Username";
+"EditableProfile_Website" = "Website";
+"EditableProfile_Bio" = "Bio";
+"EditableProfile_Birthday" = "Birthday";
+"EditableProfile_Email" = "Email";
+"EditableProfile_Phone" = "Phone";
+"EditableProfile_Gender" = "Gender";
+"EditableProfile_Next" = "Next";
+"EditableProfile_Select_Country" = "Select Country";
+"EditableProfile_All_Countries" = "All Countries";
+"EditableProfile_Will_Receive_SMS" = "You will receive confirmation SMS after next button click.";
+"EditableProfile_Remove_Current_Photo" = "Remove Current Photo";
+"EditableProfile_Take_Photo" = "Take Photo";
+"EditableProfile_Choose_From_Library_Photo" = "Choose From Library";
 
 //Feed
 "NoPostFound" = "No post found nearby your current location";
@@ -175,6 +178,7 @@
 "Delete" = "Delete";
 "Feed_Public" = "Public";
 "Feed_Catch" = "Catch";
+"Feed_Search" = "Search";
 
 // Like
 "Likes" = "Likes";
@@ -202,6 +206,8 @@
 "Profile_Gender_Male" = "Male";
 "Profile_Gender_Female" = "Female";
 "Profile_Gender_Unspecified" = "Unspecified";
+"Profile_Collection" = "Collection";
+"Profile_Table" = "Table";
 
 // User Messages
 "UserMessages_Unfollow_Message" = "No body knows what your are doing 😉";

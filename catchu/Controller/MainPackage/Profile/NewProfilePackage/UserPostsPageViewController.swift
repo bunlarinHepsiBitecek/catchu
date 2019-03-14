@@ -15,10 +15,11 @@ class UserPostsPageViewController: BaseViewController {
     override func setupViews() {
         super.setupViews()
         setupContainer()
-        
     }
     
     func setupContainer() {
+        
+        view.backgroundColor = UIColor.white
         
         let pageViewController = TabPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         
@@ -26,18 +27,12 @@ class UserPostsPageViewController: BaseViewController {
         let userPostsViewController = UserPostsViewController()
         userPostsViewController.configure(viewModel: userPostsViewModel)
         
-        let userPostsViewCollectionController = UserPostsViewCollectionController()
-        
-        
-        let feedViewModel = FeedViewModel()
-        let feedVC1 = FeedViewController()
-        feedVC1.configure(viewModel: feedViewModel)
-        let catchVC1 = CatchViewController()
-        catchVC1.view.backgroundColor = .yellow
+        let userPostsViewCollectionController = UserPostsViewCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+        userPostsViewCollectionController.configure(viewModel: userPostsViewModel)
         
         var items: [(viewController: UIViewController, title: String, icon: UIImage?)] = []
-        items.append((viewController: feedVC1, title: LocalizedConstants.Feed.Public, icon: UIImage(named: "earth")))
-        items.append((viewController: catchVC1, title: LocalizedConstants.Feed.Catch, icon: UIImage(named: "Catchu.png")))
+        items.append((viewController: userPostsViewController, title: LocalizedConstants.Profile.Collection, icon: nil))
+        items.append((viewController: userPostsViewCollectionController, title: LocalizedConstants.Profile.Table, icon: nil))
         
         pageViewController.items = items
         

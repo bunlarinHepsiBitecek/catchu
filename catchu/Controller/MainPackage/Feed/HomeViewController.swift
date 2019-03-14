@@ -18,7 +18,7 @@ class HomeViewController: BaseViewController {
         searchBar.delegate = self
         
         searchBar.barStyle = .blackTranslucent
-        searchBar.placeholder = "Search"
+        searchBar.placeholder = LocalizedConstants.Feed.Search
         return searchBar
     }()
     
@@ -58,7 +58,7 @@ class HomeViewController: BaseViewController {
             menuTabView.safeTopAnchor.constraint(equalTo: view.safeTopAnchor),
             menuTabView.safeLeadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
             menuTabView.safeTrailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
-            menuTabView.heightAnchor.constraint(equalToConstant: 50),
+            menuTabView.heightAnchor.constraint(equalToConstant: 40),
 
             containerView.safeTopAnchor.constraint(equalTo: menuTabView.safeBottomAnchor),
             containerView.safeBottomAnchor.constraint(equalTo: view.safeBottomAnchor),
@@ -75,6 +75,7 @@ class HomeViewController: BaseViewController {
         
         self.navigationItem.leftBarButtonItem = leftButton
         self.navigationItem.rightBarButtonItem = rightButton
+        
     }
     
 //    let mapView = FeedMapView()
@@ -100,23 +101,23 @@ class HomeViewController: BaseViewController {
 //        self.navigationController?.pushViewController(likeVC, animated: true)
         
         
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
-        layout.estimatedItemSize = CGSize(width: 1, height: 1)
-        
+        // MARK: - Other User Profile
         let dummyUser = User()
-        dummyUser.profilePictureUrl = "https://picsum.photos/100/100/?random"
-        dummyUser.userid = "userid"
-        dummyUser.name = "Ilk Remzi Yildirim"
-        dummyUser.username = "remziyildirim"
-        
-        
+        dummyUser.userid = "VVkIWB15bdcrEli4kSD4uv8gPIl1"
+        dummyUser.name = "Ilk Erkut Bas"
+        dummyUser.username = "erkutbas"
+        dummyUser.followStatus = User.FollowStatus.pending
+
         let otherViewModel = OtherUserProfileViewModel(user: dummyUser)
         
-        let otherProfileVC = OtherUserProfileViewController(collectionViewLayout: layout)
+        let otherProfileVC = OtherUserProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
         otherProfileVC.viewModel = otherViewModel
-        
+
         self.navigationController?.pushViewController(otherProfileVC, animated: true)
+        
+        // MARK: - Collection and Feed Design
+//        let userPostsPageViewController = UserPostsPageViewController()
+//        self.navigationController?.pushViewController(userPostsPageViewController, animated: true)
     }
     
     @objc func presentSearchNavigation() {
@@ -125,10 +126,10 @@ class HomeViewController: BaseViewController {
     }
     
     func containerAddChildViewController(_ childViewController: UIViewController, containerView: UIView) {
-        self.addChildViewController(childViewController)
+        self.addChild(childViewController)
         childViewController.view.frame = containerView.bounds
         containerView.addSubview(childViewController.view)
-        childViewController.didMove(toParentViewController: self)
+        childViewController.didMove(toParent: self)
     }
 }
 

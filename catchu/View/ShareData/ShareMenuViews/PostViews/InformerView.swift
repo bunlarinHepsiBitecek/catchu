@@ -35,7 +35,7 @@ class InformerView: UIView {
     
     // blur view
     lazy var blurView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -107,7 +107,7 @@ class InformerView: UIView {
     }()
     
     lazy var blurViewForInformerMessage: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -119,7 +119,7 @@ class InformerView: UIView {
     
     // button for cancel, to go back
     lazy var tryAgainButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
@@ -143,7 +143,7 @@ class InformerView: UIView {
     
     // blur view
     lazy var blurViewForTryAgain: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -299,14 +299,14 @@ extension InformerView {
     }
     
     private func bringViewsFront() {
-        containerView.bringSubview(toFront: blurView)
-        containerView.bringSubview(toFront: resultImageView)
-        containerView.bringSubview(toFront: stackViewForInformerMessage)
+        containerView.bringSubviewToFront(blurView)
+        containerView.bringSubviewToFront(resultImageView)
+        containerView.bringSubviewToFront(stackViewForInformerMessage)
         
         guard let postState = postState else { return }
         
         if postState == .failed {
-            containerView.bringSubview(toFront: tryAgainButton)
+            containerView.bringSubviewToFront(tryAgainButton)
         }
 
     }
@@ -319,7 +319,7 @@ extension InformerView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.50),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 
                 inputObject.transform = CGAffineTransform.identity

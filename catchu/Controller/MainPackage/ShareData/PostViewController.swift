@@ -102,9 +102,9 @@ extension PostViewController {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromBottom
-        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromBottom
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
         
         if let window = view.window {
             window.layer.add(transition, forKey: kCATransition)

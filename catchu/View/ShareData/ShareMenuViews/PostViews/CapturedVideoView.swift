@@ -92,7 +92,7 @@ class CapturedVideoView: UIView {
     }()
     
     lazy var commitButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
@@ -110,7 +110,7 @@ class CapturedVideoView: UIView {
     }()
     
     lazy var blurView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -285,7 +285,7 @@ extension CapturedVideoView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: .allowUserInteraction,
             animations: {
                 self.downloadButton.transform = CGAffineTransform.identity
                 
@@ -322,7 +322,7 @@ extension CapturedVideoView {
         
         activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator.style = .whiteLarge
         
         activityIndicator.startAnimating()
         
@@ -479,7 +479,7 @@ extension CapturedVideoView {
             return
         }
         
-        player!.seek(to: kCMTimeZero)
+        player!.seek(to: CMTime.zero)
         isPlaying = false
         changePlayStopView(playing: false)
         

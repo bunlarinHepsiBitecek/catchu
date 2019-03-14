@@ -55,7 +55,7 @@ class FeedViewCell: BaseTableCell {
     //we use lazy properties for each view
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -99,7 +99,7 @@ class FeedViewCell: BaseTableCell {
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "icon-like"), for: UIControlState())
+        button.setImage(UIImage(named: "icon-like"), for: UIControl.State())
         button.addTarget(self, action: .likePostAction, for: .touchUpInside)
         
         return button
@@ -152,7 +152,7 @@ class FeedViewCell: BaseTableCell {
     lazy var moreButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "icon-more"), for: UIControlState())
+        button.setImage(UIImage(named: "icon-more"), for: UIControl.State())
 
         button.addTarget(self, action: .showMoreAction, for: .touchUpInside)
         return button
@@ -178,7 +178,7 @@ class FeedViewCell: BaseTableCell {
     
     lazy var showOnMapButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "icon-location"), for: UIControlState())
+        button.setImage(UIImage(named: "icon-location"), for: UIControl.State())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: .showLocationAction, for: .touchUpInside)
         
@@ -372,7 +372,7 @@ class FeedViewCell: BaseTableCell {
                        delay: 0,
                        usingSpringWithDamping: 0.2,  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: 6,    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.likeButton.transform = CGAffineTransform.identity
         },

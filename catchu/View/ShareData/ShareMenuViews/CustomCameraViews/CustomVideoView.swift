@@ -128,7 +128,7 @@ class CustomVideoView: UIView {
         switch cameraAuthorizationStatus{
         case .authorized:
             
-        let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission
             
             switch statusForMicrophone {
             case .granted:
@@ -180,7 +180,7 @@ class CustomVideoView: UIView {
         switch cameraAuthorizationStatus{
         case .authorized:
             
-            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission
             
             switch statusForMicrophone {
             case .granted:
@@ -328,9 +328,9 @@ class CustomVideoView: UIView {
     
     func addCircle() {
         
-        let diceRoll = CGFloat(Int(arc4random_uniform(7))*50)
-        var circleWidth = CGFloat(110)
-        var circleHeight = circleWidth
+//        let diceRoll = CGFloat(Int(arc4random_uniform(7))*50)
+//        var circleWidth = CGFloat(110)
+//        var circleHeight = circleWidth
         
         // Create a new CircleView
         circleView = CircleView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
@@ -428,7 +428,7 @@ class CustomVideoView: UIView {
         
     }
     
-    func microphonePermissionProcess(inputStatus : AVAudioSessionRecordPermission) {
+    func microphonePermissionProcess(inputStatus : AVAudioSession.RecordPermission) {
         
         switch inputStatus {
         case .undetermined:
@@ -512,7 +512,7 @@ extension CustomVideoView : UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.dismissCustomCameraView(_:)))
         tapGesture.delegate = self
         closeButton.addGestureRecognizer(tapGesture)
-        self.mainView.bringSubview(toFront: closeButton)
+        self.mainView.bringSubviewToFront(closeButton)
         
     }
     
@@ -626,7 +626,7 @@ extension CustomVideoView : PermissionProtocol {
         
         if result {
             
-            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission()
+            let statusForMicrophone = AVAudioSession.sharedInstance().recordPermission
             
             switch statusForMicrophone {
             case .granted:

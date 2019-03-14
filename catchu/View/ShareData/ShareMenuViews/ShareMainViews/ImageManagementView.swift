@@ -507,7 +507,7 @@ extension ImageManagementView : UICollectionViewDelegate, UICollectionViewDataSo
         
         cell.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         
-        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, delay: 0, usingSpringWithDamping: 0.20, initialSpringVelocity: 6.0, options: UIViewAnimationOptions.allowUserInteraction, animations: {
+        UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03, delay: 0, usingSpringWithDamping: 0.20, initialSpringVelocity: 6.0, options: UIView.AnimationOptions.allowUserInteraction, animations: {
             
             cell.transform = CGAffineTransform.identity
             

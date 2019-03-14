@@ -32,7 +32,7 @@ class MediaViewImageCell: BaseCollectionCell {
     }()
     
     let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         return activityIndicatorView
@@ -71,7 +71,7 @@ class MediaViewVideoCell: BaseCollectionCell {
     }
     
     let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         return activityIndicatorView
@@ -96,7 +96,7 @@ class MediaViewVideoCell: BaseCollectionCell {
         let image = UIImage(named: "play")
         button.tintColor = UIColor.white
         button.backgroundColor = UIColor.black
-        button.setImage(image, for: UIControlState())
+        button.setImage(image, for: UIControl.State())
         
         button.layer.cornerRadius = 10
         
@@ -115,14 +115,14 @@ class MediaViewVideoCell: BaseCollectionCell {
     @objc func handlePlay() {
         if isPlaying {
             player?.pause()
-            playButton.setImage(UIImage(named: "play"), for: UIControlState())
+            playButton.setImage(UIImage(named: "play"), for: UIControl.State())
         } else {
             if #available(iOS 10.0, *) {
                 player?.playImmediately(atRate: 1.0)
             } else {
                 player?.play()
             }
-            playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+            playButton.setImage(UIImage(named: "pause"), for: UIControl.State())
         }
         
         isPlaying = !isPlaying
@@ -169,11 +169,11 @@ class MediaViewVideoCell: BaseCollectionCell {
     
     @objc func playerDidFinishPlaying(note: Notification){
         //Called when player finished playing
-        playButton.setImage(UIImage(named: "play"), for: UIControlState())
+        playButton.setImage(UIImage(named: "play"), for: UIControl.State())
         isPlaying = !isPlaying
         
 //        let seekTime = CMTime(value: 0, timescale: 1)
-        let seekTime = kCMTimeZero
+        let seekTime = CMTime.zero
         
         player?.seek(to: seekTime, completionHandler: { (completedSeek) in
             //perhaps do something later here
@@ -211,9 +211,9 @@ class MediaViewVideoCell: BaseCollectionCell {
         self.activityIndicatorView.startAnimating()
         playButton.isHidden = true
         
-        self.bringSubview(toFront: activityIndicatorView)
-        self.bringSubview(toFront: playButton)
-        self.bringSubview(toFront: remainingTime)
+        self.bringSubviewToFront(activityIndicatorView)
+        self.bringSubviewToFront(playButton)
+        self.bringSubviewToFront(remainingTime)
         
         
         // or addObserver to player and forKey #keyPath(AVPlayer.currentItem.loadedTimeRanges)
@@ -258,9 +258,9 @@ class MediaViewVideoCell: BaseCollectionCell {
         }
         
         if keyPath == #keyPath(AVPlayerItem.status) {
-            let status: AVPlayerItemStatus
+            let status: AVPlayerItem.Status
             if let statusNumber = change?[.newKey] as? NSNumber {
-                status = AVPlayerItemStatus(rawValue: statusNumber.intValue)!
+                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
             } else {
                 status = .unknown
             }

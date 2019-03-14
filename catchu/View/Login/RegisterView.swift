@@ -50,7 +50,7 @@ class RegisterView: BaseView {
     
     lazy var registerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LocalizedConstants.Login.Register.uppercased(with: NSLocale.current), for: UIControlState.normal)
+        button.setTitle(LocalizedConstants.Login.Register.uppercased(with: NSLocale.current), for: UIControl.State.normal)
         button.backgroundColor = UIColor.groupTableViewBackground
         button.layer.cornerRadius = 5
         
@@ -61,10 +61,10 @@ class RegisterView: BaseView {
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [usernameTextField, emailTextField, passwordTextField, registerButton])
-        stackView.axis = UILayoutConstraintAxis.vertical
+        stackView.axis = NSLayoutConstraint.Axis.vertical
         stackView.spacing = 10
-        stackView.alignment = UIStackViewAlignment.fill
-        stackView.distribution = UIStackViewDistribution.fillEqually
+        stackView.alignment = UIStackView.Alignment.fill
+        stackView.distribution = UIStackView.Distribution.fillEqually
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView

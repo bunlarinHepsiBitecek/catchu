@@ -14,7 +14,7 @@ class SlideMenuTableView: UIView {
     
     lazy var slideMenuTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.grouped)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.grouped)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -22,8 +22,8 @@ class SlideMenuTableView: UIView {
         temp.delegate = self
         temp.dataSource = self
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
 
         // cell registration
@@ -91,9 +91,9 @@ extension SlideMenuTableView {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromRight
-        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
         
         if let window = self.window {
             window.layer.add(transition, forKey: kCATransition)

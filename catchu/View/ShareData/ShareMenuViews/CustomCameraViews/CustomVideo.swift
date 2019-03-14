@@ -170,7 +170,7 @@ extension CustomVideo {
             let totalSeconds = 60.0 //Total Seconds of capture time
             let timeScale: Int32 = 30 //FPS
             
-            let maxDuration = CMTimeMakeWithSeconds(totalSeconds, timeScale)
+            let maxDuration = CMTimeMakeWithSeconds(totalSeconds, preferredTimescale: timeScale)
             
             videoFileOutput.maxRecordedDuration = maxDuration
             videoFileOutput.minFreeDiskSpaceLimit = 1024 * 1024

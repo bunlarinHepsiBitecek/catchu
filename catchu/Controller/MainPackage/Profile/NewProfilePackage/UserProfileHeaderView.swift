@@ -17,7 +17,7 @@ class UserProfileHeaderView: BaseView {
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -88,7 +88,7 @@ class UserProfileHeaderView: BaseView {
         let profileStackView = UIStackView(arrangedSubviews: [profileImageView, nameBioStackView])
         profileStackView.translatesAutoresizingMaskIntoConstraints = false
         profileStackView.alignment = .top
-        profileStackView.distribution = .fillProportionally
+        profileStackView.distribution = .fill
         profileStackView.spacing = padding
         profileStackView.layoutMargins = layoutMargin
         profileStackView.isLayoutMarginsRelativeArrangement = true

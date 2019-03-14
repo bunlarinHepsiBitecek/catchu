@@ -375,7 +375,7 @@ extension UserProfileMainView {
         activityIndicator = UIActivityIndicatorView()
         activityIndicator!.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator!.hidesWhenStopped = true
-        activityIndicator!.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator!.style = .whiteLarge
         
         activityIndicator!.startAnimating()
         

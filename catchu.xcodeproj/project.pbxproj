@@ -49,7 +49,6 @@
 		453548172152689D00FC81F5 /* DynamicTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453548162152689D00FC81F5 /* DynamicTextView.swift */; };
 		45356B2320BDF34D00E0733F /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45356B1E20BDF34D00E0733F /* PasswordResetViewController.swift */; };
 		45356B2520BDF34D00E0733F /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45356B2120BDF34D00E0733F /* RegisterViewController.swift */; };
-		45356B2720C2F96E00E0733F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45356B2620C2F96E00E0733F /* Main.storyboard */; };
 		45356B2920C43C3C00E0733F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45356B2820C43C3C00E0733F /* LocationManager.swift */; };
 		4538A05D217725E20044A79D /* RECountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538A05C217725E20044A79D /* RECountry.swift */; };
 		4538A05F217725F10044A79D /* RECountryListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538A05E217725F10044A79D /* RECountryListResponse.swift */; };
@@ -123,7 +122,6 @@
 		45DEEA9920E16D1400FE484E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEEA9620E16D1400FE484E /* User.swift */; };
 		45DEEA9C20E16DB000FE484E /* SectionBasedFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEEA9A20E16DAF00FE484E /* SectionBasedFriend.swift */; };
 		45DEEA9D20E16DB000FE484E /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEEA9B20E16DAF00FE484E /* Share.swift */; };
-		45E811C421C2527E00FA9FB8 /* UserProfileEditHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E811C321C2527E00FA9FB8 /* UserProfileEditHeaderView.swift */; };
 		45E870062180ADCD009DE1BC /* REPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E870052180ADCD009DE1BC /* REPhone.swift */; };
 		45E883E421D61528000515DD /* OtherUserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E883E321D61528000515DD /* OtherUserProfileViewModel.swift */; };
 		45E883E821D64A3C000515DD /* OtherUserProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E883E721D64A3C000515DD /* OtherUserProfileViewHeader.swift */; };
@@ -138,6 +136,7 @@
 		45EAA70421F0A7010074FA87 /* UserPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */; };
 		45EAA70621F0D1CC0074FA87 /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */; };
 		45EAA70821F0DCC80074FA87 /* UserPostsViewCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */; };
+		45EB55A12207432500B24D92 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EB55A02207432500B24D92 /* ImagePickerManager.swift */; };
 		45EF8F5C21A586830036EC92 /* REReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF8F5B21A586830036EC92 /* REReport.swift */; };
 		45EF8F5E21A587460036EC92 /* REFollowInfoListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF8F5D21A587460036EC92 /* REFollowInfoListResponse.swift */; };
 		45F88B5321C7980600979FCA /* UserProfileCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */; };
@@ -195,8 +194,6 @@
 		A71F65B3216E032C002A7C5C /* PostItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F65B2216E032C002A7C5C /* PostItems.swift */; };
 		A72173B620E5793300F73B9C /* NotificationManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B520E5793300F73B9C /* NotificationManager2.swift */; };
 		A72173BA20E7D32700F73B9C /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72173B920E7D32700F73B9C /* UIImageExtensions.swift */; };
-		A721BFF921176F000037A62D /* totoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721BFF821176F000037A62D /* totoViewController.swift */; };
-		A721BFFB21177DE20037A62D /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A721BFFA21177DE20037A62D /* Profile.storyboard */; };
 		A721C0052117AF560037A62D /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721C0042117AF560037A62D /* GroupTableViewCell.swift */; };
 		A722EC23219EFA6600E9BD3B /* ContactRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722EC22219EFA6600E9BD3B /* ContactRequestView.swift */; };
 		A722EC25219F130600E9BD3B /* ContactListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722EC24219F130600E9BD3B /* ContactListManager.swift */; };
@@ -294,13 +291,9 @@
 		A7928FD6217D2ADE0005D811 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7928FD5217D2ADE0005D811 /* Sticker.swift */; };
 		A797EED921F688BE004BDA1D /* MutualFollowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EED821F688BE004BDA1D /* MutualFollowViewModel.swift */; };
 		A797EEDC21F7B6E1004BDA1D /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEDB21F7B6E1004BDA1D /* ExploreViewController.swift */; };
-		A797EEDF21F7B989004BDA1D /* ExploreFacebookContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEDE21F7B989004BDA1D /* ExploreFacebookContactsView.swift */; };
-		A797EEE321F93AD0004BDA1D /* ExploreFacebookContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEE221F93AD0004BDA1D /* ExploreFacebookContactTableViewCell.swift */; };
 		A797EEE621F9DF82004BDA1D /* ExploreFacebookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEE521F9DF82004BDA1D /* ExploreFacebookViewModel.swift */; };
 		A797EEE821F9F8C4004BDA1D /* ExploreFacebookContactTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEE721F9F8C4004BDA1D /* ExploreFacebookContactTableCellViewModel.swift */; };
 		A797EEEA21FA219E004BDA1D /* FacebookContactRequestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEE921FA219E004BDA1D /* FacebookContactRequestViewModel.swift */; };
-		A797EEEC21FAFD07004BDA1D /* ExplorePhoneContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A797EEEB21FAFD07004BDA1D /* ExplorePhoneContactView.swift */; };
-		A79A765D20C368B700FCE198 /* TemporaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A765C20C368B700FCE198 /* TemporaryViewController.swift */; };
 		A79A765F20C36BE400FCE198 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A79A765E20C36BE400FCE198 /* Contact.storyboard */; };
 		A79A766E20C5BDE800FCE198 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = A79A766D20C5BDE800FCE198 /* user.png */; };
 		A79A767420C5BF2300FCE198 /* UIViewDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A767320C5BF2300FCE198 /* UIViewDesign.swift */; };
@@ -430,7 +423,6 @@
 		A7F35D912116811B005DA851 /* REFriendRequestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F35D8E2116811A005DA851 /* REFriendRequestList.swift */; };
 		A7F35D922116811B005DA851 /* REFriendRequestList_resultArray_item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F35D8F2116811B005DA851 /* REFriendRequestList_resultArray_item.swift */; };
 		A7F35D9C21169A94005DA851 /* alarm_x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7F35D9B21169A92005DA851 /* alarm_x.png */; };
-		A7F35DA22116F173005DA851 /* TakasiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F35DA12116F173005DA851 /* TakasiViewController.swift */; };
 		A7F8F1DA21490F6A00EE45B6 /* CustomCapturedVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8F1D921490F6A00EE45B6 /* CustomCapturedVideoView.swift */; };
 		A7F8F1DC214944EA00EE45B6 /* microphoneMain.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A7F8F1DB214944E800EE45B6 /* microphoneMain.jpeg */; };
 		A7F95F86219B20E700F9E8D9 /* UserProfileTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F95F85219B20E700F9E8D9 /* UserProfileTopView.swift */; };
@@ -504,7 +496,6 @@
 		45356B1720BDF2EF00E0733F /* catchu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = catchu.entitlements; sourceTree = "<group>"; };
 		45356B1E20BDF34D00E0733F /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		45356B2120BDF34D00E0733F /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		45356B2620C2F96E00E0733F /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		45356B2820C43C3C00E0733F /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		4538A05C217725E20044A79D /* RECountry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RECountry.swift; sourceTree = "<group>"; };
 		4538A05E217725F10044A79D /* RECountryListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RECountryListResponse.swift; sourceTree = "<group>"; };
@@ -585,7 +576,6 @@
 		45DEEA9620E16D1400FE484E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		45DEEA9A20E16DAF00FE484E /* SectionBasedFriend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionBasedFriend.swift; sourceTree = "<group>"; };
 		45DEEA9B20E16DAF00FE484E /* Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
-		45E811C321C2527E00FA9FB8 /* UserProfileEditHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEditHeaderView.swift; sourceTree = "<group>"; };
 		45E870052180ADCD009DE1BC /* REPhone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REPhone.swift; sourceTree = "<group>"; };
 		45E883E321D61528000515DD /* OtherUserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserProfileViewModel.swift; sourceTree = "<group>"; };
 		45E883E721D64A3C000515DD /* OtherUserProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserProfileViewHeader.swift; sourceTree = "<group>"; };
@@ -600,6 +590,7 @@
 		45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewModel.swift; sourceTree = "<group>"; };
 		45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewController.swift; sourceTree = "<group>"; };
 		45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewCollectionController.swift; sourceTree = "<group>"; };
+		45EB55A02207432500B24D92 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		45EF8F5B21A586830036EC92 /* REReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REReport.swift; sourceTree = "<group>"; };
 		45EF8F5D21A587460036EC92 /* REFollowInfoListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFollowInfoListResponse.swift; sourceTree = "<group>"; };
 		45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCollectionViewController.swift; sourceTree = "<group>"; };
@@ -657,8 +648,6 @@
 		A71F65B2216E032C002A7C5C /* PostItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItems.swift; sourceTree = "<group>"; };
 		A72173B520E5793300F73B9C /* NotificationManager2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager2.swift; sourceTree = "<group>"; };
 		A72173B920E7D32700F73B9C /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
-		A721BFF821176F000037A62D /* totoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = totoViewController.swift; sourceTree = "<group>"; };
-		A721BFFA21177DE20037A62D /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		A721C0042117AF560037A62D /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GroupTableViewCell.swift; path = catchu/View/ContactPackage/Collections/GroupTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		A722EC22219EFA6600E9BD3B /* ContactRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactRequestView.swift; sourceTree = "<group>"; };
 		A722EC24219F130600E9BD3B /* ContactListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListManager.swift; sourceTree = "<group>"; };
@@ -756,13 +745,9 @@
 		A7928FD5217D2ADE0005D811 /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		A797EED821F688BE004BDA1D /* MutualFollowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutualFollowViewModel.swift; sourceTree = "<group>"; };
 		A797EEDB21F7B6E1004BDA1D /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		A797EEDE21F7B989004BDA1D /* ExploreFacebookContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreFacebookContactsView.swift; sourceTree = "<group>"; };
-		A797EEE221F93AD0004BDA1D /* ExploreFacebookContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreFacebookContactTableViewCell.swift; sourceTree = "<group>"; };
 		A797EEE521F9DF82004BDA1D /* ExploreFacebookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreFacebookViewModel.swift; sourceTree = "<group>"; };
 		A797EEE721F9F8C4004BDA1D /* ExploreFacebookContactTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreFacebookContactTableCellViewModel.swift; sourceTree = "<group>"; };
 		A797EEE921FA219E004BDA1D /* FacebookContactRequestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookContactRequestViewModel.swift; sourceTree = "<group>"; };
-		A797EEEB21FAFD07004BDA1D /* ExplorePhoneContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePhoneContactView.swift; sourceTree = "<group>"; };
-		A79A765C20C368B700FCE198 /* TemporaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryViewController.swift; sourceTree = "<group>"; };
 		A79A765E20C36BE400FCE198 /* Contact.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
 		A79A766D20C5BDE800FCE198 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
 		A79A767320C5BF2300FCE198 /* UIViewDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewDesign.swift; sourceTree = "<group>"; };
@@ -892,7 +877,6 @@
 		A7F35D8E2116811A005DA851 /* REFriendRequestList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFriendRequestList.swift; sourceTree = "<group>"; };
 		A7F35D8F2116811B005DA851 /* REFriendRequestList_resultArray_item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFriendRequestList_resultArray_item.swift; sourceTree = "<group>"; };
 		A7F35D9B21169A92005DA851 /* alarm_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alarm_x.png; sourceTree = "<group>"; };
-		A7F35DA12116F173005DA851 /* TakasiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakasiViewController.swift; sourceTree = "<group>"; };
 		A7F8F1D921490F6A00EE45B6 /* CustomCapturedVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCapturedVideoView.swift; sourceTree = "<group>"; };
 		A7F8F1DB214944E800EE45B6 /* microphoneMain.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = microphoneMain.jpeg; sourceTree = "<group>"; };
 		A7F95F85219B20E700F9E8D9 /* UserProfileTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTopView.swift; sourceTree = "<group>"; };
@@ -993,7 +977,6 @@
 				A710F41C213FCD3900ECC5DA /* ShareData */,
 				A7F35D9321168408005DA851 /* Profile */,
 				A7276D3A2110795400CAC67C /* Search */,
-				A79A765B20C3681400FCE198 /* Temporary */,
 				A709F67120FF4F5C003FF2C5 /* Feed */,
 				452001C620CABF9500C1ED22 /* Main */,
 				452001CB20CBBA9C00C1ED22 /* DropPin */,
@@ -1124,9 +1107,7 @@
 			children = (
 				4564E41B20B95576003B0D16 /* LaunchScreen.storyboard */,
 				4564E41620B95574003B0D16 /* Login.storyboard */,
-				45356B2620C2F96E00E0733F /* Main.storyboard */,
 				A79A765E20C36BE400FCE198 /* Contact.storyboard */,
-				A721BFFA21177DE20037A62D /* Profile.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -1406,6 +1387,7 @@
 			isa = PBXGroup;
 			children = (
 				A71D188B21A723FB00DFC4A9 /* CameraImagePickerManager.swift */,
+				45EB55A02207432500B24D92 /* ImagePickerManager.swift */,
 			);
 			path = CameraImageService;
 			sourceTree = "<group>";
@@ -1595,15 +1577,14 @@
 				450C139521B8245F00B3811C /* UserProfileViewGroupCollectionCell.swift */,
 				45218CB921D0BDFC0042F862 /* UserProfileViewPostCollectionCell.swift */,
 				45D9828421BFADEA00222AD8 /* UserProfileEditViewController.swift */,
-				45E811C321C2527E00FA9FB8 /* UserProfileEditHeaderView.swift */,
 				45D9828621BFE0EE00222AD8 /* UserProfileEditViewModel.swift */,
 				45D9828821C007BC00222AD8 /* UserProfileEditViewCell.swift */,
 				45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */,
 				45218CBB21D0FEBB0042F862 /* UserProfilePostsViewController.swift */,
 				45218CBF21D105F40042F862 /* UserProfilePostsViewModel.swift */,
 				45EA663721D53DC500335E8D /* OtherUserProfileViewController.swift */,
-				45E883E321D61528000515DD /* OtherUserProfileViewModel.swift */,
 				45E883E721D64A3C000515DD /* OtherUserProfileViewHeader.swift */,
+				45E883E321D61528000515DD /* OtherUserProfileViewModel.swift */,
 				45EAA6FE21EF2EA30074FA87 /* LoadingCell.swift */,
 				45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */,
 				45EAA70321F0A7010074FA87 /* UserPostsViewModel.swift */,
@@ -1776,16 +1757,6 @@
 			path = ExploreViewController;
 			sourceTree = "<group>";
 		};
-		A797EEDD21F7B904004BDA1D /* ExploreView */ = {
-			isa = PBXGroup;
-			children = (
-				A797EEDE21F7B989004BDA1D /* ExploreFacebookContactsView.swift */,
-				A797EEE221F93AD0004BDA1D /* ExploreFacebookContactTableViewCell.swift */,
-				A797EEEB21FAFD07004BDA1D /* ExplorePhoneContactView.swift */,
-			);
-			path = ExploreView;
-			sourceTree = "<group>";
-		};
 		A797EEE421F9DEF6004BDA1D /* ExploreViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1794,16 +1765,6 @@
 				A797EEE921FA219E004BDA1D /* FacebookContactRequestViewModel.swift */,
 			);
 			path = ExploreViewModels;
-			sourceTree = "<group>";
-		};
-		A79A765B20C3681400FCE198 /* Temporary */ = {
-			isa = PBXGroup;
-			children = (
-				A79A765C20C368B700FCE198 /* TemporaryViewController.swift */,
-				A7F35DA12116F173005DA851 /* TakasiViewController.swift */,
-				A721BFF821176F000037A62D /* totoViewController.swift */,
-			);
-			path = Temporary;
 			sourceTree = "<group>";
 		};
 		A79A766420C4B43F00FCE198 /* ContactPackage */ = {
@@ -2143,7 +2104,6 @@
 		A7E4F69221B1B89F0063E00B /* RelationInfoPackage */ = {
 			isa = PBXGroup;
 			children = (
-				A797EEDD21F7B904004BDA1D /* ExploreView */,
 				A7EFF98721D3005D00B1A3DC /* NewGroupCreation */,
 				A7AE5FA721C6F166008FD5AD /* GroupDetailTableViewCells */,
 				A7E4F69321B1B8BF0063E00B /* FriendGroupRelationView.swift */,
@@ -2406,7 +2366,6 @@
 				A79A766E20C5BDE800FCE198 /* user.png in Resources */,
 				A762B7522161DC4E00DBB4EF /* yellow_postit.jpg in Resources */,
 				4564E44220B958C7003B0D16 /* GoogleService-Info.plist in Resources */,
-				45356B2720C2F96E00E0733F /* Main.storyboard in Resources */,
 				A774ACA62132087000848B79 /* back_right.png in Resources */,
 				A7F8F1DC214944EA00EE45B6 /* microphoneMain.jpeg in Resources */,
 				A75E80A8212ED07400EA0D03 /* camera_request.png in Resources */,
@@ -2416,7 +2375,6 @@
 				A7E6A9A921D901EE00AA33AE /* Catchu_Transparent.png in Resources */,
 				4564E41820B95574003B0D16 /* Login.storyboard in Resources */,
 				A79A765F20C36BE400FCE198 /* Contact.storyboard in Resources */,
-				A721BFFB21177DE20037A62D /* Profile.storyboard in Resources */,
 				A75E80A3212DEF5200EA0D03 /* gallery_request.png in Resources */,
 				A709F64D20FEA6D9003FF2C5 /* CognitoConfig.plist in Resources */,
 				A75E80A9212ED07400EA0D03 /* cameraRequest.jpg in Resources */,
@@ -2532,7 +2490,6 @@
 				A7B9A77D21DE047800840330 /* SlideMenuTableView.swift in Sources */,
 				A79A767D20C5C7B500FCE198 /* FriendCollectionViewCell.swift in Sources */,
 				A7EFF99D21D4EE8200B1A3DC /* SectionHeaderViewModel.swift in Sources */,
-				A7F35DA22116F173005DA851 /* TakasiViewController.swift in Sources */,
 				A72AF2122192A5A80050B685 /* SlideMenu.swift in Sources */,
 				A7E2F84F211276DA00214066 /* ButtonWithImage.swift in Sources */,
 				A7AE5FA921C6F184008FD5AD /* GroupNameTableViewCell.swift in Sources */,
@@ -2612,6 +2569,7 @@
 				4538A067217754FD0044A79D /* CountryViewCell.swift in Sources */,
 				4564E47A20BBBF4E003B0D16 /* LoaderControl.swift in Sources */,
 				451E9F052139349000185925 /* Reachability.swift in Sources */,
+				45EB55A12207432500B24D92 /* ImagePickerManager.swift in Sources */,
 				A74240872147D3DB00E20A58 /* CustomVideo.swift in Sources */,
 				A7C1C35921986AD70096CEA6 /* ContactList.swift in Sources */,
 				A7B9A76621DB6E4000840330 /* MoreOptionsViewModel.swift in Sources */,
@@ -2717,7 +2675,6 @@
 				A76F650421F1DD9A00FCAB07 /* SearchHeaderViewModel.swift in Sources */,
 				A7B6BC2B21AAB23800D11A78 /* DrawView.swift in Sources */,
 				A722EC3521A4013600E9BD3B /* KeyboardService.swift in Sources */,
-				A797EEEC21FAFD07004BDA1D /* ExplorePhoneContactView.swift in Sources */,
 				A7812EAB2124621C00460117 /* Profile4.swift in Sources */,
 				A7D3E06A2183705B006F813E /* Stickers.swift in Sources */,
 				A71D188E21A7827700DFC4A9 /* CapturedImageView.swift in Sources */,
@@ -2725,7 +2682,6 @@
 				A71F65AD2169180E002A7C5C /* FinalSelectedImageCollectionViewCell.swift in Sources */,
 				A7F95F86219B20E700F9E8D9 /* UserProfileTopView.swift in Sources */,
 				A774ACA821321A5C00848B79 /* Participant.swift in Sources */,
-				A797EEE321F93AD0004BDA1D /* ExploreFacebookContactTableViewCell.swift in Sources */,
 				A7E2F85221128CCC00214066 /* REResponse_error.swift in Sources */,
 				4538A06D21788CB70044A79D /* PhoneViewModel.swift in Sources */,
 				A709F68B21009E65003FF2C5 /* ConfirmationViewController.swift in Sources */,
@@ -2819,7 +2775,6 @@
 				A722EC3A21A408B500E9BD3B /* PostTopBarView.swift in Sources */,
 				45BFD570219099EB00CA8C0E /* TabPageViewController.swift in Sources */,
 				A7F35D902116811B005DA851 /* REFriendRequestList_error.swift in Sources */,
-				45E811C421C2527E00FA9FB8 /* UserProfileEditHeaderView.swift in Sources */,
 				A7D4E9722150E9AE00081859 /* CustomAddingTextView.swift in Sources */,
 				A7E2F85521128CDE00214066 /* REFriendRequest.swift in Sources */,
 				A7B9A77321DB95EF00840330 /* PopOverControllerManager.swift in Sources */,
@@ -2894,14 +2849,11 @@
 				A7812EAF21247FED00460117 /* MenuBar4CollectionViewCell.swift in Sources */,
 				A7C1C362219906B90096CEA6 /* REProviderList.swift in Sources */,
 				A7FD8A5D21BFF4E50094E02B /* GroupRelationTableViewCell.swift in Sources */,
-				A797EEDF21F7B989004BDA1D /* ExploreFacebookContactsView.swift in Sources */,
 				45E8B5F2215A9857005AD00A /* CommentView.swift in Sources */,
 				A7B9A77921DD579C00840330 /* SlideMenuViewModel.swift in Sources */,
 				A722EC2D21A2D9B200E9BD3B /* ExplorePeopleViewController.swift in Sources */,
 				A722EC3221A3EFC500E9BD3B /* PostMainView.swift in Sources */,
-				A79A765D20C368B700FCE198 /* TemporaryViewController.swift in Sources */,
 				452001D220CC439C00C1ED22 /* ShareCollectionViewCell.swift in Sources */,
-				A721BFF921176F000037A62D /* totoViewController.swift in Sources */,
 				A7EFF99721D419B100B1A3DC /* GroupCreationParticipantCollectionViewCell.swift in Sources */,
 				4538A06921788C5C0044A79D /* PhoneViewCell.swift in Sources */,
 				45AE7DEB216F4D170081C6F6 /* REUserListResponse.swift in Sources */,
@@ -3125,7 +3077,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OBJC_BRIDGING_HEADER = catchu/Services/AWS/Bridging_Header.h;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -3148,7 +3100,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OBJC_BRIDGING_HEADER = catchu/Services/AWS/Bridging_Header.h;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

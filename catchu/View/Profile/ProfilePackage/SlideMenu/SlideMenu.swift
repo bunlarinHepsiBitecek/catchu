@@ -130,7 +130,7 @@ extension SlideMenu {
         self.profilePictureContainerView.addSubview(profilePictureView)
         self.topView.addSubview(stackView)
         
-        self.mainView.bringSubview(toFront: topView)
+        self.mainView.bringSubviewToFront(topView)
         
         let safeMain = self.mainView.safeAreaLayoutGuide
         let safeTopMain = self.topView.safeAreaLayoutGuide

@@ -28,7 +28,7 @@ class GroupInfoEditTableViewCell: CommonTableCell, CommonDesignableCell {
         
         temp.delegate = self
         
-        temp.addTarget(self, action: #selector(self.textFieldChanged(_:)), for: UIControlEvents.editingChanged)
+        temp.addTarget(self, action: #selector(self.textFieldChanged(_:)), for: UIControl.Event.editingChanged)
         
         return temp
     }()

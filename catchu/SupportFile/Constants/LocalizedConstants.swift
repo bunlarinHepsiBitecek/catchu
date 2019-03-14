@@ -211,6 +211,7 @@ struct 	LocalizedConstants {
         static let TurnOnComments = NSLocalizedString("TurnOnComments", comment: "")
         static let TurnOffComments = NSLocalizedString("TurnOffComments", comment: "")
         static let Delete = NSLocalizedString("Delete", comment: "")
+        static let Search = NSLocalizedString("Feed_Search", comment: "")
     }
     
     struct Like {
@@ -243,6 +244,8 @@ struct 	LocalizedConstants {
         static let GenderMale = NSLocalizedString("Profile_Gender_Male", comment: "")
         static let GenderFemale = NSLocalizedString("Profile_Gender_Female", comment: "")
         static let GenderUnspecified = NSLocalizedString("Profile_Gender_Unspecified", comment: "")
+        static let Collection = NSLocalizedString("Profile_Collection", comment: "")
+        static let Table = NSLocalizedString("Profile_Table", comment: "")
     }
     
     struct UserMessages {
@@ -277,23 +280,26 @@ struct 	LocalizedConstants {
         
     }
     
-    struct EditableProfileView {
+    struct EditableProfile {
         
-        static let Name = NSLocalizedString("Name", comment: "")
-        static let Username = NSLocalizedString("Username", comment: "")
-        static let Website = NSLocalizedString("Website", comment: "")
-        static let Bio = NSLocalizedString("Bio", comment: "")
-        static let Birthday = NSLocalizedString("Birthday", comment: "")
-        static let Email = NSLocalizedString("Email", comment: "")
-        static let Phone = NSLocalizedString("Phone", comment: "")
-        static let Gender = NSLocalizedString("Gender", comment: "")
-        static let Next = NSLocalizedString("Next", comment: "")
-        static let SelectCountry = NSLocalizedString("SelectCountry", comment: "")
-        static let AllCountries = NSLocalizedString("AllCountries", comment: "")
-        static let WillReceiveSMS = NSLocalizedString("WillReceiveSMS", comment: "")
-        static let Confirm          = NSLocalizedString("Confirm", comment: "")
-        static let ConfirmationCode = NSLocalizedString("ConfirmationCode", comment: "")
-        static let ResendConfirmationCode = NSLocalizedString("ResendConfirmationCode", comment: "")
+        static let Name = NSLocalizedString("EditableProfile_Name", comment: "")
+        static let Username = NSLocalizedString("EditableProfile_Username", comment: "")
+        static let Website = NSLocalizedString("EditableProfile_Website", comment: "")
+        static let Bio = NSLocalizedString("EditableProfile_Bio", comment: "")
+        static let Birthday = NSLocalizedString("EditableProfile_Birthday", comment: "")
+        static let Email = NSLocalizedString("EditableProfile_Email", comment: "")
+        static let Phone = NSLocalizedString("EditableProfile_Phone", comment: "")
+        static let Gender = NSLocalizedString("EditableProfile_Gender", comment: "")
+        static let Next = NSLocalizedString("EditableProfile_Next", comment: "")
+        static let SelectCountry = NSLocalizedString("EditableProfile_Select_Country", comment: "")
+        static let AllCountries = NSLocalizedString("EditableProfile_All_Countries", comment: "")
+        static let WillReceiveSMS = NSLocalizedString("EditableProfile_Will_Receive_SMS", comment: "")
+        static let Confirm          = NSLocalizedString("EditableProfile_Confirm", comment: "")
+        static let ConfirmationCode = NSLocalizedString("EditableProfile_Confirmation_Code", comment: "")
+        static let ResendConfirmationCode = NSLocalizedString("EditableProfile_ResendConfirmationCode", comment: "")
+        static let RemoveCurrentPhoto = NSLocalizedString("EditableProfile_Remove_Current_Photo", comment: "")
+        static let TakePhoto = NSLocalizedString("EditableProfile_Take_Photo", comment: "")
+        static let ChooseFromLibrary = NSLocalizedString("EditableProfile_Choose_From_Library_Photo", comment: "")
     }
     
     struct PostAttachments {

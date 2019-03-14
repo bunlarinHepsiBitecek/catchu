@@ -67,11 +67,11 @@ class NewGroupCreationHeaderView: UIView {
         
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: self.frame.height))
         temp.leftView = paddingView
-        temp.leftViewMode = UITextFieldViewMode.always
+        temp.leftViewMode = UITextField.ViewMode.always
         
         temp.delegate = self
         
-        temp.addTarget(self, action: #selector(self.textFieldChanged(_:)), for: UIControlEvents.editingChanged)
+        temp.addTarget(self, action: #selector(self.textFieldChanged(_:)), for: UIControl.Event.editingChanged)
         
         return temp
     }()
@@ -292,7 +292,7 @@ extension NewGroupCreationHeaderView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.50),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 
                 inputObject.transform = CGAffineTransform.identity
@@ -367,9 +367,8 @@ extension NewGroupCreationHeaderView: CameraImageVideoHandlerProtocol {
         headerViewModel.groupImage.value = image
         
         let resizedImage = image.reSizeImage(inputWidth: Constants.ImageResizeValues.Width.width_1080)
-        print("resizedImage : \(resizedImage)")
         
-        guard let imageAsData = UIImageJPEGRepresentation(resizedImage!, 0.80) else { return }
+        guard let imageAsData = resizedImage?.jpegData(compressionQuality: 0.80) else { return }
         
         let tempImagePickerData = ImagePickerData(image: image, pathExtension: pathExtension, orientation: orientation, imageAsData: imageAsData)
         

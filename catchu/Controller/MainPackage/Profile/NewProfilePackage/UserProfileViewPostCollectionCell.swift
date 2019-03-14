@@ -15,7 +15,7 @@ class UserProfileViewPostCollectionCell: BaseCollectionCell, ConfigurableCell {
     lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = UIViewContentMode.scaleAspectFit
+        imageView.contentMode = UIView.ContentMode.scaleAspectFit
         imageView.image = nil
         imageView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.1)
         
@@ -24,6 +24,7 @@ class UserProfileViewPostCollectionCell: BaseCollectionCell, ConfigurableCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        print("prepareForReuse calisti")
         imageView.image = nil
         imageView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.1)
     }
@@ -47,7 +48,6 @@ class UserProfileViewPostCollectionCell: BaseCollectionCell, ConfigurableCell {
         self.viewModel = viewModel
         
         guard let post = viewModel.post else { return }
-//        guard let user = post.user else { return }
         
         if let attachements = post.attachments, let mediaFirst = attachements.first {
             if let url = mediaFirst.url {

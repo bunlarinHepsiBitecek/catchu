@@ -23,7 +23,7 @@ class FriendRelationView: UIView {
     
     lazy var friendTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -32,8 +32,8 @@ class FriendRelationView: UIView {
         temp.dataSource = self
         temp.prefetchDataSource = self
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
 //        temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)

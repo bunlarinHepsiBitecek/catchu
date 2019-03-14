@@ -13,7 +13,8 @@ class CustomPermissionView: UIView {
 
     var permissionType : PermissionFLows?
     
-    weak var delegate : PermissionProtocol!
+    weak var delegate : PermissionProtocol?
+    var isAuthorized = Dynamic(false)
     
     lazy var mainView: UIView = {
         
@@ -211,7 +212,7 @@ class CustomPermissionView: UIView {
         switch permissionType {
         case .camera, .microphone, .photoLibrary, .videoLibrary, .video:
             startAuthorizedProcess(permissionType: permissionType)
-        case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized, .videoLibraryUnauthorized, .videoUnauthorized:
+    case .cameraUnathorized, .microphoneUnAuthorizated, .photoLibraryUnAuthorized, .videoLibraryUnauthorized, .videoUnauthorized:
             startUnAuthorizedProcess(permissionType: permissionType)
         }
         
@@ -496,8 +497,13 @@ extension CustomPermissionView {
 
             PHPhotoLibrary.requestAuthorization { (authorizationStatus) in
 
+                // MARK: Remzi
+                if authorizationStatus == PHAuthorizationStatus.authorized {
+                    self.isAuthorized.value = true
+                }
+                
                 DispatchQueue.main.async {
-                    self.delegate.returnPermissionResult(status: authorizationStatus, permissionType: permissionType)
+                    self.delegate?.returnPermissionResult(status: authorizationStatus, permissionType: permissionType)
                 }
             }
             
@@ -506,8 +512,10 @@ extension CustomPermissionView {
             AVCaptureDevice.requestAccess(for: .video) { (result) in
 
                 if result {
+                    // MARK: Remzi
+                    self.isAuthorized.value = true
                     DispatchQueue.main.async {
-                        self.delegate.returnPermissinResultBoolValue(result: result, permissionType: permissionType)
+                        self.delegate?.returnPermissinResultBoolValue(result: result, permissionType: permissionType)
                     }
                 }
             }
@@ -520,7 +528,7 @@ extension CustomPermissionView {
                 
                 if granted {
                     DispatchQueue.main.async {
-                        self.delegate.returnPermissinResultBoolValue(result: granted, permissionType: permissionType)
+                        self.delegate?.returnPermissinResultBoolValue(result: granted, permissionType: permissionType)
                     }
                 }
                 
@@ -548,7 +556,7 @@ extension CustomPermissionView {
         
         print("dismisView starts")
 
-        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
         
     }
     

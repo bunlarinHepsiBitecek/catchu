@@ -131,7 +131,7 @@ class StickerManagementView: UIView {
         self.delegate = delegate
         self.delegateOfCameraCapturedImageView = delegateOfCameraCapturedImageView
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         setupMajorSettings()
         setupColorPaletteSettings()
@@ -146,7 +146,7 @@ class StickerManagementView: UIView {
     // remove observer
     deinit {
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
     }
     
@@ -282,12 +282,12 @@ extension StickerManagementView {
         
         print("addObservers starts")
         
-        NotificationCenter.default.addObserver(self, selector: #selector(StickerManagementView.keyboardViewChangeFrame(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(StickerManagementView.keyboardViewChangeFrame(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
     }
     
     @objc func keyboardViewChangeFrame(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
             print("keyboard heigth 3: \(keyboardSize.height)")
             
@@ -297,7 +297,7 @@ extension StickerManagementView {
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
             print("keyboard heigth 4: \(keyboardSize.height)")
             

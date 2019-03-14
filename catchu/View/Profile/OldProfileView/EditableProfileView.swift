@@ -150,14 +150,14 @@ class EditableProfileView: UIView {
     
     func setupViewPropertyLabelText() {
     
-        nameLabel.text = LocalizedConstants.EditableProfileView.Name
-        usernameLabel.text = LocalizedConstants.EditableProfileView.Username
-        websiteLabel.text = LocalizedConstants.EditableProfileView.Website
-        shortBioLabel.text = LocalizedConstants.EditableProfileView.Bio
-        birthDayLabel.text = LocalizedConstants.EditableProfileView.Birthday
-        emailLabel.text = LocalizedConstants.EditableProfileView.Email
-        phoneLabel.text = LocalizedConstants.EditableProfileView.Phone
-        genderLabel.text = LocalizedConstants.EditableProfileView.Gender
+        nameLabel.text = LocalizedConstants.EditableProfile.Name
+        usernameLabel.text = LocalizedConstants.EditableProfile.Username
+        websiteLabel.text = LocalizedConstants.EditableProfile.Website
+        shortBioLabel.text = LocalizedConstants.EditableProfile.Bio
+        birthDayLabel.text = LocalizedConstants.EditableProfile.Birthday
+        emailLabel.text = LocalizedConstants.EditableProfile.Email
+        phoneLabel.text = LocalizedConstants.EditableProfile.Phone
+        genderLabel.text = LocalizedConstants.EditableProfile.Gender
         
     }
     

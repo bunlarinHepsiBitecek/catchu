@@ -93,7 +93,10 @@ class ExploreFacebookViewModel: CommonViewModel {
         
         if let userArray = FacebookContactListManager.shared.facebookFriendArray {
             for item in userArray {
-                providerList?.items?.append(User.shared.convertUserToProvider(inputUser: item))
+//                providerList?.items?.append(User.shared.convertUserToProvider(inputUser: item))
+                if let provider = item.provider {
+                    providerList?.items?.append(provider.getProvider())
+                }
             }
         }
         

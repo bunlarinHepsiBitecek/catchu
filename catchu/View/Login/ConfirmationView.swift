@@ -33,7 +33,7 @@ class ConfirmationView: BaseView {
     
     lazy var resendConfirmationButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LocalizedConstants.Login.ResendConfirmationCode.uppercased(with: NSLocale.current), for: UIControlState.normal)
+        button.setTitle(LocalizedConstants.Login.ResendConfirmationCode.uppercased(with: NSLocale.current), for: UIControl.State.normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(resendConfirmation(_:)), for: .touchUpInside)

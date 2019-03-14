@@ -147,13 +147,12 @@ extension ShareView: UINavigationControllerDelegate, UIImagePickerControllerDele
         }
     }
     
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         cameraImagePicked.image = nil
         
-        if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             cameraImagePicked.image = editedImage
-        } else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             cameraImagePicked.image = originalImage
         }
         
@@ -164,6 +163,7 @@ extension ShareView: UINavigationControllerDelegate, UIImagePickerControllerDele
         
         LoaderController.currentViewController()?.dismiss(animated:true, completion: nil)
     }
+    
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         LoaderController.currentViewController()?.dismiss(animated: true, completion: nil)

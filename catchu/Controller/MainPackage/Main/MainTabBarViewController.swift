@@ -8,13 +8,12 @@
 
 import UIKit
 
-class MainTabBarViewController: UITabBarController {
+class MainTabBarViewController: BaseTabBarController {
 
-    var selectedIndexInfo : Int = 0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTabBar()
         viewDidLoadOperations()
         
     }
@@ -22,6 +21,20 @@ class MainTabBarViewController: UITabBarController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupTabBar() {
+        view.backgroundColor = UIColor.white
+        
+        let homeViewController = HomeViewController()
+        let postViewController = PostViewController()
+        let userProfileViewController = UserProfileViewController()
+        
+        homeViewController.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(named: "home"), tag: 0)
+        postViewController.tabBarItem = UITabBarItem(title: "Share", image: UIImage(named: "home"), tag: 1)
+        userProfileViewController.tabBarItem = UITabBarItem(title: "Me", image: UIImage(named: "home"), tag: 2)
+        
+        viewControllers = [BaseNavigationController(rootViewController: homeViewController), postViewController, BaseNavigationController(rootViewController: userProfileViewController)]
     }
     
 }
@@ -43,9 +56,9 @@ extension MainTabBarViewController {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionFade
+        transition.type = CATransitionType.fade
         //transition.subtype = kCATransitionFromTop
-        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
         view.window!.layer.add(transition, forKey: kCATransition)
         
     }
@@ -68,24 +81,15 @@ extension MainTabBarViewController {
 // MARK: - UITabBarControllerDelegate
 extension MainTabBarViewController : UITabBarControllerDelegate {
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
-        print("tabBarController starts")
-        print("tabBarController : \(tabBarController.selectedIndex)")
-        
-    }
-
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
         if viewController.isKind(of: PostViewController.self) {
             
-            if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.PostViewController) as? PostViewController {
-                
-                destinationController.modalPresentationStyle = .fullScreen
-                
-                self.present(destinationController, animated: true, completion: nil)
-                return false
-            }
+            let viewController = PostViewController()
+            viewController.modalPresentationStyle = .fullScreen
+            viewController.view.backgroundColor = .white
+            self.present(viewController, animated: true, completion: nil)
+            return false
             
         }
         return true

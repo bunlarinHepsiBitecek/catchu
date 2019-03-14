@@ -41,7 +41,7 @@ class CountryViewController: BaseTableViewController {
     }
     
     func setupNavigation() {
-        self.navigationItem.title = LocalizedConstants.EditableProfileView.SelectCountry
+        self.navigationItem.title = LocalizedConstants.EditableProfile.SelectCountry
         
         let cancelBarButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         self.navigationItem.leftBarButtonItem = cancelBarButton

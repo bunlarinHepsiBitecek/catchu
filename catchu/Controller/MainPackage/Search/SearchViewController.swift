@@ -13,7 +13,7 @@ class SearchViewController: BaseTableViewController {
     let viewModel = SearchViewModel()
     
     lazy var activityIndicatorView: UIView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
@@ -45,14 +45,14 @@ class SearchViewController: BaseTableViewController {
     let noResultFoundView: TableViewStateResultView = {
         let view = TableViewStateResultView()
         view.setup(imageName: nil, title: nil, subtitle: LocalizedConstants.Feed.NoResultFound)
-        view.frame.size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        view.frame.size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return view
     }()
     
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.sizeToFit()
-//        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
         
@@ -60,6 +60,7 @@ class SearchViewController: BaseTableViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         
+        searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.showsCancelButton = true
@@ -80,13 +81,24 @@ class SearchViewController: BaseTableViewController {
         
         self.view.backgroundColor = .white
         
+        setupNavigation()
         setupTableView()
         setupViewModel()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         searchBarBecomeFirstResponder()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -100,9 +112,7 @@ class SearchViewController: BaseTableViewController {
         }
     }
     
-    
-    func setupTableView() {
-        tableView.keyboardDismissMode = .interactive
+    func setupNavigation() {
         if #available(iOS 11.0, *) {
             // For iOS 11 and later, place the search bar in the navigation bar.
             navigationItem.searchController = searchController
@@ -110,9 +120,12 @@ class SearchViewController: BaseTableViewController {
             navigationItem.hidesSearchBarWhenScrolling = false
         } else {
             // For iOS 10 and earlier, place the search controller's search bar in the table view's header.
-            tableView.tableHeaderView = searchController.searchBar
+            navigationItem.titleView = searchController.searchBar
         }
-        
+    }
+    
+    func setupTableView() {
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(UserViewCell.self, forCellReuseIdentifier: UserViewCell.identifier)
     }
     
@@ -174,10 +187,27 @@ extension SearchViewController {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: UserViewCell.identifier, for: indexPath) as? UserViewCell {
             cell.configure(viewModelItem: item)
+//            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
         
         return UITableViewCell()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let item = viewModel.filteredItems[indexPath.row] as? ViewModelUser else { return }
+        
+        let userProfileViewController = LoaderController.profileViewController(item.user)
+        
+        self.navigationController?.pushViewController(userProfileViewController, animated: true)
+        
+//        let otherViewModel = OtherUserProfileViewModel(user: item.user)
+//
+//        let otherProfileVC = OtherUserProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+//        otherProfileVC.viewModel = otherViewModel
+//
+//        self.navigationController?.pushViewController(otherProfileVC, animated: true)
+        
     }
     
 }
@@ -203,8 +233,8 @@ extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdat
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.dismiss(animated: true, completion: nil)
         viewModel.removeAll()
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -212,7 +242,7 @@ extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdat
 class TableViewStateResultView: BaseView {
     
     let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
         
@@ -222,7 +252,7 @@ class TableViewStateResultView: BaseView {
     let stateImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = UIImage(named: "no-internet")
         
         return imageView
@@ -285,10 +315,12 @@ class TableViewStateResultView: BaseView {
         addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            stackView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
-            stackView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
-            stackView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
-            stackView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
+//            stackView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
+//            stackView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
+//            stackView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
+//            stackView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
+            stackView.safeCenterXAnchor.constraint(equalTo: safeCenterXAnchor),
+            stackView.safeCenterYAnchor.constraint(equalTo: safeCenterYAnchor),
             ])
     }
     

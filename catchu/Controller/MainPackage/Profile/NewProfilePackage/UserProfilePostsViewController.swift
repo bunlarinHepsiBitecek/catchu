@@ -22,7 +22,7 @@ class UserProfilePostsViewController: BaseTableViewController, ConfigurableContr
     func setupTableView() {
         tableView.separatorStyle = .none
         
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 200
         
         tableView.register(FeedViewCell.self, forCellReuseIdentifier: FeedViewCell.identifier)

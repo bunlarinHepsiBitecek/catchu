@@ -16,7 +16,7 @@ class UserProfileViewGroupsCell: BaseTableCell, ConfigurableCell {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
-        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+        layout.itemSize = UICollectionViewFlowLayout.automaticSize
         layout.estimatedItemSize = CGSize(width: 1, height: 1)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)

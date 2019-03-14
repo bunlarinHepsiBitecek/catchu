@@ -21,7 +21,7 @@ class CommentViewCell: BaseTableCell {
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -170,7 +170,7 @@ class CommentViewCell: BaseTableCell {
     
     @objc func replyComment(_ sender: Any) {
         guard let item = item as? CommentViewModelCommentItem else { return }
-        guard let comment = item.comment else { return }
+//        guard let comment = item.comment else { return }
         
         // TODO: duzelt
 //        guard let commentView = self.commentView else { return }
@@ -251,7 +251,7 @@ class CommentViewCell: BaseTableCell {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.likeButton.transform = CGAffineTransform.identity
         },

@@ -21,7 +21,7 @@ extension UIView {
             
         }
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
 }
 
@@ -106,9 +106,9 @@ extension UIViewController {
     /// - Returns: void
     /// - Author: Remzi Yildirim
     func add(_ child: UIViewController) {
-        addChildViewController(child)
+        addChild(child)
         view.addSubview(child.view)
-        child.didMove(toParentViewController: self)
+        child.didMove(toParent: self)
     }
     
     /// An extension remove from parent view and viewcontroller
@@ -118,8 +118,8 @@ extension UIViewController {
         guard parent != nil else {
             return
         }
-        willMove(toParentViewController: nil)
-        removeFromParentViewController()
+        willMove(toParent: nil)
+        removeFromParent()
         view.removeFromSuperview()
     }
     
@@ -128,9 +128,9 @@ extension UIViewController {
     /// - Author: Remzi Yildirim
     func addChild(to containerView: UIView, _ child: UIViewController) {
         /// view controller view to containerview
-        addChildViewController(child)
+        addChild(child)
         child.view.frame = containerView.bounds
         containerView.addSubview(child.view)
-        child.didMove(toParentViewController: self)
+        child.didMove(toParent: self)
     }
 }

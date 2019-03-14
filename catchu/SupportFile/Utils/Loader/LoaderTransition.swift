@@ -23,19 +23,20 @@ public struct LoaderTransition {
         
         /// Return the media timing function associated with curve
         internal var function: CAMediaTimingFunction {
-            let name: String!
+            let name: CAMediaTimingFunctionName!
             switch self {
             case .linear:
-                name = kCAMediaTimingFunctionLinear
+                name = CAMediaTimingFunctionName.linear
             case .easeIn:
-                name = kCAMediaTimingFunctionEaseIn
+                name = CAMediaTimingFunctionName.easeIn
             case .easeOut:
-                name = kCAMediaTimingFunctionEaseOut
+                name = CAMediaTimingFunctionName.easeOut
             case .easeInOut:
-                name = kCAMediaTimingFunctionEaseInEaseOut
+                name = CAMediaTimingFunctionName.easeInEaseOut
             case .default:
-                name = kCAMediaTimingFunctionDefault
+                name = CAMediaTimingFunctionName.default
             }
+            
             return CAMediaTimingFunction(name: name)
         }
     }
@@ -59,19 +60,19 @@ public struct LoaderTransition {
         /// - Returns: transition
         internal func transition() -> CATransition {
             let transition = CATransition()
-            transition.type = kCATransitionPush
+            transition.type = CATransitionType.push
             switch self {
             case .fade:
-                transition.type = kCATransitionFade
+                transition.type = CATransitionType.fade
                 transition.subtype = nil
             case .toLeft:
-                transition.subtype = kCATransitionFromLeft
+                transition.subtype = CATransitionSubtype.fromLeft
             case .toRight:
-                transition.subtype = kCATransitionFromRight
+                transition.subtype = CATransitionSubtype.fromRight
             case .toTop:
-                transition.subtype = kCATransitionFromTop
+                transition.subtype = CATransitionSubtype.fromTop
             case .toBottom:
-                transition.subtype = kCATransitionFromBottom
+                transition.subtype = CATransitionSubtype.fromBottom
             }
             return transition
         }

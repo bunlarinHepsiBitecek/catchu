@@ -194,7 +194,7 @@ extension PostMainView {
     
     private func checkCustomVideoView() {
         
-        if AVCaptureDevice.authorizationStatus(for: .video) == .authorized && AVAudioSession.sharedInstance().recordPermission() == .granted {
+        if AVCaptureDevice.authorizationStatus(for: .video) == .authorized && AVAudioSession.sharedInstance().recordPermission == .granted {
             addCustomVideoView(immediatelyStartSession: false)
         }
         
@@ -239,7 +239,7 @@ extension PostMainView {
         postFinishActivityView.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(postFinishActivityView)
-        self.bringSubview(toFront: postFinishActivityView)
+        self.bringSubviewToFront(postFinishActivityView)
         
         let safe = self.safeAreaLayoutGuide
         
@@ -299,7 +299,7 @@ extension PostMainView : CameraImageVideoHandlerProtocol {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             
-            switch AVAudioSession.sharedInstance().recordPermission() {
+            switch AVAudioSession.sharedInstance().recordPermission {
             case .granted:
                 self.activationManagerOfVideoView(granted: true)
             case .undetermined:

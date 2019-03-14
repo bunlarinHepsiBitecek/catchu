@@ -14,6 +14,7 @@ class SearchViewModel: BaseViewModel, ViewModel {
     var filteredItems = [ViewModelItem]()
     
     var searchTimer: Timer?
+    private var previousSearchText = ""
     let state = Dynamic(TableViewState.suggest)
     
     func search(text: String) {
@@ -22,10 +23,14 @@ class SearchViewModel: BaseViewModel, ViewModel {
         print("timer basladi")
         
         if text.isEmpty {
+            print("Empty oldugu icin geri dondu")
             removeAll()
             return
         }
         
+        guard text != previousSearchText else {
+            print("Ayni string search geldi: \(previousSearchText)")
+            return }
         
         filterItems(text)
         state.value = .loading
@@ -41,6 +46,8 @@ class SearchViewModel: BaseViewModel, ViewModel {
     }
     
     func removeAll() {
+        searchTimer?.invalidate()
+        
         state.value = .suggest
         items.removeAll()
         
@@ -49,6 +56,7 @@ class SearchViewModel: BaseViewModel, ViewModel {
     }
     
     func searchUser(_ text: String) {
+        previousSearchText = text
         REAWSManager.shared.searchUsersGet(searchText: text, page: page, perPage: perPage) { (result) in
             print("\(#function) working and get data")
             self.handleResult(result)

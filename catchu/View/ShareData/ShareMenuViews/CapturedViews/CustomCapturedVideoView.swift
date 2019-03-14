@@ -165,7 +165,7 @@ extension CustomCapturedVideoView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.downloadButton.transform = CGAffineTransform.identity
                 
@@ -202,7 +202,7 @@ extension CustomCapturedVideoView {
         
         activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator.style = .whiteLarge
         
         activityIndicator.startAnimating()
         
@@ -363,7 +363,7 @@ extension CustomCapturedVideoView {
             return
         }
         
-        player!.seek(to: kCMTimeZero)
+        player!.seek(to: CMTime.zero)
         isPlaying = false
         changePlayStopView(playing: false)
         

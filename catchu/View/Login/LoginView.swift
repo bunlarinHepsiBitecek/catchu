@@ -51,10 +51,10 @@ class LoginView: BaseView {
     
     lazy var loginStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField, loginButton])
-        stackView.axis = UILayoutConstraintAxis.vertical
+        stackView.axis = NSLayoutConstraint.Axis.vertical
         stackView.spacing = 10
-        stackView.alignment = UIStackViewAlignment.fill
-        stackView.distribution = UIStackViewDistribution.fillEqually
+        stackView.alignment = UIStackView.Alignment.fill
+        stackView.distribution = UIStackView.Distribution.fillEqually
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -63,7 +63,7 @@ class LoginView: BaseView {
     
     lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LocalizedConstants.Login.Login.uppercased(with: NSLocale.current), for: UIControlState.normal)
+        button.setTitle(LocalizedConstants.Login.Login.uppercased(with: NSLocale.current), for: UIControl.State.normal)
         button.backgroundColor = UIColor.groupTableViewBackground
         button.layer.cornerRadius = 5
         
@@ -74,7 +74,7 @@ class LoginView: BaseView {
     
     lazy var forgotPasswordButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LocalizedConstants.Login.ForgotPassword, for: UIControlState.normal)
+        button.setTitle(LocalizedConstants.Login.ForgotPassword, for: UIControl.State.normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(forgotPassword(_:)), for: .touchUpInside)
@@ -86,7 +86,7 @@ class LoginView: BaseView {
     lazy var facebookLoginButton: UIButton = {
         let button = UIButton(type: .system)
 //        button.setImage(UIImage(named: "icon-like"), for: UIControlState())
-        button.setTitle("Facebook", for: UIControlState.normal)
+        button.setTitle("Facebook", for: UIControl.State.normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(loginWithFacebook(_:)), for: .touchUpInside)
@@ -96,7 +96,7 @@ class LoginView: BaseView {
     lazy var twitterLoginButton: UIButton = {
         let button = UIButton(type: .system)
 //        button.setImage(UIImage(named: "icon-like"), for: UIControlState())
-        button.setTitle("Twitter", for: UIControlState.normal)
+        button.setTitle("Twitter", for: UIControl.State.normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(loginWithTwitter(_:)), for: .touchUpInside)
@@ -105,10 +105,10 @@ class LoginView: BaseView {
     
     lazy var socialStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [facebookLoginButton, twitterLoginButton])
-        stackView.axis = UILayoutConstraintAxis.horizontal
+        stackView.axis = NSLayoutConstraint.Axis.horizontal
         stackView.spacing = 10
-        stackView.alignment = UIStackViewAlignment.fill
-        stackView.distribution = UIStackViewDistribution.fillEqually
+        stackView.alignment = UIStackView.Alignment.fill
+        stackView.distribution = UIStackView.Distribution.fillEqually
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -117,7 +117,7 @@ class LoginView: BaseView {
     
     lazy var registerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LocalizedConstants.Login.Register, for: UIControlState.normal)
+        button.setTitle(LocalizedConstants.Login.Register, for: UIControl.State.normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(register(_:)), for: .touchUpInside)
@@ -132,10 +132,10 @@ class LoginView: BaseView {
         dontHaveAccountLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let stackView = UIStackView(arrangedSubviews: [dontHaveAccountLabel, registerButton])
-        stackView.axis = UILayoutConstraintAxis.horizontal
+        stackView.axis = NSLayoutConstraint.Axis.horizontal
         stackView.spacing = 5
-        stackView.alignment = UIStackViewAlignment.fill
-        stackView.distribution = UIStackViewDistribution.fillProportionally
+        stackView.alignment = UIStackView.Alignment.fill
+        stackView.distribution = UIStackView.Distribution.fillProportionally
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView

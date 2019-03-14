@@ -8,11 +8,13 @@
 
 class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
     
-    var viewModel: UserProfileEditViewModelItem!
+    // MARK: - Variables
+    var viewModelItem: UserProfileEditViewModelItem!
+    var changePhotoActionBlock: (() -> Void)?
     
     var isExpanded = false {
         didSet {
-            switch viewModel.type {
+            switch viewModelItem.type {
             case .gender:
                 pickerView.isHidden = !isExpanded
             case .birthday:
@@ -30,6 +32,46 @@ class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
     }()
     
     let padding: CGFloat = 20
+    private let dimension: CGFloat = 100
+    
+    // MARK: - Views
+    lazy var profileImageView: UIImageView = {
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
+        imageView.image = nil
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.clipsToBounds = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: .changePhotoAction)
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tap)
+        
+        // MARK: When use with satackview
+        let imageHeightConstraint = imageView.safeHeightAnchor.constraint(equalToConstant: dimension)
+        imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
+        imageHeightConstraint.isActive = true
+        
+        let imageWidthConstraint = imageView.safeWidthAnchor.constraint(equalToConstant: dimension)
+        imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
+        imageWidthConstraint.isActive = true
+        
+        // aspect ratio
+        imageView.safeWidthAnchor.constraint(equalTo: imageView.safeHeightAnchor, multiplier: 1).isActive = true
+        
+        return imageView
+    }()
+    
+    lazy var changePhotoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(LocalizedConstants.Profile.ChangePhoto, for: .normal)
+        button.addTarget(self, action: .changePhotoAction, for: .touchUpInside)
+        
+        return button
+    }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -44,7 +86,7 @@ class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.clearButtonMode = UITextFieldViewMode.whileEditing
+        textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocorrectionType = .no
 //        textField.keyboardType = .numberPad
         
@@ -79,8 +121,8 @@ class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
         
         let layoutMargin = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField])
-        stackView.alignment = .leading
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, profileImageView, changePhotoButton])
+        stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = padding
         
@@ -107,6 +149,8 @@ class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
         
         pickerView.isHidden = true
         datePicker.isHidden = true
+        profileImageView.isHidden = true
+        changePhotoButton.isHidden = true
     }
     
     override func prepareForReuse() {
@@ -119,22 +163,26 @@ class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
         
         selectionStyle = .default
         
-        pickerView.isHidden = !isExpanded
-        datePicker.isHidden = !isExpanded
+        pickerView.isHidden = true
+        datePicker.isHidden = true
+        profileImageView.isHidden = true
+        changePhotoButton.isHidden = true
     }
     
     func configure(viewModelItem: ViewModelItem) {
-        guard let viewModel = viewModelItem as? UserProfileEditViewModelItem else { return }
-        self.viewModel = viewModel
+        guard let viewModelItem = viewModelItem as? UserProfileEditViewModelItem else { return }
+        self.viewModelItem = viewModelItem
         
-        titleLabel.text = viewModel.title
-        textField.placeholder = viewModel.placeHolder
-        textField.text = viewModel.text
-        textField.isUserInteractionEnabled = viewModel.isSelectable
+        titleLabel.text = viewModelItem.title
+        textField.placeholder = viewModelItem.placeHolder
+        textField.text = viewModelItem.text
+        textField.isUserInteractionEnabled = viewModelItem.isSelectable
         
-        selectionStyle = viewModel.isSelectable ? .none : .default
+        selectionStyle = viewModelItem.isSelectable ? .none : .default
         
-        switch viewModel.type {
+        switch viewModelItem.type {
+        case .profileImage:
+            imageViewConfigure()
         case .birthday:
             datePickerConfigure()
         case .gender:
@@ -145,23 +193,37 @@ class UserProfileEditViewCell: BaseTableCell, ConfigurableCell {
     }
     
     @objc func textFieldDidChange(textField: UITextField) {
-        viewModel.text = textField.text ?? ""
+        viewModelItem.text = textField.text ?? ""
     }
     
     @objc func datePickerValueChange(sender: UIDatePicker) {
-        viewModel.text = dateFormatter.string(from: (sender.date))
-        textField.text = viewModel.text
+        viewModelItem.text = dateFormatter.string(from: (sender.date))
+        textField.text = viewModelItem.text
+    }
+    
+    @objc func changePhoto() {
+        changePhotoActionBlock?()
+    }
+    
+    private func imageViewConfigure() {
+        profileImageView.isHidden = false
+        changePhotoButton.isHidden = false
+        titleLabel.isHidden = true
+        textField.isHidden = true
+        
+        guard let viewModelItem = viewModelItem as? UserProfileEditViewModelItemProfileImage, let profileImageUrl = viewModelItem.user.profilePictureUrl else { return }
+        profileImageView.loadAndCacheImage(url: profileImageUrl)
     }
     
     private func datePickerConfigure() {
-        datePicker.date = dateFormatter.date(from: viewModel.text) ?? datePickerFromNow(year: 10)
+        datePicker.date = dateFormatter.date(from: viewModelItem.text) ?? datePickerFromNow(year: 10)
         datePicker.minimumDate = datePickerMinimumDate(year: 120)
         datePicker.maximumDate =  Date()
     }
     
     private func pickerViewConfigure() {
         
-        let currentRow = GenderType.allCases.index(where: {$0.rawValue == viewModel.text}) ?? 0
+        let currentRow = GenderType.allCases.index(where: {$0.rawValue == viewModelItem.text}) ?? 0
         textField.text = GenderType.allCases[currentRow].toLocalized()
         pickerView.selectRow(currentRow, inComponent: 0, animated: true)
     }
@@ -199,7 +261,7 @@ extension UserProfileEditViewCell: UIPickerViewDelegate, UIPickerViewDataSource 
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewModel.text = GenderType.allCases[row].rawValue
+        viewModelItem.text = GenderType.allCases[row].rawValue
         textField.text = GenderType.allCases[row].toLocalized()
     }
     
@@ -208,4 +270,79 @@ extension UserProfileEditViewCell: UIPickerViewDelegate, UIPickerViewDataSource 
 fileprivate extension Selector {
     static let textFieldDidChange = #selector(UserProfileEditViewCell.textFieldDidChange)
     static let datePickerChangeAction = #selector(UserProfileEditViewCell.datePickerValueChange)
+    static let changePhotoAction = #selector(UserProfileEditViewCell.changePhoto)
 }
+
+//fileprivate extension Selector {
+//    static let changePhotoAction = #selector(UserProfileEditHeaderView.changePhoto)
+//}
+//
+//class UserProfileEditHeaderView: BaseView {
+//    
+//    private let padding = Constants.Profile.Padding
+//    private let dimension: CGFloat = 80
+//    
+//    lazy var profileImageView: UIImageView = {
+//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.contentMode = UIViewContentMode.scaleAspectFill
+//        imageView.image = nil
+//        imageView.layer.borderWidth = 0.5
+//        imageView.layer.borderColor = UIColor.lightGray.cgColor
+//        imageView.layer.cornerRadius = imageView.frame.height / 2
+//        imageView.clipsToBounds = true
+//        
+//        // MARK: When use with satackview
+//        let imageHeightConstraint = imageView.safeHeightAnchor.constraint(equalToConstant: dimension)
+//        imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
+//        imageHeightConstraint.isActive = true
+//        
+//        let imageWidthConstraint = imageView.safeWidthAnchor.constraint(equalToConstant: dimension)
+//        imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
+//        imageWidthConstraint.isActive = true
+//        
+//        // aspect ratio
+//        imageView.safeWidthAnchor.constraint(equalTo: imageView.safeHeightAnchor, multiplier: 1).isActive = true
+//        
+//        return imageView
+//    }()
+//    
+//    lazy var changePhotoButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.setTitle(LocalizedConstants.Profile.ChangePhoto, for: .normal)
+//        button.addTarget(self, action: .changePhotoAction, for: .touchUpInside)
+//        
+//        return button
+//    }()
+//    
+//    override func setupView() {
+//        super.setupView()
+//        
+//        let layoutMargin = UIEdgeInsets(top: padding, left: 0, bottom: padding, right: 0)
+//        
+//        let stackView = UIStackView(arrangedSubviews: [profileImageView, changePhotoButton])
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        stackView.axis = .vertical
+//        stackView.alignment = .center
+//        stackView.distribution = .fill
+//        stackView.spacing = padding
+//        stackView.layoutMargins = layoutMargin
+//        stackView.isLayoutMarginsRelativeArrangement = true
+//        
+//        
+//        addSubview(stackView)
+//        NSLayoutConstraint.activate([
+//            stackView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
+//            stackView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
+//            stackView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
+//            stackView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor),
+//            ])
+//    }
+//    
+//    @objc func changePhoto() {
+//        print("change photo")
+//        
+//    }
+//    
+//}

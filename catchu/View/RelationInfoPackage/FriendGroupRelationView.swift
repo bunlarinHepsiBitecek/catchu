@@ -115,7 +115,7 @@ class FriendGroupRelationView: UIView {
     }()
     
     var cancelButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
@@ -127,7 +127,7 @@ class FriendGroupRelationView: UIView {
     }()
     
     var nextButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
@@ -159,7 +159,7 @@ class FriendGroupRelationView: UIView {
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
-        temp.addTarget(self, action: #selector(FriendGroupRelationView.segmentedButtonClicked(_:)), for: UIControlEvents.valueChanged)
+        temp.addTarget(self, action: #selector(FriendGroupRelationView.segmentedButtonClicked(_:)), for: UIControl.Event.valueChanged)
         return temp
     }()
     

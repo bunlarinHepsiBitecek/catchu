@@ -15,19 +15,19 @@ class NewGroupCreationViewController: UIViewController {
     private var newGroupCreationView: NewGroupCreationView!
     
     lazy var leftBarButton: UIBarButtonItem = {
-        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissViewController(_:)))
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItem.Style.plain, target: self, action: #selector(dismissViewController(_:)))
         temp.isEnabled = true
         return temp
     }()
     
     lazy var rigthBarButton: UIBarButtonItem = {
-        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.save, style: UIBarButtonItemStyle.plain, target: self, action: #selector(saveChanges(_:)))
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.save, style: UIBarButtonItem.Style.plain, target: self, action: #selector(saveChanges(_:)))
         temp.isEnabled = false
         return temp
     }()
     
     lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let temp = UIActivityIndicatorView(style: .gray)
         temp.backgroundColor = UIColor.clear
         temp.hidesWhenStopped = true
         temp.startAnimating()

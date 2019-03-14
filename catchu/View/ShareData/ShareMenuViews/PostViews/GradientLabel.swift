@@ -52,7 +52,7 @@ class GradientLabel: UIView {
     
     func viewActivationManager(active : Bool, animated : Bool) {
         if animated {
-            UIView.transition(with: self, duration: Constants.AnimationValues.aminationTime_03, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+            UIView.transition(with: self, duration: Constants.AnimationValues.aminationTime_03, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
                 if active {
                     self.alpha = 1
                 } else {

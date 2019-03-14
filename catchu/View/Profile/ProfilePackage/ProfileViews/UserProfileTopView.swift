@@ -183,12 +183,12 @@ class UserProfileTopView: UIView {
     
     lazy var followRequestButton: UIButton = {
         
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.addTarget(self, action: #selector(self.followButtonTapped(_:)), for: UIControlEvents.touchUpInside)
-        temp.setTitle(LocalizedConstants.Like.Follow, for: UIControlState.normal)
-        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControlState.normal)
+        temp.addTarget(self, action: #selector(self.followButtonTapped(_:)), for: UIControl.Event.touchUpInside)
+        temp.setTitle(LocalizedConstants.Like.Follow, for: UIControl.State.normal)
+        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControl.State.normal)
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
         temp.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.5882352941, blue: 0.9529411765, alpha: 1)
         temp.layer.cornerRadius = 5
@@ -304,7 +304,7 @@ extension UserProfileTopView {
     
     func addActivityIndicator() {
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator!.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator!.hidesWhenStopped = true
         
@@ -410,7 +410,7 @@ extension UserProfileTopView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.followerCount.transform = CGAffineTransform.identity
                 
@@ -428,7 +428,7 @@ extension UserProfileTopView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.followingCount.transform = CGAffineTransform.identity
                 

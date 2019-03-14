@@ -63,7 +63,7 @@ class MenuTabView: BaseView {
             barIndicatorView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
             barIndicatorViewLeadingConstraint!,
             barIndicatorViewWidthConstraint!,
-            barIndicatorView.heightAnchor.constraint(equalToConstant: 2),
+            barIndicatorView.heightAnchor.constraint(equalToConstant: 1),
             ])
     }
     

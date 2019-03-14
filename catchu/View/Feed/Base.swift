@@ -6,6 +6,19 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
+// MARK: - ViewController
+class BaseNavigationController: UINavigationController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
+
+class BaseTabBarController: UITabBarController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
+
 class BaseViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -57,6 +70,7 @@ class BaseCollectionViewController: UICollectionViewController {
     }
 }
 
+// MARK: - Views
 class BaseCollectionReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -156,10 +170,9 @@ protocol ConfigurableCell {
 
 
 
-
 class BaseTableCell: UITableViewCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
@@ -180,7 +193,7 @@ class BaseTableCell: UITableViewCell {
 
 class BaseTableCellRightDetail: UITableViewCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
         setupViews()
     }

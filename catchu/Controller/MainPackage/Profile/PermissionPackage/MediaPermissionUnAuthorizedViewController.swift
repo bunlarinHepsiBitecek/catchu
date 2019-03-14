@@ -108,7 +108,7 @@ extension MediaPermissionUnAuthorizedViewController: UIGestureRecognizerDelegate
     
     func initiateDirectToSettings() {
         
-        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
         
     }
     

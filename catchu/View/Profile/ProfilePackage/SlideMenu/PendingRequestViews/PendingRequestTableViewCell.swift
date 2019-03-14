@@ -14,7 +14,7 @@ class PendingRequestTableViewCell: CommonTableCell, CommonDesignableCell {
     
     lazy var requesterImageView: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Width.width_50))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -82,7 +82,7 @@ class PendingRequestTableViewCell: CommonTableCell, CommonDesignableCell {
     }()
     
     lazy var activityIndicatorViewOnDelete: UIActivityIndicatorView = {
-        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let temp = UIActivityIndicatorView(style: .gray)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
         temp.hidesWhenStopped = true
@@ -92,7 +92,7 @@ class PendingRequestTableViewCell: CommonTableCell, CommonDesignableCell {
     }()
     
     lazy var activityIndicatorViewOnConfirm: UIActivityIndicatorView = {
-        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let temp = UIActivityIndicatorView(style: .gray)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
         temp.hidesWhenStopped = true
@@ -103,12 +103,12 @@ class PendingRequestTableViewCell: CommonTableCell, CommonDesignableCell {
     
     lazy var confirmButton: UIButton = {
         
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: .system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.addTarget(self, action: #selector(PendingRequestTableViewCell.confirmButtonTapped(_:)), for: UIControlEvents.touchUpInside)
-        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.confirm, for: UIControlState.normal)
-        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControlState.normal)
+        temp.addTarget(self, action: #selector(PendingRequestTableViewCell.confirmButtonTapped(_:)), for: UIControl.Event.touchUpInside)
+        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.confirm, for: UIControl.State.normal)
+        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControl.State.normal)
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold)
         temp.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.5882352941, blue: 0.9529411765, alpha: 1)
         temp.layer.cornerRadius = 5
@@ -139,12 +139,12 @@ class PendingRequestTableViewCell: CommonTableCell, CommonDesignableCell {
     
     lazy var deleteButton: UIButton = {
         
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.addTarget(self, action: #selector(PendingRequestTableViewCell.deleteButtonTapped(_:)), for: UIControlEvents.touchUpInside)
-        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.reject, for: UIControlState.normal)
-        temp.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: UIControlState.normal)
+        temp.addTarget(self, action: #selector(PendingRequestTableViewCell.deleteButtonTapped(_:)), for: UIControl.Event.touchUpInside)
+        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.reject, for: UIControl.State.normal)
+        temp.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: UIControl.State.normal)
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold)
         temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         temp.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)

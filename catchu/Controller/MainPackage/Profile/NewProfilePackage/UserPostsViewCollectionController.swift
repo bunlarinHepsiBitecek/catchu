@@ -29,7 +29,7 @@ class UserPostsViewCollectionController: BaseCollectionViewController {
         
         collectionView?.register(UserProfileViewPostCollectionCell.self, forCellWithReuseIdentifier: UserProfileViewPostCollectionCell.identifier)
         
-        collectionView?.register(CollectionFooterActivityView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: CollectionFooterActivityView.identifier)
+        collectionView?.register(CollectionFooterActivityView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: CollectionFooterActivityView.identifier)
     }
     
     private func setupViewModel() {
@@ -80,6 +80,11 @@ class UserPostsViewCollectionController: BaseCollectionViewController {
             self.collectionView?.deleteItems(at: changes.deletes)
             self.collectionView?.reloadItems(at: changes.reloads)
         }, completion: nil)
+    }
+    
+    func configure(viewModel: ViewModel) {
+        guard let viewModel = viewModel as? UserPostsViewModel else { return }
+        self.viewModel = viewModel
     }
 }
 
@@ -133,7 +138,7 @@ extension UserPostsViewCollectionController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         print("viewForSupplementaryElementOfKind kind: \(kind)")
         switch kind {
-        case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
             let activityFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionFooterActivityView.identifier, for: indexPath) as! CollectionFooterActivityView
             self.activityFooterView = activityFooterView
             
@@ -147,7 +152,7 @@ extension UserPostsViewCollectionController {
     
     override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         print("willDisplaySupplementaryView: \(elementKind) - \(indexPath)")
-        if elementKind == UICollectionElementKindSectionFooter {
+        if elementKind == UICollectionView.elementKindSectionFooter {
             viewModel.getUserPostsMore()
         }
     }

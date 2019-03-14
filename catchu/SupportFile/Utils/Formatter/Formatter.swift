@@ -27,14 +27,14 @@ public class Formatter {
         style.alignment = .center
         style.lineBreakMode = .byWordWrapping
         
-        let titleAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .headline),
-            NSAttributedStringKey.paragraphStyle: style
+        let titleAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline),
+            NSAttributedString.Key.paragraphStyle: style
         ]
         
-        let subtitleAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline),
-            NSAttributedStringKey.paragraphStyle: style
+        let subtitleAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline),
+            NSAttributedString.Key.paragraphStyle: style
         ]
         
         let attributedString = NSMutableAttributedString(string: title, attributes: titleAttributes)

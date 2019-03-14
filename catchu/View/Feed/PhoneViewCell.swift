@@ -76,8 +76,8 @@ class PhoneViewPhoneCell: BaseTableCell {
     lazy var phoneNumTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = LocalizedConstants.EditableProfileView.Phone
-        textField.clearButtonMode = UITextFieldViewMode.whileEditing
+        textField.placeholder = LocalizedConstants.EditableProfile.Phone
+        textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocorrectionType = .no
         textField.keyboardType = .numberPad
         
@@ -165,8 +165,8 @@ class PhoneViewConfirmationCell: BaseTableCell {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont.systemFont(ofSize: 17)
-        textField.placeholder = LocalizedConstants.EditableProfileView.ConfirmationCode
-        textField.clearButtonMode = UITextFieldViewMode.whileEditing
+        textField.placeholder = LocalizedConstants.EditableProfile.ConfirmationCode
+        textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocorrectionType = .no
         textField.keyboardType = .numberPad
         

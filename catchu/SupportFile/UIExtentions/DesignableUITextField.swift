@@ -34,7 +34,7 @@ class DesignableUITextField: UITextField {
     
     func setBottomBorder()
     {
-        borderStyle = UITextBorderStyle.none;
+        borderStyle = UITextField.BorderStyle.none;
         let border = CALayer()
         let width = CGFloat(0.5)
         border.borderColor = borderInactiveColor?.cgColor
@@ -46,12 +46,12 @@ class DesignableUITextField: UITextField {
     }
     
     func setPlaceHolderColor() {
-        attributedPlaceholder = NSAttributedString(string: placeholder != nil ?  placeholder! : "", attributes:[NSAttributedStringKey.foregroundColor: placeHolderColor])
+        attributedPlaceholder = NSAttributedString(string: placeholder != nil ?  placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: placeHolderColor])
         
     }
     
     func placeHolderTitle(title: String) {
-        attributedPlaceholder = NSAttributedString(string: placeholder != nil ?  title : "", attributes:[NSAttributedStringKey.foregroundColor: placeHolderColor])
+        attributedPlaceholder = NSAttributedString(string: placeholder != nil ?  title : "", attributes:[NSAttributedString.Key.foregroundColor: placeHolderColor])
     }
     
     // Provides left padding for images
@@ -79,7 +79,7 @@ class DesignableUITextField: UITextField {
             
             
             //MARK: Remzi textFieldPlace Holderin daha solda olabilmesi icin view ile ilerlendi
-            leftViewMode = UITextFieldViewMode.always
+            leftViewMode = UITextField.ViewMode.always
             let svFrame = CGRect(x: 0, y: 0, width: 50, height: 20)
             let newView = UIView.init(frame: svFrame)
             imageView.image = image
@@ -96,7 +96,7 @@ class DesignableUITextField: UITextField {
             
             
         } else {
-            leftViewMode = UITextFieldViewMode.never
+            leftViewMode = UITextField.ViewMode.never
             leftView = nil
         }
         

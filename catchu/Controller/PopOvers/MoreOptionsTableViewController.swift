@@ -13,7 +13,7 @@ class MoreOptionsTableViewController: UITableViewController {
     private var moreOptionsViewModel = MoreOptionsViewModel()
     
     lazy var leftBarButton: UIBarButtonItem = {
-        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissViewController(_:)))
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItem.Style.plain, target: self, action: #selector(dismissViewController(_:)))
     
         temp.isEnabled = true
         return temp
@@ -35,7 +35,7 @@ extension MoreOptionsTableViewController {
     
     private func setupViewSettings() {
         self.tableView = UITableView(frame: .zero, style: .grouped)
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.title = LocalizedConstants.TitleValues.ViewControllerTitles.advancedSettings
         self.tableView.separatorStyle = .none
         self.tableView.register(AllowCommentsTableViewCell.self, forCellReuseIdentifier: AllowCommentsTableViewCell.identifier)

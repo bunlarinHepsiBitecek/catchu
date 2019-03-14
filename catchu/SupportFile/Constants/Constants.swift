@@ -37,6 +37,7 @@ struct Constants {
     struct CharacterConstants {
         static let SPACE: String = " "
         static let EMPTY: String = ""
+        static let NEWLINE: String = "\n"
     }
     struct NumericConstants {
         static let INTEGER_ZERO: Int   = 0

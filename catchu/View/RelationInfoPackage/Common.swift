@@ -8,7 +8,7 @@
 
 class CommonTableCell: UITableViewCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initializeCellSettings()
     }
@@ -200,13 +200,13 @@ class CommonSectionHeaderView: UICollectionReusableView {
 class CommonFollowView: UIView {
     lazy var tableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
         temp.register(FriendRelationTableViewCell.self, forCellReuseIdentifier: FriendRelationTableViewCell.identifier)
@@ -225,7 +225,7 @@ class CommonFollowTableViewCell: CommonTableCell {
     
     lazy var userImageView: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Width.width_50))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -296,12 +296,12 @@ class CommonFollowTableViewCell: CommonTableCell {
     
     lazy var followButton: UIButton = {
         
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.addTarget(self, action: .confirm, for: UIControlEvents.touchUpInside)
-        temp.setTitle("Follow", for: UIControlState.normal)
-        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControlState.normal)
+        temp.addTarget(self, action: .confirm, for: UIControl.Event.touchUpInside)
+        temp.setTitle("Follow", for: UIControl.State.normal)
+        temp.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: UIControl.State.normal)
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold)
         temp.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.5882352941, blue: 0.9529411765, alpha: 1)
         temp.layer.cornerRadius = 5
@@ -313,14 +313,14 @@ class CommonFollowTableViewCell: CommonTableCell {
     
     lazy var moreButton: UIButton = {
         
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
-        temp.addTarget(self, action: .delete, for: UIControlEvents.touchUpInside)
+        temp.addTarget(self, action: .delete, for: UIControl.Event.touchUpInside)
         temp.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         let image = UIImage(named: "baseline_more_horiz_black_18pt")
-        temp.setImage(image, for: UIControlState.normal)
+        temp.setImage(image, for: UIControl.State.normal)
         temp.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         temp.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 

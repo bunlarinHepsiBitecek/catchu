@@ -13,7 +13,7 @@ class CatchViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "CatchU"
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
     }
 }
 

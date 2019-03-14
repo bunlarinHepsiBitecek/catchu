@@ -52,13 +52,13 @@ extension UIImageView {
 
 extension UIImageView {
     
-    public func setImageInitialPlaceholder(_ string: String, backgroundColor: UIColor? = nil, circular: Bool, textAttributes: [NSAttributedStringKey: AnyObject]? = nil) {
+    public func setImageInitialPlaceholder(_ string: String, backgroundColor: UIColor? = nil, circular: Bool, textAttributes: [NSAttributedString.Key: AnyObject]? = nil) {
         
         let initials: String = initialsFromString(string: string)
         let color = backgroundColor ?? UIColor.gray
-        let attributes: [NSAttributedStringKey: AnyObject] = (textAttributes != nil) ? textAttributes! : [
-            NSAttributedStringKey.font: self.fontForFontName(name: nil),
-            NSAttributedStringKey.foregroundColor: UIColor.white
+        let attributes: [NSAttributedString.Key: AnyObject] = (textAttributes != nil) ? textAttributes! : [
+            NSAttributedString.Key.font: self.fontForFontName(name: nil),
+            NSAttributedString.Key.foregroundColor: UIColor.white
         ]
         
         self.image = imageSnapshot(text: initials, backgroundColor: color, circular: circular, textAttributes: attributes)
@@ -76,7 +76,7 @@ extension UIImageView {
         }
     }
     
-    private func imageSnapshot(text imageText: String, backgroundColor: UIColor, circular: Bool, textAttributes: [NSAttributedStringKey : AnyObject]) -> UIImage {
+    private func imageSnapshot(text imageText: String, backgroundColor: UIColor, circular: Bool, textAttributes: [NSAttributedString.Key : AnyObject]) -> UIImage {
         
         let scale: CGFloat = UIScreen.main.scale
         
