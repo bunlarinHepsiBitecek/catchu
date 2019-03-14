@@ -11,8 +11,7 @@ import Contacts
 
 class ContactRequestView: UIView {
 
-    weak var delegate : SlideMenuProtocols!
-    
+    private var phoneContactRequestViewModel = PhoneContactRequestViewModel()
     private var connectButtonBusiness : ContactRequestType!
     
     lazy var containerView: UIView = {
@@ -79,24 +78,18 @@ class ContactRequestView: UIView {
         return temp
     }()
     
-    /*
-     override init(frame: CGRect) {
-     super.init(frame: frame)
-     
-     initializeViewSettings()
-     
-     }
-     */
-    
-    init(frame: CGRect, delegate : SlideMenuProtocols) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.delegate = delegate
-        
         initializeViewSettings()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        phoneContactRequestViewModel.connectButtonProcess.unbind()
+        phoneContactRequestViewModel.connectButtonProcessType.unbind()
     }
     
 }
@@ -106,6 +99,7 @@ extension ContactRequestView {
     
     func initializeViewSettings() {
         addViews()
+        addContactRequestViewListeners()
         decideConnectButtonBusiness()
         
     }
@@ -162,42 +156,25 @@ extension ContactRequestView {
         
     }
     
-    func activationManager(active : Bool) {
-        
-        if active {
-            self.alpha = 1
-        } else {
-            self.alpha = 0
+    private func addContactRequestViewListeners() {
+        phoneContactRequestViewModel.connectButtonProcessType.bind { (requestType) in
+            self.setConnectButtonBusiness(type: requestType)
         }
     }
     
     @objc func startGettingContactFriends(_ sender : UIButton) {
         
-        print("startGettingContactFriends starts")
-        
-        ContactListManager.shared.initiateFetchContactBusiness { (finish) in
-            
-            if finish {
-                print("finishesssss")
-            }
-            
-        }
-        
-        /*
-        guard let connectType = connectButtonBusiness else { return }
-        
-        switch connectType {
+        switch phoneContactRequestViewModel.connectButtonProcessType.value {
         case .enableSettings:
-            print("enableSettings for contact fetch")
-            
+            ContactListManager.shared.directToSettingsForEnableContactAccess()
         case .fetchContact:
-            print("fetch contacts")
-            ContactListManager.shared.initiateFetchContactBusiness()
-        }*/
+            phoneContactRequestViewModel.connectButtonProcess.value = true
+            return
+        }
         
     }
     
-    func setConnectButtonBusiness(type : ContactRequestType) {
+    private func setConnectButtonBusiness(type : ContactRequestType) {
         connectButtonBusiness = type
         
         switch type {
@@ -209,21 +186,18 @@ extension ContactRequestView {
         }
     }
     
-    func decideConnectButtonBusiness() {
+    private func decideConnectButtonBusiness() {
         
         switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .authorized:
-            // there is no need to show this request view to user
-            // must be checked that contact list array has any contact, person or something
-            setConnectButtonBusiness(type: ContactRequestType.fetchContact)
-        case .notDetermined:
-            // make contact button ready to fetch contacts from device
-            setConnectButtonBusiness(type: ContactRequestType.fetchContact)
-        case .denied, .restricted:
-            // change contact button business from fetching contacts to enable contact permission from settings
-            setConnectButtonBusiness(type: ContactRequestType.enableSettings)
+        case .authorized, .notDetermined:
+            self.phoneContactRequestViewModel.connectButtonProcessType.value = .fetchContact
+        case .restricted, .denied:
+            self.phoneContactRequestViewModel.connectButtonProcessType.value = .enableSettings
         }
-        
+    }
+    
+    func listenConnectButtonProcess(completion: @escaping(_ pressed: Bool) -> Void) {
+        phoneContactRequestViewModel.connectButtonProcess.bind(completion)
     }
     
 }

@@ -29,6 +29,8 @@ enum ApiLambdaError: NSNumber {
 
 class APIGatewayManager: ApiGatewayInterface {
     
+    public typealias TypealiasBaseResponse = (_ completed: ConnectionResult<REBaseResponse>) -> Void
+
     /// Description : The function process task object retrived from server. Fragment data such as errors, failures, success etc. And complete function with api response data
     ///
     /// - Parameters:
@@ -137,57 +139,6 @@ class APIGatewayManager: ApiGatewayInterface {
                 }
                 return nil
             }
-        }
-        
-    }
-    
-    
-    /// To update user profile information on neo4j USER node properties
-    ///
-    /// - Parameters:
-    ///   - userObject: USER singleton Shared object
-    ///   - completion: REError
-    func updateUserProfileInformation(requestType : RequestType, userObject : User, completion :  @escaping (_ httpResult : REBaseResponse, _ response : Bool) -> Void) {
-        
-        print("updateUserProfileInformation starts")
-        print("userObject : \(userObject)")
-        
-        guard let userProfileRequest = REUserProfile() else { return }
-        
-        userProfileRequest.userInfo = userObject.getUserProfile()
-        userProfileRequest.requestType = requestType.rawValue
-        
-        client.usersPost(authorization: "", body: userProfileRequest).continueWith { (task) -> Any? in
-            
-            if task.error != nil {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                AlertViewManager.shared.createAlert_2(title: LocalizedConstants.Warning, message: LocalizedConstants.DefaultError, preferredStyle: .alert, actionTitle: LocalizedConstants.Location.Ok, actionStyle: .default, selfDismiss: true, seconds: 3, completionHandler: nil)
-                
-                LoaderController.shared.removeLoader()
-                
-            } else {
-                
-                print("error : \(String(describing: task.error?.localizedDescription))")
-                
-                print("task.result : \(task.result)")
-                print("task.result.code : \(task.result?.error?.code)")
-                print("task.result.message : \(task.result?.error?.message)")
-                
-                if (task.result?.error?.code?.boolValue)! {
-                    
-                    if let result = task.result {
-                        
-                        completion(result, true)
-                        
-                    }
-                }
-                
-            }
-            
-            return nil
-            
         }
         
     }
@@ -702,41 +653,6 @@ class APIGatewayManager: ApiGatewayInterface {
         
     }
     
-    /// used for syns device contact list - friends and catchU followers
-    ///
-    /// - Parameters:
-    ///   - userid: authenticated userid
-    ///   - providerList: device contact list
-    ///   - completion: user list retrieved from api gateway stored in neo4j
-    /// - Author: Erkut Bas
-    func initiateDeviceContactListExploreOnCatchU(userid : String, providerList : REProviderList, completion : @escaping (ConnectionResult<REUserListResponse>) -> ()) {
-        
-        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
-            
-            if finished {
-                
-                guard let userid = User.shared.userid else { return }
-                
-                self.client.usersProvidersPost(userid: userid, authorization: tokenResult.token, body: providerList).continueWith(block: { (userListResponse) -> Any? in
-                    
-                    if userListResponse.error != nil {
-                        print("userListResponse.error : \(userListResponse.error)")
-                    } else {
-                        if let result = userListResponse.result {
-                            if let error = result.error {
-                                if error.code != 1 {
-                                    //completion(.failure(error))
-                                }
-                            }
-                            completion(.success(result))
-                        }
-                    }
-                    return nil
-                })
-            }
-        }
-    }
-
     /// Description: getting user followers or followings list according to request type
     ///
     /// - Parameters:
@@ -790,6 +706,29 @@ class APIGatewayManager: ApiGatewayInterface {
         }
     }
     
+    /// used for syns device contact list - friends and catchU followers
+    ///
+    /// - Parameters:
+    ///   - userid: authenticated userid
+    ///   - providerList: device contact list
+    ///   - completion: user list retrieved from api gateway stored in neo4j
+    /// - Author: Erkut Bas
+    func initiateDeviceContactListExploreOnCatchU(userid : String, providerList : REProviderList, completion : @escaping (ConnectionResult<REUserListResponse>) -> ()) {
+        
+        FirebaseManager.shared.getIdToken { (tokenResult, finished) in
+            
+            if finished {
+                
+                guard let userid = User.shared.userid else { return }
+                
+                self.client.usersProvidersPost(userid: userid, authorization: tokenResult.token, body: providerList).continueWith(block: { (userListResponse) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: userListResponse, completion: completion)
+                    return nil
+                })
+            }
+        }
+    }
+    
     /// Description: it's used to remove a follower from authenticated user follower list
     ///
     /// - Parameters:
@@ -816,6 +755,64 @@ class APIGatewayManager: ApiGatewayInterface {
                     return nil
                 })
 
+            }
+            
+        }
+        
+    }
+    
+    /// Description: it is used to update user profile information
+    ///
+    /// - Parameters:
+    ///   - user: authenticated user
+    ///   - requestType: what to to, update etc....
+    ///   - completion: result
+    /// - Author: Erkut Bas
+    func updateUserProfileInformation(user: User, requestType: RequestType, completion: @escaping(ConnectionResult<REBaseResponse>) -> Void) {
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            if finished {
+                
+                let requestBody = REUserProfile()
+                var userProfileProperties = REUserProfileProperties()
+                userProfileProperties = user.getUserProfile()
+                requestBody?.userInfo = userProfileProperties
+                requestBody?.requestType = requestType.rawValue
+                
+                self.client.usersPost(authorization: tokenResult.token, body: requestBody!).continueWith(block: { (task) -> Any? in
+                    self.prepareRetrievedDataFromApigateway(task: task, completion: completion)
+                    return nil
+                })
+                
+            }
+            
+        }
+        
+    }
+    
+    func createApplicationEndpoint(userid: String, deviceToken: String, completion: @escaping TypealiasBaseResponse) {
+        
+        FirebaseManager.shared.getIdToken { [unowned self](tokenResult, finished) in
+            if finished {
+                
+                let requestBody = RENotification()
+                requestBody?.requestType = "CREATE_APPLICATION_ENDPOINT"
+                requestBody?.deviceToken = deviceToken
+                requestBody?.userid = userid
+                
+                self.client.notifPost(authorization: tokenResult.token, body: requestBody!).continueWith(block: { (task) -> Any? in
+                    
+                    if let error = task.error {
+                        print("HAHAHA : \(error)")
+                    }
+                    
+                    if let result = task.result {
+                        print("result : \(result)")
+                    }
+                    
+                    return nil
+                })
+                
             }
             
         }

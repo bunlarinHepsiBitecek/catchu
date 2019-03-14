@@ -72,6 +72,7 @@ class GroupParticipantTableViewCell: CommonTableCell, CommonDesignableCell {
     override func initializeCellSettings() {
         
         self.accessoryType = .detailButton
+        self.selectionStyle = .none
         self.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_85, bottom: 0, right: 0)
         
         addViews()

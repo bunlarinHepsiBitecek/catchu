@@ -59,6 +59,7 @@ class GroupAdminPanelTableViewCell: CommonTableCell, CommonDesignableCellForGrou
     override func initializeCellSettings() {
         
         self.accessoryType = .disclosureIndicator
+        self.selectionStyle = .none
         
         addViews()
     }

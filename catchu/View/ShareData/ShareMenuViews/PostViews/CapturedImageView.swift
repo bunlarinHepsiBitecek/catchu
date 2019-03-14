@@ -23,6 +23,20 @@ class CapturedImageView: UIView {
     var activityIndicator: UIActivityIndicatorView!
     var labelText : UILabel?
     
+    // MARK: - doodle properties
+    private var isDoodleActive: Bool = false
+    private var isDoodled: Bool = false
+    private var doodleColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    
+    private var lineColor : UIColor = UIColor.white
+    private var lineWidth : CGFloat = 5
+    
+    private var delegate : DrawViewDelegate?
+    
+    private var shapeLayers = [DrawLayer]()
+    private var currenShapeLayer : DrawLayer?
+    
+    // MARK: - main views
     lazy var mainContainerView: UIView = {
         let temp = UIView()
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -49,6 +63,17 @@ class CapturedImageView: UIView {
     }()
     
     lazy var footerContainerView: UIView = {
+        
+        let temp = UIView()
+        
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        
+        return temp
+    }()
+    
+    lazy var bodyContainer: UIView = {
         
         let temp = UIView()
         
@@ -131,11 +156,36 @@ class CapturedImageView: UIView {
         
     }()
     
+    lazy var addDoodleContainerView : UIView = {
+        
+        let temp = UIView()
+        temp.layer.cornerRadius = 30
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = UIColor.clear
+        temp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.startAddingDoodleProcess(_:))))
+        
+        return temp
+        
+    }()
+    
     lazy var addTextImage: UIImageView = {
         
         let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.image = UIImage(named: "text-label")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.isUserInteractionEnabled = true
+        
+        return temp
+        
+    }()
+    
+    lazy var addDoodleImage: UIImageView = {
+        
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.image = UIImage(named: "edit.png")?.withRenderingMode(.alwaysTemplate)
         temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         temp.isUserInteractionEnabled = true
         
@@ -167,6 +217,72 @@ class CapturedImageView: UIView {
         return temp
     }()
     
+    // MARK: - doodle views
+    lazy var colorPaletteForDoodle: ColorPaletteView = {
+        let temp = ColorPaletteView(frame: .zero)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.isHidden = true
+        return temp
+    }()
+    
+    lazy var doneForDoodle: UIView = {
+        let temp = UIView()
+        temp.isUserInteractionEnabled = true
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.layer.cornerRadius = 12.5
+        temp.backgroundColor = UIColor.clear
+        temp.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.layer.borderWidth = 1
+        temp.isHidden = true
+        temp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.doneDoodleProcess(_:))))
+        return temp
+    }()
+    
+    lazy var doneLabel: UILabel = {
+        
+        let temp = UILabel()
+        temp.isUserInteractionEnabled = true
+        temp.text = LocalizedConstants.TitleValues.ButtonTitle.done
+        temp.font = UIFont.systemFont(ofSize: 17)
+        temp.numberOfLines = 0
+        temp.textAlignment = .center
+        temp.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        
+        return temp
+        
+    }()
+    
+    lazy var closeDoodle: UIImageView = {
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.image = UIImage(named: "cancel_black")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.isUserInteractionEnabled = true
+        temp.isHidden = true
+        temp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.closeDoodleProcess(_:))))
+        return temp
+    }()
+    
+    lazy var clearDoodle: UIImageView = {
+        let temp = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.image = UIImage(named: "broom.png")?.withRenderingMode(.alwaysTemplate)
+        temp.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        temp.isUserInteractionEnabled = true
+        temp.isHidden = true
+        temp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.eraseDoodleProcess(_:))))
+        return temp
+    }()
+    
+    lazy var doodleContainerView: UIView = {
+        let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        return temp
+    }()
+    
     /*
      required init() {
      super.init(frame: .zero)
@@ -181,6 +297,7 @@ class CapturedImageView: UIView {
      
      }*/
     
+    // MARK: - initialize functions
     init(inputDelegate : PostViewProtocols) {
         super.init(frame: .zero)
         
@@ -192,6 +309,7 @@ class CapturedImageView: UIView {
         setupAddTextGestures()
         
         initializeStickerManagementView()
+        initializeDoodleView()
         activationManagerDefault(granted: false)
         activationManagerOfDeleteButton(active: false, animated: false)
         
@@ -206,7 +324,7 @@ class CapturedImageView: UIView {
 // MARK: - major functions
 extension CapturedImageView {
     
-    func setupViews() {
+    private func setupViews() {
         
         self.addSubview(mainContainerView)
         self.mainContainerView.addSubview(contentContainerView)
@@ -214,10 +332,13 @@ extension CapturedImageView {
         self.contentContainerView.addSubview(menuContainerView)
         self.contentContainerView.addSubview(footerContainerView)
         self.contentContainerView.addSubview(deleteButton)
+        self.contentContainerView.addSubview(bodyContainer)
         
         self.menuContainerView.addSubview(closeButton)
         self.menuContainerView.addSubview(addTextContainerView)
+        self.menuContainerView.addSubview(addDoodleContainerView)
         self.addTextContainerView.addSubview(addTextImage)
+        self.addDoodleContainerView.addSubview(addDoodleImage)
         self.footerContainerView.addSubview(downloadButton)
         self.footerContainerView.addSubview(commitButton)
         
@@ -229,7 +350,7 @@ extension CapturedImageView {
         let safeContentContainer = self.contentContainerView.safeAreaLayoutGuide
         let safeMenuContainer = self.menuContainerView.safeAreaLayoutGuide
         let safeAddTextContainer = self.addTextContainerView.safeAreaLayoutGuide
-        let safeDeleteContainer = self.footerDeleteContainer.safeAreaLayoutGuide
+        let safeAddDoodleContainer = self.addDoodleContainerView.safeAreaLayoutGuide
         let safeFooterContainer = self.footerContainerView.safeAreaLayoutGuide
         
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -257,6 +378,11 @@ extension CapturedImageView {
             menuContainerView.topAnchor.constraint(equalTo: safeContentContainer.topAnchor),
             menuContainerView.heightAnchor.constraint(equalToConstant: 60),
             
+            bodyContainer.leadingAnchor.constraint(equalTo: safeContentContainer.leadingAnchor),
+            bodyContainer.trailingAnchor.constraint(equalTo: safeContentContainer.trailingAnchor),
+            bodyContainer.topAnchor.constraint(equalTo: safeMenuContainer.bottomAnchor),
+            bodyContainer.bottomAnchor.constraint(equalTo: safeFooterContainer.topAnchor),
+            
             closeButton.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor, constant: 15),
             closeButton.leadingAnchor.constraint(equalTo: safeMenuContainer.leadingAnchor, constant: 15),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
@@ -271,6 +397,16 @@ extension CapturedImageView {
             addTextImage.centerYAnchor.constraint(equalTo: safeAddTextContainer.centerYAnchor),
             addTextImage.heightAnchor.constraint(equalToConstant: 30),
             addTextImage.widthAnchor.constraint(equalToConstant: 30),
+            
+            addDoodleContainerView.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor),
+            addDoodleContainerView.trailingAnchor.constraint(equalTo: safeAddTextContainer.leadingAnchor),
+            addDoodleContainerView.heightAnchor.constraint(equalToConstant: 60),
+            addDoodleContainerView.widthAnchor.constraint(equalToConstant: 60),
+            
+            addDoodleImage.centerXAnchor.constraint(equalTo: safeAddDoodleContainer.centerXAnchor),
+            addDoodleImage.centerYAnchor.constraint(equalTo: safeAddDoodleContainer.centerYAnchor),
+            addDoodleImage.heightAnchor.constraint(equalToConstant: 30),
+            addDoodleImage.widthAnchor.constraint(equalToConstant: 30),
             
             footerContainerView.leadingAnchor.constraint(equalTo: safeContentContainer.leadingAnchor),
             footerContainerView.trailingAnchor.constraint(equalTo: safeContentContainer.trailingAnchor),
@@ -300,7 +436,7 @@ extension CapturedImageView {
     }
     
     /// add gradient to menu and footer view
-    func addGradientView() {
+    private func addGradientView() {
         
         let gradient = CAGradientLayer()
         
@@ -336,7 +472,7 @@ extension CapturedImageView {
     }
     
     /// save captured image to gallery
-    func setupSaveProcessView() {
+    private func setupSaveProcessView() {
         
         UIView.transition(with: self, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
             self.addSubview(self.saveProcessView)
@@ -358,7 +494,7 @@ extension CapturedImageView {
         
     }
     
-    func deleteSaveProcessView() {
+    private func deleteSaveProcessView() {
         
         guard let saveProcessViewSuperview = saveProcessView.superview else { return }
         
@@ -385,7 +521,7 @@ extension CapturedImageView {
         
     }
     
-    func addLabelToSavedProcessView(result : Bool) {
+    private func addLabelToSavedProcessView(result : Bool) {
         
         labelText = UILabel()
         
@@ -417,7 +553,7 @@ extension CapturedImageView {
         
     }
     
-    func showSpinning() {
+    private func showSpinning() {
         
         activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true
@@ -440,7 +576,7 @@ extension CapturedImageView {
         
     }
     
-    func stopSpinning() {
+    private func stopSpinning() {
         
         DispatchQueue.main.async {
             self.activityIndicator.stopAnimating()
@@ -449,7 +585,7 @@ extension CapturedImageView {
         
     }
     
-    func menuAndFooterVisibiltyManagement(visibiltyVaule : Bool) {
+    private func menuAndFooterVisibiltyManagement(visibiltyVaule : Bool) {
         
         UIView.transition(with: menuContainerView, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
             
@@ -465,7 +601,7 @@ extension CapturedImageView {
         
     }
     
-    func menuFooterHiddenManagement(hidden : Bool) {
+    private func menuFooterHiddenManagement(hidden : Bool) {
         
         self.menuContainerView.isHidden = hidden
         self.footerContainerView.isHidden = hidden
@@ -498,7 +634,7 @@ extension CapturedImageView {
         }
     }
     
-    func activationManagerWithImageCameraPositionInfo(granted : Bool, inputImage : UIImage, cameraPosition : CameraPosition) {
+    private func activationManagerWithImageCameraPositionInfo(granted : Bool, inputImage : UIImage, cameraPosition : CameraPosition) {
         
         if granted {
             self.alpha = 1
@@ -518,10 +654,8 @@ extension CapturedImageView {
         
     }
     
-    func initializeStickerManagementView() {
-        
-        print("\(#function) starts")
-        
+    private func initializeStickerManagementView() {
+
         stickerManagementView = StickerManagementView(delegate: self, delegateOfCameraCapturedImageView: self)
         
         self.addSubview(stickerManagementView!)
@@ -541,7 +675,7 @@ extension CapturedImageView {
         
     }
     
-    func deleteCapturedImagesFromSelectedItems(image : UIImage) {
+    private func deleteCapturedImagesFromSelectedItems(image : UIImage) {
         
         if PostItems.shared.selectedImageArray != nil {
             if let i = PostItems.shared.selectedImageArray!.firstIndex(of: image) {
@@ -552,7 +686,7 @@ extension CapturedImageView {
         
     }
     
-    func activationManagerOfDeleteButton(active : Bool, animated : Bool) {
+    private func activationManagerOfDeleteButton(active : Bool, animated : Bool) {
         
         if animated {
             UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
@@ -576,7 +710,7 @@ extension CapturedImageView {
         
     }
     
-    func setDelegationForSticker(inputDelegateView : CustomSticker2) {
+    private func setDelegationForSticker(inputDelegateView : CustomSticker2) {
         
         if stickerManagementView != nil {
             stickerManagementView!.delegateForEditedView = inputDelegateView
@@ -584,7 +718,7 @@ extension CapturedImageView {
         
     }
     
-    func stickerVisibilityOperations(active : Bool) {
+    private func stickerVisibilityOperations(active : Bool) {
         
         guard let stickers = CommonSticker.shared.stickerArray else { return }
         
@@ -607,13 +741,13 @@ extension CapturedImageView {
         
     }
     
-    func returnImage() -> UIImageView {
+    private func returnImage() -> UIImageView {
         
         return capturedImage
         
     }
     
-    func enlargeDeleteButton(inputView : UIView, active : Bool) {
+    private func enlargeDeleteButton(inputView : UIView, active : Bool) {
         
         UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
             
@@ -639,7 +773,7 @@ extension CapturedImageView {
         
     }
     
-    func returnCapturedImage() -> UIImage {
+    private func returnCapturedImage() -> UIImage {
         
         guard let image = capturedImage.image else { return UIImage() }
         
@@ -647,7 +781,7 @@ extension CapturedImageView {
         
     }
     
-    func startAnimation() {
+    private func startAnimation() {
         
         downloadButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) // buton view kucultulur
         
@@ -665,7 +799,7 @@ extension CapturedImageView {
         
     }
     
-    func startAnimationForCommitButton(completion : @escaping (_ finish : Bool) -> Void) {
+    private func startAnimationForCommitButton(completion : @escaping (_ finish : Bool) -> Void) {
         
         commitButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         
@@ -676,7 +810,7 @@ extension CapturedImageView {
         
     }
     
-    @objc func commitProcess(_ sender : UIButton) {
+    @objc private func commitProcess(_ sender : UIButton) {
         print("\(#function), \(#line) starts")
         // let's create an image with sticker if any exist on captured image
         self.createNewImageWithCommonStickers()
@@ -694,7 +828,9 @@ extension CapturedImageView {
         
     }
     
-    func createNewImageWithCommonStickers() {
+    private func createNewImageWithCommonStickers() {
+        
+        var isImageEdited = false
         
         PostItems.shared.appendNewItemToSelectedOriginalImageArray(image: self.returnCapturedImage())
         
@@ -707,6 +843,44 @@ extension CapturedImageView {
         
         let imageRect = CGRect(x: 0, y: 0, width: x.size.width, height: x.size.height)
         
+        if let array = CommonSticker.shared.stickerArray {
+            if !array.isEmpty {
+                isImageEdited = true
+            }
+        }
+        
+        if isDoodled {
+            isImageEdited = true
+        }
+        
+        if isImageEdited {
+            PostItems.shared.capturedImageEdited = true
+            
+            self.menuFooterHiddenManagement(hidden: true)
+            
+            UIGraphicsBeginImageContextWithOptions(capturedImage.bounds.size, self.isOpaque, 0.0)
+            //UIGraphicsBeginImageContextWithOptions(imageOptionSize, self.isOpaque, 0.0)
+            
+            self.drawHierarchy(in: capturedImage.bounds, afterScreenUpdates: true)
+            let snapShot = UIGraphicsGetImageFromCurrentImageContext()
+            
+            UIGraphicsEndImageContext()
+            
+            self.menuFooterHiddenManagement(hidden: false)
+            PostItems.shared.appendNewItemToSelectedImageArray(image: snapShot!)
+            
+            self.menuFooterHiddenManagement(hidden: false)
+            PostItems.shared.appendNewItemToSelectedImageArray(image: snapShot!)
+            
+        } else {
+            
+            PostItems.shared.appendNewItemToSelectedImageArray(image: self.returnCapturedImage())
+            
+        }
+        
+        isImageEdited = false
+        
+        /*
         if let array = CommonSticker.shared.stickerArray {
             if !array.isEmpty {
                 
@@ -725,7 +899,6 @@ extension CapturedImageView {
                 self.menuFooterHiddenManagement(hidden: false)
                 PostItems.shared.appendNewItemToSelectedImageArray(image: snapShot!)
                 
-                
                 self.menuFooterHiddenManagement(hidden: false)
                 PostItems.shared.appendNewItemToSelectedImageArray(image: snapShot!)
                 
@@ -737,8 +910,114 @@ extension CapturedImageView {
         } else {
             PostItems.shared.appendNewItemToSelectedImageArray(image: self.returnCapturedImage())
             
-        }
+        }*/
         
+    }
+    
+    private func activationManagerOfDoodleViews(active: Bool) {
+        self.menuAndFooterVisibiltyManagement(visibiltyVaule: active)
+        doodleObjectsActivationManager(active)
+        
+    }
+    
+    @objc private func startAddingDoodleProcess(_ sender: UITapGestureRecognizer) {
+        self.activationManagerOfDoodleViews(active: true)
+        
+    }
+    
+    // MARK: - doodle view manager functions
+    private func initializeDoodleView() {
+        addDoodleViews()
+        doodleObjectsActivationManager(false)
+        listenColorChanges()
+    }
+    
+    private func addDoodleViews() {
+        
+        self.addSubview(closeDoodle)
+        self.addSubview(doneForDoodle)
+        self.addSubview(colorPaletteForDoodle)
+        self.addSubview(clearDoodle)
+        self.doneForDoodle.addSubview(doneLabel)
+        
+        let safe = self.safeAreaLayoutGuide
+        let safeDoneForDoodle = self.doneForDoodle.safeAreaLayoutGuide
+        let safeMenuContainer = self.menuContainerView.safeAreaLayoutGuide
+        let safeFooterContainer = self.footerContainerView.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            
+            closeDoodle.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor, constant: 15),
+            closeDoodle.leadingAnchor.constraint(equalTo: safeMenuContainer.leadingAnchor, constant: 15),
+            closeDoodle.heightAnchor.constraint(equalToConstant: 30),
+            closeDoodle.widthAnchor.constraint(equalToConstant: 30),
+            
+            doneForDoodle.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor, constant: 15),
+            doneForDoodle.trailingAnchor.constraint(equalTo: safeMenuContainer.trailingAnchor, constant: -15),
+            doneForDoodle.heightAnchor.constraint(equalToConstant: 25),
+            doneForDoodle.widthAnchor.constraint(equalToConstant: 80),
+            
+            clearDoodle.topAnchor.constraint(equalTo: safeMenuContainer.topAnchor, constant: 15),
+            clearDoodle.trailingAnchor.constraint(equalTo: safeDoneForDoodle.leadingAnchor, constant: -10),
+            clearDoodle.heightAnchor.constraint(equalToConstant: 30),
+            clearDoodle.widthAnchor.constraint(equalToConstant: 30),
+            
+            doneLabel.leadingAnchor.constraint(equalTo: safeDoneForDoodle.leadingAnchor),
+            doneLabel.trailingAnchor.constraint(equalTo: safeDoneForDoodle.trailingAnchor),
+            doneLabel.topAnchor.constraint(equalTo: safeDoneForDoodle.topAnchor),
+            doneLabel.bottomAnchor.constraint(equalTo: safeDoneForDoodle.bottomAnchor),
+            
+            colorPaletteForDoodle.leadingAnchor.constraint(equalTo: safeFooterContainer.leadingAnchor),
+            colorPaletteForDoodle.trailingAnchor.constraint(equalTo: safeFooterContainer.trailingAnchor),
+            colorPaletteForDoodle.heightAnchor.constraint(equalToConstant: 50),
+            colorPaletteForDoodle.bottomAnchor.constraint(equalTo: safeFooterContainer.bottomAnchor),
+            
+            ])
+        
+    }
+    
+    fileprivate func doodleObjectsActivationManager(_ active: Bool) {
+        
+        isDoodleActive = active
+        
+        UIView.transition(with: closeDoodle, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+            self.closeDoodle.isHidden = !active
+        })
+        
+        UIView.transition(with: doneForDoodle, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+            self.doneForDoodle.isHidden = !active
+        })
+        
+        UIView.transition(with: colorPaletteForDoodle, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+            self.colorPaletteForDoodle.isHidden = !active
+        })
+        
+        UIView.transition(with: clearDoodle, duration: Constants.AnimationValues.aminationTime_03, options: .transitionCrossDissolve, animations: {
+            self.clearDoodle.isHidden = !active
+        })
+    }
+    
+    @objc private func doneDoodleProcess(_ sender: UITapGestureRecognizer) {
+        self.activationManagerOfDoodleViews(active: false)
+    }
+    
+    @objc private func closeDoodleProcess(_ sender: UITapGestureRecognizer) {
+        self.activationManagerOfDoodleViews(active: false)
+        self.erase()
+        
+    }
+    
+    @objc private func eraseDoodleProcess(_ sender: UITapGestureRecognizer) {
+        self.erase()
+    }
+    
+    private func erase() {
+        self.shapeLayers.forEach { (layer) in
+            layer.removeFromSuperlayer()
+        }
+        self.shapeLayers.removeAll()
+        
+        isDoodled = false
     }
     
 }
@@ -746,7 +1025,7 @@ extension CapturedImageView {
 // MARK: - UIGestureRecognizerDelegate
 extension CapturedImageView: UIGestureRecognizerDelegate {
     
-    func setupCloseButtonGesture() {
+    private func setupCloseButtonGesture() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.dismissCustomCameraCapturedView(_:)))
         tapGesture.delegate = self
@@ -754,7 +1033,7 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
     }
     
-    @objc func dismissCustomCameraCapturedView(_ sender : UITapGestureRecognizer) {
+    @objc private func dismissCustomCameraCapturedView(_ sender : UITapGestureRecognizer) {
         
         print("dismissCustomCameraCapturedView starts")
         
@@ -766,9 +1045,12 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
         deleteCapturedImagesFromSelectedItems(image: image)
         
+        // erase doodle
+        self.erase()
+        
     }
     
-    func downloadButtonGesture() {
+    private func downloadButtonGesture() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.saveCapturedImage(_:)))
         tapGesture.delegate = self
@@ -776,7 +1058,7 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
     }
     
-    @objc func saveCapturedImage(_ sender : UITapGestureRecognizer) {
+    @objc private func saveCapturedImage(_ sender : UITapGestureRecognizer) {
         
         print("saveCapturedImage starts")
         
@@ -805,7 +1087,7 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
     }
     
-    func setupAddTextGestures() {
+    private func setupAddTextGestures() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CapturedImageView.startAddingTextView(_:)))
         tapGesture.delegate = self
@@ -814,7 +1096,7 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
     }
     
-    @objc func startAddingTextView(_ sender : UITapGestureRecognizer) {
+    @objc private func startAddingTextView(_ sender : UITapGestureRecognizer) {
         
         print("startAddingTextView starts")
         print("stickerManagementView : \(stickerManagementView)")
@@ -825,7 +1107,7 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
     }
     
-    func stickerManagementViewAnimationManagement(active : Bool) {
+    private func stickerManagementViewAnimationManagement(active : Bool) {
         
         guard stickerManagementView != nil  else {
             return
@@ -833,8 +1115,12 @@ extension CapturedImageView: UIGestureRecognizerDelegate {
         
 //        stickerManagementView!.activationManagementDefault(granted: active)
         stickerManagementView!.activationManagementWithDelegations(granted: active)
-        
-        
+    }
+    
+    private func listenColorChanges() {
+        colorPaletteForDoodle.listenColorChanges { (changedColor) in
+            self.doodleColor = changedColor
+        }
     }
     
 }
@@ -885,6 +1171,7 @@ extension CapturedImageView : ShareDataProtocols {
     
 }
 
+// MARK: - StickerProtocols
 extension CapturedImageView : StickerProtocols {
     
     func addTextStickerWithParameters(sticker: Sticker) {
@@ -924,12 +1211,12 @@ extension CapturedImageView : StickerProtocols {
         
         CommonSticker.shared.addStickerToArray(inputStickerView: stickerView)
         
-        print("Sticker count : \(CommonSticker.shared.stickerArray?.count)")
+        print("Sticker count : \(String(describing: CommonSticker.shared.stickerArray?.count))")
         
         guard let items2 = CommonSticker.shared.stickerArray else { return }
         
         for item in items2 {
-            print("--> : \(item.sticker.text)")
+            print("--> : \(String(describing: item.sticker.text))")
         }
         
     }
@@ -994,3 +1281,78 @@ extension CapturedImageView : StickerProtocols {
     }
     
 }
+
+// MARK: - doodle delegation protocol functions
+protocol DrawViewDelegate: NSObjectProtocol{
+    func storyDoodleView(drawing:Bool)
+}
+
+// MARK: - touches function for doodle
+extension CapturedImageView {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isDoodleActive {
+            let touch = (touches as NSSet).anyObject() as! UITouch
+            let point = touch.location(in: self)
+            
+            currenShapeLayer = DrawLayer.init()
+            currenShapeLayer?.frame = self.contentContainerView.bounds
+            //currenShapeLayer?.strokeColor = lineColor.cgColor
+            currenShapeLayer?.strokeColor = doodleColor.cgColor
+            currenShapeLayer?.lineWidth = 10
+            
+            self.contentContainerView.layer.addSublayer(currenShapeLayer!)
+            self.shapeLayers.append(currenShapeLayer!)
+            
+            currenShapeLayer?.begin(at: point)
+            
+            if let d = delegate {
+                d.storyDoodleView(drawing: true)
+            }
+        }
+        
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isDoodleActive {
+            let touch = (touches as NSSet).anyObject() as! UITouch
+            let point = touch.location(in: self)
+            
+            currenShapeLayer?.move(at: point)
+            
+            isDoodled = true
+            
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isDoodleActive {
+            self.touchEndOrCancel()
+            
+            if let d = delegate {
+                d.storyDoodleView(drawing: false)
+            }
+        }
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isDoodleActive {
+            self.touchEndOrCancel()
+            
+            if let d = delegate {
+                d.storyDoodleView(drawing: false)
+            }
+        }
+    }
+    
+    private func touchEndOrCancel() {
+        if isDoodleActive {
+            currenShapeLayer?.end()
+            currenShapeLayer = nil
+        }
+    }
+    
+}
+
+
+

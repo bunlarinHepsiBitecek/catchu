@@ -32,7 +32,6 @@ class FollowingsTableViewCell: CommonFollowTableViewCell, CommonDesignableCell {
         print("\(#function)")
         guard let user = followingsTableCellViewModel.returnUser() else { return }
         if let followStatus = user.followStatus {
-            print("POPOPOPO")
             print("user followStatus : \(followStatus)")
             Formatter.configure(followStatus, followButton)
         }

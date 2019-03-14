@@ -209,6 +209,7 @@ extension FriendGroupRelationView {
         addFriendRelationViews(choise: friendRelationChoise)
         configureViewSettings()
         addGestures()
+        setTopViewInformation()
         
     }
     
@@ -578,7 +579,7 @@ extension FriendGroupRelationView {
     }
     
     private func addGroupRelationView() {
-        groupRelationView = GroupRelationView()
+        groupRelationView = GroupRelationView(frame: .zero, friendRelationPurpose: friendRelationPurpose)
         groupRelationView.translatesAutoresizingMaskIntoConstraints = false
         
         self.tableViewContainer.addSubview(groupRelationView)
@@ -890,6 +891,19 @@ extension FriendGroupRelationView {
             }
         }
         
+    }
+    
+    private func setTopViewInformation() {
+        if let friendRelationPurpose = friendRelationPurpose {
+            switch friendRelationPurpose {
+            case .groupManagement:
+                DispatchQueue.main.async {
+                    self.topViewInfo.text = LocalizedConstants.TitleValues.LabelTitle.groupManagement
+                }
+            default:
+                return
+            }
+        }
     }
     
 }

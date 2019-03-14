@@ -9,6 +9,8 @@
 import UIKit
 
 class ColorPaletteView: UIView {
+    
+    private var colorPaletteViewModel = ColorPaletteViewModel()
 
     private let colorArray1 = [ #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.462745098, green: 0.8392156863, blue: 1, alpha: 1), #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.8323456645, blue: 0.4732058644, alpha: 1), #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1), #colorLiteral(red: 0.5818830132, green: 0.2156915367, blue: 1, alpha: 1) ]
     private let colorArray2 = [ #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1), #colorLiteral(red: 1, green: 0.8323456645, blue: 0.4732058644, alpha: 1), #colorLiteral(red: 0.8321695924, green: 0.985483706, blue: 0.4733308554, alpha: 1), #colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1), #colorLiteral(red: 0.5787474513, green: 0.3215198815, blue: 0, alpha: 1), #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1), #colorLiteral(red: 0, green: 0.3285208941, blue: 0.5748849511, alpha: 1), #colorLiteral(red: 0.8446564078, green: 0.5145705342, blue: 1, alpha: 1), #colorLiteral(red: 0.5738074183, green: 0.5655357838, blue: 0, alpha: 1) ]
@@ -148,6 +150,10 @@ extension ColorPaletteView {
         
     }
     
+    func listenColorChanges(completion: @escaping(_ changedColor: UIColor) -> Void) {
+        colorPaletteViewModel.colorSelected.bind(completion)
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -217,6 +223,8 @@ extension ColorPaletteView : ShareDataProtocols {
         } else if inputViewBackgroundColor.isEqual(UIColor.black) {
             selectedColorImage.tintColor = UIColor.white
         }
+        
+        colorPaletteViewModel.colorSelected.value = inputViewBackgroundColor
         
         guard delegate != nil else {
             return

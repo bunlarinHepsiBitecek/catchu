@@ -288,6 +288,11 @@ class User {
         user.email = self.email
         user.phone = self.phone?.getPhone()
         user.website = self.website
+        user.profilePhotoUrl = self.profilePictureUrl
+        user.bio = self.bio
+        if let isUserHasAPrivateAccount = self.isUserHasAPrivateAccount {
+            user.isPrivateAccount = NSNumber(booleanLiteral: isUserHasAPrivateAccount)
+        }
         return user
     }
     

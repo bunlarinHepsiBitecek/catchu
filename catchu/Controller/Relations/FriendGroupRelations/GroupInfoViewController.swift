@@ -104,13 +104,17 @@ extension GroupInfoViewController {
             case .exit:
                 self.addTransitionToPresentationOfFriendRelationViewController()
                 self.dismiss(animated: false, completion: nil)
-                
             case .start:
                 return
             }
             
         }
         
+    }
+    
+    // function is used from outside of the controller
+    func addGroupLeavingProcessListener(completion: @escaping(_ groupOperationType: GroupOperationTypes) -> Void) {
+        groupInfoView.addObserverForLeavingGroupProcess(completion: completion)
     }
 }
 

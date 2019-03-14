@@ -80,6 +80,12 @@
 "Remove" = "Kaldır";
 "removeFollower" = "Takipçiyi Sil?";
 "removeFollowerInfo" = "Kimse onu listenden çıkardığını bilmeyecek 😇.";
+"userInCatchU" = "CatchU Kullanıcıları :";
+"contactsInvited" = "Rehber :";
+"account" = "Hesap";
+"groupManagement" = "Group Management";
+"feedFilterRangeValue" = "Catch Aralığı :";
+"reset" = "Sıfırla";
 
 // Location Services
 //"LocationServiceDisableTitle" = "Lokasyon servisi kapalı.";
@@ -173,13 +179,14 @@
 "contactFriendSuggestion" = "CatchU kullanan arkadaşlarını kişiler listende bulmalısın ☺️";
 "activePeopleOnCatchU" = "Aktif CatchU Kullanıcıları : ";
 "invitePeopleOncatchU" = "Kişileri Davet Et          : ";
+"invitePeople" = "Arkadaşlarını Davet Et";
 "inviteFriendTitle" = "Arkadaşını Davet Et";
 "inviteFriendInformation" = "Davet için bir numara seç 😀";
 
 "explorePeopleCell" = "Kişileri Keşfet";
 "viewPendingRequestCell" = "Bekleyen İstekler";
 "manageGroupsCell" = "Grupları Yönet";
-"settingsCell" = "Ayalar";
+"settingsCell" = "Ayarlar";
 
 // Action sheet titles
 "cameraGalleryTitle" = "Kamera - Galeri";
@@ -201,6 +208,9 @@
 // View Controller Titles
 "groupInfoEdit" = "Grup İsmi";
 "advancedSettings" = "Gelişmiş Ayarlar";
+"settingsTitle" = "Ayarlar";
+"privacySecurityTitle" = "Gizlilik & Güvenlik";
+"filterSettings" = "Filtre Ayarları";
 
 // Section Titles
 "commentSettings" = "Yorum Ayarları";
@@ -214,4 +224,17 @@
 "commentFeatureUpdateInfo" = "Bu özelliği paylaşımı yaptıktan sonra, paylaşım ayarlarından güncelleyebilirsiniz";
 "locationFeatureUpdateInfo" = "Bu özelliği paylaşımı yaptıktan sonra değiştiremezsiniz";
 
+// Feed Filter Options Prompts
+"feedFilterRange" = "Catch Aralığı";
+"feedFilterRangeInfo" = "Catch ettiğiniz alanı büyütebilir veya küçültebilirsiniz.";
+
+// Settings Controller Prompts
+"addFacebookFriends" = "Facebook Arkadaşlarını Ekle";
+"addContactFriends" = "Rehber Arkadaşlarını Ekle";
+"inviteFriends" = "Arkadaşlarını Davet Et";
+"invitation" = "Davet";
+"privacyAndSecurity" = "Gizlilik ve Güvenlik";
+"logout" = "Çıkış Yap";
+"privateAccount" = "Özel Hesap";
+"privateAccountInfo" = "Bu özellik açıldığı zaman, sadece sizin izin verdiğiniz kişiler paylaşımlarınızı görebilecek.";
 

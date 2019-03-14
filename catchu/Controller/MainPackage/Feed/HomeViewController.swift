@@ -70,7 +70,7 @@ class HomeViewController: BaseViewController {
     func setupSearchViewBar() {
 //        self.navigationItem.titleView = searchBar
         
-        let leftButton = UIBarButtonItem(image: UIImage(named: "search-3"), style: .plain, target: self, action: .searchAction)
+        let leftButton = UIBarButtonItem(image: UIImage(named: "icon_search"), style: .plain, target: self, action: .searchAction)
         let rightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: .messageAction)
         
         self.navigationItem.leftBarButtonItem = leftButton

@@ -110,19 +110,6 @@ class EditProfile4View: UIView {
         
         showSpinning()
         
-        APIGatewayManager.shared.updateUserProfileInformation(requestType: .user_profile_update, userObject: User.shared) { (response, result) in
-
-            if result {
-            
-                print("result :\(result)")
-            
-                self.stopSpinning()
-            }
-            
-        }
-        
-        
-        
     }
     
     @IBAction func changeProfilePhotoButtonTapped(_ sender: Any) {

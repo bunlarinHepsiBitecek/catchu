@@ -47,6 +47,7 @@ struct Constants {
         static let DOUBLE_ONE: Double = 1.0
         static let FLOAT_ZERO: Float   = 0.0
         static let MAX_LETTER_COUNT_25 = 25
+        static let INITIAL_FILTER_RANGE = 500
         
         struct GeoFireUnits {
             static let GEOFIRE_QUERY_RADIUS : Double = 0.05

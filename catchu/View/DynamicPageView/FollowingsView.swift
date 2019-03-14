@@ -30,6 +30,7 @@ class FollowingsView: UIView {
         temp.delegate = self
         temp.dataSource = self
         
+        temp.keyboardDismissMode = .onDrag
         temp.separatorStyle = UITableViewCellSeparatorStyle.none
         temp.rowHeight = UITableViewAutomaticDimension
         temp.tableFooterView = UIView()

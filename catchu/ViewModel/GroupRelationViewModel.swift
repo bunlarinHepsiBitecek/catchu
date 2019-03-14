@@ -19,6 +19,7 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
     var state = CommonDynamic(TableViewState.suggest)
     var sectionTitle = CommonDynamic(TableViewSectionTitle.Groups)
     var selectedGroupList = CommonDynamic([Group]())
+    var refreshProcessState = CommonDynamic(CRUD_OperationStates.done)
     //var infoRequestedGroup: Group?
     //var infoRequestedGroup: CommonGroupViewModel?
     var groupRelationViewProcessType = GroupOperationTypes.getGroupList
@@ -128,6 +129,11 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
     private func createGroupArrayData(groupItems : [REGroupRequestResult_resultArray_item]) {
         print("\(#function) stars")
         
+        if refreshProcessState.value == .processing {
+            // remove all items in FollowerArray
+            groupArray.removeAll()
+        }
+        
         for item in groupItems {
             let newGroup = Group(reGroup: item)
             groupArray.append(CommonGroupViewModel(group: newGroup))
@@ -137,6 +143,7 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
         
         state.value = groupArray.count == 0 ? .empty : .populate
         sectionTitle.value = .Groups
+        refreshProcessState.value = .done
     }
     
     func convertSelectedGroupViewModelToGroupList() {
@@ -239,6 +246,10 @@ class GroupRelationViewModel: BaseViewModel, CommonViewModel {
         } else {
             return groupArray.count
         }
+    }
+    
+    func refreshProcess() {
+        getGroups()
     }
     
 }

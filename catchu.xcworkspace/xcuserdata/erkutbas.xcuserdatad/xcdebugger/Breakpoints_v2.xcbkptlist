@@ -9,14 +9,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-            timestampString = "570101547.247243"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/CapturedImageView.swift"
+            timestampString = "573715449.57831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "createFollowerArrayData(reUserList:)"
-            landmarkType = "7">
+            startingLineNumber = "844"
+            endingLineNumber = "844"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -25,44 +25,60 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-            timestampString = "570101547.247784"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/CapturedImageView.swift"
+            timestampString = "573715449.578825"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "getUserFollowersPageByPage2()"
-            landmarkType = "7">
+            startingLineNumber = "867"
+            endingLineNumber = "867"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/View/ShareData/ShareMenuViews/PostViews/CapturedImageView.swift"
+            timestampString = "573715449.579156"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1121"
+            endingLineNumber = "1121"
+            landmarkName = "unknown"
+            landmarkType = "0">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "catchu.FollowersViewModel.getUserFollowersPageByPage2() -&gt; ()"
+                  symbolName = "catchu.CapturedImageView.(listenColorChanges in _D4F397CDDDDD802AB19E5D441BCA5026)() -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-                  timestampString = "570101548.134495"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/CapturedImageView.swift"
+                  timestampString = "573706457.503738"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "1023">
+                  startingLineNumber = "1121"
+                  endingLineNumber = "1121"
+                  offsetFromSymbolStart = "36">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (catchu.ConnectionResult&lt;catchu.REFollowInfoListResponse&gt;) -&gt; () in catchu.FollowersViewModel.getUserFollowersPageByPage2() -&gt; ()"
+                  symbolName = "closure #1 (__C.UIColor) -&gt; () in catchu.CapturedImageView.(listenColorChanges in _D4F397CDDDDD802AB19E5D441BCA5026)() -&gt; ()"
                   moduleName = "catchu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-                  timestampString = "570101548.1374871"
+                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/View/ShareData/ShareMenuViews/PostViews/CapturedImageView.swift"
+                  timestampString = "573706457.506194"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "86"
-                  endingLineNumber = "86"
-                  offsetFromSymbolStart = "34">
+                  startingLineNumber = "1122"
+                  endingLineNumber = "1122"
+                  offsetFromSymbolStart = "36">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -73,61 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-            timestampString = "570101547.2482949"
+            filePath = "catchu/View/ShareData/ShareMenuViews/ColorPaletteView/ColorPaletteView.swift"
+            timestampString = "573388194.216827"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
-            landmarkName = "handleAwsTaskResponse(networkResult:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "catchu.FollowersViewModel.handleAwsTaskResponse&lt;A&gt;(networkResult: catchu.ConnectionResult&lt;A&gt;) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-                  timestampString = "570101548.142754"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "105"
-                  endingLineNumber = "105"
-                  offsetFromSymbolStart = "298">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "catchu.FollowersViewModel.handleAwsTaskResponse&lt;A&gt;(networkResult: catchu.ConnectionResult&lt;A&gt;) -&gt; ()"
-                  moduleName = "catchu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/erkutbas/Documents/catchu/catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-                  timestampString = "570101548.144761"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "105"
-                  endingLineNumber = "105"
-                  offsetFromSymbolStart = "343">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "catchu/ViewModel/DynamicPageViewModels/FollowersViewModel.swift"
-            timestampString = "570101547.248453"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "returnFollowerArrayCount()"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "updateSelectedColorFromPalette(inputView:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,13 +105,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "catchu/Model/SlideMenu/FacebookContactListManager.swift"
-            timestampString = "570101547.24986"
+            filePath = "catchu/Services/AWS/APIGatewayManager.swift"
+            timestampString = "573715449.579567"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
-            landmarkName = "askAccessTokenExpire()"
+            startingLineNumber = "798"
+            endingLineNumber = "798"
+            landmarkName = "createApplicationEndpoint(userid:deviceToken:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "catchu/Services/AWS/APIGatewayManager.swift"
+            timestampString = "573715449.579639"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "804"
+            endingLineNumber = "804"
+            landmarkName = "createApplicationEndpoint(userid:deviceToken:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

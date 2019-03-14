@@ -81,10 +81,10 @@ class UserProfileViewController: BaseTableViewController {
     }
     
     private func setupNavigation() {
-        let sliderMenuLeftBarButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: .openSliderMenuAction)
+        let sliderMenuLeftBarButton = UIBarButtonItem(image: UIImage(named: "icon_hamburger"), style: .plain, target: self, action: .openSliderMenuAction)
         navigationItem.leftBarButtonItem = sliderMenuLeftBarButton
         
-        let editProfileRightBarButton = UIBarButtonItem(image: UIImage(named: "user_white"), style: .plain, target: self, action: .presentEditProfileAction)
+        let editProfileRightBarButton = UIBarButtonItem(image: UIImage(named: "icon_edit_profile"), style: .plain, target: self, action: .presentEditProfileAction)
         navigationItem.rightBarButtonItem = editProfileRightBarButton
     }
     

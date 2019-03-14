@@ -208,7 +208,6 @@ extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdat
     }
 }
 
-
 class TableViewStateResultView: BaseView {
     
     let activityIndicatorView: UIActivityIndicatorView = {
@@ -285,10 +284,12 @@ class TableViewStateResultView: BaseView {
         addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            stackView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
-            stackView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
-            stackView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
-            stackView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
+//            stackView.safeTopAnchor.constraint(equalTo: safeTopAnchor),
+//            stackView.safeBottomAnchor.constraint(equalTo: safeBottomAnchor),
+//            stackView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
+//            stackView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor)
+            stackView.centerXAnchor.constraint(equalTo: safeCenterXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: safeCenterYAnchor),
             ])
     }
     

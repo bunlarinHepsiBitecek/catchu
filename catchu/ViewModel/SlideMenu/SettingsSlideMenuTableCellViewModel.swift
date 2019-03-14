@@ -19,7 +19,7 @@ class SettingsSlideMenuTableCellViewModel: CommonSlideMenuTableCellViewModelItem
     }
     
     var cellImage: UIImage {
-        if let image = UIImage(named: "settings") {
+        if let image = UIImage(named: "settings_slide_menu") {
             return image
         } else {
             return UIImage()

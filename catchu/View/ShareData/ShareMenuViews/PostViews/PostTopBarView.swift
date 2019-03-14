@@ -223,12 +223,6 @@ extension PostTopBarView {
             stackViewFollowers.leadingAnchor.constraint(equalTo: safeProfileImageContainer.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_30),
             stackViewFollowers.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
             
-            /*
-            informationLabel.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
-            informationLabel.leadingAnchor.constraint(equalTo: safeProfileImageContainer.trailingAnchor, constant: Constants.StaticViewSize.ConstraintValues.constraint_30),
-            informationLabel.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_10),
-            informationLabel.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_24)*/
-            
             moreOptionsButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_40),
             moreOptionsButton.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Constants.StaticViewSize.ConstraintValues.constraint_5),
             moreOptionsButton.heightAnchor.constraint(equalToConstant: Constants.StaticViewSize.ViewSize.Height.height_50),
@@ -267,13 +261,24 @@ extension PostTopBarView {
     
     @objc func moreOptionsButtonPressed(_ sender : UIButton) {
         
+        /*
         let popOverController = MoreOptionsTableViewController()
         popOverController.preferredContentSize = CGSize(width: UIScreen.main.bounds.width-Constants.StaticViewSize.ViewSize.Width.width_40, height: Constants.StaticViewSize.ViewSize.Height.height_300)
         
         // in order to have a navigation bar, its title and maybe bar button items
         let navigationController = UINavigationController(rootViewController: popOverController)
         
+        showPopup(navigationController, sourceView: sender)*/
+        
+        
+        let filterOptionsPopOverController = FeedFilterOptionsTableViewController()
+        filterOptionsPopOverController.preferredContentSize = CGSize(width: UIScreen.main.bounds.width-Constants.StaticViewSize.ViewSize.Width.width_40, height: Constants.StaticViewSize.ViewSize.Height.height_250)
+        
+        // in order to have a navigation bar, its title and maybe bar button items
+        let navigationController = UINavigationController(rootViewController: filterOptionsPopOverController)
+        
         showPopup(navigationController, sourceView: sender)
+        
         
     }
     

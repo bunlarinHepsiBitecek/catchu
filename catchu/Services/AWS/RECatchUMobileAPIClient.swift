@@ -938,6 +938,27 @@ public class RECatchUMobileAPIClient: AWSAPIGatewayClient {
         return self.invokeHTTPRequest("GET", urlString: "/users/{uid}/posts", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: nil, responseClass: REPostListResponse.self) as! AWSTask<REPostListResponse>
     }
     
+    /*
+     
+     
+     @param body
+     
+     return type: REBaseResponse
+     */
+    public func notifPost(authorization: String, body: RENotification) -> AWSTask<REBaseResponse> {
+        let headerParameters = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": authorization,
+            
+            ]
+        
+        let queryParameters:[String:Any] = [:]
+        
+        let pathParameters:[String:Any] = [:]
+        
+        return self.invokeHTTPRequest("POST", urlString: "/notif", pathParameters: pathParameters, queryParameters: queryParameters, headerParameters: headerParameters, body: body, responseClass: REBaseResponse.self) as! AWSTask<REBaseResponse>
+    }
     
     
     

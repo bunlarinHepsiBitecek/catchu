@@ -26,6 +26,8 @@ class GroupExitTableViewCell: CommonTableCell, CommonDesignableCellForGroupDetai
     
     override func initializeCellSettings() {
         
+        self.selectionStyle = .none
+        
         addViews()
         
     }

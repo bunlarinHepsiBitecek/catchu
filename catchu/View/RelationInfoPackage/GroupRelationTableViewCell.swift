@@ -12,6 +12,7 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     
     var groupViewModel: CommonGroupViewModel?
     private var cellAnimation : Bool = false
+    private var friendRelationPurpose : FriendRelationViewPurpose?
     
     lazy var groupProfileImageView: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Width.width_50))
@@ -173,6 +174,16 @@ extension GroupRelationTableViewCell {
             }
         }
         
+        if let friendRelationPurpose = friendRelationPurpose {
+            switch friendRelationPurpose {
+            case .groupManagement:
+                self.selectIcon.isHidden = true
+                self.accessoryType = .detailButton
+            default:
+                break
+            }
+        }
+        
         self.groupViewModel?.groupSelected.bindAndFire({ [unowned self] (selectedInfo) in
             self.cellSelectionAnimation(state: selectedInfo, animated: self.cellAnimation)
         })
@@ -198,7 +209,7 @@ extension GroupRelationTableViewCell {
     func setGroupSelectionState(state: TableViewRowSelected) {
         self.cellAnimation = true
         
-        print("gropViewModel : \(groupViewModel)")
+        print("gropViewModel : \(String(describing: groupViewModel))")
         groupViewModel?.displayProperties()
         
         if groupViewModel?.groupSelected.value == .selected {
@@ -230,6 +241,10 @@ extension GroupRelationTableViewCell {
     
     func returnCellGroupViewModel() -> CommonGroupViewModel {
         return self.groupViewModel!
+    }
+    
+    func setFriendRelationPurpose(friendRelationPurpose: FriendRelationViewPurpose) {
+        self.friendRelationPurpose = friendRelationPurpose
     }
     
 }

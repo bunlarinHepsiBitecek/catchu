@@ -88,11 +88,11 @@ class FollowersViewModel: CommonViewModel {
             
         } catch let error as ApiGatewayClientErrors {
             if error == .missingUserId {
-                print("\(#function) : missing userid")
+                print("\(Constants.ALERT) : missing userid")
             }
         }
         catch  {
-            print("")
+            print("\(Constants.CRASH_WARNING)")
         }
     }
     
@@ -115,8 +115,10 @@ class FollowersViewModel: CommonViewModel {
                 
                 if let resultArray = data.items {
                     if let count = data.totalNumberOfPeople {
-                        totalNumberOfFollowers.value = Int(count)
+                        totalNumberOfFollowers.value = Int(truncating: count)
+                        //self.checkIfFollowersExists()
                     }
+                    
                     if resultArray.count > 0 {
                         currentPage += 1
                         self.createFollowerArrayData(reUserList: resultArray)
@@ -249,3 +251,4 @@ class FollowersViewModel: CommonViewModel {
     }
     
 }
+
