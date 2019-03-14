@@ -21,7 +21,7 @@ struct ShareMedia {
         case .image:
             guard let image = self.image else { return nil }
             //return UIImageJPEGRepresentation(image, CGFloat(integerLiteral: Constants.NumericConstants.INTEGER_ONE))
-            return UIImageJPEGRepresentation(image, 0.80)
+            return image.jpegData(compressionQuality: 0.80)
         case .video:
             do {
                 guard let localUrl = self.localUrl else { return nil }

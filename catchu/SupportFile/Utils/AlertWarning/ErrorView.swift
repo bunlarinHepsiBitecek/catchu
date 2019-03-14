@@ -30,7 +30,7 @@ class ErrorView: BaseView {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
+        label.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.headline)
         label.text = "[Title]"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ class ErrorView: BaseView {
     
     var bodyLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+        label.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.subheadline)
         label.text = "[Body]"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,10 +50,10 @@ class ErrorView: BaseView {
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, bodyLabel])
-        stackView.axis = UILayoutConstraintAxis.vertical
+        stackView.axis = NSLayoutConstraint.Axis.vertical
         stackView.spacing = 5
-        stackView.alignment = UIStackViewAlignment.fill
-        stackView.distribution = UIStackViewDistribution.fillProportionally
+        stackView.alignment = UIStackView.Alignment.fill
+        stackView.distribution = UIStackView.Distribution.fillProportionally
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView

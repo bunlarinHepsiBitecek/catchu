@@ -16,8 +16,10 @@ class User {
     var name: String?
     var email: String?
     var password: String?
-    var provider: String?
-    var providerID: String?
+//    var provider: String?
+//    var providerID: String?
+    var provider: Provider?
+    
     var profilePictureUrl: String?
     var birthday: String?
     var gender: GenderType?
@@ -49,14 +51,24 @@ class User {
     
     init() {}
     
-    init(userid: String? = nil, username: String?  = nil, name: String?  = nil, email: String?  = nil, password: String?  = nil, provider: String?  = nil, providerID: String?  = nil, followStatus: FollowStatus? = nil) {
+//    init(userid: String? = nil, username: String?  = nil, name: String?  = nil, email: String?  = nil, password: String?  = nil, provider: String?  = nil, providerID: String?  = nil, followStatus: FollowStatus? = nil) {
+//        self.userid     = userid
+//        self.username   = username
+//        self.name       = name
+//        self.email      = email
+//        self.password   = password
+//        self.provider   = provider
+//        self.providerID = providerID
+//        self.followStatus = followStatus
+//    }
+    
+    init(userid: String? = nil, username: String?  = nil, name: String?  = nil, email: String?  = nil, password: String?  = nil, provider: Provider?  = nil, followStatus: FollowStatus? = nil) {
         self.userid     = userid
         self.username   = username
         self.name       = name
         self.email      = email
         self.password   = password
         self.provider   = provider
-        self.providerID = providerID
         self.followStatus = followStatus
     }
     
@@ -120,8 +132,11 @@ class User {
         self.website = userProfile.website
         self.bio = userProfile.bio
         self.phone = Phone(phone: userProfile.phone)
-        self.provider = userProfile.provider?.providerType
-        self.providerID = userProfile.provider?.providerid
+//        self.provider = userProfile.provider?.providerType
+//        self.providerID = userProfile.provider?.providerid
+        if let provider = userProfile.provider {
+            self.provider = Provider(provider: provider)
+        }
         
         self.userFollowerCount = relationInfo.followerCount
         self.userFollowingCount = relationInfo.followingCount
@@ -251,31 +266,10 @@ class User {
             }
         }
         
-        if let userInfo = httpRequest.userInfo {
-            if let providerData = userInfo.provider {
-                if let providerType = providerData.providerType {
-                    self.provider = providerType
-                }
-                
-                if let providerID = providerData.providerid {
-                    self.providerID = providerID
-                }
-            }
+        if let userInfo = httpRequest.userInfo, let providerData = userInfo.provider  {
+            self.provider = Provider(provider: providerData)
         }
         
-    }
-    
-    func setUserProfileProperties(httpRequest : REUserProfileProperties) {
-        
-        self.userid = httpRequest.userid!
-        self.name = httpRequest.name!
-        self.username = httpRequest.username!
-        //self.profilePictureUrl = httpRequest.profilePhotoUrl!
-        self.isUserHasAPrivateAccount = (httpRequest.isPrivateAccount?.boolValue)!
-//        userBirthday = httpRequest.birthday
-//        userGender = httpRequest.gender!
-//        email = httpRequest.email!
-//        userPhone = httpRequest.phone!
     }
     
     func getUserProfile() -> REUserProfileProperties? {
@@ -283,11 +277,17 @@ class User {
         user.userid = self.userid
         user.name = self.name
         user.username = self.username
+        user.bio = self.bio
         user.birthday = self.birthday
         user.gender = self.gender?.rawValue
         user.email = self.email
         user.phone = self.phone?.getPhone()
         user.website = self.website
+        user.profilePhotoUrl = self.profilePictureUrl
+        if let hasPrivateAccount = self.isUserHasAPrivateAccount {
+            user.isPrivateAccount = NSNumber(booleanLiteral: hasPrivateAccount)
+        }
+        
         return user
     }
     
@@ -310,8 +310,11 @@ class User {
         self.email = user.email
         self.website = user.website
         self.phone = Phone(phone: user.phone)
-        self.provider = user.provider?.providerType
-        self.providerID = user.provider?.providerid
+        if let provider = user.provider {
+            self.provider = Provider(provider: provider)
+        }
+//        self.provider = user.provider?.providerType
+//        self.providerID = user.provider?.providerid
         
         self.followStatus = FollowStatus.convert(relationInfo.followStatus)
         self.userFollowerCount = relationInfo.followerCount
@@ -349,20 +352,21 @@ class User {
         
     }
     
-    func convertUserToProvider(inputUser : User) -> REProvider {
-        
-        let provider = REProvider()
-        
-        if let providerString = inputUser.provider {
-            provider?.providerType = providerString
-        }
-        
-        if let providerID = inputUser.providerID {
-            provider?.providerid = providerID
-        }
-        
-        return provider!
-    }
+//    func convertUserToProvider(inputUser : User) -> REProvider {
+//        
+//        let provider = REProvider()
+//        
+//        
+//        if let providerString = inputUser.provider {
+//            provider?.providerType = providerString
+//        }
+//        
+//        if let providerID = inputUser.providerID {
+//            provider?.providerid = providerID
+//        }
+//        
+//        return provider!
+//    }
 }
 
 extension User {
@@ -400,5 +404,25 @@ extension User {
                 return FollowStatus.none
             }
         }
+    }
+}
+
+
+extension User {
+    func copyUserInstance() -> User {
+        let user = User()
+        user.userid = self.userid
+        user.name = self.name
+        user.username = self.username
+        user.bio = self.bio
+        user.birthday = self.birthday
+        user.gender = self.gender
+        user.email = self.email
+        user.phone = self.phone // object
+        user.website = self.website
+        user.profilePictureUrl = self.profilePictureUrl
+        user.isUserHasAPrivateAccount = self.isUserHasAPrivateAccount
+        user.provider = provider
+        return user
     }
 }

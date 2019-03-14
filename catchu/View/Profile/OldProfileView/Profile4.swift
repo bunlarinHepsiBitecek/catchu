@@ -403,7 +403,7 @@ extension Profile4: UIGestureRecognizerDelegate {
 //        print("dragDirection : \(dragDirection)")
         
         
-        if sender.state == UIGestureRecognizerState.ended &&
+        if sender.state == UIGestureRecognizer.State.ended &&
             dragDirection == Direction.STOP {
             
             return
@@ -424,7 +424,7 @@ extension Profile4: UIGestureRecognizerDelegate {
             
             UIView.animate(withDuration: 0.3,
                            delay: 0.0,
-                           options: UIViewAnimationOptions.curveEaseOut,
+                           options: UIView.AnimationOptions.curveEaseOut,
                            animations: {
                             
                             self.layoutIfNeeded()
@@ -462,7 +462,7 @@ extension Profile4: UIGestureRecognizerDelegate {
             
             UIView.animate(withDuration: 0.3,
                            delay: 0.0,
-                           options: UIViewAnimationOptions.curveEaseOut,
+                           options: UIView.AnimationOptions.curveEaseOut,
                            animations: {
                             
                             self.layoutIfNeeded()

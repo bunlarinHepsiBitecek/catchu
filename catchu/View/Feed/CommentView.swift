@@ -19,7 +19,7 @@ class CommentView: BaseView {
         
         // Setup dynamic auto-resizing for comment cells
         tableView.estimatedRowHeight = 500
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.register(CommentViewCell.self, forCellReuseIdentifier: CommentViewCell.identifier)
         
@@ -91,7 +91,10 @@ extension CommentView: CommentAccessoryViewDelegate {
         guard let user = comment.user else { return }
         // TODO: user objesi duzeltilecek
         //        guard let username = user.userName else { return }
-        let username = "@\(user.username)" ?? ""
+        var username = ""
+        if let nameStr = user.username {
+            username = "@" + nameStr
+        }
         self.commentAccessoryView.messageTextView.text = username
         self.commentAccessoryView.messageTextView.becomeFirstResponder()
         if let commentid = comment.commentid {

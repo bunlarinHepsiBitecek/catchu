@@ -25,7 +25,7 @@ class PhoneViewController: BaseTableViewController {
     }()
     
     lazy var nextBarButton: UIBarButtonItem = {
-       let barButton = UIBarButtonItem(title: LocalizedConstants.EditableProfileView.Next, style: .plain, target: self, action: .sendSMS)
+       let barButton = UIBarButtonItem(title: LocalizedConstants.EditableProfile.Next, style: .plain, target: self, action: .sendSMS)
         
         return barButton
     }()
@@ -45,7 +45,7 @@ class PhoneViewController: BaseTableViewController {
         tableView.delegate = self
         
         // Setup dynamic auto-resizing for comment cells
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.keyboardDismissMode = .interactive
         
@@ -57,14 +57,14 @@ class PhoneViewController: BaseTableViewController {
     }
     
     private func setupNavigation() {
-        navigationItem.title = LocalizedConstants.EditableProfileView.Phone
+        navigationItem.title = LocalizedConstants.EditableProfile.Phone
         navigationItem.rightBarButtonItem = nextBarButton
         navigationItem.leftBarButtonItem = cancelBarButton
     }
     
     func setupViewModel() {
         viewModel.loadData()
-        viewModel.footerTitle = LocalizedConstants.EditableProfileView.WillReceiveSMS
+        viewModel.footerTitle = LocalizedConstants.EditableProfile.WillReceiveSMS
         
         viewModel.verificationId.bindAndFire { [unowned self] (verificationId) in
             if !verificationId.isEmpty {

@@ -29,7 +29,7 @@ class PasswordResetView: BaseView {
     
     lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LocalizedConstants.Login.Reset.uppercased(with: NSLocale.current), for: UIControlState.normal)
+        button.setTitle(LocalizedConstants.Login.Reset.uppercased(with: NSLocale.current), for: UIControl.State.normal)
         
         button.backgroundColor = UIColor.groupTableViewBackground
         button.layer.cornerRadius = 5
@@ -41,10 +41,10 @@ class PasswordResetView: BaseView {
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [emailTextField, resetButton])
-        stackView.axis = UILayoutConstraintAxis.vertical
+        stackView.axis = NSLayoutConstraint.Axis.vertical
         stackView.spacing = 10
-        stackView.alignment = UIStackViewAlignment.fill
-        stackView.distribution = UIStackViewDistribution.fillEqually
+        stackView.alignment = UIStackView.Alignment.fill
+        stackView.distribution = UIStackView.Distribution.fillEqually
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -143,8 +143,7 @@ extension PasswordResetView {
         print("manageForegroundActions starts")
         let action = #selector(self.backToLoginViewController)
         
-        NotificationCenter.default.addObserver(self, selector: action, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: action, name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     @objc func backToLoginViewController() {

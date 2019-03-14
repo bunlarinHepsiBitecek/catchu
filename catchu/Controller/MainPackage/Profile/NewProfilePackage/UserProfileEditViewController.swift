@@ -18,9 +18,11 @@ class UserProfileEditViewController: BaseTableViewController {
     var viewModel: UserProfileEditViewModel!
     
     private var expandedIndexPath: IndexPath?
+    private var pickedImage: UIImage?
+    private var pickedImageExtension: String?
     
     lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.hidesWhenStopped = true
         
         return activityIndicatorView
@@ -33,6 +35,7 @@ class UserProfileEditViewController: BaseTableViewController {
     
     lazy var doneRightBarButton: UIBarButtonItem = {
         let barButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: .saveAction)
+        barButton.isEnabled = false
         return barButton
     }()
     
@@ -43,6 +46,7 @@ class UserProfileEditViewController: BaseTableViewController {
         setupNavigation()
         setupHeaderView()
         setupTableView()
+        setupViewModel()
     }
     
     func setup() {
@@ -58,7 +62,7 @@ class UserProfileEditViewController: BaseTableViewController {
     }
     
     func setupTableView() {
-        tableView.estimatedRowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.keyboardDismissMode = .interactive
         
         // at cell, 2 times left padding from
@@ -68,31 +72,76 @@ class UserProfileEditViewController: BaseTableViewController {
         
         tableView.register(UserProfileEditViewCell.self, forCellReuseIdentifier: UserProfileEditViewCell.identifier)
         
-        let headerView = UserProfileEditHeaderView()
-        headerView.frame.size = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        tableView.tableHeaderView = headerView
+        tableView.tableFooterView = UIView()
+//        let headerView = UserProfileHeaderView()
+//        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+//        tableView.tableHeaderView = headerView
+    }
+    
+    deinit {
+        viewModel.state.unbind()
+        viewModel.valueChanged.unbind()
+    }
+    
+    func setupViewModel() {
+        viewModel.state.bindAndFire { [unowned self] in
+            self.stateAnimate($0)
+        }
+        
+        viewModel.valueChanged.bind { [unowned self] in
+            self.enableDoneRightBarButton($0)
+        }
+    }
+    
+    private func stateAnimate(_ state: TableViewState) {
+        switch state {
+        case .loading:
+            startActivityIndicatorBarButton()
+        case .populate:
+            stopActivityIndicatorBarButton()
+            dismissViewController()
+        default:
+            print("Handle Error state: \(state)")
+            return
+        }
     }
     
     @objc func cancel() {
-        dismiss(animated: true, completion: nil)
+        dismissViewController()
     }
     
     @objc func save() {
-        if let rightBarButtonView = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
-            activityIndicatorView.frame = rightBarButtonView.frame
-        }
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
-        activityIndicatorView.startAnimating()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-            self.activityIndicatorView.stopAnimating()
-            
-            self.navigationItem.rightBarButtonItem = self.doneRightBarButton
-        })
-        
+        viewModel.updateUserInfo()
     }
-
+    
+    private func dismissViewController() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func startActivityIndicatorBarButton() {
+        DispatchQueue.main.async {
+            if let rightBarButtonView = self.navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
+                self.activityIndicatorView.frame = rightBarButtonView.frame
+            }
+            
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicatorView)
+            self.activityIndicatorView.startAnimating()
+        }
+    }
+    
+    private func stopActivityIndicatorBarButton() {
+        DispatchQueue.main.async {
+            self.activityIndicatorView.stopAnimating()
+            self.navigationItem.rightBarButtonItem = self.doneRightBarButton
+            self.doneRightBarButton.isEnabled = false
+        }
+    }
+    
+    private func enableDoneRightBarButton(_ state: Bool) {
+        DispatchQueue.main.async {
+            self.doneRightBarButton.isEnabled = state
+        }
+    }
 }
 
 extension UserProfileEditViewController {
@@ -105,11 +154,15 @@ extension UserProfileEditViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let item = viewModel.items[indexPath.section][indexPath.row]
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: UserProfileEditViewCell.identifier, for: indexPath) as? UserProfileEditViewCell {
             cell.configure(viewModelItem: item)
+            
+            cell.changePhotoActionBlock = { () in
+                self.showChangePhotoActionSheet()
+            }
+            
             return cell
         }
         
@@ -144,7 +197,6 @@ extension UserProfileEditViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.endUpdates()
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-        
     }
     
     func expandRow(indexPath: IndexPath, isExpand: Bool) {
@@ -153,11 +205,51 @@ extension UserProfileEditViewController {
             self.expandedIndexPath = isExpand ? indexPath : nil
         }
     }
+}
+
+extension UserProfileEditViewController {
     
-//    func findExpandedIndexpath() -> IndexPath? {
-//        let aaa = tableView.visibleCells
-//            .compactMap { $0 as? UserProfileEditViewCell}
-//            .filter { $0.isExpanded == true }.first
-//    }
+    func showChangePhotoActionSheet() {
+        let actionSheetController = UIAlertController(title: LocalizedConstants.Profile.ChangePhoto, message: nil, preferredStyle: .actionSheet)
+        
+        let actionRemoveCurrentPhoto = UIAlertAction(title: LocalizedConstants.EditableProfile.RemoveCurrentPhoto, style: .destructive) { (_) in
+            self.removeProfilePhoto()
+        }
+        
+        let actionTakePhoto = UIAlertAction(title: LocalizedConstants.EditableProfile.TakePhoto, style: .default) { (_) in
+            ImagePickerManager.shared.accessCamera(vc: self)
+        }
+        
+        let actionChooseFromLibrary = UIAlertAction(title: LocalizedConstants.EditableProfile.ChooseFromLibrary, style: .default) { (_) in
+            ImagePickerManager.shared.accessPhotoLibrary(vc: self)
+        }
+        
+        let actionCancel = UIAlertAction(title: LocalizedConstants.Cancel, style: .cancel, handler: nil)
+        
+        actionSheetController.addAction(actionRemoveCurrentPhoto)
+        actionSheetController.addAction(actionTakePhoto)
+        actionSheetController.addAction(actionChooseFromLibrary)
+        actionSheetController.addAction(actionCancel)
+        
+        self.present(actionSheetController, animated: true, completion: nil)
+        
+        ImagePickerManager.shared.imagePicked = { (image, pathExtension) in
+            self.updateProfileImage(image: image, imageExtension: pathExtension)
+        }
+    }
+    
+    private func removeProfilePhoto() {
+        viewModel.removeProfilePhoto()
+        updateProfileImage(image: nil, imageExtension: nil)
+    }
+    
+    private func updateProfileImage(image: UIImage?, imageExtension: String?) {
+        pickedImage = image
+        pickedImageExtension = imageExtension
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? UserProfileEditViewCell {
+            cell.profileImageView.image = pickedImage
+        }
+    }
+    
 }
 

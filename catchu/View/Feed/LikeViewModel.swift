@@ -132,14 +132,14 @@ class LikeViewModel: BaseViewModel, ViewModel {
 }
 
 class ViewModelUser: ViewModelItem {
-    var user: User?
+    var user: User
     
-    init(user: User?) {
+    init(user: User) {
         self.user = user
     }
     
     func sendRequestProcess() {
-        guard let user = self.user else { return }
+//        guard let user = self.user else { return }
         guard let targetUserid = user.userid else { return }
         let requestType = findRequestType()
         if requestType == .defaultRequest {
@@ -154,7 +154,7 @@ class ViewModelUser: ViewModelItem {
     }
     
     func findRequestType() -> RequestType {
-        guard let user = self.user else { return .defaultRequest }
+//        guard let user = self.user else { return .defaultRequest }
         guard let followStatus = user.followStatus else { return .defaultRequest }
         let isPrivateAccount = user.isUserHasAPrivateAccount ?? false
         
@@ -171,8 +171,6 @@ class ViewModelUser: ViewModelItem {
     }
     
     private func updateFollowStatus(_ requestType: RequestType) {
-        guard let user = self.user else { return }
-        
         switch requestType {
         case .createFollowDirectly:
             user.followStatus = User.FollowStatus.following

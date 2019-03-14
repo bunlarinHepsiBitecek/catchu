@@ -89,13 +89,13 @@ class FeedMapView: BaseView {
                         forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
 
         let coordinate = CLLocationCoordinate2DMake(54.98, 73.32)
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, 5000, 5000)
+        let coordinateRegion = MKCoordinateRegion(center: coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000)
         mapView.setRegion(coordinateRegion, animated: true)
         mapView.addAnnotations(annotations)
     }
     
     private func centerMap(_ coordinate: CLLocationCoordinate2D) {
-        let span = MKCoordinateSpanMake(zoom, zoom)
+        let span = MKCoordinateSpan(latitudeDelta: zoom, longitudeDelta: zoom)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         mapView.setRegion(region, animated: true)
     }

@@ -34,7 +34,7 @@ class GroupInfoView: UIView {
         temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         temp.contentInset = UIEdgeInsets(top: groupImageContainerViewHeight + statusBarHeight, left: 0, bottom: 0, right: 0)
         temp.contentInsetAdjustmentBehavior = .automatic
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.rowHeight = UITableView.automaticDimension
         
         //temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_85, bottom: 0, right: 0)
         //temp.separatorColor = UIColor.groupTableViewBackground

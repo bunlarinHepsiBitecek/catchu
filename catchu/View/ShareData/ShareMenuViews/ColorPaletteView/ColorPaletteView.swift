@@ -111,7 +111,7 @@ extension ColorPaletteView {
         self.containerView.addSubview(pageControl)
         self.containerView.addSubview(collectionViewColorPallette)
         
-        self.containerView.bringSubview(toFront: selectedColorImageContainer)
+        self.containerView.bringSubviewToFront(selectedColorImageContainer)
         
         let safe = self.safeAreaLayoutGuide
         let safeContainerView = self.containerView.safeAreaLayoutGuide

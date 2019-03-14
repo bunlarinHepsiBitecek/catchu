@@ -127,7 +127,7 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
 //        picker.mediaTypes = [kUTTypeMovie as String
 //            ,kUTTypeVideo as String
 //            ,kUTTypeGIF   as String]
-        picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        picker.sourceType = UIImagePickerController.SourceType.photoLibrary
 //        picker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
         picker.allowsEditing = true
         UIApplication.topViewController()?.present(picker, animated: true, completion: nil)
@@ -139,7 +139,7 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
         let picker = UIImagePickerController()
         
         picker.delegate = self
-        picker.sourceType = UIImagePickerControllerSourceType.camera
+        picker.sourceType = UIImagePickerController.SourceType.camera
         picker.allowsEditing = true
         UIApplication.topViewController()?.present(picker, animated: true, completion: nil)
         
@@ -161,32 +161,30 @@ class ImageVideoPickerHandler: NSObject, UIImagePickerControllerDelegate, UINavi
     /// - Parameters:
     ///   - picker: picker
     ///   - info: info .....
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImageFromPicker : UIImage?
         
-        if let x = info[UIImagePickerControllerReferenceURL] as? URL {
+        if let x = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
             print("x.path : \(x.pathExtension)")
         }
         
         // downcast any to UIImage
-        if let editedPickedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+        if let editedPickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             
             selectedImageFromPicker = editedPickedImage
             
-        } else if let originalPickedImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+        } else if let originalPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             
             selectedImageFromPicker = originalPickedImage
         }
         
         if let selectedImage = selectedImageFromPicker {
-
+            
             delegate.returnImage(inputImage: selectedImage)
             
         }
         
         picker.dismiss(animated: true, completion: nil)
-        
     }
     
 }

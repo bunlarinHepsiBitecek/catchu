@@ -15,7 +15,7 @@ class GroupRelationView: UIView {
     
     lazy var groupTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -24,8 +24,8 @@ class GroupRelationView: UIView {
         temp.dataSource = self
         //temp.prefetchDataSource = self
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
         //temp.separatorInset = UIEdgeInsets(top: 0, left: Constants.StaticViewSize.ConstraintValues.constraint_80, bottom: 0, right: 0)
@@ -215,9 +215,9 @@ extension GroupRelationView {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromRight
-        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         
         if let window = self.window {
             window.layer.add(transition, forKey: kCATransition)
@@ -232,7 +232,7 @@ extension GroupRelationView {
         print("selectedGroupIndexPath : \(selectedGroupIndexPath)")
         
         self.groupTableView.beginUpdates()
-        self.groupTableView.deleteRows(at: [selectedGroupIndexPath], with: UITableViewRowAnimation.middle)
+        self.groupTableView.deleteRows(at: [selectedGroupIndexPath], with: UITableView.RowAnimation.middle)
         self.groupTableView.endUpdates()
         
     }

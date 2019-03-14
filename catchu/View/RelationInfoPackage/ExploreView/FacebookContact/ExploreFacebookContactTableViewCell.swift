@@ -12,6 +12,7 @@ class ExploreFacebookContactTableViewCell: CommonFollowTableViewCell, CommonDesi
     
     private var exploreFacebookContactTableCellViewModel : ExploreFacebookContactTableCellViewModel!
     
+    
     override func initializeCellSettings() {
         addViews()
         configureCellSettings()

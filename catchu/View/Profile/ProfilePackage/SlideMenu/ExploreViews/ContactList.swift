@@ -25,7 +25,7 @@ class ContactList: UIView {
     }()
     
     lazy var tableViewContactList: UITableView = {
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -33,7 +33,7 @@ class ContactList: UIView {
         temp.delegate = self
         temp.dataSource = self
         
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.rowHeight = UITableView.automaticDimension
 //        temp.tableFooterView = UIView()
         temp.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         

@@ -50,7 +50,7 @@ class CustomProgressBarLayer: CALayer {
         outerTrackShapeLayer.fillColor = UIColor.clear.cgColor
         outerTrackShapeLayer.lineWidth = lineWidth
         outerTrackShapeLayer.strokeEnd = 1
-        outerTrackShapeLayer.lineCap = kCALineCapRound
+        outerTrackShapeLayer.lineCap = CAShapeLayerLineCap.round
         outerTrackShapeLayer.transform = rotateTransformation
         addSublayer(outerTrackShapeLayer)
         
@@ -59,7 +59,7 @@ class CustomProgressBarLayer: CALayer {
         innerTrackShapeLayer.position = position
         innerTrackShapeLayer.strokeEnd = progress
         innerTrackShapeLayer.lineWidth = lineWidth
-        innerTrackShapeLayer.lineCap = kCALineCapRound
+        innerTrackShapeLayer.lineCap = CAShapeLayerLineCap.round
         innerTrackShapeLayer.fillColor = UIColor.clear.cgColor
         innerTrackShapeLayer.path = circularPath.cgPath
         innerTrackShapeLayer.transform = rotateTransformation

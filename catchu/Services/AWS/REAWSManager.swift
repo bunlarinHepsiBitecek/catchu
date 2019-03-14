@@ -85,10 +85,11 @@ class REAWSManager: BackEndAPIInterface {
         userReq.username = user.username
         userReq.email = user.email
         userReq.profilePhotoUrl = user.profilePictureUrl
-        guard let provider = REProvider() else { return }
-        provider.providerType = user.provider
-        provider.providerid = user.providerID
-        userReq.provider = provider
+//        guard let provider = REProvider() else { return }
+//        provider.providerType = user.provider
+//        provider.providerid = user.providerID
+//        userReq.provider = provider
+        userReq.provider = user.provider?.getProvider()
         
         guard let baseRequest = REBaseRequest() else { return }
         baseRequest.user = userReq
@@ -709,6 +710,29 @@ class REAWSManager: BackEndAPIInterface {
                 return nil
             }
         }
+    }
+    
+    /// Update user own profile info.
+    ///
+    /// - Parameters:
+    ///   - user: Loggin user profile info
+    ///   - completion: A NetworkResult<REBaseResponse>
+    /// - Returns: void
+    /// - Author: Remzi Yildirim
+    func updateUserProfile(user: User, completion: @escaping (NetworkResult<REBaseResponse>) -> Void) {
+        guard let userProfile = REUserProfile() else { return }
+        userProfile.userInfo = user.getUserProfile()
+        userProfile.requestType = RequestType.user_profile_update.rawValue
+        
+        FirebaseManager.shared.getIdToken { [unowned self] (tokenResult, _) in
+            self.apiClient.usersPost(authorization: tokenResult.token, body: userProfile).continueWith(block: { (task) -> Any? in
+                
+                print("\(#function) Result: \(task)")
+                self.processExpectingData(task: task, completion: completion)
+                return nil
+            })
+        }
+        
     }
     
     

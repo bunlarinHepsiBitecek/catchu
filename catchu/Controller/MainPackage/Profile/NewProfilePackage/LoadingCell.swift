@@ -9,7 +9,7 @@
 class LoadingCell: BaseTableCell {
     
     let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.hidesWhenStopped = true
         
         return activityIndicatorView
@@ -28,7 +28,7 @@ class LoadingCell: BaseTableCell {
 
 class CollectionFooterActivityView: BaseCollectionReusableView {
     let activityIndicatorView: UIActivityIndicatorView = {
-        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityView = UIActivityIndicatorView(style: .gray)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         activityView.hidesWhenStopped = true
         

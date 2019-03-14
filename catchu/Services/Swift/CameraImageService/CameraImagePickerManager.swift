@@ -76,7 +76,7 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         let picker = UIImagePickerController()
         
         picker.delegate = self
-        picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        picker.sourceType = UIImagePickerController.SourceType.photoLibrary
         picker.allowsEditing = false
         
         self.triggerViewControllerPresenter(controller: Controller<UIImagePickerController>.input(picker))
@@ -148,28 +148,27 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         print("didFinishPickingMediaWithInfo starts")
         
         var selectedImageFromPicker : UIImage?
         var selectedMediaFromPicker : URL?
         var selectedMediaPathExtension: String?
         
-        if let infoUrl = info[UIImagePickerControllerReferenceURL] as? URL {
+        if let infoUrl = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
             selectedMediaPathExtension = infoUrl.pathExtension.lowercased()
         }
         
         // downcast any to UIImage
-        if let editedPickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+        if let editedPickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             selectedImageFromPicker = editedPickedImage
-        } else if let originalPickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        } else if let originalPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             selectedImageFromPicker = originalPickedImage
-        } else if let videoUrl = info[UIImagePickerControllerMediaURL] as? URL {
+        } else if let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
             selectedMediaFromPicker = videoUrl
             
             let data = NSData(contentsOf: selectedMediaFromPicker!)
-            print("video byte : \(data?.length)")
+            print("video byte : \(String(describing: data?.length))")
             
             let byteCount : Int = (data?.length)!
             let bcf = ByteCountFormatter()
@@ -200,9 +199,8 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
             }
             
         }
-        
     }
-    
+
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         print("\(#function) starts")

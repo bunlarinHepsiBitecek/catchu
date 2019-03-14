@@ -42,7 +42,7 @@ class TabPageViewController: UIPageViewController {
         }
     }
     
-    override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]? = nil) {
+    override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
     }
     
@@ -78,7 +78,7 @@ class TabPageViewController: UIPageViewController {
     
     // change first view controller in pageVC
     private func scrollToPage(_ index: Int) {
-        let direction: UIPageViewControllerNavigationDirection = self.selectedIndex > index ? .reverse : .forward
+        let direction: UIPageViewController.NavigationDirection = self.selectedIndex > index ? .reverse : .forward
         
         if direction == .forward {
             for tempIndex in selectedIndex...index {

@@ -103,7 +103,7 @@ extension SlideMenuTableViewCell {
     
     func badgeActivationManager(active: Bool, animated: Bool) {
         if animated {
-            UIView.transition(with: self.badgeLabel, duration: Constants.AnimationValues.aminationTime_03, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+            UIView.transition(with: self.badgeLabel, duration: Constants.AnimationValues.aminationTime_03, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
                 self.badgeLabelAlphaManager(active: active)
             })
         } else {

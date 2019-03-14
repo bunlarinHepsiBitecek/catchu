@@ -32,7 +32,7 @@ class FirebaseManager {
     func redirectSignin() {
         if (Auth.auth().currentUser == nil) {
             User.shared = User()
-            let transition = LoaderTransition(direction: .toBottom, style: .easeInOut)
+            let transition = LoaderTransition(direction: .toTop, style: .easeInOut)
             LoaderController.setRootViewController(controller: LoginViewController(), transition: transition)
         }
     }
@@ -42,7 +42,7 @@ class FirebaseManager {
         if (Auth.auth().currentUser != nil) {
             let name = Constants.Storyboard.Name.Main
             let identifier = Constants.Storyboard.ID.MainTabBarViewController
-            let transition = LoaderTransition(direction: .toTop, style: .easeInOut)
+            let transition = LoaderTransition(direction: .toBottom, style: .easeInOut)
             LoaderController.setRootViewControllerForStoryboard(name: name, identifier: identifier, transition: transition)
         }
     }
@@ -66,8 +66,11 @@ class FirebaseManager {
                 }
                 User.shared.userid = userData.user.uid
                 let providerData = userData.user.providerData[0]
-                User.shared.providerID = userData.user.uid
-                User.shared.provider = providerData.providerID
+//                User.shared.providerID = userData.user.uid
+//                User.shared.provider = providerData.providerID
+                let providerType = ProviderType.init(rawValue: providerData.providerID) ?? ProviderType.facebook
+                User.shared.provider = Provider(id: userData.user.uid, type: providerType)
+                
                 self.signidUserSync(authData: userData)
             }
             LoaderController.shared.removeLoader()
@@ -155,8 +158,9 @@ class FirebaseManager {
                 User.shared.name = displayName
             }
             let providerData = user.providerData[0]
-            User.shared.providerID = providerData.uid
-            User.shared.provider = getProviderType(providerData.providerID)
+//            User.shared.providerID = providerData.uid
+//            User.shared.provider = getProviderType(providerData.providerID)
+            User.shared.provider = Provider(id: providerData.uid, type: getProviderType(providerData.providerID))
             
             if let email = providerData.email {
                 User.shared.email = email
@@ -168,16 +172,23 @@ class FirebaseManager {
                 
                 var orginalUrl = photoUrl.absoluteString
                 
-                if (User.shared.provider == ProviderType.facebook.rawValue ) {
+//                if (User.shared.provider == ProviderType.facebook.rawValue ) {
+//                    orginalUrl = orginalUrl + "?type=large"
+//                } else if (User.shared.provider == ProviderType.twitter.rawValue) {
+//                    orginalUrl = orginalUrl.replacingOccurrences(of: "_normal", with: "")
+//                }
+                
+                if (User.shared.provider?.providerType == ProviderType.facebook ) {
                     orginalUrl = orginalUrl + "?type=large"
-                } else if (User.shared.provider == ProviderType.facebook.rawValue) {
+                } else if (User.shared.provider?.providerType == ProviderType.twitter) {
                     orginalUrl = orginalUrl.replacingOccurrences(of: "_normal", with: "")
                 }
                 
+                
                 User.shared.profilePictureUrl = orginalUrl
                 print("profile image url: \(orginalUrl)")
-                print("provider: \(User.shared.provider ?? "")")
-                print("providerId: \(User.shared.providerID ?? "")")
+                print("provider: \(User.shared.provider?.providerType.rawValue ?? "")")
+                print("providerId: \(User.shared.provider?.providerid ?? "")")
                 print("userid : \(User.shared.userid)")
             }
             
@@ -188,13 +199,13 @@ class FirebaseManager {
         }
     }
     
-    private func getProviderType(_ provider: String) -> String {
-        var providerType = ProviderType.firebase.rawValue
+    private func getProviderType(_ provider: String) -> ProviderType {
+        var providerType = ProviderType.firebase
         
         if provider.contains(ProviderType.facebook.rawValue) {
-            providerType = ProviderType.facebook.rawValue
+            providerType = ProviderType.facebook
         } else if provider.contains(ProviderType.twitter.rawValue) {
-            providerType = ProviderType.twitter.rawValue
+            providerType = ProviderType.twitter
         }
         return providerType
     }
@@ -390,7 +401,8 @@ extension FirebaseManager {
             User.shared.name = name
         }
         if let providerID = data[FacebookPermissions.id]  as? String {
-            User.shared.providerID = providerID
+//            User.shared.providerID = providerID
+            User.shared.provider = Provider(id: providerID, type: ProviderType.facebook)
         }
     }
 }

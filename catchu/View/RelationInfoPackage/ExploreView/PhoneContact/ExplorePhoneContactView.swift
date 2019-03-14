@@ -7,19 +7,20 @@
 //
 
 import UIKit
+import MessageUI
 
 class ExplorePhoneContactView: UIView {
 
     lazy var searchBarHeaderView: SearchBarHeaderView = {
         let temp = SearchBarHeaderView()
-        temp.frame.size = temp.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        temp.frame.size = temp.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         print("temp.frame : \(temp.frame.size)")
         return temp
     }()
     
     lazy var facebookTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -28,8 +29,8 @@ class ExplorePhoneContactView: UIView {
         temp.delegate = self
         temp.dataSource = self
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.none
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.none
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
         temp.register(ExploreFacebookContactTableViewCell.self, forCellReuseIdentifier: ExploreFacebookContactTableViewCell.identifier)

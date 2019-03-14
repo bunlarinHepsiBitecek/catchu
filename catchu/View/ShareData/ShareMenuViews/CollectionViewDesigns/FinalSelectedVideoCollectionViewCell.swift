@@ -101,7 +101,7 @@ extension FinalSelectedVideoCollectionViewCell {
             return
         }
         
-        player!.seek(to: kCMTimeZero)
+        player!.seek(to: CMTime.zero)
         isPlaying = false
         changePlayStopView(playing: false)
         

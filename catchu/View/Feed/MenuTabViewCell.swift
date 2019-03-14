@@ -11,13 +11,25 @@ class MenuTabViewCell: BaseCollectionCell {
     
     var item: MenuTabViewModelItem?
     
-    private let dimension = Constants.Feed.ImageWidthHeight
+    private let dimension: CGFloat = 25
     
-    let iconImageView: UIImageView = {
+    lazy var iconImageView: UIImageView = {
         let imageView =  UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
 //        imageView.contentMode = UIViewContentMode.scaleAspectFill
         imageView.image = nil
+        
+        // MARK: When use with satackview
+        let imageHeightConstraint = imageView.safeHeightAnchor.constraint(equalToConstant: dimension)
+        imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
+        imageHeightConstraint.isActive = true
+        
+        let imageWidthConstraint = imageView.safeWidthAnchor.constraint(equalToConstant: dimension)
+        imageWidthConstraint.priority = UILayoutPriority(rawValue: 999)
+        imageWidthConstraint.isActive = true
+        
+        // aspect ratio
+        imageView.safeWidthAnchor.constraint(equalTo: imageView.safeHeightAnchor, multiplier: 1).isActive = true
         return imageView
     }()
     
@@ -27,7 +39,6 @@ class MenuTabViewCell: BaseCollectionCell {
         label.font = ConstanstViews.PageView.TabView.Font
         label.textColor = ConstanstViews.PageView.TabView.DefaultColor
         label.numberOfLines = 1
-        label.textAlignment = .left
         
         return label
     }()
@@ -41,6 +52,8 @@ class MenuTabViewCell: BaseCollectionCell {
     override func setupViews() {
         super.setupViews()
         
+        contentView.backgroundColor = .clear
+        
         let cellStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
         cellStackView.translatesAutoresizingMaskIntoConstraints = false
         cellStackView.alignment = .center
@@ -50,13 +63,8 @@ class MenuTabViewCell: BaseCollectionCell {
         contentView.addSubview(cellStackView)
         
         NSLayoutConstraint.activate([
-            iconImageView.widthAnchor.constraint(equalToConstant: 30),
-            iconImageView.heightAnchor.constraint(equalToConstant: 30),
-            
-            cellStackView.safeTopAnchor.constraint(equalTo: contentView.safeTopAnchor),
-            cellStackView.safeBottomAnchor.constraint(equalTo: contentView.safeBottomAnchor),
-            cellStackView.safeLeadingAnchor.constraint(equalTo: contentView.safeLeadingAnchor),
-            cellStackView.safeTrailingAnchor.constraint(equalTo: contentView.safeTrailingAnchor)
+            cellStackView.safeCenterXAnchor.constraint(equalTo: contentView.safeCenterXAnchor),
+            cellStackView.safeCenterYAnchor.constraint(equalTo: contentView.safeCenterYAnchor),
             ])
         
     }

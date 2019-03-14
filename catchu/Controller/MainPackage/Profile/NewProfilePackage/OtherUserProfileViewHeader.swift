@@ -8,12 +8,14 @@
 
 class OtherUserProfileViewHeader: BaseCollectionReusableView {
     
+    // MARK: - Variables
     var viewModelItem: OtherUserProfileViewModelItemHeader!
     
     private let padding = Constants.Profile.Padding
     private let dimension: CGFloat = 100
-    private let textTintColor = UIColor.white
+    private let textTintColor = UIColor.black
     
+    // MARK: - Views
     lazy var separatorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +27,7 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: dimension, height: dimension))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -125,35 +127,28 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
         return stackView
     }()
     
-//    let gradientLayer: CAGradientLayer = {
-//        let gradient = CAGradientLayer()
-//        gradient.colors = [#colorLiteral(red: 0.2156862745, green: 0.231372549, blue: 0.2666666667, alpha: 1).cgColor, #colorLiteral(red: 0.2588235294, green: 0.5254901961, blue: 0.9568627451, alpha: 1).cgColor]
-////        gradient.locations = [0.0, 0.75]
-//        
-//        // for converting top to left
-////        gradient.startPoint = CGPoint(x: 0, y: 1)
-////        gradient.endPoint = CGPoint(x: 1, y: 1)
-//        
-//        return gradient
-//    }()
-    
+    // MARK: - Functions
     override func setupViews() {
         super.setupViews()
         
         let layoutMargin = UIEdgeInsets(top: padding, left: padding/2, bottom: padding, right: padding/2)
         
         let metadataStackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
-        metadataStackView.axis = .vertical
         metadataStackView.alignment = .center
         metadataStackView.distribution = .fill
         metadataStackView.spacing = padding
         
         let separator = createSeparator(color: textTintColor)
         let followStackView = UIStackView(arrangedSubviews: [followersButton, separator, followingButton])
-        followStackView.alignment = .center
+        followStackView.alignment = .fill
         followStackView.distribution = .fillProportionally
         followStackView.spacing = padding / 2
         separator.heightAnchor.constraint(equalTo: followStackView.heightAnchor, multiplier: 1).isActive = true
+        followersButton.backgroundColor = .red
+        followingButton.backgroundColor = .red
+        
+        followersButton.titleLabel?.textAlignment = .center
+        followingButton.titleLabel?.textAlignment = .center
         
         let mainStackView = UIStackView(arrangedSubviews: [metadataStackView, buttonsStackView, followStackView, bioLabel])
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -180,12 +175,6 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
             ])
         
         fillFollowerFollowingButtons(followerCount: "", followingCount: "")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-//        gradientLayer.frame = self.frame
     }
     
     @objc func followProcess(_ sender: UIButton) {
@@ -218,37 +207,32 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
         style.alignment = .center
         style.lineBreakMode = .byWordWrapping
         
-        let titleAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .headline),
-            NSAttributedStringKey.paragraphStyle: style,
-            NSAttributedStringKey.foregroundColor: textTintColor
+        let titleAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline),
+            NSAttributedString.Key.paragraphStyle: style,
+            NSAttributedString.Key.foregroundColor: textTintColor
         ]
         
-        let subtitleAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline),
-            NSAttributedStringKey.paragraphStyle: style,
-            NSAttributedStringKey.foregroundColor: textTintColor
+        let subtitleAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline),
+            NSAttributedString.Key.paragraphStyle: style,
+            NSAttributedString.Key.foregroundColor: textTintColor
         ]
         
         let attributedString = NSMutableAttributedString(string: title, attributes: titleAttributes)
-        attributedString.append(NSAttributedString(string: "\n"))
+        attributedString.append(NSAttributedString(string: Constants.CharacterConstants.NEWLINE))
         attributedString.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
         
         return attributedString
     }
     
-    func configure(_ viewModelItem: ViewModelItem) {
+    func configure(viewModelItem: ViewModelItem) {
         guard let viewModelItem = viewModelItem as? OtherUserProfileViewModelItemHeader else { return }
         self.viewModelItem = viewModelItem
-        
-        viewModelItem.user.bindAndFire { [unowned self] in
-            self.updateUI($0)
-        }
-        
-        
+        updateUI(viewModelItem.user)
     }
     
-    func updateUI(_ user: User) {
+    private func updateUI(_ user: User) {
         if let profileImageUrl = user.profilePictureUrl {
             profileImageView.loadAndCacheImage(url: profileImageUrl)
         }
@@ -263,6 +247,10 @@ class OtherUserProfileViewHeader: BaseCollectionReusableView {
                 
                 fillFollowerFollowingButtons(followerCount: formattedFollowerCount, followingCount: formattedFollowingCount)
             }
+        }
+        
+        if let followStatus = user.followStatus {
+            Formatter.configure(followStatus, followButton)
         }
     }
     

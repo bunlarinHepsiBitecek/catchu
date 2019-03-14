@@ -358,7 +358,7 @@ extension CustomCameraCapturedImageView {
         
         activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator.style = .whiteLarge
         
         activityIndicator.startAnimating()
         
@@ -661,7 +661,7 @@ extension CustomCameraCapturedImageView: UIGestureRecognizerDelegate {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: .allowUserInteraction,
             animations: {
                 self.downloadButton.transform = CGAffineTransform.identity
                 

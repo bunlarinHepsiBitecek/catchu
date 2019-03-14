@@ -36,7 +36,7 @@ class UserProfileViewModel: BaseViewModel, ViewModel {
     }
     
     
-    func handleResult(_ result: NetworkResult<REUserProfile>) {
+    private func handleResult(_ result: NetworkResult<REUserProfile>) {
         switch result {
         case .success(let response):
             if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {

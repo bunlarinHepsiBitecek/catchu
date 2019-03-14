@@ -89,7 +89,7 @@ extension PendingRequestTableViewController {
     
     private func tableViewReload() {
         DispatchQueue.main.async {
-            UIView.transition(with: self.tableView, duration: Constants.AnimationValues.aminationTime_03, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+            UIView.transition(with: self.tableView, duration: Constants.AnimationValues.aminationTime_03, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
                 self.tableView.reloadData()
             })
         }
@@ -111,9 +111,9 @@ extension PendingRequestTableViewController {
                     self.tableView.beginUpdates()
                     
                     if cellResult.buttonOperation == .confirm {
-                        self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                        self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
                     } else if cellResult.buttonOperation == .delete {
-                        self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.right)
+                        self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.right)
                     }
                     
                     self.tableView.endUpdates()

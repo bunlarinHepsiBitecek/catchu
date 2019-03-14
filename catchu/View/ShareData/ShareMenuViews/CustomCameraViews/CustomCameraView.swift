@@ -381,7 +381,7 @@ extension CustomCameraView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.exposureTouchesView.transform = CGAffineTransform.identity
                 
@@ -411,7 +411,7 @@ extension CustomCameraView : UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomCameraView.dismissCustomCameraView(_:)))
         tapGesture.delegate = self
         closeButton.addGestureRecognizer(tapGesture)
-        self.mainView.bringSubview(toFront: closeButton)
+        self.mainView.bringSubviewToFront(closeButton)
         
     }
     

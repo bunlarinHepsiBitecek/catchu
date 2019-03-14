@@ -41,7 +41,7 @@ class MapView: UIView {
     }
     
     private func centerMap(_ coordinate: CLLocationCoordinate2D) {
-        let span = MKCoordinateSpanMake(zoom, zoom)
+        let span = MKCoordinateSpan(latitudeDelta: zoom, longitudeDelta: zoom)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         mapView.setRegion(region, animated: true)
     }

@@ -77,7 +77,7 @@ class CommentViewController: BaseTableViewController {
         
         // Setup dynamic auto-resizing for comment cells
         tableView.estimatedRowHeight = 500
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.register(CommentViewCell.self, forCellReuseIdentifier: CommentViewCell.identifier)
         

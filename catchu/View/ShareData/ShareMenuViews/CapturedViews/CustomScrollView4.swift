@@ -23,7 +23,7 @@ class CustomScrollView4: UIScrollView {
             imageView.frame.size = sizeForImageToDisplay()
             imageView.center = center
             contentSize = imageView.frame.size
-            contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+            contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             updateLayout()
         }
     }
@@ -68,7 +68,7 @@ class CustomScrollView4: UIScrollView {
         alwaysBounceHorizontal = true
         alwaysBounceVertical = true
         bouncesZoom = true
-        decelerationRate = UIScrollViewDecelerationRateFast
+        decelerationRate = UIScrollView.DecelerationRate.fast
         delegate = self
         maximumZoomScale = 5.0
         addSubview(imageView)

@@ -333,14 +333,24 @@ class Phone {
 }
 
 class Provider {
-    var providerid: String?
-    var providerType: String?
+    var providerid: String
+    var providerType: ProviderType
     
-    init() {}
+    init(provider: REProvider) {
+        self.providerid = provider.providerid ?? ""
+        let providerType = provider.providerType ?? ProviderType.firebase.rawValue
+        self.providerType = ProviderType(rawValue: providerType) ?? ProviderType.firebase
+    }
     
-    init(provider: REProvider?) {
-        guard let provider = provider else { return }
-        self.providerid = provider.providerid
-        self.providerType = provider.providerType
+    init(id: String, type: ProviderType) {
+        providerid = id
+        providerType = type
+    }
+    
+    func getProvider() -> REProvider {
+        let provider = REProvider()
+        provider?.providerid = providerid
+        provider?.providerType = providerType.rawValue
+        return provider!
     }
 }

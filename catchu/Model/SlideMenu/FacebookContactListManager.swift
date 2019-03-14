@@ -205,9 +205,12 @@ class FacebookContactListManager {
                     print("friend_id : \(friendData["id"])")
                     
                     let user = User()
-                    user.provider = ProviderType.facebook.rawValue
                     
-                    if let id = friendData["id"] { user.providerID = String(describing: id) }
+                    if let id = friendData["id"] as? String {
+                        user.provider = Provider(id: id, type: ProviderType.facebook)
+//                        user.provider = ProviderType.facebook.rawValue
+//                        user.providerID = String(describing: id)
+                    }
                     if let name = friendData["name"] { user.name = String(describing: name) }
                     if let userName = friendData["short_name"] { user.username = String(describing: userName) }
                     
@@ -243,7 +246,10 @@ class FacebookContactListManager {
         
         if let userArray = FacebookContactListManager.shared.facebookFriendArray {
             for item in userArray {
-                providerList?.items?.append(User.shared.convertUserToProvider(inputUser: item))
+//                providerList?.items?.append(User.shared.convertUserToProvider(inputUser: item))
+                if let provider = item.provider {
+                    providerList?.items?.append(provider.getProvider())
+                }
             }
         }
         

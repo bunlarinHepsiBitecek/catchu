@@ -11,8 +11,8 @@ class CountryViewCell: BaseTableCell {
     var country: Country?
     
     // style value1 is enabled detailTextLabel
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: UITableViewCellStyle.value1, reuseIdentifier: reuseIdentifier)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -11,7 +11,7 @@ import UIKit
 class RelationCollectionLoadingView: UIView {
 
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let temp = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.hidesWhenStopped = true
         temp.startAnimating()

@@ -89,7 +89,7 @@ class DynamicTextView: UITextView {
     override var intrinsicContentSize: CGSize {
         var size = super.intrinsicContentSize
 
-        if size.height == UIViewNoIntrinsicMetric {
+        if size.height == UIView.noIntrinsicMetric {
             // force layout
             layoutManager.glyphRange(for: textContainer)
             size.height = layoutManager.usedRect(for: textContainer).height + textContainerInset.top + textContainerInset.bottom

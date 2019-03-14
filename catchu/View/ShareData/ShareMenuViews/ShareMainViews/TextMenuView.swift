@@ -121,12 +121,11 @@ extension TextMenuView {
 
         print("addObservers starts")
 
-        NotificationCenter.default.addObserver(self, selector: #selector(TextMenuView.keyboardViewChangeFrame(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(TextMenuView.keyboardViewChangeFrame(notification:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
     }
 
     @objc func keyboardViewChangeFrame(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
 
             print("keyboard heigth 1: \(keyboardSize.height)")
 

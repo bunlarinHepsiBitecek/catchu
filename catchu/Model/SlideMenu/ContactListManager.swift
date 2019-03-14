@@ -135,10 +135,12 @@ class ContactListManager {
             
             print("convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue) : \(convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue))")
             
-            let provider = Provider()
-            provider.providerType = ProviderType.phone.rawValue
-            provider.providerid = convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue)
+//            let provider = Provider()
+//            provider.providerType = ProviderType.phone.rawValue
+//            provider.providerid = convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue)
             
+            let providerid = convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue)
+            let provider = Provider(id: providerid, type: ProviderType.phone)
             appendNewProviderToArray(provider: provider)
             
         }
@@ -197,7 +199,7 @@ class ContactListManager {
     
     private func directToSettingsForEnableContactAccess() {
         
-        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
         
     }
     
@@ -248,7 +250,7 @@ class ContactListManager {
                 
                 let reProvider = REProvider()
                 reProvider?.providerid = phone.providerid
-                reProvider?.providerType = phone.providerType
+                reProvider?.providerType = phone.providerType.rawValue
                 
                 providerList?.items?.append(reProvider!)
             }

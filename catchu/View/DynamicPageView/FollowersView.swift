@@ -14,14 +14,14 @@ class FollowersView: UIView {
     
     lazy var searchBarHeaderView: SearchBarHeaderView = {
         let temp = SearchBarHeaderView()
-        temp.frame.size = temp.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        temp.frame.size = temp.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         print("temp.frame : \(temp.frame.size)")
         return temp
     }()
     
     lazy var followersTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -31,8 +31,8 @@ class FollowersView: UIView {
         temp.dataSource = self
 //        temp.prefetchDataSource = self
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.none
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.none
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
         temp.register(FollowersTableViewCell.self, forCellReuseIdentifier: FollowersTableViewCell.identifier)
@@ -226,7 +226,7 @@ extension FollowersView {
                         self.followersTableView.beginUpdates()
                         
                         if buttonProcessData.buttonOperation == .more {
-                            self.followersTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.right)
+                            self.followersTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.right)
                         }
                         
                         self.manageTableViewScrollProperty(active: true)

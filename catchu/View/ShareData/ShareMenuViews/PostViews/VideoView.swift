@@ -70,7 +70,7 @@ class VideoView: UIView {
     }()
     
     lazy var blurView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_20
@@ -142,7 +142,7 @@ class VideoView: UIView {
     }()
     
     lazy var blurViewForRecordContainer: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_30

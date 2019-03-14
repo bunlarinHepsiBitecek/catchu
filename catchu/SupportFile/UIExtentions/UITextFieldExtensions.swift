@@ -26,7 +26,7 @@ extension UITextView {
             
             let defaultReadMoreText = LocalizedConstants.Feed.More
             
-            let linkAttributes: [NSAttributedStringKey: Any] = [
+            let linkAttributes: [NSAttributedString.Key: Any] = [
                 .link: "\(defaultReadMoreText):",
                 .underlineColor: Constants.Feed.ReadMoreUnderlineColor,
                 .font: self.font ?? Constants.Feed.ReadMoreFont,
@@ -116,7 +116,7 @@ extension UITextView {
             if let matchRange = text.range(of: word, options: .literal, range: remainingRange),
                 let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                 
-                let linkAttributes: [NSAttributedStringKey: Any] = [
+                let linkAttributes: [NSAttributedString.Key: Any] = [
                     .link: NSURL(string: "\(schemeMatch):\(escapedString)")!,
                     .foregroundColor: UIColor.blue
                 ]
@@ -198,7 +198,7 @@ extension UITextView {
                 // MARK: swift 3 and old version
 //                attributedString.addAttribute(NSLinkAttributeName, value: "\(schemeMatch):\(escapedString)", range: text.NSRangeFromRange(range: matchRange))
                 
-                let linkAttributes: [NSAttributedStringKey: Any] = [
+                let linkAttributes: [NSAttributedString.Key: Any] = [
                     .link: NSURL(string: "\(schemeMatch):\(escapedString)")!,
                     .foregroundColor: UIColor.blue
                 ]

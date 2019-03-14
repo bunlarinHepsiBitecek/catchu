@@ -73,7 +73,7 @@ class MapShareView: UIView {
         
         UIView.animate(withDuration: 0.3,
                        delay: 0,
-                       options: UIViewAnimationOptions.curveEaseIn,
+                       options: .curveEaseIn,
                        animations: {
                         
                         self.layoutIfNeeded()

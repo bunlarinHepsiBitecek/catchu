@@ -23,7 +23,7 @@ class GroupAdminPanelTableViewCell: CommonTableCell, CommonDesignableCellForGrou
     
     lazy var addIcon: UIImageView = {
         let imageView =  UIImageView()
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = UIImage(named: "icon_add")?.withRenderingMode(.alwaysTemplate)
         imageView.tintColor = #colorLiteral(red: 0.1294117647, green: 0.5882352941, blue: 0.9529411765, alpha: 1)
         imageView.layer.cornerRadius = Constants.StaticViewSize.CorderRadius.cornerRadius_8

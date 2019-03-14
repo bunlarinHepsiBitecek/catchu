@@ -6,53 +6,42 @@
 //  Copyright © 2018 Remzi YILDIRIM. All rights reserved.
 //
 
-private let reuseIdentifier = "Cell"
 private let minimumSpacing: CGFloat = 1
 private let itemPerLine: CGFloat = 3
 
 class OtherUserProfileViewController: BaseCollectionViewController {
     
     // MARK: - Variables
-    private var headerView: OtherUserProfileViewHeader!
+    weak var headerView: OtherUserProfileViewHeader?
     weak var activityFooterView: CollectionFooterActivityView?
     var viewModel: OtherUserProfileViewModel!
-    
-    // MARK: - View
-    lazy var gradientLayer: CAGradientLayer = {
-        let gradient = CAGradientLayer()
-        gradient.colors = [#colorLiteral(red: 0.2156862745, green: 0.231372549, blue: 0.2666666667, alpha: 1).cgColor, #colorLiteral(red: 0.2588235294, green: 0.5254901961, blue: 0.9568627451, alpha: 1).cgColor]
-        gradient.frame = self.view.bounds
-        return gradient
-    }()
     
     // MARK: - Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupCollectionView()
         setupViewModel()
     }
     
     private func setupCollectionView() {
-        headerView = OtherUserProfileViewHeader(frame: self.view.frame)
-        
-        let tempView = UIView()
-        tempView.layer.insertSublayer(gradientLayer, at: 0)
-        collectionView?.backgroundView = tempView
-        collectionView?.backgroundColor = .clear
-        
+        collectionView?.backgroundColor = UIColor.white
         collectionView?.register(UserProfileViewPostCollectionCell.self, forCellWithReuseIdentifier: UserProfileViewPostCollectionCell.identifier)
         
-        collectionView?.register(OtherUserProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: OtherUserProfileViewHeader.identifier)
-        collectionView?.register(CollectionFooterActivityView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: CollectionFooterActivityView.identifier)
+        collectionView?.register(OtherUserProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: OtherUserProfileViewHeader.identifier)
+        collectionView?.register(CollectionFooterActivityView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: CollectionFooterActivityView.identifier)
     }
     
     func setupViewModel() {
         viewModel.getUserInfo()
-        viewModel.getUserPosts()
         bindViewModel()
     }
     
     func bindViewModel() {
+        viewModel.headerState.bindAndFire { [unowned self] in
+            self.headerView($0)
+        }
+        
         viewModel.state.bindAndFire { [unowned self] in
             self.setFooterView($0)
         }
@@ -63,29 +52,56 @@ class OtherUserProfileViewController: BaseCollectionViewController {
     }
     
     deinit {
+        viewModel.headerState.unbind()
         viewModel.state.unbind()
         viewModel.changes.unbind()
     }
     
-    func setFooterView(_ state: TableViewState) {
+    private func headerView(_ state: TableViewState) {
         switch state {
-        case .suggest:
-            activityFooterView?.startAnimating()
-        case .loading:
-            activityFooterView?.startAnimating()
-        case .paging:
-            activityFooterView?.startAnimating()
         case .populate:
-            activityFooterView?.stopAnimating()
-        case .empty:
-            activityFooterView?.stopAnimating()
-        case .error:
-            activityFooterView?.stopAnimating()
+            headerViewDataUpdate()
         default:
-            activityFooterView?.stopAnimating()
+            print("Headerview state erro occured")
         }
     }
     
+    private func setFooterView(_ state: TableViewState) {
+        switch state {
+        case .suggest:
+            startActivityIndicator()
+        case .loading:
+            startActivityIndicator()
+        case .paging:
+            startActivityIndicator()
+        case .populate:
+            stopActivityIndicator()
+        case .empty:
+            stopActivityIndicator()
+        case .error:
+            stopActivityIndicator()
+        default:
+            stopActivityIndicator()
+        }
+    }
+    
+    private func headerViewDataUpdate() {
+        DispatchQueue.main.async {
+            self.headerView?.configure(viewModelItem: self.viewModel.headerItem)
+        }
+    }
+    
+    private func startActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityFooterView?.startAnimating()
+        }
+    }
+    
+    private func stopActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityFooterView?.stopAnimating()
+        }
+    }
     
     func reloadableCollectionView(_ cellChanges: CellChanges) {
         print("reloadableCollectionView itemCount: \(viewModel.items.count)")
@@ -107,14 +123,14 @@ extension OtherUserProfileViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        print("sizeForItemAt: \(indexPath)")
         
         let targetWidth = ( self.view.frame.width / itemPerLine ) - minimumSpacing
         return CGSize(width: targetWidth, height: targetWidth)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        print("referenceSizeForHeaderInSection: \(headerView.systemLayoutSizeFitting(UILayoutFittingExpandedSize))")
-        return headerView.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
+        return CGSize(width: self.view.frame.width, height: 300)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
@@ -156,14 +172,14 @@ extension OtherUserProfileViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         print("viewForSupplementaryElementOfKind kind: \(kind)")
         switch kind {
-        case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: OtherUserProfileViewHeader.identifier, for: indexPath) as! OtherUserProfileViewHeader
 
-            headerView.configure(viewModel.userHeaderItem)
+            headerView.configure(viewModelItem: viewModel.headerItem)
             self.headerView = headerView
             
             return headerView
-        case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
             let activityFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionFooterActivityView.identifier, for: indexPath) as! CollectionFooterActivityView
             self.activityFooterView = activityFooterView
             
@@ -177,7 +193,7 @@ extension OtherUserProfileViewController {
     
     override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         print("willDisplaySupplementaryView: \(elementKind) - \(indexPath)")
-        if elementKind == UICollectionElementKindSectionFooter {
+        if elementKind == UICollectionView.elementKindSectionFooter {
             viewModel.getUserPostsMore()
             viewModel.state.value = viewModel.state.value
         }

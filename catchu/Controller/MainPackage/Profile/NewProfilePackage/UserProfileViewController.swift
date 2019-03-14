@@ -17,10 +17,11 @@ fileprivate extension Selector {
 class UserProfileViewController: BaseTableViewController {
     // MARK: - Variables
     var viewModel = UserProfileViewModel()
+    var isBarButtonItems = true
     
     // MARK: - Views
     lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         
@@ -28,7 +29,7 @@ class UserProfileViewController: BaseTableViewController {
     }()
     
     lazy var footerActivityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
         
@@ -37,9 +38,8 @@ class UserProfileViewController: BaseTableViewController {
     
     lazy var profileHeaderView: UserProfileHeaderView = {
         let view = UserProfileHeaderView()
-        view.frame.size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        view.frame.size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         print("profileHeaderView: \(view.frame.size)")
-//        view.configure(viewModel: viewModel)
         return view
     }()
     
@@ -63,7 +63,9 @@ class UserProfileViewController: BaseTableViewController {
     
     func setupTableView() {
         tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.rowHeight = UITableViewAutomaticDimension
+//        tableView.separatorStyle = .none
+        
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 200
         
         tableView.register(UserProfileViewFollowCell.self, forCellReuseIdentifier: UserProfileViewFollowCell.identifier)
@@ -81,11 +83,13 @@ class UserProfileViewController: BaseTableViewController {
     }
     
     private func setupNavigation() {
-        let sliderMenuLeftBarButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: .openSliderMenuAction)
-        navigationItem.leftBarButtonItem = sliderMenuLeftBarButton
-        
-        let editProfileRightBarButton = UIBarButtonItem(image: UIImage(named: "user_white"), style: .plain, target: self, action: .presentEditProfileAction)
-        navigationItem.rightBarButtonItem = editProfileRightBarButton
+        if isBarButtonItems {
+            let sliderMenuLeftBarButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: .openSliderMenuAction)
+            navigationItem.leftBarButtonItem = sliderMenuLeftBarButton
+            
+            let editProfileRightBarButton = UIBarButtonItem(image: UIImage(named: "user_white"), style: .plain, target: self, action: .presentEditProfileAction)
+            navigationItem.rightBarButtonItem = editProfileRightBarButton
+        }
     }
     
     @objc func openSliderMenu() {
@@ -103,20 +107,24 @@ class UserProfileViewController: BaseTableViewController {
         
     }
     
-    deinit {
-        viewModel.state.unbind()
-        viewModel.changes.unbind()
-    }
-    
     private func setupViewModel() {
         viewModel.getUserInfo()
         viewModel.getUserGroups()
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
         viewModel.state.bindAndFire { [unowned self] in
             self.stateAnimate($0)
         }
         viewModel.changes.bind { [unowned self] in
             self.reloadTableView($0)
         }
+    }
+    
+    deinit {
+        viewModel.state.unbind()
+        viewModel.changes.unbind()
     }
     
     private func stateAnimate(_ state: TableViewState) {
@@ -154,7 +162,7 @@ class UserProfileViewController: BaseTableViewController {
     func headerViewConfig() {
         DispatchQueue.main.async {
             self.profileHeaderView.configure(viewModel: self.viewModel)
-            self.profileHeaderView.frame.size = self.profileHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+            self.profileHeaderView.frame.size = self.profileHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
             print("profileHeaderViewConfig: \(self.profileHeaderView.frame.size)")
         }
     }
@@ -237,7 +245,7 @@ extension UserProfileViewController {
         case .groups:
             return Constants.Profile.GroupTableHeight
         default:
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
     }
     
@@ -259,9 +267,9 @@ extension UserProfileViewController {
         case .caught:
             let userPostsViewModel = UserPostsViewModel()
             let layout = UICollectionViewFlowLayout()
-            layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+            layout.itemSize = UICollectionViewFlowLayout.automaticSize
             layout.estimatedItemSize = CGSize(width: 1, height: 1)
-            
+
             let userPostsViewCollectionController = UserPostsViewCollectionController(collectionViewLayout: layout)
             userPostsViewCollectionController.viewModel = userPostsViewModel
             self.navigationController?.pushViewController(userPostsViewCollectionController, animated: true)

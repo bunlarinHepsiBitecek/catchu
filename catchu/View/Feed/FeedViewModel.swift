@@ -111,7 +111,10 @@ class FeedViewModel: BaseViewModel, ViewModel {
     private func flatten(items: [FeedViewModelItem]) -> [ReloadableCell<CellItem>] {
         let reloadableItems = items
             .enumerated()
-            .map { ReloadableCell(key: $0.element.id, value: $0.element.cellItems, index: $0.offset) }
+            .compactMap( {ReloadableCell(key: $0.element.id, value: $0.element.cellItems, index: $0.offset)} )
+            
+//            .enumerated()
+//            .map { ReloadableCell(key: $0.element.id, value: $0.element.cellItems, index: $0.offset) }
         
         return reloadableItems
     }

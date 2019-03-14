@@ -14,15 +14,11 @@ class OtherUserProfileViewModel: BaseViewModel, ViewModel {
     var isMorePageExists = true
     var items = [FeedViewModelItem]()
     let changes = Dynamic(CellChanges())
-    let state = Dynamic(TableViewState.suggest)
+    let state = Dynamic(TableViewState.loading)
+    let headerState = Dynamic(TableViewState.loading)
     
-    var userHeaderItem: OtherUserProfileViewModelItemHeader!
-    
-    var user: User! {
-        didSet {
-            userHeaderItem.user.value = user
-        }
-    }
+    var user: User!
+    var headerItem: OtherUserProfileViewModelItemHeader!
     
     var postRowHeight: CGFloat {
         let targetWidthHeight = Constants.ScreenBounds.width / Constants.Profile.CollectionItemPerLine
@@ -35,64 +31,48 @@ class OtherUserProfileViewModel: BaseViewModel, ViewModel {
     init(user: User) {
         super.init()
         self.user = user
-        self.userHeaderItem = OtherUserProfileViewModelItemHeader(user: user)
+        self.headerItem = OtherUserProfileViewModelItemHeader(user)
     }
     
     
     func getUserInfo() {
-//        guard let userid = User.shared.userid else { return }
-//        guard let requestedUserid = user.value.userid else { return }
-//
-//        state.value = .loading
-//        REAWSManager.shared.getUserProfileInfo(userid: userid, requestedUserid: requestedUserid) { (result) in
-//            print("\(#function) working and get data")
-//            self.handleResult(result)
-//        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            // Put your code which should be executed with a delay here
-            self.populateUser()
-        })
+        guard let userid = User.shared.userid else { return }
+        guard let requestedUserid = user.userid else { return }
 
-    }
-    
-    func populateUser() {
-        self.dummyUserData()
-    }
-    
-    func dummyUserData() {
-        let dummyUser = User()
-        dummyUser.profilePictureUrl = "https://picsum.photos/100/100/?random"
-        dummyUser.userid = "userid"
-        dummyUser.name = "Dummy Remzi Yildirim"
-        dummyUser.username = "remziyildirim"
-        dummyUser.followStatus = .own
-        dummyUser.userFollowerCount = "123400000"
-        dummyUser.userFollowingCount = "456700"
-        dummyUser.userPostCount = 23
-        dummyUser.userCaughtCount = 12
-        dummyUser.birthday = "04/03/1989"
-        dummyUser.bio = "Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim Bio benim profil benim kan benim damar benim"
-        dummyUser.gender = GenderType.male
-        self.user = dummyUser
-    }
-    
-    func getUserPostsMore() {
-        // TODO: for test delete sil
-        if Constants.LOCALTEST, isMorePageExists, state.value != .loading {
-            
-            print("getUserPostsMore started")
-            
-            guard Reachability.networkConnectionCheck() else { return }
-            state.value = .loading
-            let posts = dummyPosts(start: 21, stop: 29)
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                self.populate(posts: posts)
-            })
-            return
+        headerState.value = .loading
+        REAWSManager.shared.getUserProfileInfo(userid: userid, requestedUserid: requestedUserid, isShortInfo: false) { (result) in
+            print("\(#function) working and get data")
+            self.handleResult(result)
         }
     }
     
+    
+    private func handleResult(_ result: NetworkResult<REUserProfile>) {
+        switch result {
+        case .success(let response):
+            if let error = response.error, let code = error.code, code != BackEndAPIErrorCode.success.rawValue  {
+                print("Lambda Error: \(error)")
+                headerState.value = .error
+                return
+            }
+            
+            user.setUserProfile(response)
+            headerState.value = .populate
+            getUserPosts()
+        case .failure(let apiError):
+            headerState.value = .error
+            switch apiError {
+            case .serverError(let error):
+                print("Server error: \(error)")
+            case .connectionError(let error) :
+                print("Connection error: \(error)")
+            case .missingDataError:
+                print("Missing Data Error")
+            }
+        }
+    }
+    
+    /// When user info is readed than get post
     func getUserPosts() {
         guard let userid = user.userid else { return }
         
@@ -109,12 +89,37 @@ class OtherUserProfileViewModel: BaseViewModel, ViewModel {
             return
         }
         
+        state.value = .loading
         REAWSManager.shared.getUserProfilePosts(targetUserid: userid, privacyType: privacyType, page: page, perPage: perPage, radius: radius) { [unowned self] result in
             print("\(#function) working and get data")
             self.handleResult(result)
         }
     }
     
+    func getUserPostsMore() {
+        guard let userid = user.userid else { return }
+        
+        // TODO: for test delete sil
+        if Constants.LOCALTEST, isMorePageExists, state.value != .loading {
+            
+            print("getUserPostsMore started")
+            
+            guard Reachability.networkConnectionCheck() else { return }
+            state.value = .loading
+            let posts = dummyPosts(start: 21, stop: 29)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                self.populate(posts: posts)
+            })
+            return
+        }
+        
+        page += 1
+        state.value = .loading
+        REAWSManager.shared.getUserProfilePosts(targetUserid: userid, privacyType: privacyType, page: page, perPage: perPage, radius: radius) { [unowned self] result in
+            print("\(#function) working and get data")
+            self.handleResult(result)
+        }
+    }
     
     func handleResult(_ result: NetworkResult<REPostListResponse>) {
         switch result {
@@ -230,10 +235,10 @@ class OtherUserProfileViewModel: BaseViewModel, ViewModel {
 
 
 class OtherUserProfileViewModelItemHeader: ViewModelItem {
-    var user: Dynamic<User>
+    var user: User
 
-    init(user: User) {
-        self.user = Dynamic(user)
+    init(_ user: User) {
+        self.user = user
     }
 }
 

@@ -53,7 +53,7 @@ class EditProfile4View: UIView {
         
         activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.style = .gray
         activityIndicator.center = tempView.center
         
         activityIndicator.startAnimating()

@@ -119,18 +119,16 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
     
     func configure(viewModelItem: ViewModelItem) {
         guard let viewModelItem = viewModelItem as? ViewModelUser else { return }
-        guard let user = viewModelItem.user else { return }
-        
         self.viewModelItem = viewModelItem
 
-        if let name = user.name {
+        if let name = viewModelItem.user.name {
             self.name.text = name
             self.profileImageView.setImageInitialPlaceholder(name, circular: true)
         }
-        if let username = user.username {
+        if let username = viewModelItem.user.username {
             self.username.text = username
         }
-        if let profilePictureUrl = user.profilePictureUrl {
+        if let profilePictureUrl = viewModelItem.user.profilePictureUrl {
             self.profileImageView.loadAndCacheImage(url: profilePictureUrl)
         }
         followButtonStatusUpdate()
@@ -138,21 +136,19 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
     
     // MARK: After follow actioned then update button label
     private func followButtonStatusUpdate() {
-        guard let user = viewModelItem.user else { return }
-        if let followStatus = user.followStatus {
+        if let followStatus = viewModelItem.user.followStatus {
             Formatter.configure(followStatus, followButton)
         }
     }
     
     @objc func followProcess(_ sender: UIButton) {
-        guard let user = viewModelItem.user else { return }
         let requestType = viewModelItem.findRequestType()
         if requestType == .defaultRequest {
             return
         }
 
         // MARK: when user account is private and ask for unfollow request
-        if let isPrivateAccount = user.isUserHasAPrivateAccount {
+        if let isPrivateAccount = viewModelItem.user.isUserHasAPrivateAccount {
             if isPrivateAccount && requestType == .deleteFollow {
                 unfollowAlertControl(image: profileImageView.image, username: username.text)
                 return
@@ -164,7 +160,7 @@ class UserViewCell: BaseTableCell, ConfigurableCell {
     
     func unfollowAlertControl(image: UIImage? = nil, username: String?) {
         let title = username ?? ""
-        let underImageTitle = "\n\n\(title)"
+        let underImageTitle = "\n\n\n\(title)"
         let actionTitle = image == nil ? title : underImageTitle
         
         let actionSheetController = UIAlertController(title: actionTitle, message: LocalizedConstants.UserMessages.UnfollowMessage, preferredStyle: .actionSheet)

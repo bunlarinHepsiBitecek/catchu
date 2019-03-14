@@ -15,7 +15,7 @@ class FeedViewController: BaseTableViewController {
     
     // MARK: - Views
     lazy var activityIndicatorView: UIView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()

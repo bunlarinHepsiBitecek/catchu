@@ -102,9 +102,9 @@ extension FriendRelationViewController {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromLeft
-        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         
         if let window = self.view.window {
             window.layer.add(transition, forKey: kCATransition)

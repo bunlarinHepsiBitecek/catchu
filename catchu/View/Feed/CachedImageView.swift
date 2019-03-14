@@ -111,11 +111,8 @@ extension UIImageView {
             self.image = cachedItem.image
             return
         }
-        
-//        if Constants.LOCALTEST {
-//            self.image = UIImage(named: "microphoneMain.jpeg")
-//            return
-//        }
+        /// Check url valid
+        guard UIApplication.shared.canOpenURL(urlValue) else { return }
         
         URLSession.shared.dataTask(with: urlValue, completionHandler: { [weak self] (data, response, error) in
             if error != nil {
@@ -133,6 +130,7 @@ extension UIImageView {
         }).resume()
         
     }
+    
 }
 
 
@@ -169,5 +167,4 @@ open class DiscardableImageCacheItem: NSObject, NSDiscardableContent {
     public func isContentDiscarded() -> Bool {
         return image == nil
     }
-    
 }

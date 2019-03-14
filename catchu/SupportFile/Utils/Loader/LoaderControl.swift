@@ -28,7 +28,7 @@ class LoaderController: NSObject {
         removeLoader()
         
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator.style = .whiteLarge
     }
     
     func showLoader() {
@@ -54,7 +54,7 @@ class LoaderController: NSObject {
     
     func showLoader(style: UIActivityIndicatorView.Style) {
         self.activityIndicator.hidesWhenStopped = true
-        self.activityIndicator.activityIndicatorViewStyle = style
+        self.activityIndicator.style = style
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         
         guard let currentVC = LoaderController.currentViewController() else {
@@ -73,7 +73,7 @@ class LoaderController: NSObject {
         self.activityIndicator.startAnimating()
     }
     
-    func startProgressView(progressViewStyle: UIProgressViewStyle) {
+    func startProgressView(progressViewStyle: UIProgressView.Style) {
         removeProgressView()
         print("startProgressView")
         
@@ -197,17 +197,17 @@ class LoaderController: NSObject {
     }
     
     func goToSettings() {
-        let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)
-        if UIApplication.shared.canOpenURL(settingsUrl!)  {
+        // swift 4.2
+//        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(settingsUrl)  {
             if #available(iOS 10.0, *) {
-                UIApplication.shared.open(settingsUrl!, completionHandler: { (success) in
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
                 })
-            }
-            else  {
-                let url = URL(string : "prefs:root=")
-                if UIApplication.shared.canOpenURL(url!) {
-                    UIApplication.shared.openURL(url!)
-                }
+            } else  {
+                UIApplication.shared.openURL(settingsUrl)
             }
         }
     }
@@ -217,11 +217,28 @@ class LoaderController: NSObject {
         /// Second, we define the duration for the transition to get COMPLETED
         transition.duration = 0.20
         /// Here, you define the animation pacing (whether it starts slowly, ends faster OR starts faster, ends slowly... etc)
-        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromTop
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromTop
         
         return transition
+    }
+}
+
+extension LoaderController {
+    
+    class func profileViewController(_ user: User) -> UIViewController {
+        
+        if User.shared.userid == user.userid {
+            let userViewController = UserProfileViewController()
+            userViewController.isBarButtonItems = false
+            return userViewController
+        } else {
+            let otherViewModel = OtherUserProfileViewModel(user: user)
+            let userProfileViewController = OtherUserProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            userProfileViewController.viewModel = otherViewModel
+            return userProfileViewController
+        }
     }
     
 }

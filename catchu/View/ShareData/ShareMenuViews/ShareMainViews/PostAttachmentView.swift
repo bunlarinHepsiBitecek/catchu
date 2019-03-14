@@ -304,9 +304,9 @@ extension PostAttachmentView {
         
         let transition = CATransition()
         transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromRight
-        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         
         if let window = self.window {
             window.layer.add(transition, forKey: kCATransition)

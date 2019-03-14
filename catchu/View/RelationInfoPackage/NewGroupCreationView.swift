@@ -18,7 +18,7 @@ class NewGroupCreationView: UIView {
     
     lazy var addedParticipantTableView: UITableView = {
         
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -26,8 +26,8 @@ class NewGroupCreationView: UIView {
         temp.delegate = self
         temp.dataSource = self
         
-        temp.separatorStyle = UITableViewCellSeparatorStyle.singleLine
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableHeaderView = headerView
         temp.tableFooterView = UIView()
         temp.separatorStyle = .none

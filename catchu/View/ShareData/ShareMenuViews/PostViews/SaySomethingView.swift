@@ -82,7 +82,7 @@ class SaySomethingView: UIView {
     }()
     
     lazy var cancelButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
@@ -101,7 +101,7 @@ class SaySomethingView: UIView {
     }()
     
     lazy var postButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
@@ -591,7 +591,7 @@ extension SaySomethingView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 
                 inputObject.transform = CGAffineTransform.identity
@@ -609,7 +609,7 @@ extension SaySomethingView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.mapContainer.transform = CGAffineTransform.identity
                 
@@ -627,7 +627,7 @@ extension SaySomethingView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.cameraContainer.transform = CGAffineTransform.identity
                 
@@ -645,7 +645,7 @@ extension SaySomethingView {
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.20),  // yay sonme orani, arttikca yanip sonme artar
             initialSpringVelocity: CGFloat(6.0),    // yay hizi, arttikca hizlanir
-            options: UIViewAnimationOptions.allowUserInteraction,
+            options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
                 self.videoContainer.transform = CGAffineTransform.identity
                 
@@ -657,10 +657,9 @@ extension SaySomethingView {
     
     func addKeyboardNotificationObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SaySomethingView.keyboardShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SaySomethingView.keyboardShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SaySomethingView.keyboardHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(SaySomethingView.keyboardHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     @objc func keyboardShow(_ notification: NSNotification) {
@@ -736,7 +735,7 @@ extension SaySomethingView {
         self.attachmentContainerView.addSubview(stackViewForPostAttachments)
         self.attachmentContainerView.addSubview(informationLabel)
         
-        self.attachmentContainerView.bringSubview(toFront: stackViewForPostAttachments)
+        self.attachmentContainerView.bringSubviewToFront(stackViewForPostAttachments)
         
         let safeAttachmentContainer = self.attachmentContainerView.safeAreaLayoutGuide
         
@@ -863,7 +862,6 @@ extension SaySomethingView {
     }
     
     func initiateVideoView() {
-        print("delegate : \(delegate)")
         delegateCameraImageVideoHandlerProtocol.initiateVideoViewPermissionProcess()
     }
     

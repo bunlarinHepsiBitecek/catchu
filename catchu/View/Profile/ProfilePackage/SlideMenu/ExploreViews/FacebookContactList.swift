@@ -22,7 +22,7 @@ class FacebookContactList: UIView {
     }()
     
     lazy var tableViewFacebookContactList: UITableView = {
-        let temp = UITableView(frame: .zero, style: UITableViewStyle.plain)
+        let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.isScrollEnabled = true
@@ -30,7 +30,7 @@ class FacebookContactList: UIView {
         temp.delegate = self
         temp.dataSource = self
         
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         temp.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         

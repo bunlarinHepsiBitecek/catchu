@@ -82,16 +82,16 @@ class PostTopBarView: UIView {
     }()
     
     lazy var moreOptionsButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
         
         // if you are using an imageview for a button, you need to bring it to forward to make it visible
-        temp.setImage(UIImage(named: "icon-more-vertical"), for: UIControlState.normal)
+        temp.setImage(UIImage(named: "icon-more-vertical"), for: UIControl.State.normal)
         
         if let buttonImage = temp.imageView {
-            temp.bringSubview(toFront: buttonImage)
+            temp.bringSubviewToFront(buttonImage)
             
             temp.imageView?.translatesAutoresizingMaskIntoConstraints = false
             let safe = temp.safeAreaLayoutGuide

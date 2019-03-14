@@ -40,17 +40,17 @@ class GroupImageContainerView: UIView {
     
     // button for cancel, to go back
     lazy var cancelButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
         //temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
         
         // if you are using an imageview for a button, you need to bring it to forward to make it visible
-        temp.setImage(UIImage(named: "icon_left"), for: UIControlState.normal)
+        temp.setImage(UIImage(named: "icon_left"), for: UIControl.State.normal)
         
         if let buttonImage = temp.imageView {
-            temp.bringSubview(toFront: buttonImage)
+            temp.bringSubviewToFront(buttonImage)
         
             temp.imageView?.translatesAutoresizingMaskIntoConstraints = false
             let safe = temp.safeAreaLayoutGuide
@@ -80,7 +80,7 @@ class GroupImageContainerView: UIView {
     
     // blur view
     lazy var blurView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +98,7 @@ class GroupImageContainerView: UIView {
     
     // blur view
     lazy var blurViewForMaxSizeContainer: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -150,17 +150,17 @@ class GroupImageContainerView: UIView {
     
     // button for cancel, to go back
     lazy var cameraButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         
         //temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.next, for: .normal)
         
         // if you are using an imageview for a button, you need to bring it to forward to make it visible
-        temp.setImage(UIImage(named: "icon_camera"), for: UIControlState.normal)
+        temp.setImage(UIImage(named: "icon_camera"), for: UIControl.State.normal)
         
         if let buttonImage = temp.imageView {
-            temp.bringSubview(toFront: buttonImage)
+            temp.bringSubviewToFront(buttonImage)
             
             temp.imageView?.translatesAutoresizingMaskIntoConstraints = false
             let safe = temp.safeAreaLayoutGuide
@@ -189,7 +189,7 @@ class GroupImageContainerView: UIView {
     
     // blur view
     lazy var blurViewForCameraButton: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let effect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let temp = UIVisualEffectView(effect: effect)
         temp.isUserInteractionEnabled = false
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -207,7 +207,7 @@ class GroupImageContainerView: UIView {
     
     // updating process indicator
     lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let temp = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        let temp = UIActivityIndicatorView(style: .whiteLarge)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.backgroundColor = UIColor.clear
         temp.hidesWhenStopped = true
@@ -269,7 +269,7 @@ extension GroupImageContainerView {
         self.addSubview(activityIndicatorContainerView)
         self.activityIndicatorContainerView.addSubview(activityIndicatorView)
         
-        self.bringSubview(toFront: cancelButton)
+        self.bringSubviewToFront(cancelButton)
         
         let safe = self.safeAreaLayoutGuide
         let safeActivityIndicatorContainerView = self.activityIndicatorContainerView.safeAreaLayoutGuide
@@ -588,7 +588,7 @@ extension GroupImageContainerView: CameraImageVideoHandlerProtocol {
         let x = image.reSizeImage(inputWidth: Constants.ImageResizeValues.Width.width_1080)
         print("x : \(x)")
         
-        guard let imageAsData = UIImageJPEGRepresentation(x!, 0.80) else { return }
+        guard let imageAsData = x?.jpegData(compressionQuality: 0.80) else { return }
     
         print("There were \(imageAsData.count) bytes")
         let bcf = ByteCountFormatter()

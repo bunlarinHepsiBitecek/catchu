@@ -25,7 +25,7 @@ class PhoneViewConfirmationController: BaseTableViewController {
     }
     
     private func setupNavigation() {
-        navigationItem.title = LocalizedConstants.EditableProfileView.Confirm
+        navigationItem.title = LocalizedConstants.EditableProfile.Confirm
         navigationItem.rightBarButtonItem = doneBarButton
     }
     
@@ -36,7 +36,7 @@ class PhoneViewConfirmationController: BaseTableViewController {
         tableView.delegate = self
         
         // Setup dynamic auto-resizing for comment cells
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.keyboardDismissMode = .interactive
         tableView.separatorStyle = .singleLine

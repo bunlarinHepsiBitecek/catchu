@@ -127,9 +127,9 @@ extension CustomMapView {
         print("centerMap starts")
         print("coordinate : \(coordinate)")
         
-        let span = MKCoordinateSpanMake(zoom, zoom)
+        let span = MKCoordinateSpan(latitudeDelta: zoom, longitudeDelta: zoom)
 //        let span = MKCoordinateSpanMake(coordinate.latitude, coordinate.longitude)
-        let region = MKCoordinateRegionMake(coordinate, span)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
         
         mapView.setRegion(region, animated: true)
         

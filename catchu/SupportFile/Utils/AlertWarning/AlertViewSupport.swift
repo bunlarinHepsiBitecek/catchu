@@ -22,7 +22,7 @@ class AlertViewManager : NSObject {
     
     private var alertControls = [AlertControllerInfo]()
     
-    func createAlert(title: String, message: String, preferredStyle: UIAlertControllerStyle, actionTitle: String, actionStyle: UIAlertActionStyle, completionHandler: ((UIAlertAction) -> Void)?) {
+    func createAlert(title: String, message: String, preferredStyle: UIAlertController.Style, actionTitle: String, actionStyle: UIAlertAction.Style, completionHandler: ((UIAlertAction) -> Void)?) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         let alertAction = UIAlertAction(title: actionTitle, style: actionStyle, handler: completionHandler)
@@ -36,7 +36,7 @@ class AlertViewManager : NSObject {
         currentViewController.present(alertController, animated: true, completion: nil)
     }
     
-    func createAlert_2(title: String, message: String, preferredStyle: UIAlertControllerStyle, actionTitle: String, actionStyle: UIAlertActionStyle, selfDismiss: Bool, seconds: Int, completionHandler: ((UIAlertAction) -> Void)?) {
+    func createAlert_2(title: String, message: String, preferredStyle: UIAlertController.Style, actionTitle: String, actionStyle: UIAlertAction.Style, selfDismiss: Bool, seconds: Int, completionHandler: ((UIAlertAction) -> Void)?) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         let alertAction = UIAlertAction(title: actionTitle, style: actionStyle, handler: completionHandler)
@@ -55,7 +55,7 @@ class AlertViewManager : NSObject {
     
     }
     
-    func createAlert(title: String, message: String, preferredStyle: UIAlertControllerStyle, actionTitleLeft: String, actionTitleRight: String, actionStyle: UIAlertActionStyle, completionHandlerLeft: ((UIAlertAction) -> Void)?, completionHandlerRight: ((UIAlertAction) -> Void)?) {
+    func createAlert(title: String, message: String, preferredStyle: UIAlertController.Style, actionTitleLeft: String, actionTitleRight: String, actionStyle: UIAlertAction.Style, completionHandlerLeft: ((UIAlertAction) -> Void)?, completionHandlerRight: ((UIAlertAction) -> Void)?) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         let alertActionLeft = UIAlertAction(title: actionTitleLeft, style: actionStyle, handler: completionHandlerLeft)
@@ -73,13 +73,13 @@ class AlertViewManager : NSObject {
     
     
     public func showOkAlert(_ title: String?, message: String?, handler: ((UIAlertAction) -> Void)?) {
-        let okAction = UIAlertAction.init(title: LocalizedConstants.Ok, style: UIAlertActionStyle.cancel, handler: handler)
+        let okAction = UIAlertAction.init(title: LocalizedConstants.Ok, style: UIAlertAction.Style.cancel, handler: handler)
         
-        self.showAlert(title, message: message, actions: [okAction], style: UIAlertControllerStyle.alert, view: nil)
+        self.showAlert(title, message: message, actions: [okAction], style: UIAlertController.Style.alert, view: nil)
         
     }
     
-    private func showAlert(_ title: String?, message: String?, actions: [UIAlertAction], style: UIAlertControllerStyle, view: AnyObject?) {
+    private func showAlert(_ title: String?, message: String?, actions: [UIAlertAction], style: UIAlertController.Style, view: AnyObject?) {
         
         let alertController = UIAlertController.init(title: title, message: message == "" ? nil : message, preferredStyle: style) as UIAlertController
         

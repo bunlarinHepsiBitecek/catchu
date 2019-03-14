@@ -15,7 +15,7 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     
     lazy var groupProfileImageView: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_50, height: Constants.StaticViewSize.ViewSize.Width.width_50))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -28,7 +28,7 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     
     lazy var selectIcon: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_20, height: Constants.StaticViewSize.ViewSize.Width.width_20))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.image = nil
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -41,7 +41,7 @@ class GroupRelationTableViewCell: CommonTableCell, CommonDesignableCell {
     
     lazy var moreIcon: UIImageView = {
         let imageView =  UIImageView(frame: CGRect(x: 0, y: 0, width: Constants.StaticViewSize.ViewSize.Width.width_30, height: Constants.StaticViewSize.ViewSize.Width.width_30))
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "icon-more-vertical")
@@ -198,7 +198,7 @@ extension GroupRelationTableViewCell {
     func setGroupSelectionState(state: TableViewRowSelected) {
         self.cellAnimation = true
         
-        print("gropViewModel : \(groupViewModel)")
+        print("gropViewModel : \(String(describing: groupViewModel))")
         groupViewModel?.displayProperties()
         
         if groupViewModel?.groupSelected.value == .selected {
