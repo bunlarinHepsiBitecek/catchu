@@ -42,8 +42,7 @@ extension MainTabBarViewController {
     
     private func tabBarConfigurations() {
         self.tabBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
-        
+
         if let array = tabBar.items {
             for item in array {
                 item.title = nil

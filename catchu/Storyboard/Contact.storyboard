@@ -1386,7 +1386,7 @@
             <objects>
                 <viewController id="04T-fi-Rt1" customClass="ContainerGroupViewController" customModule="catchu" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="el2-X3-xNv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="564"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bqc-fl-bqs">
