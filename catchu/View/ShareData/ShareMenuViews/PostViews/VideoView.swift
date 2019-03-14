@@ -12,6 +12,7 @@ class VideoView: UIView {
 
     let customVideo = CustomVideo()
     var immediatelyStartSession: Bool = false
+    var mainViewAdded: Bool = false
     
     //private var capturedVideoView : CustomCapturedVideoView?
     private var capturedVideoView : CapturedVideoView?
@@ -218,16 +219,38 @@ class VideoView: UIView {
         self.immediatelyStartSession = immediatelyStartSession
         
         initializeView()
-        initiateVideoProcess()
+        // because addingSubview process can not catch preview layer adding process of customVideo
+        //initiateVideoProcess()
         
-        if !immediatelyStartSession {
-            activationManager(active: false)
-        }
+//        if !immediatelyStartSession {
+//            activationManager(active: false)
+//        }
         
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        var count = 1
+        
+        print("count : \(count)")
+        count += 1
+        
+        if !mainViewAdded {
+            if self.mainView.frame.width > 0 && self.mainView.frame.height > 0 {
+                mainViewAdded = true
+                print("sevvvaalll")
+                self.initiateVideoProcess()
+                
+                if !immediatelyStartSession {
+                    activationManager(active: false)
+                }
+            }
+        }
+        
     }
     
 }

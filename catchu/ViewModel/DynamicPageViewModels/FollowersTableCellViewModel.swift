@@ -95,8 +95,6 @@ class FollowersTableCellViewModel: CommonViewModel {
                 }
             }
             
-            viewModelNetworkOperationType = FollowOperationType.none
-            
             switch viewModelNetworkOperationType {
             case .removeProcess:
                 print("Follower Remove has done.")
@@ -108,6 +106,8 @@ class FollowersTableCellViewModel: CommonViewModel {
             default:
                 return
             }
+            
+            viewModelNetworkOperationType = FollowOperationType.none
             
         case .failure(let apiError):
             

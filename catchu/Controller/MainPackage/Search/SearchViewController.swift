@@ -238,7 +238,6 @@ extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdat
     }
 }
 
-
 class TableViewStateResultView: BaseView {
     
     let activityIndicatorView: UIActivityIndicatorView = {

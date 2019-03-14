@@ -96,6 +96,12 @@
 "Remove" = "Remove";
 "removeFollower" = "Remove Follower?";
 "removeFollowerInfo" = "No body knows what you are doing 😇.";
+"userInCatchU" = "Friends in CatchU :";
+"contactsInvited" = "Contacts :";
+"account" = "Account";
+"groupManagement" = "Group Management";
+"feedFilterRangeValue" = "Catch Filter Range :";
+"reset" = "Reset";
 
 // Location Services
 "LocationServiceDisableTitle" = "Location Service Disable";
@@ -250,6 +256,7 @@
 "contactFriendSuggestion" = "You can find people you know on CatchU and follow them ☺️";
 "activePeopleOnCatchU" = "Active People On CatchU : ";
 "invitePeopleOncatchU" = "Invite People           : ";
+"invitePeople" = "Invite People";
 "inviteFriendTitle" = "Invite Friend";
 "inviteFriendInformation" = "Choise a phone to send invitations";
 
@@ -278,6 +285,9 @@
 // View Controller Titles
 "groupInfoEdit" = "Group Name";
 "advancedSettings" = "Advanced Settings";
+"settingsTitle" = "Settings";
+"privacySecurityTitle" = "Privacy & Security";
+"filterSettings" = "Filter Settings";
 
 // Section Titles
 "commentSettings" = "Comment Settings";
@@ -290,5 +300,19 @@
 "restrictLocation" = "Post Location Restricted";
 "commentFeatureUpdateInfo" = "You can update this feature later in post settings";
 "locationFeatureUpdateInfo" = "This feature can not be changed after posted";
+
+// Feed Filter Options Prompts
+"feedFilterRange" = "Catch Filter";
+"feedFilterRangeInfo" = "You can either enlarge or narrow catch range";
+
+// Settings Controller Prompts
+"addFacebookFriends" = "Add Facebook Friends";
+"addContactFriends" = "Add Contact Friends";
+"inviteFriends" = "Invite Friends";
+"invitation" = "Invitation";
+"privacyAndSecurity" = "Privacy and Security";
+"logout" = "Logout";
+"privateAccount" = "Private Account";
+"privateAccountInfo" = "When this feature is private, only people you authorized can see your shares.";
 
 

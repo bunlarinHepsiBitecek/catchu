@@ -97,12 +97,12 @@ class CameraImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINav
         
         picker.delegate = self
         picker.allowsEditing = true
-        picker.sourceType = .savedPhotosAlbum
+        picker.sourceType = .photoLibrary
         picker.videoMaximumDuration = TimeInterval(15)
         
         picker.videoExportPreset = AVAssetExportPresetMediumQuality
         
-        picker.mediaTypes = [kUTTypeMovie as String]
+        picker.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String]
         
         self.triggerViewControllerPresenter(controller: Controller<UIImagePickerController>.input(picker))
         

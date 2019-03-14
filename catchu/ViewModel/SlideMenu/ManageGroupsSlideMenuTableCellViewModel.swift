@@ -19,7 +19,7 @@ class ManageGroupsSlideMenuTableCellViewModel: CommonSlideMenuTableCellViewModel
     }
     
     var cellImage: UIImage {
-        if let image = UIImage(named: "group") {
+        if let image = UIImage(named: "icon_group") {
             return image
         } else {
             return UIImage()

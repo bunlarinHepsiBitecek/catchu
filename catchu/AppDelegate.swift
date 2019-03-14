@@ -122,9 +122,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         for i in 0..<deviceToken.count {
             token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
         }
+        
+        let token2 = deviceToken.map { String(format: "%02.2hhx", $0)}.joined()
+        print("token2 = \(token2)")
+        
         print("device token : \(token)")
+        print("deviceToken : ", deviceToken)
+        print("Userid : \(User.shared.userid)")
         
         Auth.auth().setAPNSToken(deviceToken, type: .prod)
+        
+//        APIGatewayManager.shared.createApplicationEndpoint(userid: User.shared.userid!, deviceToken: token2) { (result) in
+//            
+//            switch result {
+//            case .failure(let error):
+//                print("failure")
+//            case .success(let data):
+//                print("success")
+//            }
+//            
+//        }
+        
     }
     
     func handleIncomingDynamicLink(_ dynamicLink : DynamicLink) {
@@ -179,3 +197,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
 }
 
+/*
+ 
+ {
+ "requestType": "CREATE_APPLICATION_ENDPOINT",
+ "userid": "VVkIWB15bdcrEli4kSD4uv8gPIl1",
+ "deviceToken": "81e45d1afbeafabe2dab7c3e6da88425c082e0b5e1113a7cf23cb29ccd303788"
+ }
+ 
+ https://stackoverflow.com/questions/11516782/how-to-get-registrationid-using-gcm-in-android
+ 
+ */

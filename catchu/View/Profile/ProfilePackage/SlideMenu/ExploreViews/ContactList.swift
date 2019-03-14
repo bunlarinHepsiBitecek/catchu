@@ -102,7 +102,7 @@ extension ContactList {
     
     func addRequestView() {
         
-        contactListRequestView = ContactRequestView(frame: .zero, delegate: self)
+        contactListRequestView = ContactRequestView(frame: .zero)
         contactListRequestView?.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(contactListRequestView!)
@@ -135,37 +135,37 @@ extension ContactList {
     
     func decideContactRequetViewDisplay() {
         
-        print("decideContactRequetViewDisplay starts")
-        
-        if ContactListManager.shared.isAtLeastOneContactListExist() {
-            
-            print("contact information exists")
-            
-            UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
-                self.activateContactRequestView(active: false)
-            }
-            
-        } else {
-            
-            print("contact information does not exist, fetch from contacts")
-            
-            ContactListManager.shared.initiateFetchContactBusiness { (finish) in
-                if finish {
-                    print("fetching contact information finished")
-                    
-                    DispatchQueue.main.async {
-                        self.activateContactRequestView(active: false)
-                        
-                        UIView.transition(with: self.tableViewContactList, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
-                            self.tableViewContactList.reloadData()
-                        })
-                    }
-                    
-                }
-                
-            }
-            
-        }
+//        print("decideContactRequetViewDisplay starts")
+//        
+//        if ContactListManager.shared.isAtLeastOneContactListExist() {
+//            
+//            print("contact information exists")
+//            
+//            UIView.animate(withDuration: Constants.AnimationValues.aminationTime_03) {
+//                self.activateContactRequestView(active: false)
+//            }
+//            
+//        } else {
+//            
+//            print("contact information does not exist, fetch from contacts")
+//            
+//            ContactListManager.shared.initiateFetchContactBusiness { (finish) in
+//                if finish {
+//                    print("fetching contact information finished")
+//                    
+//                    DispatchQueue.main.async {
+//                        self.activateContactRequestView(active: false)
+//                        
+//                        UIView.transition(with: self.tableViewContactList, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
+//                            self.tableViewContactList.reloadData()
+//                        })
+//                    }
+//                    
+//                }
+//                
+//            }
+//            
+//        }
         
     }
     
@@ -200,11 +200,11 @@ extension ContactList : UITableViewDelegate, UITableViewDataSource {
         
         var sectionCount = 0
         
-        if let rawContactList = ContactListManager.shared.rawContactList {
-            if rawContactList.count > 0 {
-                sectionCount += 1
-            }
-        }
+//        if let rawContactList = ContactListManager.shared.rawContactList {
+//            if rawContactList.count > 0 {
+//                sectionCount += 1
+//            }
+//        }
         
         if let userList = ContactListManager.shared.contactListUserArray {
             if userList.count > 0 {
@@ -221,20 +221,7 @@ extension ContactList : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section == 0 {
-            
-            return ContactListManager.shared.returnUserListCount()
-            /*
-            if !ContactListManager.shared.contactListExists {
-                return ContactListManager.shared.returnRawContactListCount()
-            } else {
-                return ContactListManager.shared.returnUserListCount()
-            }*/
-        } else if section == 1 {
-            return ContactListManager.shared.returnRawContactListCount()
-        } else {
-            return 0
-        }
+        return 1
         
         //return ContactListManager.shared.returnRawContactListCount()
         
@@ -242,18 +229,15 @@ extension ContactList : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        if section == 0 {
+        if section == 1 {
             
             let sectionView = SectionHeaderInfo()
             sectionView.configureView(explanation: LocalizedConstants.SlideMenu.activePeopleOnCatchU, count: ContactListManager.shared.returnUserListCount())
             
             return sectionView
             
-        } else if section == 1 {
-            let sectionView = SectionHeaderInfo()
-            sectionView.configureView(explanation: LocalizedConstants.SlideMenu.invitePeopleOncatchU, count: ContactListManager.shared.returnRawContactListCount())
-            
-            return sectionView
+        } else if section == 0 {
+                return UIView()
         }
         
         return UIView()
@@ -267,7 +251,7 @@ extension ContactList : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("indexPath : \(indexPath.section)")
-        if indexPath.section == 0 {
+        if indexPath.section == 1 {
             
             guard let cell = tableViewContactList.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.contactSyncedTableViewCell, for: indexPath) as? UserViewCell else { return UITableViewCell() }
             
@@ -275,11 +259,11 @@ extension ContactList : UITableViewDelegate, UITableViewDataSource {
             
             return cell
             
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 0 {
             
             guard let cell = tableViewContactList.dequeueReusableCell(withIdentifier: Constants.Collections.TableView.contactTableViewCell, for: indexPath) as? ContactInvitationTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(contact: ContactListManager.shared.returnRawContact(index: indexPath.row), delegate: self)
+//            cell.configureCell(contact: ContactListManager.shared.returnRawContact(index: indexPath.row), delegate: self)
             
             return cell
             

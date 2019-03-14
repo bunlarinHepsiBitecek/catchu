@@ -44,31 +44,6 @@ class ExploreFacebookViewModel: CommonViewModel {
                 self.getFacebookFriendsWithProvidersInCatchUApp()
             }
         }
-        
-        /*
-         
-         if !FacebookContactListManager.shared.askAccessTokenExpire() {
-         FacebookContactListManager.shared.initiateFacebookContactListProcess { (finish) in
-         if finish {
-         self.getFacebookFriendsWithProvidersInCatchUApp()
-         }
-         }
-         }
-         
-         FacebookContactListManager.shared.initiateFacebookContactListProcess { (finish) in
-         
-         if finish {
-         FacebookContactListManager.shared.getFacebookFriendsExistedInCatchU(completion: { (finish) in
-         if finish {
-         self.delegate.dismissView(active: false)
-         self.delegate.dataLoadTrigger()
-         }
-         })
-         }
-         }
-         
-         */
-        
     }
     
     func startFetchingFacebookFriendsExistInAppByConnectionRequest() {

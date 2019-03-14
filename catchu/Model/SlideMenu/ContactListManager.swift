@@ -16,32 +16,67 @@ class ContactListManager {
     var contactListUserArray : [User]?
     var contactListViewModelUserArray : [ViewModelUser]?
     var contactListExists : Bool = false
-    var contactListPhoneArray : [Provider]?
-    var rawContactList : [CNContact]?
+    private var contactListPhoneArray = [Provider]()
+    private var rawContactList = [CNContact]()
     
-    func initiateFetchContactBusiness(completion : @escaping (_ finish : Bool) -> Void) {
+    private func resetFetchContactLists() {
+        contactListPhoneArray.removeAll()
+        rawContactList.removeAll()
+    }
+    
+    func initiateFetchContactBusiness(completion : @escaping (_ finish : Bool, _ providerList: [Provider], _ rawContactList: [CNContact]) -> Void) {
         
         ContactListManager.shared.contactListExists = false
+        resetFetchContactLists()
         
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .authorized:
-            fetchContacts(completion: completion)
-        case .notDetermined:
-            startFetchingContact(completion: completion)
-        case .denied, .restricted:
-            directToSettingsForEnableContactAccess()
+            let keys = [CNContactGivenNameKey, CNContactMiddleNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactSocialProfilesKey]
+            let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+            let store = CNContactStore()
+            
+            var counter=1
+            
+            do {
+                
+                try store.enumerateContacts(with: request) { (contactData, stopPointerIfYouWantToStopEnumeration) in
+                    counter += 1
+                    
+                    print("takasi bomba : \(counter)")
+                    
+                    self.createPhoneProviderList(contact: contactData)
+                    self.createRawContactList(contact: contactData)
+                    
+                }
+            } catch let err {
+                print("Failed to enumerate contact list: ", err)
+            }
+            
+            print("yarro bomba")
+            
+            completion(true, contactListPhoneArray, rawContactList)
+            
+        default:
+            completion(false, [], [])
         }
         
     }
     
-    func returnRawContact(index : Int) -> CNContact {
-        
-        if let array = ContactListManager.shared.rawContactList {
-            return array[index]
-        } else {
-            return CNContact()
+    func triggerPermissionForContact(completion: @escaping(_ granted: Bool) -> Void) {
+        CNContactStore().requestAccess(for: .contacts) { (granted, error) in
+            if error != nil {
+                if let error = error as NSError? {
+                    print("error : \(error.localizedDescription)")
+                }
+            } else {
+                if granted {
+                    print("contact fetch is granted")
+                    completion(granted)
+                } else {
+                    print("contact fetch is not granted")
+                }
+            }
         }
-        
     }
     
     func returnViewModelUser(index : Int) -> ReturnResult<ViewModelUser> {
@@ -63,39 +98,10 @@ class ContactListManager {
         
     }
     
-    func isAtLeastOneContactListExist() -> Bool {
-        
-        if let array = ContactListManager.shared.contactListUserArray {
-            if array.count > 0 {
-                return true
-            }
-        }
-        
-        if let array = ContactListManager.shared.rawContactList {
-            if array.count > 0 {
-                return true
-            }
-        }
-        
-        return false
-        
-    }
-    
     func returnUserListCount() -> Int {
         
         if let array = ContactListManager.shared.contactListUserArray {
             print("returnUserListCount : \(array.count)")
-            return array.count
-        } else {
-            return 0
-        }
-        
-    }
-    
-    func returnRawContactListCount() -> Int {
-        
-        if let array = ContactListManager.shared.rawContactList {
-            print("returnRawContactListCount : \(array.count)")
             return array.count
         } else {
             return 0
@@ -117,13 +123,11 @@ class ContactListManager {
     }
     
     private func appendNewProviderToArray(provider : Provider) {
-        
-        if ContactListManager.shared.contactListPhoneArray == nil {
-            ContactListManager.shared.contactListPhoneArray = [Provider]()
-        }
-        
-        ContactListManager.shared.contactListPhoneArray?.append(provider)
-        
+        ContactListManager.shared.contactListPhoneArray.append(provider)
+    }
+    
+    private func createRawContactList(contact : CNContact) {
+        ContactListManager.shared.rawContactList.append(contact)
     }
     
     private func createPhoneProviderList(contact : CNContact) {
@@ -147,16 +151,6 @@ class ContactListManager {
         
     }
     
-    func createRawContactList(contact : CNContact) {
-        
-        if ContactListManager.shared.rawContactList == nil {
-            ContactListManager.shared.rawContactList = [CNContact]()
-        }
-        
-        ContactListManager.shared.rawContactList?.append(contact)
-        
-    }
-    
     private func startFetchingContact(completion : @escaping (_ finish : Bool) -> Void) {
         
         CNContactStore().requestAccess(for: .contacts) { (granted, error) in
@@ -167,7 +161,7 @@ class ContactListManager {
             } else {
                 if granted {
                     print("contact fetch is granted")
-                    self.fetchContacts(completion: completion)
+//                    self.fetchContacts(completion: completion)
                 } else {
                     print("contact fetch is not granted")
                 }
@@ -176,28 +170,7 @@ class ContactListManager {
         
     }
     
-    private func fetchContacts(completion : @escaping (_ finish : Bool) -> Void) {
-        
-        let keys = [CNContactGivenNameKey, CNContactMiddleNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactSocialProfilesKey]
-        let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
-        let store = CNContactStore()
-        
-        do {
-            try store.enumerateContacts(with: request) { (contactData, stopPointerIfYouWantToStopEnumeration) in
-                
-                self.createPhoneProviderList(contact: contactData)
-                self.createRawContactList(contact: contactData)
-                
-            }
-        } catch let err {
-            print("Failed to enumerate contact list: ", err)
-        }
-        
-        self.getUsersSyncedOnDatabase(completion: completion)
-        
-    }
-    
-    private func directToSettingsForEnableContactAccess() {
+    func directToSettingsForEnableContactAccess() {
         
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
         
@@ -207,8 +180,10 @@ class ContactListManager {
         
         print("inputPhoneString :\(inputPhoneString)")
         
-        let rawPhoneString = inputPhoneString.replacingOccurrences(of: "[ |()-]", with: "", options: [.regularExpression])
+        //let rawPhoneString = inputPhoneString.replacingOccurrences(of: "[ |()-]", with: "", options: [.regularExpression])
+        var rawPhoneString = inputPhoneString.replacingOccurrences(of:"[^0-9]", with: "", options: .regularExpression)
         
+        rawPhoneString = "+" + rawPhoneString
         print("rawPhoneString :\(rawPhoneString)")
         
         if inputPhoneString.contains("+") {

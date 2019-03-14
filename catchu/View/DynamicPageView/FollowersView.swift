@@ -19,6 +19,13 @@ class FollowersView: UIView {
         return temp
     }()
     
+    lazy var tableViewResultView: TableViewStateResultView = {
+        let temp = TableViewStateResultView()
+        temp.setup(imageName: "friend", title: LocalizedConstants.TitleValues.LabelTitle.followInfo, subtitle: LocalizedConstants.Feed.NoResultFound)
+        temp.frame.size = temp.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        return temp
+    }()
+    
     lazy var followersTableView: UITableView = {
         
         let temp = UITableView(frame: .zero, style: UITableView.Style.plain)
@@ -31,8 +38,9 @@ class FollowersView: UIView {
         temp.dataSource = self
 //        temp.prefetchDataSource = self
         
-        temp.separatorStyle = UITableViewCell.SeparatorStyle.none
-        temp.rowHeight = UITableView.automaticDimension
+        temp.keyboardDismissMode = .onDrag
+        temp.separatorStyle = UITableViewCellSeparatorStyle.none
+        temp.rowHeight = UITableViewAutomaticDimension
         temp.tableFooterView = UIView()
         
         temp.register(FollowersTableViewCell.self, forCellReuseIdentifier: FollowersTableViewCell.identifier)
@@ -48,7 +56,7 @@ class FollowersView: UIView {
         return temp
         
     }()
-
+    
     init(frame: CGRect, user: User) {
         super.init(frame: frame)
         followersViewModel = FollowersViewModel(user: user)
@@ -107,6 +115,8 @@ extension FollowersView {
 //            followersTableView.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -100),
             
             ])
+        
+        self.tableViewActivationManager(active: false)
     }
     
     private func addHeaderViewToTableView() {
@@ -152,9 +162,12 @@ extension FollowersView {
         case .populate:
             print("populate")
             self.reloadFollowersTableView()
+            self.tableViewActivationManager(active: true)
         case .paging:
             print("paging")
             followersViewModel.fetchMoreProcess()
+        case .empty:
+            self.setTableViewBackgroundInfo()
         default:
             return
         }
@@ -167,7 +180,7 @@ extension FollowersView {
             loadingView.setInformation(state)
             
             switch state {
-            case .populate, .paging:
+            case .populate, .paging, .empty:
                 self.followersTableView.tableFooterView = nil
             default:
                 self.followersTableView.tableFooterView = loadingView
@@ -179,15 +192,27 @@ extension FollowersView {
     private func reloadFollowersTableView() {
         print("\(#function)")
         DispatchQueue.main.async {
-
-            /*
-            UIView.transition(with: self.followersTableView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
-                self.followersTableView.reloadData()
-            })*/
-            
             self.followersTableView.reloadData()
-            
         }
+    }
+    
+    private func setTableViewBackgroundInfo() {
+        DispatchQueue.main.async {
+            self.followersTableView.backgroundView = self.tableViewResultView
+        }
+    }
+    
+    private func tableViewActivationManager(active: Bool) {
+        DispatchQueue.main.async {
+            self.followersTableView.backgroundView?.isHidden = active
+            
+            if active {
+                self.followersTableView.tableHeaderView = self.searchBarHeaderView
+            } else {
+                self.followersTableView.tableHeaderView = nil
+            }
+        }
+        
     }
     
     /// Description : Check if a cell is loading state or not

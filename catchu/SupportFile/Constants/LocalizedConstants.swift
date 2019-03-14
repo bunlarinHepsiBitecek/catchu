@@ -118,6 +118,7 @@ struct 	LocalizedConstants {
             static let post = NSLocalizedString("post", comment: "")
             static let confirm = NSLocalizedString("confirm", comment: "")
             static let reject = NSLocalizedString("reject", comment: "")
+            static let reset = NSLocalizedString("reset", comment: "")
             
         }
         
@@ -143,13 +144,21 @@ struct 	LocalizedConstants {
             static let selectedParticipantCount = NSLocalizedString("selectedParticipantCount", comment: "")
             static let refreshing = NSLocalizedString("Refreshing", comment: "")
             static let followInfo = NSLocalizedString("followInfo", comment: "")
-
+            static let userInCatchU = NSLocalizedString("userInCatchU", comment: "")
+            static let contactsInvited = NSLocalizedString("contactsInvited", comment: "")
+            static let account = NSLocalizedString("account", comment: "")
+            static let groupManagement = NSLocalizedString("groupManagement", comment: "")
+            static let feedFilterRangeValue = NSLocalizedString("feedFilterRangeValue", comment: "")
+            
         }
         
         struct ViewControllerTitles {
+            static let settingsTitle = NSLocalizedString("settingsTitle", comment: "")
+            static let privacySecurityTitle = NSLocalizedString("privacySecurityTitle", comment: "")
             static let groupInfoEdit = NSLocalizedString("groupInfoEdit", comment: "")
             static let groupCreate = NSLocalizedString("groupCreate", comment: "")
             static let advancedSettings = NSLocalizedString("advancedSettings", comment: "")
+            static let filterSettings = NSLocalizedString("filterSettings", comment: "")
         }
     }
     
@@ -339,6 +348,7 @@ struct 	LocalizedConstants {
         static let contactFriendSuggestion = NSLocalizedString("contactFriendSuggestion", comment: "")
         static let activePeopleOnCatchU = NSLocalizedString("activePeopleOnCatchU", comment: "")
         static let invitePeopleOncatchU = NSLocalizedString("invitePeopleOncatchU", comment: "")
+        static let invitePeople = NSLocalizedString("invitePeople", comment: "")
         static let inviteFriendTitle = NSLocalizedString("inviteFriendTitle", comment: "")
         static let inviteFriendInformation = NSLocalizedString("inviteFriendInformation", comment: "")
         static let explorePeopleCell = NSLocalizedString("explorePeopleCell", comment: "")
@@ -389,6 +399,23 @@ struct 	LocalizedConstants {
         static let restrictLocation = NSLocalizedString("restrictLocation", comment: "")
         static let commentFeatureUpdateInfo = NSLocalizedString("commentFeatureUpdateInfo", comment: "")
         static let locationFeatureUpdateInfo = NSLocalizedString("locationFeatureUpdateInfo", comment: "")
+        
+    }
+    
+    struct FeedFilterOptionsPrompts {
+        static let feedFilterRange = NSLocalizedString("feedFilterRange", comment: "")
+        static let feedFilterRangeInfo = NSLocalizedString("feedFilterRangeInfo", comment: "")
+    }
+    
+    struct SettingsPrompts {
+        static let addFacebookFriends = NSLocalizedString("addFacebookFriends", comment: "")
+        static let addContactFriends = NSLocalizedString("addContactFriends", comment: "")
+        static let inviteFriends = NSLocalizedString("inviteFriends", comment: "")
+        static let privacyAndSecurity = NSLocalizedString("privacyAndSecurity", comment: "")
+        static let logout = NSLocalizedString("logout", comment: "")
+        static let invitation = NSLocalizedString("invitation", comment: "")
+        static let privateAccount = NSLocalizedString("privateAccount", comment: "")
+        static let privateAccountInfo = NSLocalizedString("privateAccountInfo", comment: "")
         
     }
     

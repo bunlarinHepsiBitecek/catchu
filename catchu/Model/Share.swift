@@ -158,6 +158,13 @@ class Share {
         
         Share.shared.location = LocationManager.shared.currentLocation
         
+        // data retrieved from more option buttons
+        Share.shared.isShowOnMap = PostItems.shared.allowLocationAppear
+        Share.shared.isCommentAllowed = PostItems.shared.allowComments
+        
+        print("Share.shared.isShowOnMap : \(Share.shared.isShowOnMap)")
+        print("Share.shared.isCommentAllowed : \(Share.shared.isCommentAllowed)")
+        
     }
     
 }

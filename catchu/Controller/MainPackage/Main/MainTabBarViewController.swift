@@ -15,6 +15,7 @@ class MainTabBarViewController: BaseTabBarController {
         
         setupTabBar()
         viewDidLoadOperations()
+        tabBarConfigurations()
         
     }
     
@@ -42,7 +43,7 @@ class MainTabBarViewController: BaseTabBarController {
 // MARK: - major functions
 extension MainTabBarViewController {
     
-    func viewDidLoadOperations() {
+    private func viewDidLoadOperations() {
         self.delegate = self
         
         let _ = FirebaseManager.shared.checkUserLoggedIn()
@@ -52,29 +53,18 @@ extension MainTabBarViewController {
         FirebaseManager.getUserShortInfo()
     }
     
-    func addTransitionToPresentationOfShareViews() {
+    private func tabBarConfigurations() {
+        self.tabBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
-        let transition = CATransition()
-        transition.duration = Constants.AnimationValues.aminationTime_03
-        transition.type = CATransitionType.fade
-        //transition.subtype = kCATransitionFromTop
-        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
-        view.window!.layer.add(transition, forKey: kCATransition)
         
-    }
-    
-    func add_PostViewController() {
-        
-        if let destinationController = UIStoryboard(name: Constants.StoryBoardID.Main, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifiers.PostViewController) as? PostViewController {
-            
-            addTransitionToPresentationOfShareViews()
-            tabBarHiddenManagement(hidden: true)
-            
-            self.present(destinationController, animated: false, completion: nil)
+        if let array = tabBar.items {
+            for item in array {
+                item.title = nil
+                item.imageInsets = UIEdgeInsetsMake(6,0,-6,0)
+            }
         }
         
     }
-    
     
 }
 

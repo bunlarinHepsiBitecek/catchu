@@ -20,7 +20,7 @@ class ExploreViewSlideMenuTableCellViewModel: CommonSlideMenuTableCellViewModelI
     }
     
     var cellImage: UIImage {
-        return UIImage(named: "search")!
+        return UIImage(named: "icon_search")!
     }
     
     var rowCount: Int {

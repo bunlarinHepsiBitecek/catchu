@@ -70,6 +70,41 @@ class CommonMoreOptionsTableCell: CommonTableCell {
     
 }
 
+class CommonFeedFilterOptionsTableCell: CommonTableCell {
+    
+    lazy var stackViewAdvancedSettings: UIStackView = {
+        
+        let temp = UIStackView(arrangedSubviews: [title, subTitle])
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        temp.isUserInteractionEnabled = true
+        temp.alignment = .fill
+        temp.axis = .vertical
+        temp.distribution = .fillProportionally
+        
+        return temp
+    }()
+    
+    let title: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let subTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.textColor = UIColor.lightGray
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+}
+
 class CommonSlideMenuTableCell: CommonTableCell {
     lazy var slideMenuLabel: UILabel = {
         let temp = UILabel()
@@ -371,6 +406,10 @@ protocol CommonGroupViewModelItem {
     
 }
 
+//protocol CommonSettingsRowViewModel {
+//    var type: SettingsRowType { get }
+//}
+
 protocol CommonMoreOptionsModelItem {
     var type : MoreOptionSectionTypes { get }
     var sectionTitle : String { get }
@@ -380,12 +419,24 @@ protocol CommonMoreOptionsModelItem {
     
 }
 
+protocol CommonFeedFilterOptionsModelItem {
+    var type : FeedFilterOptionsSectionTypes { get }
+    var sectionTitle : String { get }
+    var rowCount : Int { get }
+    
+}
+
 protocol CommonSlideMenuTableCellViewModelItem {
     var type : SlideMenuViewTags { get }
     var cellTitle : String { get }
     var cellImage: UIImage { get }
     var rowCount : Int { get }
     
+}
+
+protocol CommonExplorePhoneContactTableCellViewModelItem {
+    var type: ExploreCellViewTags { get }
+    var rowCount: Int { get }
 }
 
 protocol PageItems {
@@ -399,6 +450,10 @@ protocol CommonDesignableCellForGroupDetail {
 
 protocol CommonDesignableCellForAdvancedCettings {
     func initiateCellDesign(item: CommonMoreOptionsModelItem?)
+}
+
+protocol CommonDesignableCellForFeedFilterOptions {
+    func initiateCellDesign(item: CommonFeedFilterOptionsModelItem?)
 }
 
 protocol CommonDesignableCellForSlideMenu {

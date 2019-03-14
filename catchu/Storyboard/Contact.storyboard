@@ -475,7 +475,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ceY-ul-z9b">
                                         <rect key="frame" x="0.0" y="30" width="375" height="50"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_icon" translatesAutoresizingMaskIntoConstraints="NO" id="1yz-MF-fH9" customClass="UIImageViewDesign" customModule="catchu" customModuleProvider="target">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1yz-MF-fH9" customClass="UIImageViewDesign" customModule="catchu" customModuleProvider="target">
                                                 <rect key="frame" x="13" y="5" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="8Mf-so-LSH"/>
@@ -1514,7 +1514,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add_icon" width="137.33332824707031" height="137.33332824707031"/>
         <image name="back.png" width="16" height="16"/>
         <image name="back_right.png" width="16" height="16"/>
         <image name="camera_group.png" width="32" height="32"/>

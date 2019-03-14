@@ -19,6 +19,8 @@ class GroupDetailViewModel: BaseViewModel, CommonViewModel {
     var state = CommonDynamic(TableViewState.suggest)
     var groupParticipantCount = CommonDynamic(Int())
     var groupDetailViewModelOperationType = GroupOperationTypes.none
+    var leavingGroupProcessTriggered = CommonDynamic(GroupOperationTypes.none)
+    var groupInfoViewExit = CommonDynamic(GroupInfoLifeProcess.start)
     
     // participantsSections must be reachable from outside of the function. Because, when
     var participantsSections = GroupParticipantsViewModel()

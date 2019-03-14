@@ -280,6 +280,12 @@ extension GroupInfoView {
     // observe view controller dismiss operation
     func addObserverForGroupInfoDismiss(completion : @escaping (_ state : GroupInfoLifeProcess) -> Void) {
         groupImageContainerView.startCancelButtonObserver(completion: completion)
+        
+        groupDetailViewModel.groupInfoViewExit.bind(completion)
+    }
+    
+    func addObserverForLeavingGroupProcess(completion: @escaping (_ groupOperationType: GroupOperationTypes) -> Void) {
+        groupDetailViewModel.leavingGroupProcessTriggered.bind(completion)
     }
     
 }
@@ -352,6 +358,9 @@ extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
             cell.initiateCellDesign(item: groupDetailObject)
             
             return cell
+            
+        default:
+            return UITableViewCell()
         }
         
         return UITableViewCell()
@@ -377,7 +386,7 @@ extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
             
             guard let cell = groupDetailTableView.cellForRow(at: indexPath) as? GroupParticipantTableViewCell else { return }
             
-            print("userid : \(cell.groupParticipantViewModel?.user?.userid)")
+            print("userid : \(String(describing: cell.groupParticipantViewModel?.user?.userid))")
             
             if let groupParticipantViewModel = cell.groupParticipantViewModel {
                 if let user = groupParticipantViewModel.user {
@@ -388,6 +397,9 @@ extension GroupInfoView : UITableViewDelegate, UITableViewDataSource {
                 }
             }
             
+        case .exit:
+            // this section is used to leave group for authenticated user
+            AlertControllerManager.shared.startActionSheetManager(type: .exitWarning, operationType: nil, delegate: self, title: nil)
         default:
             return
         }
@@ -459,6 +471,10 @@ extension GroupInfoView: ActionSheetProtocols {
                     groupDetailViewModel.changeGroupAdmin(adminUserid: userid, newAdminUserid: newAdminUserid)
                 }
             }
+        case .leaveGroup:
+            print("leave group is triggered")
+            groupDetailViewModel.groupInfoViewExit.value = .exit
+            groupDetailViewModel.leavingGroupProcessTriggered.value = .leaveGroup
         default:
             return
         }

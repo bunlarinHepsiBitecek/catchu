@@ -86,13 +86,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
         // Notify the user of any errors.
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("Remzi didUpdateLocations :\(locations.last)")
-        
         guard let location = locations.last  else {
             return
         }
+        
+        print("Altitude : \(location.altitude)")
+        print("Altitude : \(location)")
         
 //        if let currentLocation = currentLocation {
 //            if (location.coordinate.longitude == currentLocation.coordinate.longitude &&

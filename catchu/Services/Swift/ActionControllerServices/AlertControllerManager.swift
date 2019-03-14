@@ -43,11 +43,14 @@ class AlertControllerManager {
             if let user = user {
                 startRemovingProcess(user: user)
             }
-//        case .inviteContact:
-//            if let contactData = contactData {
-//                triggerInviteMessageProcess(contactData: contactData)
-//            }
+        case .inviteContact:
+            if let contactData = contactData {
+                triggerInviteMessageProcess(contactData: contactData)
+            }
+        case .exitWarning:
+            startWarningAndExitFromGroupOperations()
         }
+        
     }
     
     private func starCameraOperations(operationType : ActionControllerOperationType) {
@@ -284,6 +287,51 @@ class AlertControllerManager {
         self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
         
     }
+    
+    
+    /// Description: warning message before user exit from group
+    /// - Author: Erkut Bas
+    private func startWarningAndExitFromGroupOperations() {
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.ActionSheetTitles.exitGroup, style: .destructive, handler: { (action) in
+            // to do
+            self.delegate.returnOperations(selectedProcessType: .leaveGroup)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel, handler: { (action) in
+            // to do
+        }))
+        
+        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
+        
+    }
+    
+    private func triggerInviteMessageProcess(contactData: CNContact) {
+        
+        let alertController = UIAlertController(title: LocalizedConstants.SlideMenu.inviteFriendTitle, message: LocalizedConstants.SlideMenu.inviteFriendInformation, preferredStyle: .actionSheet)
+        
+        for phone in contactData.phoneNumbers {
+            
+            let alertAction = UIAlertAction(title: phone.value.stringValue, style: .default) { (task) in
+                self.delegate.triggerContactInvitationProcess(phoneNumber: phone.value.stringValue)
+            }
+            
+            alertController.addAction(alertAction)
+            
+        }
+        
+        let cancelAction = UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel) { (task) in
+            print("cancel is tapped")
+        }
+        
+        alertController.addAction(cancelAction)
+        
+        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
+        
+    }
+    
     
 }
 

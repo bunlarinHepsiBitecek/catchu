@@ -281,12 +281,14 @@ extension CameraImageVideoHandlerProtocol {
 
 protocol ActionSheetProtocols : class  {
     func returnOperations(selectedProcessType : ActionButtonOperation)
+    func triggerContactInvitationProcess(phoneNumber: String)
     func presentViewController()
     func exitFromGroup()
 }
 
 extension ActionSheetProtocols {
     func returnOperations(selectedProcessType : ActionButtonOperation) {}
+    func triggerContactInvitationProcess(phoneNumber: String) {}
     func presentViewController() {}
     func exitFromGroup() {}
 }

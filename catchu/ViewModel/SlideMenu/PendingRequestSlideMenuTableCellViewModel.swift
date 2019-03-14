@@ -21,7 +21,7 @@ class PendingRequestSlideMenuTableCellViewModel: CommonSlideMenuTableCellViewMod
     }
     
     var cellImage: UIImage {
-        if let image = UIImage(named: "eye") {
+        if let image = UIImage(named: "eye_slide_menu") {
             return image
         } else {
             return UIImage()

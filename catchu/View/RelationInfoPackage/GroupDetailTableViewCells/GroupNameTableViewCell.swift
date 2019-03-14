@@ -26,6 +26,7 @@ class GroupNameTableViewCell: CommonTableCell, CommonDesignableCellForGroupDetai
     override func initializeCellSettings() {
         
         self.accessoryType = .disclosureIndicator
+        self.selectionStyle = .none
         
         addViews()
 

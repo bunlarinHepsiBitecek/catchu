@@ -33,6 +33,8 @@ enum ActionControllerType {
     case userInformation
     case newParticipant
     case removeFollower
+    case inviteContact
+    case exitWarning
 
 }
 
@@ -56,6 +58,8 @@ enum ActionButtonOperation {
     case exitGroup
     case addNewParticipant
     case removeFollower
+    case sendInvitationToContacts
+    case leaveGroup
 }
 
 enum MediaType: String {
@@ -293,6 +297,11 @@ enum SlideMenuViewTags {
     case settings
 }
 
+enum ExploreCellViewTags {
+    case syncedContact
+    case invitedContact
+}
+
 enum ExploreType {
     case facebook
     case contact
@@ -366,11 +375,19 @@ enum GroupDetailSectionTypes {
     case admin
     case participant
     case exit
+    case addFriends
+    case inviteFriends
+    case account
+    case authentication
 }
 
 enum MoreOptionSectionTypes {
     case allowComment
     case allowLocationAppear
+}
+
+enum FeedFilterOptionsSectionTypes {
+    case filterRange
 }
 
 enum CRUD_OperationStates {
@@ -385,6 +402,7 @@ enum GroupOperationTypes {
     case getGroupDetails
     case changeGroupAdmin
     case none
+    case leaveGroup
 }
 
 enum ImageOrientation {
@@ -478,4 +496,17 @@ enum GenderType: String, CaseIterable {
             return LocalizedConstants.Profile.GenderFemale
         }
     }
+}
+
+enum SettingsRowType {
+    case addFacebookFriends
+    case addContacts
+    case invitePeople
+    case accountPrivacyChange
+    case accountLogout
+}
+
+enum FunctionOperationType {
+    case async
+    case sync
 }

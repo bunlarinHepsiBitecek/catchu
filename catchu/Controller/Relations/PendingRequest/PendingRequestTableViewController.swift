@@ -47,6 +47,8 @@ extension PendingRequestTableViewController {
         self.title = LocalizedConstants.TitleValues.ViewControllerTitles.groupInfoEdit
         self.tableView.separatorStyle = .singleLine
         self.tableView.allowsSelection = false
+        self.tableView.keyboardDismissMode = .onDrag
+        self.tableView.tableFooterView = UIView()
         self.tableView.register(PendingRequestTableViewCell.self, forCellReuseIdentifier: PendingRequestTableViewCell.identifier)
     }
     

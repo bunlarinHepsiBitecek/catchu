@@ -166,6 +166,18 @@ extension SlideMenuTableView {
         
     }
     
+    private func gotoSettingsTableViewController() {
+        let settingsViewController = SettingsTableViewController()
+        
+        if let currentViewController = LoaderController.currentViewController() {
+            if let navigationController = currentViewController.navigationController {
+                navigationController.pushViewController(settingsViewController, animated: true)
+            } else {
+                currentViewController.present(settingsViewController, animated: true, completion: nil)
+            }
+        }
+    }
+    
     private func updateBadgeDataFromPendingRequestViewController(count: Int) {
         DispatchQueue.main.async {
             for item in self.slideMenuTableView.visibleCells {
@@ -189,7 +201,7 @@ extension SlideMenuTableView {
         case .manageGroupOperations:
             gotoFriendRelationViewController()
         case .settings:
-            return
+            gotoSettingsTableViewController()
         }
         
     }

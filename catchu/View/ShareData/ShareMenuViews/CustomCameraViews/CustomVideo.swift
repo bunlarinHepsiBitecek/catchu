@@ -48,6 +48,7 @@ extension CustomVideo {
         /// create session
         func createVideoSession() {
             self.videoSession = AVCaptureSession()
+            //self.videoSession?.sessionPreset = .high
             self.videoSession?.sessionPreset = .high
             
         }
@@ -399,14 +400,46 @@ extension CustomVideo : AVCaptureFileOutputRecordingDelegate {
         
         print("stopped recording to: \(outputFileURL)")
         
-        self.delegate.directToCapturedVideoView(url: outputFileURL)
+        let data = NSData(contentsOf: outputFileURL)
+        print("File size before compression: \(Double(data!.length / 1048576)) mb")
+        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mov")
+        compressVideo(inputURL: outputFileURL as NSURL, outputURL: compressedURL as NSURL) { (session) in
+            switch session.status {
+            case .unknown:
+                break
+            case .waiting:
+                break
+            case .exporting:
+                break
+            case .completed:
+                let data = NSData(contentsOf: compressedURL)
+                print("File size after compression: \(Double(data!.length / 1048576)) mb")
+                print("Double(data!.length : \(Double(data!.length))")
+                
+                DispatchQueue.main.async {
+                    self.delegate.directToCapturedVideoView(url: compressedURL)
+                }
+                
+            case .failed:
+                break
+            case .cancelled:
+                break
+            }
+        }
+        //self.delegate.directToCapturedVideoView(url: outputFileURL)
         
-//        try? PHPhotoLibrary.shared().performChangesAndWait {
-//
-//            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
-//
-//        }
-        
+    }
+    
+    private func compressVideo(inputURL: NSURL, outputURL: NSURL, handler:@escaping (_ session: AVAssetExportSession)-> Void) {
+        let urlAsset = AVURLAsset(url: inputURL as URL, options: nil)
+        if let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) {
+            exportSession.outputURL = outputURL as URL
+            exportSession.outputFileType = AVFileType.mov
+            exportSession.shouldOptimizeForNetworkUse = true
+            exportSession.exportAsynchronously { () -> Void in
+                handler(exportSession)
+            }
+        }
     }
     
 }

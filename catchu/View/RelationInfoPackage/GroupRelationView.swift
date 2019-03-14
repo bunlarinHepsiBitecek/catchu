@@ -12,6 +12,9 @@ class GroupRelationView: UIView {
     
     // view model
     private let groupRelationViewModel = GroupRelationViewModel()
+
+    // to use for visual configuration
+    private var friendRelationPurpose : FriendRelationViewPurpose!
     
     lazy var groupTableView: UITableView = {
         
@@ -32,6 +35,14 @@ class GroupRelationView: UIView {
         
         temp.register(GroupRelationTableViewCell.self, forCellReuseIdentifier: GroupRelationTableViewCell.identifier)
         
+        // refresh control
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        refreshControl.addTarget(self, action: #selector(GroupRelationView.triggerRefreshProcess(_:)), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: LocalizedConstants.TitleValues.LabelTitle.refreshing)
+        
+        temp.refreshControl = refreshControl
+        
         return temp
         
     }()
@@ -41,6 +52,13 @@ class GroupRelationView: UIView {
         
         initializeView()
         
+    }
+    
+    init(frame: CGRect, friendRelationPurpose: FriendRelationViewPurpose) {
+        super.init(frame: frame)
+        
+        self.friendRelationPurpose = friendRelationPurpose
+        initializeView()
     }
     
     
@@ -55,6 +73,7 @@ class GroupRelationView: UIView {
         groupRelationViewModel.groupRelationOperationStates.unbind()
         groupRelationViewModel.newGroupAdded.unbind()
         groupRelationViewModel.searchTool.unbind()
+        groupRelationViewModel.refreshProcessState.unbind()
     }
     
 }
@@ -127,7 +146,35 @@ extension GroupRelationView {
             self.searchProcessManager(searchTool: searchTool)
         }
         
+        groupRelationViewModel.refreshProcessState.bind { (operationState) in
+            self.handleRefreshControllState(state: operationState)
+        }
+        
     }
+    
+    private func handleRefreshControllState(state: CRUD_OperationStates) {
+        switch state {
+        case .processing:
+            self.groupRelationViewModel.refreshProcess()
+        case .done:
+            self.refreshControllerActivationManager(active: false)
+        }
+    }
+    
+    private func refreshControllerActivationManager(active: Bool) {
+        
+        DispatchQueue.main.async {
+            guard let refreshControl = self.groupTableView.refreshControl else { return }
+            
+            if active {
+                refreshControl.beginRefreshing()
+            } else {
+                refreshControl.endRefreshing()
+            }
+        }
+        
+    }
+    
     
     private func searchProcessManager(searchTool: SearchTools) {
         if searchTool.searchIsProgress {
@@ -153,10 +200,12 @@ extension GroupRelationView {
     private func reloadGroupTableView() {
         
         DispatchQueue.main.async {
+            /*
             UIView.transition(with: self.groupTableView, duration: Constants.AnimationValues.aminationTime_05, options: .transitionCrossDissolve, animations: {
                 self.groupTableView.reloadData()
              
-             })
+             })*/
+            self.groupTableView.reloadData()
         }
         
     }
@@ -256,6 +305,10 @@ extension GroupRelationView {
 
     }
     
+    @objc func triggerRefreshProcess(_ sender: UIRefreshControl) {
+        groupRelationViewModel.refreshProcessState.value = .processing
+    }
+    
 }
 
 // MARK: - functions called outside
@@ -291,6 +344,7 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
         
         guard let cell = groupTableView.dequeueReusableCell(withIdentifier: GroupRelationTableViewCell.identifier, for: indexPath) as? GroupRelationTableViewCell else { return UITableViewCell() }
     
+        cell.setFriendRelationPurpose(friendRelationPurpose: friendRelationPurpose)
         cell.initiateCellDesign(item: groupRelationViewModel.returnGroupArrayData(index: indexPath.row))
 
         return cell
@@ -322,13 +376,19 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
         
         let cell = groupTableView.cellForRow(at: indexPath) as? GroupRelationTableViewCell
         
+        // delete editable row button business cancelled
+        /*
         let deleteAction = UITableViewRowAction(style: .destructive, title: LocalizedConstants.TableViewRowActionTitles.delete) { (action, indexPath) in
             print("action : \(action)")
             print("indexPath : \(indexPath)")
             
             //AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self)
+            self.groupRelationViewModel.groupArray.remove(at: 1)
+            self.groupTableView.beginUpdates()
+            self.groupTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.middle)
+            self.groupTableView.endUpdates()
             
-        }
+        }*/
         
         let moreInformationAction = UITableViewRowAction(style: .normal, title: LocalizedConstants.TableViewRowActionTitles.more) { (action, indexPath) in
             print("action : \(action)")
@@ -343,7 +403,8 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
             AlertControllerManager.shared.startActionSheetManager(type: ActionControllerType.groupInformation, operationType: nil, delegate: self, title: nil)
         }
         
-        return [deleteAction, moreInformationAction]
+        //return [deleteAction, moreInformationAction]
+        return [moreInformationAction]
         
     }
     
@@ -351,6 +412,15 @@ extension GroupRelationView : UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - ActionSheetProtocols
 extension GroupRelationView : ActionSheetProtocols {
+    fileprivate func leaveGroup(_ groupOperationType: (GroupOperationTypes)) {
+        switch groupOperationType {
+        case .leaveGroup:
+            self.groupRelationViewModel.exitGroup()
+        default:
+            break
+        }
+    }
+    
     func presentViewController() {
         
         if let currentViewController = LoaderController.currentViewController() {
@@ -363,13 +433,16 @@ extension GroupRelationView : ActionSheetProtocols {
             
             currentViewController.present(groupInfoViewController, animated: false, completion: nil)
             
+            groupInfoViewController.addGroupLeavingProcessListener { (groupOperationType) in
+                print("groupOperationType : \(groupOperationType)")
+                self.leaveGroup(groupOperationType)
+            }
+            
         }
         
     }
     
     func exitFromGroup() {
-        
         groupRelationViewModel.exitGroup()
-        
     }
 }
