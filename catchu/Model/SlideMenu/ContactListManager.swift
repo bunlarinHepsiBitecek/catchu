@@ -137,14 +137,9 @@ class ContactListManager {
             print("contact name : \(contact.givenName)")
             print("phone label : \(phone.label)")
             
-            print("convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue) : \(convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue))")
-            
-//            let provider = Provider()
-//            provider.providerType = ProviderType.phone.rawValue
-//            provider.providerid = convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue)
-            
             let providerid = convertPhoneNumberWithCountryCode(inputPhoneString: phone.value.stringValue)
             let provider = Provider(id: providerid, type: ProviderType.phone)
+            
             appendNewProviderToArray(provider: provider)
             
         }
@@ -161,7 +156,7 @@ class ContactListManager {
             } else {
                 if granted {
                     print("contact fetch is granted")
-//                    self.fetchContacts(completion: completion)
+                    //                    self.fetchContacts(completion: completion)
                 } else {
                     print("contact fetch is not granted")
                 }
@@ -204,61 +199,9 @@ class ContactListManager {
             
             let user = User(user: reUser)
             appendNewUserToContactListUserArray(user: user)
-        
-        }
-        
-    }
-    
-    private func getUsersSyncedOnDatabase(completion : @escaping (_ finish : Bool) -> Void) {
-        print("getUsersSyncedOnDatabase starts")
-        
-        guard let userid = User.shared.userid else { return }
-        
-        let providerList = REProviderList()
-        
-        if providerList?.items == nil {
-            providerList?.items = [REProvider]()
-        }
-        
-        if let phoneArray = ContactListManager.shared.contactListPhoneArray {
-            for phone in phoneArray {
-                
-                let reProvider = REProvider()
-                reProvider?.providerid = phone.providerid
-                reProvider?.providerType = phone.providerType.rawValue
-                
-                providerList?.items?.append(reProvider!)
-            }
-        }
-        
-        APIGatewayManager.shared.initiateDeviceContactListExploreOnCatchU(userid: userid, providerList: providerList!) { (result) in
-        
-            switch result {
-            case .success(let data):
-                print("data : \(data.items)")
-                print("data count : \(data.items?.count)")
-                
-                if let error = data.error {
-                    print("error code : \(error.code)")
-                    print("error message : \(error.message)")
-                    
-                    completion(false)
-                }
-                
-                if let userItems = data.items {
-                    self.convertReUserToClientUserList(reUserList: userItems)
-                    completion(true)
-                }
-                
-            case .failure(let error):
-                print("error : \(error)")
-                completion(false)
-                return
-            }
             
         }
         
     }
-    
     
 }

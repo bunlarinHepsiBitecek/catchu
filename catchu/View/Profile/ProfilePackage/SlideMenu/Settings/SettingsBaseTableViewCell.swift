@@ -39,9 +39,9 @@ extension SettingsBaseTableViewCell {
             case .addFacebookFriends, .addContacts, .accountPrivacyChange:
                 self.accessoryType = .disclosureIndicator
             case .invitePeople:
-                self.accessoryType = UITableViewCellAccessoryType.none
+                self.accessoryType = UITableViewCell.AccessoryType.none
             case .accountLogout:
-                self.accessoryType = UITableViewCellAccessoryType.none
+                self.accessoryType = UITableViewCell.AccessoryType.none
                 self.textLabel?.textColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
             }
         }

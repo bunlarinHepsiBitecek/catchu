@@ -14,8 +14,8 @@ class DrawLayer: CAShapeLayer {
     override init() {
         super.init()
         
-        self.lineCap = kCALineCapRound
-        self.lineJoin = kCALineCapRound
+        self.lineCap = CAShapeLayerLineCap.round
+        self.lineJoin = CAShapeLayerLineJoin.round
         self.fillColor = UIColor.clear.cgColor
     }
     

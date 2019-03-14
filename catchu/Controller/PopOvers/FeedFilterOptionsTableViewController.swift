@@ -21,14 +21,14 @@ class FeedFilterOptionsTableViewController: UITableViewController {
     private var feedFilterChangeSectionFooterView = FeedFilterRangeSectionFooterView()
     
     lazy var leftBarButton: UIBarButtonItem = {
-        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItemStyle.plain, target: self, action: .dismissViewController)
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: UIBarButtonItem.Style.plain, target: self, action: .dismissViewController)
         
         temp.isEnabled = true
         return temp
     }()
     
     lazy var rightBarButton: UIBarButtonItem = {
-        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.save, style: UIBarButtonItemStyle.plain, target: self, action: .saveNewFilter)
+        let temp = UIBarButtonItem(title: LocalizedConstants.TitleValues.ButtonTitle.save, style: UIBarButtonItem.Style.plain, target: self, action: .saveNewFilter)
         
         temp.isEnabled = true
         return temp
@@ -51,7 +51,7 @@ extension FeedFilterOptionsTableViewController {
     
     private func setupViewSettings() {
         self.tableView = UITableView(frame: .zero, style: .grouped)
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.title = LocalizedConstants.TitleValues.ViewControllerTitles.filterSettings
         self.tableView.separatorStyle = .none
         self.tableView.register(FeedFilterSliderTableViewCell.self, forCellReuseIdentifier: FeedFilterSliderTableViewCell.identifier)

@@ -33,8 +33,8 @@ extension AccountPrivacyTableViewController {
         self.tableView.separatorStyle = .singleLine
         self.tableView.allowsSelection = false
         self.tableView.keyboardDismissMode = .onDrag
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.tableFooterView = UIView()
         self.tableView.register(AccountPrivacyTableViewCell.self, forCellReuseIdentifier: AccountPrivacyTableViewCell.identifier)
     }

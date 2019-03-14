@@ -137,6 +137,11 @@
 		45EAA70621F0D1CC0074FA87 /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */; };
 		45EAA70821F0DCC80074FA87 /* UserPostsViewCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */; };
 		45EB55A12207432500B24D92 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EB55A02207432500B24D92 /* ImagePickerManager.swift */; };
+		45EBF2AB223A818100773911 /* ExploreFacebookContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBF2A5223A818000773911 /* ExploreFacebookContactsView.swift */; };
+		45EBF2AC223A818100773911 /* ExploreFacebookContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBF2A6223A818000773911 /* ExploreFacebookContactTableViewCell.swift */; };
+		45EBF2AD223A818100773911 /* InvitedContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBF2A8223A818000773911 /* InvitedContactTableViewCell.swift */; };
+		45EBF2AE223A818100773911 /* ExplorePhoneContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBF2A9223A818000773911 /* ExplorePhoneContactView.swift */; };
+		45EBF2AF223A818100773911 /* SyncedContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBF2AA223A818000773911 /* SyncedContactTableViewCell.swift */; };
 		45EF8F5C21A586830036EC92 /* REReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF8F5B21A586830036EC92 /* REReport.swift */; };
 		45EF8F5E21A587460036EC92 /* REFollowInfoListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF8F5D21A587460036EC92 /* REFollowInfoListResponse.swift */; };
 		45F88B5321C7980600979FCA /* UserProfileCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */; };
@@ -625,6 +630,11 @@
 		45EAA70521F0D1CC0074FA87 /* UserPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewController.swift; sourceTree = "<group>"; };
 		45EAA70721F0DCC80074FA87 /* UserPostsViewCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewCollectionController.swift; sourceTree = "<group>"; };
 		45EB55A02207432500B24D92 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
+		45EBF2A5223A818000773911 /* ExploreFacebookContactsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFacebookContactsView.swift; sourceTree = "<group>"; };
+		45EBF2A6223A818000773911 /* ExploreFacebookContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFacebookContactTableViewCell.swift; sourceTree = "<group>"; };
+		45EBF2A8223A818000773911 /* InvitedContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitedContactTableViewCell.swift; sourceTree = "<group>"; };
+		45EBF2A9223A818000773911 /* ExplorePhoneContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorePhoneContactView.swift; sourceTree = "<group>"; };
+		45EBF2AA223A818000773911 /* SyncedContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncedContactTableViewCell.swift; sourceTree = "<group>"; };
 		45EF8F5B21A586830036EC92 /* REReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REReport.swift; sourceTree = "<group>"; };
 		45EF8F5D21A587460036EC92 /* REFollowInfoListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REFollowInfoListResponse.swift; sourceTree = "<group>"; };
 		45F88B5221C7980600979FCA /* UserProfileCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCollectionViewController.swift; sourceTree = "<group>"; };
@@ -1356,6 +1366,34 @@
 				45EAA70121F081060074FA87 /* Formatter.swift */,
 			);
 			path = Formatter;
+			sourceTree = "<group>";
+		};
+		45EBF2A3223A818000773911 /* ExploreView */ = {
+			isa = PBXGroup;
+			children = (
+				45EBF2A4223A818000773911 /* FacebookContact */,
+				45EBF2A7223A818000773911 /* PhoneContact */,
+			);
+			path = ExploreView;
+			sourceTree = "<group>";
+		};
+		45EBF2A4223A818000773911 /* FacebookContact */ = {
+			isa = PBXGroup;
+			children = (
+				45EBF2A5223A818000773911 /* ExploreFacebookContactsView.swift */,
+				45EBF2A6223A818000773911 /* ExploreFacebookContactTableViewCell.swift */,
+			);
+			path = FacebookContact;
+			sourceTree = "<group>";
+		};
+		45EBF2A7223A818000773911 /* PhoneContact */ = {
+			isa = PBXGroup;
+			children = (
+				45EBF2A8223A818000773911 /* InvitedContactTableViewCell.swift */,
+				45EBF2A9223A818000773911 /* ExplorePhoneContactView.swift */,
+				45EBF2AA223A818000773911 /* SyncedContactTableViewCell.swift */,
+			);
+			path = PhoneContact;
 			sourceTree = "<group>";
 		};
 		A70421FC21AED5430040AA8A /* Relations */ = {
@@ -2286,6 +2324,7 @@
 		A7E4F69221B1B89F0063E00B /* RelationInfoPackage */ = {
 			isa = PBXGroup;
 			children = (
+				45EBF2A3223A818000773911 /* ExploreView */,
 				A7EFF98721D3005D00B1A3DC /* NewGroupCreation */,
 				A7AE5FA721C6F166008FD5AD /* GroupDetailTableViewCells */,
 				A7E4F69321B1B8BF0063E00B /* FriendGroupRelationView.swift */,
@@ -2791,6 +2830,8 @@
 				45356B2920C43C3C00E0733F /* LocationManager.swift in Sources */,
 				A7AE5FB321C7E3B7008FD5AD /* GroupInfoEditTableViewController.swift in Sources */,
 				A797EEE821F9F8C4004BDA1D /* ExploreFacebookContactTableCellViewModel.swift in Sources */,
+				45EBF2AF223A818100773911 /* SyncedContactTableViewCell.swift in Sources */,
+				45EBF2AC223A818100773911 /* ExploreFacebookContactTableViewCell.swift in Sources */,
 				A774ACA02131FF4300848B79 /* GroupInfoTableViewCell.swift in Sources */,
 				A76F650821F1FEBB00FCAB07 /* FollowingsTableViewCell.swift in Sources */,
 				4564E46F20B999AD003B0D16 /* DesignableUITextField.swift in Sources */,
@@ -2838,6 +2879,7 @@
 				A7AE5FB521C7E774008FD5AD /* GroupInfoEditTableViewCell.swift in Sources */,
 				A762B75E21641ADB00DBB4EF /* PostAttachmentView.swift in Sources */,
 				A716903621B452790039287B /* RelationCollectionLoadingView.swift in Sources */,
+				45EBF2AD223A818100773911 /* InvitedContactTableViewCell.swift in Sources */,
 				45E8B5F8215A9B3A005AD00A /* APIClientModel.swift in Sources */,
 				A716903021B3F1D90039287B /* FriendRelationView.swift in Sources */,
 				A716903421B3F6B30039287B /* Common.swift in Sources */,
@@ -2862,6 +2904,7 @@
 				A7B6BC2421A8902300D11A78 /* CommonSticker.swift in Sources */,
 				A716902C21B22E850039287B /* CommonDynamic.swift in Sources */,
 				451E9F1B213937E300185925 /* FeedViewController.swift in Sources */,
+				45EBF2AE223A818100773911 /* ExplorePhoneContactView.swift in Sources */,
 				A722EC25219F130600E9BD3B /* ContactListManager.swift in Sources */,
 				A7F8F1DA21490F6A00EE45B6 /* CustomCapturedVideoView.swift in Sources */,
 				A7D4E98321537CB000081859 /* CustomColorContainerView.swift in Sources */,
@@ -3084,6 +3127,7 @@
 				A74240232142AFB400E20A58 /* PermissionWarningCollectionViewCell.swift in Sources */,
 				A7276D5D2110C67900CAC67C /* REFriendList_resultArray_item.swift in Sources */,
 				454815BA215EB71F009684E1 /* ConfirmationView.swift in Sources */,
+				45EBF2AB223A818100773911 /* ExploreFacebookContactsView.swift in Sources */,
 				A77EC7D5215D1C1600AE3D3E /* CustomVideoView.swift in Sources */,
 				A7B9A76321DB6C9800840330 /* MoreOptionsTableViewController.swift in Sources */,
 				4542859A214A94C700F68FAC /* RECommentListResponse.swift in Sources */,

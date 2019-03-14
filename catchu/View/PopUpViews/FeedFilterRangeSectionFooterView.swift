@@ -43,11 +43,11 @@ class FeedFilterRangeSectionFooterView: UIView {
     }()
     
     lazy var resetButton: UIButton = {
-        let temp = UIButton(type: UIButtonType.system)
+        let temp = UIButton(type: UIButton.ButtonType.system)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.isUserInteractionEnabled = true
         temp.addTarget(self, action: .resetFilterRangeSelector, for: .touchUpInside)
-        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.reset, for: UIControlState.normal)
+        temp.setTitle(LocalizedConstants.TitleValues.ButtonTitle.reset, for: UIControl.State.normal)
         temp.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         
         temp.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)

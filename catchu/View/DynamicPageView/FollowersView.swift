@@ -22,7 +22,7 @@ class FollowersView: UIView {
     lazy var tableViewResultView: TableViewStateResultView = {
         let temp = TableViewStateResultView()
         temp.setup(imageName: "friend", title: LocalizedConstants.TitleValues.LabelTitle.followInfo, subtitle: LocalizedConstants.Feed.NoResultFound)
-        temp.frame.size = temp.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        temp.frame.size = temp.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return temp
     }()
     
@@ -39,8 +39,8 @@ class FollowersView: UIView {
 //        temp.prefetchDataSource = self
         
         temp.keyboardDismissMode = .onDrag
-        temp.separatorStyle = UITableViewCellSeparatorStyle.none
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.none
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
         temp.register(FollowersTableViewCell.self, forCellReuseIdentifier: FollowersTableViewCell.identifier)

@@ -86,7 +86,7 @@ class ExplorePhoneContactViewModel: CommonViewModel {
         for item in contactListPhoneArray {
             let reProvider = REProvider()
             reProvider?.providerid = item.providerid
-            reProvider?.providerType = item.providerType
+            reProvider?.providerType = item.providerType.rawValue
             
             providerList?.items?.append(reProvider!)
             

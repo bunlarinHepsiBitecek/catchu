@@ -31,8 +31,8 @@ class FollowingsView: UIView {
         temp.dataSource = self
         
         temp.keyboardDismissMode = .onDrag
-        temp.separatorStyle = UITableViewCellSeparatorStyle.none
-        temp.rowHeight = UITableViewAutomaticDimension
+        temp.separatorStyle = UITableViewCell.SeparatorStyle.none
+        temp.rowHeight = UITableView.automaticDimension
         temp.tableFooterView = UIView()
         
         temp.register(FollowingsTableViewCell.self, forCellReuseIdentifier: FollowingsTableViewCell.identifier)

@@ -264,30 +264,6 @@ class AlertControllerManager {
         
     }
     
-    private func triggerInviteMessageProcess(contactData: CNContact) {
-        
-        let alertController = UIAlertController(title: LocalizedConstants.SlideMenu.inviteFriendTitle, message: LocalizedConstants.SlideMenu.inviteFriendInformation, preferredStyle: .actionSheet)
-        
-        for phone in contactData.phoneNumbers {
-            
-            let alertAction = UIAlertAction(title: phone.value.stringValue, style: .default) { (task) in
-//                self.delegate.triggerContactInvitationProcess(phoneNumber: phone.value.stringValue)
-            }
-            
-            alertController.addAction(alertAction)
-            
-        }
-        
-        let cancelAction = UIAlertAction(title: LocalizedConstants.TitleValues.ButtonTitle.cancel, style: .cancel) { (task) in
-            print("cancel is tapped")
-        }
-        
-        alertController.addAction(cancelAction)
-        
-        self.triggerViewControllerPresenter(controller: Controller<UIAlertController>.input(alertController))
-        
-    }
-    
     
     /// Description: warning message before user exit from group
     /// - Author: Erkut Bas
